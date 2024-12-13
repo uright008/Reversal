@@ -79,32 +79,22 @@ public class Scoreboard
         }
     }
 
-    public Score getValueFromObjective(String name, ScoreObjective objective)
-    {
-        if (name.length() > 40)
-        {
-            throw new IllegalArgumentException("The player name \'" + name + "\' is too long!");
+    public Score getValueFromObjective(String name, ScoreObjective objective) {
+        Map<ScoreObjective, Score> map = (Map) this.entitiesScoreObjectives.get(name);
+
+        if (map == null) {
+            map = Maps.<ScoreObjective, Score>newHashMap();
+            this.entitiesScoreObjectives.put(name, map);
         }
-        else
-        {
-            Map<ScoreObjective, Score> map = (Map)this.entitiesScoreObjectives.get(name);
 
-            if (map == null)
-            {
-                map = Maps.<ScoreObjective, Score>newHashMap();
-                this.entitiesScoreObjectives.put(name, map);
-            }
+        Score score = (Score) map.get(objective);
 
-            Score score = (Score)map.get(objective);
-
-            if (score == null)
-            {
-                score = new Score(this, objective, name);
-                map.put(objective, score);
-            }
-
-            return score;
+        if (score == null) {
+            score = new Score(this, objective, name);
+            map.put(objective, score);
         }
+
+        return score;
     }
 
     public Collection<Score> getSortedScores(ScoreObjective objective)

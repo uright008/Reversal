@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.ByteBuffer;
 
 import cn.stars.reversal.util.ReversalLogger;
+import cn.stars.reversal.util.render.GlUtils;
 import cn.stars.reversal.util.render.RenderUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -116,17 +117,8 @@ public class VideoUtil {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-            // 平滑线条
-            GL11.glEnable(GL11.GL_POINT_SMOOTH);
-            GL11.glEnable(GL11.GL_LINE_SMOOTH);
-            GL11.glEnable(GL11.GL_POLYGON_SMOOTH);
-            GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST);
-            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
-            GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
-
-            // 抗锯齿,线性过滤
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+            GlUtils.startAntiAtlas();
+            GlUtils.doAntiAtlas();
 
             GL11.glDepthMask(false);
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -144,9 +136,7 @@ public class VideoUtil {
             GL11.glEnd();
 
             // 关闭
-            GL11.glDisable(GL11.GL_POINT_SMOOTH);
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
-            GL11.glDisable(GL11.GL_POLYGON_SMOOTH);
+            GlUtils.stopAntiAtlas();
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glDepthMask(true);
             GL11.glPopMatrix();

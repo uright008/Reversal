@@ -43,6 +43,7 @@ public class LoginThread extends Thread {
         }
 
         // 每隔一秒向服务器请求扫描结果
+        result = MusicAPI.getScanResult(qrCode.getKey());
         do {
             if (timer.hasTimeElapsed(1000)) {
                 result = MusicAPI.getScanResult(qrCode.getKey());

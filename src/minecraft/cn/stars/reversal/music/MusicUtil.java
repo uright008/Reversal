@@ -24,7 +24,7 @@ public class MusicUtil {
     }
 
     private static BufferedImage downloadImage(String imageUrl, int width, int height, int count) {
-        System.out.println(imageUrl);
+        ReversalLogger.info("[MusicPlayer] Download: " + imageUrl);
         try {
             URL url = new URL(imageUrl);
             try (InputStream inputStream = url.openStream()) {

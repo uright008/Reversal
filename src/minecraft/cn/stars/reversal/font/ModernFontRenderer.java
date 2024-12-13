@@ -310,7 +310,7 @@ public class ModernFontRenderer extends MFont {
 
     public float drawString(String text, double x, double y, int color, final boolean shadow) {
         if (text == null) return 0;
-        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.passStringWithCustomName(text).replaceAll("§.", "");
+        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");
 
         if (!this.international && this.requiresInternationalFont(text)) {
             return FontManager.getRegular(this.font.getSize() - 1).drawString(text, x, y, color);
@@ -398,7 +398,7 @@ public class ModernFontRenderer extends MFont {
 
     public float width(String text) {
         if (text == null) return 0;
-        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.passStringWithCustomName(text).replaceAll("§.", "");;
+        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");;
 
         if (!this.international && this.requiresInternationalFont(text)) {
             return FontManager.getRegular(this.font.getSize()).width(text);

@@ -32,7 +32,7 @@ public class PlayListListGUI extends MusicPlayerGUI {
     @Override
     public boolean draw(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale) {
         if (buttons.isEmpty()) {
-            regular32.drawCenteredString(MusicAPI.user.isLoggedIn() ? (MusicAPI.user.isLoaded() ? "获取中" : "请点击用户名以加载列表") : "请先登录", x + width / 2f, y + 50f, Color.WHITE.getRGB());
+            regular32.drawCenteredString(MusicAPI.user.isLoggedIn() ? "获取中" : "请先登录", x + width / 2f, y + 50f, Color.WHITE.getRGB());
             return false;
         }
 

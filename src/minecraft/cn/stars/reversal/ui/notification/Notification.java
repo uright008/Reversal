@@ -3,7 +3,7 @@ package cn.stars.reversal.ui.notification;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
-import cn.stars.reversal.ui.curiosity.impl.CuriosityMainMenu;
+import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.ThemeType;
@@ -87,7 +87,7 @@ public final class Notification implements GameInstance {
 
         if (timer.hasReached(1000 / 60)) {
             xVisual = lerp(xVisual, x, 0.2f);
-            yVisual = lerp(yVisual, y - (mc.currentScreen instanceof CuriosityMainMenu ? 180 : 0), 0.2f);
+            yVisual = lerp(yVisual, y - (mc.currentScreen instanceof ModernMainMenu ? 180 : 0), 0.2f);
             timer.reset();
         }
 

@@ -5,10 +5,8 @@
 package cn.stars.reversal.ui.gui;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.module.impl.hud.PostProcessing;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.Transformer;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
@@ -23,15 +21,15 @@ import java.io.IOException;
 import static cn.stars.reversal.GameInstance.*;
 
 public class GuiDonate extends GuiScreen {
-    private CuriosityTextButton backButton;
-    private CuriosityTextButton[] buttons;
+    private TextButton backButton;
+    private TextButton[] buttons;
 
     @Override
     public void initGui() {
-        backButton = new CuriosityTextButton(this.width / 2 - 100, this.height - 60, 200, 20, () -> {
+        backButton = new TextButton(this.width / 2 - 100, this.height - 60, 200, 20, () -> {
             mc.displayGuiScreen(Transformer.transformMainMenu());
         }, "返回", "", true, 1, 90, 5, 20);
-        buttons = new CuriosityTextButton[]{backButton};
+        buttons = new TextButton[]{backButton};
     }
 
     @SneakyThrows
@@ -51,7 +49,7 @@ public class GuiDonate extends GuiScreen {
         RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, new Color(30, 30, 30, 160));
         GameInstance.NORMAL_BLUR_RUNNABLES.add(() -> RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, Color.BLACK));
 
-        for (CuriosityTextButton button : buttons) {
+        for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
 

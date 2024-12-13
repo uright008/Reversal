@@ -1,21 +1,19 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.music.ui.TextField;
+import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.music.ui.ThemeColor;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import cn.stars.reversal.util.shader.RiseShaders;
 import cn.stars.reversal.util.shader.base.ShaderRenderType;
-import com.google.common.base.Predicate;
 
 import java.awt.*;
 import java.io.IOException;
-import java.net.IDN;
+
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Keyboard;
 
 import static cn.stars.reversal.GameInstance.*;
@@ -27,8 +25,8 @@ public class GuiScreenAddServer extends GuiScreen
     private final ServerData serverData;
     private TextField serverIPField;
     private TextField serverNameField;
-    CuriosityTextButton addButton, cancelButton;
-    private CuriosityTextButton[] buttons;
+    TextButton addButton, cancelButton;
+    private TextButton[] buttons;
 
     public GuiScreenAddServer(GuiScreen p_i1033_1_, ServerData p_i1033_2_)
     {
@@ -39,12 +37,12 @@ public class GuiScreenAddServer extends GuiScreen
     public void initGui()
     {
         Keyboard.enableRepeatEvents(true);
-        addButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 4 + 96 + 68, 200, 20, () -> {
+        addButton = new TextButton(this.width / 2 - 100, this.height / 4 + 96 + 68, 200, 20, () -> {
             this.serverData.serverName = this.serverNameField.getText();
             this.serverData.serverIP = this.serverIPField.getText();
             this.parentScreen.confirmClicked(true, 0);
         }, "添加服务器", "", true, 1, 75, 5, 20);
-        cancelButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 4 + 120 + 68, 200, 20, () -> {
+        cancelButton = new TextButton(this.width / 2 - 100, this.height / 4 + 120 + 68, 200, 20, () -> {
             this.parentScreen.confirmClicked(false, 0);
         }, "取消", "", true, 1, 90, 5, 20);
         this.serverNameField = new TextField(200, 20, GameInstance.regular16, ThemeColor.bgColor, ThemeColor.outlineColor);
@@ -52,7 +50,7 @@ public class GuiScreenAddServer extends GuiScreen
         this.serverNameField.setText(this.serverData.serverName);
         this.serverIPField = new TextField(200, 20, GameInstance.regular16, ThemeColor.bgColor, ThemeColor.outlineColor);
         this.serverIPField.setText(this.serverData.serverIP);
-        buttons = new CuriosityTextButton[] {addButton, cancelButton};
+        buttons = new TextButton[] {addButton, cancelButton};
     }
 
     public void onGuiClosed()
@@ -107,7 +105,7 @@ public class GuiScreenAddServer extends GuiScreen
         GameInstance.NORMAL_BLUR_RUNNABLES.add(() -> RoundedUtil.drawRound(width / 2f - 225, 150, 450, 300, 4, Color.BLACK));
         RenderUtil.rect(width / 2f - 225, 170, 450, 0.5, new Color(220, 220, 220, 240));
 
-        for (CuriosityTextButton button : buttons) {
+        for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
 

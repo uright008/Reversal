@@ -83,6 +83,13 @@ object ColorUtils {
             ) / 255f
         )
     }
+    fun interpolateColor(color1: Int, color2: Int, amount: Float): Int {
+        var amount = amount
+        amount = min(1.0, max(0.0, amount.toDouble())).toFloat()
+        val cColor1 = Color(color1)
+        val cColor2 = Color(color2)
+        return interpolateColorC(cColor1, cColor2, amount).rgb
+    }
     fun interpolateColorsBackAndForth(speed: Int, index: Int, start: Color, end: Color, trueColor: Boolean): Color {
         var angle = ((System.currentTimeMillis() / speed + index) % 360).toInt()
         angle = (if (angle >= 180) 360 - angle else angle) * 2

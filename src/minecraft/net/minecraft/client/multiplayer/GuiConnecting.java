@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -44,7 +44,7 @@ public class GuiConnecting extends GuiScreen
     private boolean cancel;
     private final GuiScreen previousGuiScreen;
     private Animation animation = new Animation(Easing.EASE_OUT_QUINT, 600);
-    private CuriosityTextButton cancelButton;
+    private TextButton cancelButton;
 
     public GuiConnecting(GuiScreen p_i1181_1_, Minecraft mcIn, ServerData p_i1181_3_)
     {
@@ -144,7 +144,7 @@ public class GuiConnecting extends GuiScreen
     public void initGui()
     {
         GameInstance.clearRunnables();
-        this.cancelButton = new CuriosityTextButton(width / 2 - 100, height / 2 + 100, 200, 20, this::action, "取消", "", true, 6, 90, 5, 20);
+        this.cancelButton = new TextButton(width / 2 - 100, height / 2 + 100, 200, 20, this::action, "取消", "", true, 6, 90, 5, 20);
         this.animation = new Animation(Easing.EASE_OUT_QUINT, 600);
     }
 
@@ -214,7 +214,7 @@ public class GuiConnecting extends GuiScreen
         RenderUtil.rect(width / 2f - 225, 220, 450, 0.5, new Color(220, 220, 220, 240));
         GameInstance.regular24Bold.drawCenteredString("连接服务器", width / 2f, 206, new Color(220, 220, 220, 240).getRGB());
 
-        RenderUtil.image(new ResourceLocation("reversal/images/curiosity.png"), width / 2f - 100,  height / 2f - 160, 200, 200);
+        RenderUtil.image(new ResourceLocation("reversal/images/logo/curiosity.png"), width / 2f - 100,  height / 2f - 160, 200, 200);
         RenderUtils.drawLoadingCircle2(this.width / 2, this.height / 2 + 50, 6, new Color(220, 220, 220, 220));
 
         String ip = "Unknown";

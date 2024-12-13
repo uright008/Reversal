@@ -4,9 +4,9 @@ import java.awt.*;
 import java.io.IOException;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.music.ui.TextField;
+import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.music.ui.ThemeColor;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
@@ -23,8 +23,8 @@ public class GuiScreenServerList extends GuiScreen
     private final GuiScreen field_146303_a;
     private final ServerData field_146301_f;
     private TextField field_146302_g;
-    private CuriosityTextButton selectButton, cancelButton;
-    private CuriosityTextButton[] buttons;
+    private TextButton selectButton, cancelButton;
+    private TextButton[] buttons;
 
     public GuiScreenServerList(GuiScreen p_i1031_1_, ServerData p_i1031_2_)
     {
@@ -36,17 +36,17 @@ public class GuiScreenServerList extends GuiScreen
     {
         Keyboard.enableRepeatEvents(true);
         this.buttonList.clear();
-        selectButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 4 + 96 + 62, 200, 20, () -> {
+        selectButton = new TextButton(this.width / 2 - 100, this.height / 4 + 96 + 62, 200, 20, () -> {
             if (!this.field_146302_g.getText().isEmpty()) {
                 this.field_146301_f.serverIP = this.field_146302_g.getText();
                 this.field_146303_a.confirmClicked(true, 0);
             }
         }, "连接服务器", "", true, 1, 75, 5, 20);
-        cancelButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 4 + 120 + 62, 200, 20, () -> this.field_146303_a.confirmClicked(false, 0), "取消", "", true, 1, 90, 5, 20);
+        cancelButton = new TextButton(this.width / 2 - 100, this.height / 4 + 120 + 62, 200, 20, () -> this.field_146303_a.confirmClicked(false, 0), "取消", "", true, 1, 90, 5, 20);
         this.field_146302_g = new TextField(200, 20, GameInstance.regular16, ThemeColor.bgColor, ThemeColor.outlineColor);
         this.field_146302_g.setFocused(true);
         this.field_146302_g.setText(this.mc.gameSettings.lastServer);
-        buttons = new CuriosityTextButton[] {selectButton, cancelButton};
+        buttons = new TextButton[] {selectButton, cancelButton};
     }
 
     public void onGuiClosed()
@@ -99,7 +99,7 @@ public class GuiScreenServerList extends GuiScreen
         GameInstance.NORMAL_BLUR_RUNNABLES.add(() -> RoundedUtil.drawRound(width / 2f - 225, 150, 450, 300, 4, Color.BLACK));
         RenderUtil.rect(width / 2f - 225, 170, 450, 0.5, new Color(220, 220, 220, 240));
 
-        for (CuriosityTextButton button : buttons) {
+        for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
 

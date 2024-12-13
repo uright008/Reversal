@@ -29,6 +29,15 @@ public class AxisAlignedBB
         this.maxZ = (double)pos2.getZ();
     }
 
+    public AxisAlignedBB(double x, double y, double z) {
+        this.minX = Math.min(x, x);
+        this.minY = Math.min(y, y);
+        this.minZ = Math.min(z, z);
+        this.maxX = Math.max(x, x);
+        this.maxY = Math.max(y, y);
+        this.maxZ = Math.max(z, z);
+    }
+
     public AxisAlignedBB addCoord(double x, double y, double z)
     {
         double d0 = this.minX;
@@ -77,6 +86,10 @@ public class AxisAlignedBB
         double d4 = this.maxY + y;
         double d5 = this.maxZ + z;
         return new AxisAlignedBB(d0, d1, d2, d3, d4, d5);
+    }
+
+    public AxisAlignedBB expandXyz(double value) {
+        return this.expand(value, value, value);
     }
 
     public AxisAlignedBB union(AxisAlignedBB other)

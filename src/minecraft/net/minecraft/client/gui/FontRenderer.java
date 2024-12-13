@@ -386,7 +386,7 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     private void renderStringAtPos(String text, boolean shadow)
     {
-        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.passStringWithCustomName(text);
+        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text);
 
         for (int i = 0; i < text.length(); ++i)
         {
@@ -608,7 +608,7 @@ public class FontRenderer implements IResourceManagerReloadListener
             if (ModuleInstance.getModule(BetterFont.class).isEnabled()) {
                 return MathHelper.ceiling_float_int(GameInstance.regular20.width(text));
             }
-            if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.passStringWithCustomName(text);
+            if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text);
             float f = 0.0F;
             boolean flag = false;
 

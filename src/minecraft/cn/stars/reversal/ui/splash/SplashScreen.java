@@ -67,6 +67,7 @@ public class SplashScreen {
         GLFW.glfwMakeContextCurrent(subWindow);
         GL.createCapabilities();
         mc.updateDisplay();
+        Display.sync(60);
 
         splashThread = new Thread(new Runnable() {
             @Override
@@ -236,6 +237,7 @@ public class SplashScreen {
             GL.createCapabilities();
             hide();
 
+            Display.sync(60);
             mc.updateDisplay();
         }
     }

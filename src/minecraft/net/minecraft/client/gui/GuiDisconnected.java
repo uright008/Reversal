@@ -9,8 +9,7 @@ import java.util.List;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.util.Transformer;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
-import cn.stars.reversal.ui.gui.GuiMainMenu;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.shader.RiseShaders;
@@ -29,8 +28,8 @@ public class GuiDisconnected extends GuiScreen
     private List<String> multilineMessage;
     private final GuiScreen parentScreen;
     private int field_175353_i;
-    private CuriosityTextButton reconnectButton, cancelButton;
-    private CuriosityTextButton[] buttons;
+    private TextButton reconnectButton, cancelButton;
+    private TextButton[] buttons;
 
     public GuiDisconnected(GuiScreen screen, String reasonLocalizationKey, IChatComponent chatComp)
     {
@@ -48,9 +47,9 @@ public class GuiDisconnected extends GuiScreen
         this.buttonList.clear();
         this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
         this.field_175353_i = (int) (this.multilineMessage.size() * regular16.height());
-        reconnectButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height(), 200, 20, () -> this.mc.displayGuiScreen(new GuiMultiplayer(Transformer.transformMainMenu())), "返回主菜单", "", true, 1, 75, 5, 20);
-        cancelButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height() + 25, 200, 20, () -> this.mc.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(new GuiMainMenu()), mc, mc.getCurrentServerData())), "重连", "", true, 1, 90, 5, 20);
-        buttons = new CuriosityTextButton[]{reconnectButton, cancelButton};
+        reconnectButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height(), 200, 20, () -> this.mc.displayGuiScreen(new GuiMultiplayer(Transformer.transformMainMenu())), "返回主菜单", "", true, 1, 75, 5, 20);
+        cancelButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height() + 25, 200, 20, () -> this.mc.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(Transformer.transformMainMenu()), mc, mc.getCurrentServerData())), "重连", "", true, 1, 90, 5, 20);
+        buttons = new TextButton[]{reconnectButton, cancelButton};
     }
 
     protected void actionPerformed(GuiButton button) throws IOException
@@ -60,7 +59,7 @@ public class GuiDisconnected extends GuiScreen
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         if (mouseButton == 0) {
-            for (CuriosityTextButton menuButton : this.buttons) {
+            for (TextButton menuButton : this.buttons) {
                 if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), mouseX, mouseY)) {
                     mc.getSoundHandler().playButtonPress();
                     menuButton.runAction();
@@ -101,7 +100,7 @@ public class GuiDisconnected extends GuiScreen
                 RoundedUtil.drawRound(width / 2f - 125, 10, 250, 40, 6, Color.BLACK);
             });
 
-            for (CuriosityTextButton button : buttons) {
+            for (TextButton button : buttons) {
                 button.draw(mouseX, mouseY, partialTicks);
             }
 

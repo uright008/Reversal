@@ -1,6 +1,5 @@
 package cn.stars.reversal.event;
 
-import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.Category;
@@ -9,6 +8,7 @@ import cn.stars.reversal.module.impl.hud.ClientSettings;
 import cn.stars.reversal.ui.clickgui.modern.MMTClickGUI;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.ui.notification.NotificationManager;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +32,7 @@ public final class EventHandler {
 
             for (final Module module : modules) {
                 if (module.isEnabled()) {
-                    if (module.getModuleInfo().category().equals(Category.HUD) && !RainyAPI.canDrawHUD()) return;
+                    if (module.getModuleInfo().category().equals(Category.HUD) && !ModuleInstance.canDrawHUD()) return;
                     module.onRender2D(event);
                 }
             }
@@ -51,7 +51,7 @@ public final class EventHandler {
 
             for (final Module module : modules) {
                 if (module.isEnabled()) {
-                    if (module.getModuleInfo().category().equals(Category.HUD) && !RainyAPI.canDrawHUD()) return;
+                    if (module.getModuleInfo().category().equals(Category.HUD) && !ModuleInstance.canDrawHUD()) return;
                     module.onRender3D(event);
                 }
             }
@@ -60,7 +60,7 @@ public final class EventHandler {
 
             for (final Module module : modules) {
                 if (module.isEnabled()) {
-                    if (module.getModuleInfo().category().equals(Category.HUD) && !RainyAPI.canDrawHUD()) return;
+                    if (module.getModuleInfo().category().equals(Category.HUD) && !ModuleInstance.canDrawHUD()) return;
                     module.onBlur(event);
                 }
             }
@@ -69,7 +69,7 @@ public final class EventHandler {
 
             for (final Module module : modules) {
                 if (module.isEnabled()) {
-                    if (module.getModuleInfo().category().equals(Category.HUD) && !RainyAPI.canDrawHUD()) return;
+                    if (module.getModuleInfo().category().equals(Category.HUD) && !ModuleInstance.canDrawHUD()) return;
                     module.onShader3D(event);
                 }
             }

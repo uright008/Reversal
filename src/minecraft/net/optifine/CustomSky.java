@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import cn.stars.reversal.ui.splash.SplashScreen;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.src.Config;
@@ -17,11 +19,11 @@ import net.optifine.util.TextureUtils;
 
 public class CustomSky
 {
-    private static CustomSkyLayer[][] worldSkyLayers = (CustomSkyLayer[][])null;
+    private static CustomSkyLayer[][] worldSkyLayers = null;
 
     public static void reset()
     {
-        worldSkyLayers = (CustomSkyLayer[][])null;
+        worldSkyLayers = null;
     }
 
     public static void update()
@@ -30,7 +32,9 @@ public class CustomSky
 
         if (Config.isCustomSky())
         {
-            worldSkyLayers = readCustomSkies();
+            synchronized (SplashScreen.renderLock) {
+                worldSkyLayers = readCustomSkies();
+            }
         }
     }
 
@@ -95,7 +99,7 @@ public class CustomSky
 
             if (list.size() > 0)
             {
-                CustomSkyLayer[] acustomskylayer2 = (CustomSkyLayer[])((CustomSkyLayer[])list.toArray(new CustomSkyLayer[list.size()]));
+                CustomSkyLayer[] acustomskylayer2 = (CustomSkyLayer[]) list.toArray(new CustomSkyLayer[0]);
                 acustomskylayer[j] = acustomskylayer2;
                 i = j;
             }
@@ -103,7 +107,7 @@ public class CustomSky
 
         if (i < 0)
         {
-            return (CustomSkyLayer[][])null;
+            return null;
         }
         else
         {

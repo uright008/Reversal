@@ -1,5 +1,9 @@
 package net.minecraft.client.gui;
 
+import cn.stars.reversal.RainyAPI;
+import cn.stars.reversal.module.impl.misc.IRC;
+import cn.stars.reversal.util.Transformer;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import com.mojang.authlib.GameProfile;
@@ -38,7 +42,16 @@ public class GuiPlayerTabOverlay extends Gui
 
     public String getPlayerName(NetworkPlayerInfo networkPlayerInfoIn)
     {
-        return networkPlayerInfoIn.getDisplayName() != null ? networkPlayerInfoIn.getDisplayName().getFormattedText() : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName());
+        String name = networkPlayerInfoIn.getGameProfile().getName();
+        String displayName = networkPlayerInfoIn.getDisplayName() != null ? networkPlayerInfoIn.getDisplayName().getFormattedText() : ScorePlayerTeam.formatPlayerName(networkPlayerInfoIn.getPlayerTeam(), networkPlayerInfoIn.getGameProfile().getName());
+        if (ModuleInstance.getModule(IRC.class).isEnabled() && ModuleInstance.getModule(IRC.class).markOnlineUsers.isEnabled()) {
+            for (String onlineName : RainyAPI.ircUser.onlinePlayers) {
+                if (name.equalsIgnoreCase(onlineName)) {
+                    displayName = "§7[§b§l★§r§7]" + Transformer.getIRCTitle(name) + displayName;
+                }
+            }
+        }
+        return displayName;
     }
 
     public void updatePlayerList(boolean willBeRendered)
@@ -54,7 +67,7 @@ public class GuiPlayerTabOverlay extends Gui
     public void renderPlayerlist(int width, Scoreboard scoreboardIn, ScoreObjective scoreObjectiveIn)
     {
         NetHandlerPlayClient nethandlerplayclient = this.mc.thePlayer.sendQueue;
-        List<NetworkPlayerInfo> list = field_175252_a.<NetworkPlayerInfo>sortedCopy(nethandlerplayclient.getPlayerInfoMap());
+        List<NetworkPlayerInfo> list = field_175252_a.sortedCopy(nethandlerplayclient.getPlayerInfoMap());
         int i = 0;
         int j = 0;
 

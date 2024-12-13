@@ -3,7 +3,7 @@ package net.minecraft.client.gui;
 import java.io.IOException;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.music.ui.TextField;
+import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.music.ui.ThemeColor;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.world.storage.ISaveFormat;

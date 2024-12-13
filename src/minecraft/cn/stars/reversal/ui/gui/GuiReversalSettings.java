@@ -5,7 +5,7 @@
 package cn.stars.reversal.ui.gui;
 
 import cn.stars.reversal.RainyAPI;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
@@ -19,8 +19,8 @@ import static cn.stars.reversal.GameInstance.*;
 
 public class GuiReversalSettings extends GuiScreen {
     public GuiScreen parent;
-    private CuriosityTextButton exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton;
-    private CuriosityTextButton[] buttons;
+    private TextButton exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton;
+    private TextButton[] buttons;
 
     public GuiReversalSettings(GuiScreen parent) {
         this.parent = parent;
@@ -32,7 +32,7 @@ public class GuiReversalSettings extends GuiScreen {
 
         updatePostProcessing(true, partialTicks);
 
-        for (CuriosityTextButton button : buttons) {
+        for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
 
@@ -67,55 +67,55 @@ public class GuiReversalSettings extends GuiScreen {
 
     @Override
     public void initGui() {
-        this.exitButton = new CuriosityTextButton(width / 2f - 60, height - 60, 120, 35, () -> mc.displayGuiScreen(parent),
+        this.exitButton = new TextButton(width / 2f - 60, height - 60, 120, 35, () -> mc.displayGuiScreen(parent),
                 "返回主菜单", "g", true, 12, 38, 11);
 
         createButton();
 
-        buttons = new CuriosityTextButton[]{exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton};
+        buttons = new TextButton[]{exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton};
     }
 
     private void switchOption(Runnable runnable) {
         runnable.run();
         createButton();
-        RainyAPI.processAPI();
-        buttons = new CuriosityTextButton[]{exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton};
+        RainyAPI.processAPI(true);
+        buttons = new TextButton[]{exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton};
     }
 
     private void createButton() {
         if (!RainyAPI.isShaderCompatibility) {
-            this.shaderButton = new CuriosityTextButton(width / 2f - 490, 75, 60, 25, () -> switchOption(() -> RainyAPI.isShaderCompatibility = !RainyAPI.isShaderCompatibility),
+            this.shaderButton = new TextButton(width / 2f - 490, 75, 60, 25, () -> switchOption(() -> RainyAPI.isShaderCompatibility = !RainyAPI.isShaderCompatibility),
                     "开", "9", true, 10, 34, 7);
         } else {
-            this.shaderButton = new CuriosityTextButton(width / 2f - 490, 75, 60, 25, () -> switchOption(() -> RainyAPI.isShaderCompatibility = !RainyAPI.isShaderCompatibility),
+            this.shaderButton = new TextButton(width / 2f - 490, 75, 60, 25, () -> switchOption(() -> RainyAPI.isShaderCompatibility = !RainyAPI.isShaderCompatibility),
                     "关", "0", true, 10, 34, 7);
         }
         if (!RainyAPI.isViaCompatibility) {
-            this.viaButton = new CuriosityTextButton(width / 2f - 490, 145, 60, 25, () -> switchOption(() -> RainyAPI.isViaCompatibility = !RainyAPI.isViaCompatibility),
+            this.viaButton = new TextButton(width / 2f - 490, 145, 60, 25, () -> switchOption(() -> RainyAPI.isViaCompatibility = !RainyAPI.isViaCompatibility),
                     "开", "9", true, 10, 34, 7);
         } else {
-            this.viaButton = new CuriosityTextButton(width / 2f - 490, 145, 60, 25, () -> switchOption(() -> RainyAPI.isViaCompatibility = !RainyAPI.isViaCompatibility),
+            this.viaButton = new TextButton(width / 2f - 490, 145, 60, 25, () -> switchOption(() -> RainyAPI.isViaCompatibility = !RainyAPI.isViaCompatibility),
                     "关", "0", true, 10, 34, 7);
         }
         if (RainyAPI.mainMenuDate) {
-            this.mainMenuDateButton = new CuriosityTextButton(width / 2f - 490, 215, 60, 25, () -> switchOption(() -> RainyAPI.mainMenuDate = !RainyAPI.mainMenuDate),
+            this.mainMenuDateButton = new TextButton(width / 2f - 490, 215, 60, 25, () -> switchOption(() -> RainyAPI.mainMenuDate = !RainyAPI.mainMenuDate),
                     "开", "9", true, 10, 34, 7);
         } else {
-            this.mainMenuDateButton = new CuriosityTextButton(width / 2f - 490, 215, 60, 25, () -> switchOption(() -> RainyAPI.mainMenuDate = !RainyAPI.mainMenuDate),
+            this.mainMenuDateButton = new TextButton(width / 2f - 490, 215, 60, 25, () -> switchOption(() -> RainyAPI.mainMenuDate = !RainyAPI.mainMenuDate),
                     "关", "0", true, 10, 34, 7);
         }
         if (RainyAPI.guiSnow) {
-            this.guiSnowButton = new CuriosityTextButton(width / 2f - 490, 285, 60, 25, () -> switchOption(() -> RainyAPI.guiSnow = !RainyAPI.guiSnow),
+            this.guiSnowButton = new TextButton(width / 2f - 490, 285, 60, 25, () -> switchOption(() -> RainyAPI.guiSnow = !RainyAPI.guiSnow),
                     "开", "9", true, 10, 34, 7);
         } else {
-            this.guiSnowButton = new CuriosityTextButton(width / 2f - 490, 285, 60, 25, () -> switchOption(() -> RainyAPI.guiSnow = !RainyAPI.guiSnow),
+            this.guiSnowButton = new TextButton(width / 2f - 490, 285, 60, 25, () -> switchOption(() -> RainyAPI.guiSnow = !RainyAPI.guiSnow),
                     "关", "0", true, 10, 34, 7);
         }
         if (RainyAPI.backgroundBlur) {
-            this.backgroundBlurButton = new CuriosityTextButton(width / 2f - 490, 355, 60, 25, () -> switchOption(() -> RainyAPI.backgroundBlur = !RainyAPI.backgroundBlur),
+            this.backgroundBlurButton = new TextButton(width / 2f - 490, 355, 60, 25, () -> switchOption(() -> RainyAPI.backgroundBlur = !RainyAPI.backgroundBlur),
                     "开", "9", true, 10, 34, 7);
         } else {
-            this.backgroundBlurButton = new CuriosityTextButton(width / 2f - 490, 355, 60, 25, () -> switchOption(() -> RainyAPI.backgroundBlur = !RainyAPI.backgroundBlur),
+            this.backgroundBlurButton = new TextButton(width / 2f - 490, 355, 60, 25, () -> switchOption(() -> RainyAPI.backgroundBlur = !RainyAPI.backgroundBlur),
                     "关", "0", true, 10, 34, 7);
         }
     }

@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.shader.RiseShaders;
@@ -44,8 +44,8 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
     private String field_146636_v;
     private String[] field_146635_w = new String[4];
     private boolean confirmingDelete;
-    private CuriosityTextButton renameButton, deleteButton, selectButton, recreateButton, createButton, cancelButton;
-    private CuriosityTextButton[] buttons;
+    private TextButton renameButton, deleteButton, selectButton, recreateButton, createButton, cancelButton;
+    private TextButton[] buttons;
 
     public GuiSelectWorld(GuiScreen parentScreenIn)
     {
@@ -55,7 +55,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         if (mouseButton == 0) {
-            for (CuriosityTextButton menuButton : this.buttons) {
+            for (TextButton menuButton : this.buttons) {
                 if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), mouseX, mouseY)) {
                     mc.getSoundHandler().playButtonPress();
                     menuButton.runAction();
@@ -124,17 +124,17 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
 
     public void addWorldSelectionButtons()
     {
-        selectButton = new CuriosityTextButton(this.width / 2 - 154, this.height - 52, 150, 20, () -> this.func_146615_e(this.selectedIndex), "进入世界", "", true, 1, 50, 5, 20);
+        selectButton = new TextButton(this.width / 2 - 154, this.height - 52, 150, 20, () -> this.func_146615_e(this.selectedIndex), "进入世界", "", true, 1, 50, 5, 20);
 
-        createButton = new CuriosityTextButton(this.width / 2 + 4, this.height - 52, 150, 20, () -> this.mc.displayGuiScreen(new GuiCreateWorld(this)), "创建新世界", "", true, 1, 45, 5, 20);
+        createButton = new TextButton(this.width / 2 + 4, this.height - 52, 150, 20, () -> this.mc.displayGuiScreen(new GuiCreateWorld(this)), "创建新世界", "", true, 1, 45, 5, 20);
 
-        renameButton = new CuriosityTextButton(this.width / 2 - 154, this.height - 28, 72, 20, () -> {
+        renameButton = new TextButton(this.width / 2 - 154, this.height - 28, 72, 20, () -> {
             if (selectedIndex != -1) {
                 this.mc.displayGuiScreen(new GuiRenameWorld(this, this.func_146621_a(this.selectedIndex)));
             }
         }, "重命名", "", true, 1, 20, 5, 20);
 
-        deleteButton = new CuriosityTextButton(this.width / 2 - 76, this.height - 28, 72, 20, () -> {
+        deleteButton = new TextButton(this.width / 2 - 76, this.height - 28, 72, 20, () -> {
             if (selectedIndex != -1) {
                 String s = this.func_146614_d(this.selectedIndex);
                 if (s != null) {
@@ -145,7 +145,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
             }
         }, "删除", "", true, 1, 25, 5, 20);
 
-        recreateButton = new CuriosityTextButton(this.width / 2 + 4, this.height - 28, 72, 20, () -> {
+        recreateButton = new TextButton(this.width / 2 + 4, this.height - 28, 72, 20, () -> {
             if (selectedIndex != -1) {
                 GuiCreateWorld guicreateworld = new GuiCreateWorld(this);
                 ISaveHandler isavehandler = this.mc.getSaveLoader().getSaveLoader(this.func_146621_a(this.selectedIndex), false);
@@ -156,9 +156,9 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
             }
         }, "重建", "", true, 1, 25, 5, 20);
 
-        cancelButton = new CuriosityTextButton(this.width / 2 + 82, this.height - 28, 72, 20, () -> this.mc.displayGuiScreen(this.parentScreen), "取消", "", true, 1, 25, 5, 20);
+        cancelButton = new TextButton(this.width / 2 + 82, this.height - 28, 72, 20, () -> this.mc.displayGuiScreen(this.parentScreen), "取消", "", true, 1, 25, 5, 20);
 
-        buttons = new CuriosityTextButton[] {selectButton, createButton, recreateButton, renameButton, deleteButton, cancelButton};
+        buttons = new TextButton[] {selectButton, createButton, recreateButton, renameButton, deleteButton, cancelButton};
     }
 
     protected void actionPerformed(GuiButton button) throws IOException
@@ -230,7 +230,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
 
         GameInstance.clearRunnables();
 
-        for (CuriosityTextButton button : buttons) {
+        for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
 

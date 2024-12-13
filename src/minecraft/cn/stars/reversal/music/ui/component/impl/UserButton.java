@@ -1,5 +1,6 @@
 package cn.stars.reversal.music.ui.component.impl;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.config.MusicHandler;
 import cn.stars.reversal.music.MusicUtil;
 import cn.stars.reversal.music.api.MusicAPI;
@@ -53,7 +54,7 @@ public class UserButton extends Button {
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (button == 0 && hovering) {
             if (!MusicAPI.user.isLoggedIn()) loginGUI = new LoginGUI();
-            else if (!MusicAPI.user.isLoaded()) new GetPlayListsThread().start();
+            else if (!MusicAPI.user.isLoaded()) Reversal.threadPoolExecutor.submit(new GetPlayListsThread());
         }
     }
 }

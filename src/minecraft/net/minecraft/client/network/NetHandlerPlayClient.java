@@ -1,7 +1,7 @@
 package net.minecraft.client.network;
 
 import cn.stars.reversal.event.impl.TeleportEvent;
-import cn.stars.reversal.ui.gui.GuiMainMenu;
+import cn.stars.reversal.util.Transformer;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -710,7 +710,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
             this.gameController.displayGuiScreen(new GuiDisconnected(this.guiScreenServer, "disconnect.lost", reason));
         } else {
-            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(new GuiMainMenu()), "disconnect.lost", reason));
+            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(Transformer.transformMainMenu()), "disconnect.lost", reason));
         }
     }
 

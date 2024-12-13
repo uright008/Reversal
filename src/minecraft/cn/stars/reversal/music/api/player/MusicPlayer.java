@@ -1,5 +1,6 @@
 package cn.stars.reversal.music.api.player;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.hud.MusicInfo;
 import cn.stars.reversal.module.impl.hud.MusicVisualizer;
 import cn.stars.reversal.music.api.base.LyricLine;
@@ -72,7 +73,7 @@ public class MusicPlayer {
         Media media;
 
         if (songURL == null) {
-            new ChangeMusicThread(music).start();
+            Reversal.threadPoolExecutor.submit(new ChangeMusicThread(music));
             return;
         }
 

@@ -1,5 +1,6 @@
 package cn.stars.reversal.music.ui;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.music.api.base.Music;
 import cn.stars.reversal.music.ui.component.Button;
 import cn.stars.reversal.GameInstance;
@@ -13,6 +14,7 @@ import cn.stars.reversal.music.ui.component.slider.VolumeSlider;
 import cn.stars.reversal.music.ui.gui.MusicPlayerGUI;
 import cn.stars.reversal.music.ui.gui.impl.PlayListGUI;
 import cn.stars.reversal.music.ui.gui.impl.PlayListListGUI;
+import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.util.animation.advanced.Animation;
 import cn.stars.reversal.util.animation.advanced.Direction;
 import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
@@ -53,7 +55,7 @@ public class MusicPlayerScreen extends GuiScreen {
     public final List<CategoryButton> categoryButtons = new ArrayList<>();
     private final UserButton userButton = new UserButton();
     @Getter
-    private final TextField searchField = new TextField(150, 10, GameInstance.regular16, ThemeColor.bgColor, ThemeColor.outlineColor);
+    private final cn.stars.reversal.ui.modern.TextField searchField = new TextField(150, 10, GameInstance.regular16, ThemeColor.bgColor, ThemeColor.outlineColor);
     @Getter
     private MusicPlayerGUI currentGUI;
 
@@ -175,13 +177,13 @@ public class MusicPlayerScreen extends GuiScreen {
             if (music.getTexture() != null) {
                 GL11.glPushMatrix();
                 GlStateManager.bindTexture(music.getTexture().getGlTextureId());
-                GL11.glTranslatef(x + 30f, playerY + 17f, 0f);
+                GL11.glTranslatef(x + 25f, playerY + 16f, 0f);
                 GL11.glRotatef(coverAngle, 0f, 0f, 1f);
                 GL11.glTranslatef(-10f, -10f, 0f);
                 RoundedUtil.drawRoundTextured(0f, 0f, 20f, 20f, 10f, 1f);
                 GL11.glPopMatrix();
             } else {
-                RoundedUtil.drawRound(x + 19f, playerY + 6f, 22f, 22f, 10f, ThemeColor.bgColor);
+                RoundedUtil.drawRound(x + 14f, playerY + 5f, 22f, 22f, 10f, ThemeColor.bgColor);
             }
             GameInstance.regular18.drawString(GameInstance.regular18.trimStringToWidth(music.getName(), 120, false, true), x + 45f, playerY + 8f, Color.WHITE.getRGB());
             GameInstance.regular16.drawString(music.getArtist(), x + 45f, playerY + 20f, ThemeColor.greyColor.getRGB());

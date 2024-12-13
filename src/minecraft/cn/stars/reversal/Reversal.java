@@ -21,7 +21,6 @@ import cn.stars.reversal.module.impl.world.*;
 import cn.stars.reversal.music.MusicManager;
 import cn.stars.reversal.ui.clickgui.modern.MMTClickGUI;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
-import cn.stars.reversal.ui.hud.Hud;
 import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.ui.theme.GuiTheme;
 import cn.stars.reversal.util.ReversalLogger;
@@ -42,7 +41,8 @@ import tech.skidonion.obfuscator.annotations.StringEncryption;
 
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Copyright (c) 2024 Stars, All rights reserved.
@@ -54,13 +54,15 @@ import java.io.IOException;
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
-    public static final String VERSION = "v0.11.0";
+    public static final String VERSION = "v0.12.2";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
-    public static final Branch BRANCH = Branch.PRE_RELEASE;
+    public static final Branch BRANCH = Branch.DEVELOPMENT;
 
     // Init
     public static Gson PRETTY_GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(2);
 
     public static EntityCullingMod entityCullingMod;
 
@@ -84,7 +86,7 @@ public class Reversal {
         try {
             ReversalLogger.info("Loading client...");
 
-            RainyAPI.loadAPI();
+            RainyAPI.loadAPI(true);
 
             // ViaMCP init
             if (!RainyAPI.isViaCompatibility) {
@@ -108,6 +110,8 @@ public class Reversal {
         }
     }
     public static void stop() {
+        threadExecutor.shutdownNow();
+        threadPoolExecutor.shutdownNow();
         saveAll();
     }
 
@@ -126,7 +130,7 @@ public class Reversal {
     // run required
     public static void saveAll() {
         DefaultHandler.saveConfig(false);
-        RainyAPI.processAPI();
+        RainyAPI.processAPI(true);
     }
 
 
@@ -147,6 +151,7 @@ public class Reversal {
 
             try {
                 musicManager = new MusicManager();
+                MusicHandler.load();
                 musicManager.initGUI();
             } catch (NoClassDefFoundError e) {
                 RainyAPI.hasJavaFX = false;
@@ -193,8 +198,6 @@ public class Reversal {
 
             entityCullingMod = new EntityCullingMod();
             entityCullingMod.onInitialize();
-
-            if (RainyAPI.hasJavaFX) MusicHandler.load();
 
             if (!FileUtil.exists("Background" + File.separator)) {
                 FileUtil.createDirectory("Background" + File.separator);
@@ -275,11 +278,12 @@ public class Reversal {
             new BAHalo(),
             new BetterFont(),
             new BlockOverlay(),
-            new Breadcrumbs(),
+            new Trail(),
             new ChinaHat(),
             new ClickGui(), // Special Module
             new Crosshair(),
             new DamageParticle(),
+            new EnvironmentEffect(),
             new Fullbright(),
             new HitEffect(),
             new Hotbar(),

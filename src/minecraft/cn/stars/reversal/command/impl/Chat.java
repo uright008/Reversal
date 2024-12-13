@@ -4,6 +4,8 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.command.Command;
 import cn.stars.reversal.command.api.CommandInfo;
+import cn.stars.reversal.util.Transformer;
+import cn.stars.reversal.util.reversal.UserHandshakeThread;
 
 @CommandInfo(name = "Chat", description = "IRC Chat", syntax = ".chat <message>", aliases = "chat")
 public final class Chat extends Command {
@@ -11,8 +13,9 @@ public final class Chat extends Command {
     @Override
     public void onCommand(final String command, final String[] args) {
         if (args[0] != null) {
-            if (RainyAPI.ircUser != null) {
-                new Thread(() -> RainyAPI.ircUser.sendMessage("Message", "[ID:" + mc.session.getUsername() + "] " + String.join(" ", args))).start();
+            if (RainyAPI.ircUser != null && RainyAPI.ircUser.isConnected()) {
+                String message = String.join(" ", args).replace("&", "§");
+                Reversal.threadPoolExecutor.submit(() -> RainyAPI.ircUser.sendMessage("Message", Transformer.getIRCTitle(RainyAPI.ircUser.id.toLowerCase()) + "§7[" + RainyAPI.ircUser.id + "] §r" + message));
             } else {
                 Reversal.showMsg("You haven't connected to IRC yet!");
             }

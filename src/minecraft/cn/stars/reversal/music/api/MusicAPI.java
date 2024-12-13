@@ -222,23 +222,32 @@ public class MusicAPI {
             File file = FileUtil.getFileOrPath("Cache" + File.separator + "playlist_" + obj.get("id").getAsLong() + ".jpg");
 
             BufferedImage coverData = MusicUtil.downloadImage(obj.get("picUrl").getAsString(), 300, 300);
-            try {
-                assert coverData != null;
-                file.createNewFile();
-                ImageIO.write(coverData, "jpg", file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (!file.exists()) {
+                try {
+                    assert coverData != null;
+                    file.createNewFile();
+                    ImageIO.write(coverData, "jpg", file);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
-            result.add(new PlayList(
+            PlayList playList = new PlayList(
                     obj.get("name").getAsString(),
                     description,
                     obj.get("id").getAsLong(),
-                    file
-            ));
+                    file);
+
+            if (!file.exists() || coverData == null) {
+                List<Music> cachedList = playList.getMusicList();
+                fetchMusicList(playList, cachedList.size());
+            }
+
+            if (playList.getCoverImage() == null) {
+                playList.setCoverImage(file);
+            }
+            result.add(playList);
         }
-
-
         return result;
     }
 

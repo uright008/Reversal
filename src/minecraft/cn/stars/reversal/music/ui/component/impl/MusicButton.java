@@ -1,6 +1,7 @@
 package cn.stars.reversal.music.ui.component.impl;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.music.thread.ChangeMusicThread;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.music.ui.component.Button;
@@ -79,7 +80,7 @@ public class MusicButton extends Button implements GameInstance {
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (hovering && button == 0) {
             if (!clickTimer.hasTimeElapsed(1500)) {
-                new ChangeMusicThread(music, playList).start();
+                Reversal.threadPoolExecutor.submit(new ChangeMusicThread(music, playList));
             }
             clickTimer.reset();
         }

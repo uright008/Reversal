@@ -6,12 +6,14 @@ import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.ui.splash.SplashScreen;
+import cn.stars.reversal.ui.splash.utils.AsyncGLContentLoader;
 import cn.stars.reversal.util.Transformer;
-import cn.stars.reversal.ui.curiosity.impl.CuriosityMainMenu;
+import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.util.math.StopWatch;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;
+import cn.stars.reversal.util.reversal.Preloader;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
@@ -54,7 +56,6 @@ import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiIngameMenu;
-import cn.stars.reversal.ui.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMemoryErrorScreen;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSleepMP;
@@ -389,6 +390,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
 
+
         if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0)
         {
             this.displayWidth = this.gameSettings.overrideWidth;
@@ -400,6 +402,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.setInitialDisplayMode();
         this.createDisplay();
         OpenGlHelper.initializeTextures();
+        AsyncGLContentLoader.initLoader();
+        RainyAPI.loadAPI(false);
         SplashScreen.init();
         SplashScreen.setProgress(10, "Minecraft - Display");
         this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
@@ -520,6 +524,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.renderGlobal.makeEntityOutlineShader();
 
         SplashScreen.notifyGameLoaded();
+
+        // Preload module resources
+        Preloader preloader = new Preloader();
+        AsyncGLContentLoader.loadGLContentAsync(preloader::loadResources);
     }
 
     private void registerMetadataSerializers()
@@ -566,8 +574,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
             try
             {
-                inputstream = this.getClass().getResourceAsStream("/assets/minecraft/reversal/images/icon_512x512.png");
-                inputstream1 = this.getClass().getResourceAsStream("/assets/minecraft/reversal/images/icon_256x256.png");
+                inputstream = this.getClass().getResourceAsStream("/assets/minecraft/reversal/images/logo/icon_512x512.png");
+                inputstream1 = this.getClass().getResourceAsStream("/assets/minecraft/reversal/images/logo/icon_256x256.png");
 
                 if (inputstream != null && inputstream1 != null)
                 {
@@ -965,7 +973,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             guiScreenIn = new GuiGameOver();
         }
 
-        if (guiScreenIn instanceof GuiMainMenu || guiScreenIn instanceof CuriosityMainMenu)
+        if (guiScreenIn instanceof ModernMainMenu)
         {
             this.gameSettings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().clearChatMessages();

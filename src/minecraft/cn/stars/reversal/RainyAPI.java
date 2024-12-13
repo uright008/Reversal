@@ -4,22 +4,12 @@
  */
 package cn.stars.reversal;
 
-import cn.stars.reversal.module.Module;
-import cn.stars.reversal.module.impl.addons.Optimization;
-import cn.stars.reversal.module.impl.addons.SkinLayers3D;
-import cn.stars.reversal.module.impl.hud.ClientSettings;
-import cn.stars.reversal.module.impl.hud.HUD;
-import cn.stars.reversal.module.impl.hud.PostProcessing;
-import cn.stars.reversal.module.impl.misc.Chat;
-import cn.stars.reversal.module.impl.render.ClickGui;
-import cn.stars.reversal.module.impl.render.HurtCam;
-import cn.stars.reversal.ui.curiosity.impl.CuriosityMainMenu;
+import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
-import cn.stars.reversal.util.irc.User;
+import cn.stars.reversal.util.reversal.IRCInstance;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.misc.FileUtil;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.misc.VideoUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,8 +23,6 @@ import org.lwjgl.system.MemoryUtil;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
@@ -47,7 +35,7 @@ public class RainyAPI {
     public static Minecraft mc = Minecraft.getMinecraft();
     public static long window;
     
-    public static User ircUser = null;
+    public static IRCInstance ircUser = null;
     public static boolean hasJavaFX = true;
 
     /**
@@ -57,12 +45,11 @@ public class RainyAPI {
     public static int backgroundId = 9;
     public static boolean isShaderCompatibility = false;
     public static boolean isViaCompatibility = false;
-    public static boolean isLicenseReviewed = false;
+    public static boolean isSplashScreenDiabled = false;
+    public static boolean isPreInited = false;
     public static boolean mainMenuDate = false;
     public static boolean guiSnow = false;
     public static boolean backgroundBlur = false;
-
-    public static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     // 崩溃报告随机语录
     public static final String[] wittyCrashReport = new String[]
@@ -76,15 +63,6 @@ public class RainyAPI {
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];
-    }
-
-    public static boolean canDrawHUD() {
-        if (ModuleInstance.getModule(HUD.class).isEnabled()) {
-            if (ModuleInstance.getModule(HUD.class).display_when_debugging.enabled) {
-                return true;
-            } else return !mc.gameSettings.showDebugInfo;
-        }
-        return false;
     }
 
     /**
@@ -105,7 +83,7 @@ public class RainyAPI {
     public static void setupDrag() {
         GLFW.glfwSetDropCallback(window, (window, count, names) -> {
             String filePath = GLFWDropCallback.getName(names, 0);
-            if (mc.currentScreen instanceof CuriosityMainMenu) {
+            if (mc.currentScreen instanceof ModernMainMenu) {
                 if (count == 1) {
                     File droppedFile = new File(filePath);
 
@@ -138,13 +116,13 @@ public class RainyAPI {
     /**
      * 加载客户端设置
      */
-    public static void loadAPI() {
+    public static void loadAPI(boolean post) {
         ReversalLogger.info("Loading RainyAPI...");
         final String client = FileUtil.loadFile("client.txt");
 
         // re-save if not available on start.
-        if (client == null || !client.contains("DisableShader") || !client.contains("DisableViaMCP") || !client.contains("LicenseReviewed")) {
-            processAPI();
+        if (client == null || !client.contains("DisableShader") || !client.contains("DisableViaMCP") || !client.contains("DisableSplashScreen") || !client.contains("IsPreInited")) {
+            processAPI(false);
             return;
         }
 
@@ -161,8 +139,11 @@ public class RainyAPI {
             if (split[0].contains("DisableViaMCP")) {
                 isViaCompatibility = Boolean.parseBoolean(split[1]);
             }
-            if (split[0].contains("LicenseReviewed")) {
-                isLicenseReviewed = Boolean.parseBoolean(split[1]);
+            if (split[0].contains("DisableSplashScreen")) {
+                isSplashScreenDiabled = Boolean.parseBoolean(split[1]);
+            }
+            if (split[0].contains("IsPreInited")) {
+                isPreInited = Boolean.parseBoolean(split[1]);
             }
             if (split[0].contains("MainMenuDate")) {
                 mainMenuDate = Boolean.parseBoolean(split[1]);
@@ -173,7 +154,7 @@ public class RainyAPI {
             if (split[0].contains("BackgroundBlur")) {
                 backgroundBlur = Boolean.parseBoolean(split[1]);
             }
-            if (split[0].contains("CustomText")) {
+            if (split[0].contains("CustomText") && post) {
                 Reversal.customText = split[1];
             }
         }
@@ -182,24 +163,19 @@ public class RainyAPI {
     /**
      * 保存客户端设置
      */
-    public static void processAPI() {
+    public static void processAPI(boolean post) {
         final StringBuilder clientBuilder = new StringBuilder();
         clientBuilder.append("DisableShader_").append(isShaderCompatibility).append("\r\n");
         clientBuilder.append("DisableViaMCP_").append(isViaCompatibility).append("\r\n");
-        clientBuilder.append("LicenseReviewed_").append(isLicenseReviewed).append("\r\n");
+        clientBuilder.append("DisableSplashScreen_").append(isSplashScreenDiabled).append("\r\n");
+        clientBuilder.append("IsPreInited_").append(isPreInited).append("\r\n");
+        clientBuilder.append("LicenseReviewed_").append(isPreInited).append("\r\n");
         clientBuilder.append("MainMenuDate_").append(mainMenuDate).append("\r\n");
         clientBuilder.append("GuiSnow_").append(guiSnow).append("\r\n");
         clientBuilder.append("BackgroundBlur_").append(backgroundBlur).append("\r\n");
-        clientBuilder.append("CustomText_").append(Reversal.customText).append("\r\n");
+        if (post) clientBuilder.append("CustomText_").append(Reversal.customText).append("\r\n");
 
         FileUtil.saveFile("client.txt", true, clientBuilder.toString());
-    }
-
-    /**
-     * 客户端特殊功能
-     */
-    public static boolean isSpecialModule(Module module) {
-        return module instanceof ClickGui || module instanceof PostProcessing || module instanceof ClientSettings || module instanceof SkinLayers3D || module instanceof HurtCam || module instanceof Optimization || module instanceof Chat;
     }
 
     public static long createSubWindow() {

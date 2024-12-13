@@ -1,10 +1,10 @@
 package cn.stars.reversal.module.impl.hud;
 
-import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.event.impl.Shader3DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -40,7 +40,7 @@ public class PostProcessing extends Module
 
     public void blurScreen() {
         if (!this.isEnabled()) return;
-        if (!RainyAPI.canDrawHUD()) return;
+        if (!ModuleInstance.canDrawHUD()) return;
         if (blur.isEnabled()) {
             stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
 

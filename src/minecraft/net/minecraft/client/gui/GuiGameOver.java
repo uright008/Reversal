@@ -6,7 +6,7 @@ import java.io.IOException;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.util.Transformer;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.UIUtil;
 import cn.stars.reversal.util.shader.RiseShaders;
 import cn.stars.reversal.util.shader.base.ShaderRenderType;
@@ -17,8 +17,8 @@ import static cn.stars.reversal.GameInstance.*;
 
 public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
 {
-    private CuriosityTextButton firstButton, secondButton;
-    private CuriosityTextButton[] buttons;
+    private TextButton firstButton, secondButton;
+    private TextButton[] buttons;
 
     public void initGui()
     {
@@ -26,7 +26,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
         {
             if (this.mc.isIntegratedServerRunning())
             {
-                firstButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 4 + 96, 200, 20, () -> {
+                firstButton = new TextButton(this.width / 2 - 100, this.height / 4 + 96, 200, 20, () -> {
                     if (this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
                     {
                         this.mc.displayGuiScreen(Transformer.transformMainMenu());
@@ -41,7 +41,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
             }
             else
             {
-                firstButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 4 + 96, 200, 20, () -> {
+                firstButton = new TextButton(this.width / 2 - 100, this.height / 4 + 96, 200, 20, () -> {
                     if (this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
                     {
                         this.mc.displayGuiScreen(Transformer.transformMainMenu());
@@ -54,15 +54,15 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
                     }
                 }, "离开服务器", "", true, 1, 75, 5, 20);
             }
-            buttons = new CuriosityTextButton[] { firstButton };
+            buttons = new TextButton[] { firstButton };
         }
         else
         {
-            firstButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 4 + 72, 200, 20, () -> {
+            firstButton = new TextButton(this.width / 2 - 100, this.height / 4 + 72, 200, 20, () -> {
                 this.mc.thePlayer.respawnPlayer();
                 this.mc.displayGuiScreen(null);
             }, "重生", "", true, 1, 90, 5, 20);
-            secondButton = new CuriosityTextButton(this.width / 2 - 100, this.height / 4 + 96, 200, 20, () -> {
+            secondButton = new TextButton(this.width / 2 - 100, this.height / 4 + 96, 200, 20, () -> {
                 if (this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
                 {
                     this.mc.displayGuiScreen(Transformer.transformMainMenu());
@@ -74,7 +74,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
                     guiyesno.setButtonDelay(20);
                 }
             }, "主菜单", "", true, 1, 85, 5, 20);
-            buttons = new CuriosityTextButton[] { firstButton, secondButton };
+            buttons = new TextButton[] { firstButton, secondButton };
         }
     }
 
@@ -137,7 +137,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
 
         GameInstance.clearRunnables();
 
-        for (CuriosityTextButton button : buttons) {
+        for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
 

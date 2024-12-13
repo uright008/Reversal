@@ -188,17 +188,17 @@ public final class RenderUtil implements GameInstance {
     public static void renderSteveModelTexture(final double x, final double y, final float u, final float v, final int uWidth, final int vHeight, final int width, final int height, final float tileWidth, final float tileHeight) {
         final ResourceLocation skin = new ResourceLocation("textures/entity/steve.png");
         Minecraft.getMinecraft().getTextureManager().bindTexture(skin);
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
         drawScaledCustomSizeModalRect(x, y, u, v, uWidth, vHeight, width, height, tileWidth, tileHeight);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.disableBlend();
     }
 
     public static void renderPlayerModelTexture(final double x, final double y, final float u, final float v, final int uWidth, final int vHeight, final int width, final int height, final float tileWidth, final float tileHeight, final AbstractClientPlayer target) {
         final ResourceLocation skin = target.getLocationSkin();
         Minecraft.getMinecraft().getTextureManager().bindTexture(skin);
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
         drawScaledCustomSizeModalRect(x, y, u, v, uWidth, vHeight, width, height, tileWidth, tileHeight);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.disableBlend();
     }
 
     public static void quickDrawHead(ResourceLocation skin, int x, int y, int width, int height) {
@@ -221,6 +221,10 @@ public final class RenderUtil implements GameInstance {
         worldrenderer.pos((double)(x + width), (double)(y + 0), (double)Gui.zLevel).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + 0) * f1)).endVertex();
         worldrenderer.pos((double)(x + 0), (double)(y + 0), (double)Gui.zLevel).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + 0) * f1)).endVertex();
         tessellator.draw();
+    }
+
+    public static void setupOrientationMatrix(double x, double y, double z) {
+        GlStateManager.translate(x - mc.getRenderManager().viewerPosX, y - mc.getRenderManager().viewerPosY, z - mc.getRenderManager().viewerPosZ);
     }
 
     public static Vector2f targetESPSPos(EntityLivingBase entity, float partialTicks) {
@@ -359,6 +363,14 @@ public final class RenderUtil implements GameInstance {
 
     public void color(final double red, final double green, final double blue, final double alpha) {
         GL11.glColor4d(red, green, blue, alpha);
+    }
+
+    public static void color(int color) {
+        glColor4ub(
+                (byte) (color >> 16 & 0xFF),
+                (byte) (color >> 8 & 0xFF),
+                (byte) (color & 0xFF),
+                (byte) (color >> 24 & 0xFF));
     }
 
     public void color(final double red, final double green, final double blue) {
@@ -795,15 +807,8 @@ public final class RenderUtil implements GameInstance {
 
     public void image(final ResourceLocation imageLocation, final float x, final float y, final float width, final float height) {
         // 平滑线条
-        GL11.glEnable(GL11.GL_POINT_SMOOTH);
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL11.GL_POLYGON_SMOOTH);
-        GL11.glHint(GL11.GL_POINT_SMOOTH_HINT, GL11.GL_NICEST);
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
-        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
-        // 抗锯齿,线性过滤
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+        GlUtils.startAntiAtlas();
+        GlUtils.doAntiAtlas();
         enable(GL11.GL_BLEND);
         GlStateManager.disableAlpha();
         OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
@@ -811,10 +816,7 @@ public final class RenderUtil implements GameInstance {
         Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
         GlStateManager.enableAlpha();
         disable(GL11.GL_BLEND);
-        // 关闭
-        GL11.glDisable(GL11.GL_POINT_SMOOTH);
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glDisable(GL11.GL_POLYGON_SMOOTH);
+        GlUtils.stopAntiAtlas();
     }
 
     public static void image(DynamicTexture image, float x, float y, float imgWidth, float imgHeight) {
@@ -909,6 +911,20 @@ public final class RenderUtil implements GameInstance {
         height *= scale;
 
         GL11.glScissor((int) x, (int) (y - height), (int) width, (int) height);
+    }
+
+    public static void scissorXy(double x, double y, double x2, double y2) {
+        final ScaledResolution sr = new ScaledResolution(mc);
+        final double scale = sr.getScaleFactor();
+
+        y = sr.getScaledHeight() - y;
+
+        x *= scale;
+        y *= scale;
+        x2 *= scale;
+        y2 *= scale;
+
+        GL11.glScissor((int) x, (int) (y - (y2 - y)), (int) (x2 - x), (int) (y2 - y));
     }
 
     public void outlineInlinedGradientRect(final double x, final double y, final double width, final double height, final double inlineOffset, final Color color1, final Color color2) {
@@ -1360,34 +1376,34 @@ public final class RenderUtil implements GameInstance {
 
     public static void drawTracerLine(final double x, final double y, final double z, final float red, final float green, final float blue, final float alpha, final float lineWdith) {
         GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableTexture2D();
         GL11.glBlendFunc(770, 771);
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
         GL11.glLineWidth(lineWdith);
         GL11.glColor4f(red, green, blue, alpha);
         GL11.glBegin(2);
         GL11.glVertex3d(0.0D, 0.0D + Minecraft.getMinecraft().thePlayer.getEyeHeight(), 0.0D);
         GL11.glVertex3d(x, y, z);
         GL11.glEnd();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.disableBlend();
         GL11.glPopMatrix();
     }
 
     public static void drawLine(final double x, final double y, final double z, final double x2, final double y2, final double z2, final float red, final float green, final float blue, final float alpha, final float lineWdith) {
         GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableTexture2D();
         GL11.glBlendFunc(770, 771);
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
         GL11.glLineWidth(lineWdith);
         GL11.glColor4f(red, green, blue, alpha);
         GL11.glBegin(2);
@@ -1397,19 +1413,19 @@ public final class RenderUtil implements GameInstance {
         renderPos = RenderUtil.getRenderPos(x, y, z);
         GL11.glVertex3d(renderPos.xCoord, renderPos.yCoord, renderPos.zCoord);
         GL11.glEnd();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.disableBlend();
         GL11.glPopMatrix();
     }
 
     public void renderBreadCrumb(final Vec3 vec3) {
 
         GlStateManager.disableDepth();
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -1454,8 +1470,8 @@ public final class RenderUtil implements GameInstance {
         }
 
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
         GlStateManager.enableDepth();
 
         GL11.glColor3d(255, 255, 255);
@@ -1536,8 +1552,8 @@ public final class RenderUtil implements GameInstance {
 
 
   /*  public void renderParticles(final List<Particle> particles) {
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -1595,8 +1611,8 @@ public final class RenderUtil implements GameInstance {
         }
 
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
 
         GL11.glColor3d(255, 255, 255);
     } */
@@ -1686,39 +1702,25 @@ public final class RenderUtil implements GameInstance {
     public static void drawSolidEntityESP(final double x, final double y, final double z, final double width, final double height, final float red,
                                           final float green, final float blue, final float alpha) {
         GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
         GL11.glBlendFunc(770, 771);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableTexture2D();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
         GL11.glColor4f(red, green, blue, alpha);
         drawBoundingBox(new AxisAlignedBB(x - width, y, z - width, x + width, y + height, z + width));
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableTexture2D();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.disableBlend();
         GL11.glPopMatrix();
     }
 
     public static void drawSolidEntityESPFixed(final double x, final double y, final double z, final double width, final double height, final float red,
                                                final float green, final float blue, final float alpha, final Entity e) {
-        GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(770, 771);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthMask(false);
-        GL11.glColor4f(red, green, blue, alpha);
-        drawBoundingBox(new AxisAlignedBB(x - width, y, z - width, x + width, y + height, z + width));
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthMask(true);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        drawSolidEntityESP(x, y, z, width, height, red, green, blue, alpha);
     }
 
     public static void draw3DLine(double x, double y, double z, double x1, double y1, double z1, final float red, final float green,
@@ -1732,21 +1734,21 @@ public final class RenderUtil implements GameInstance {
         z1 = z1 - mc.getRenderManager().renderPosZ;
 
         GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableTexture2D();
         GL11.glBlendFunc(770, 771);
-        GL11.glEnable(GL11.GL_BLEND);
+        GlStateManager.enableBlend();
         GL11.glLineWidth(lineWdith);
         GL11.glColor4f(red, green, blue, alpha);
         GL11.glBegin(2);
         GL11.glVertex3d(x, y, z);
         GL11.glVertex3d(x1, y1, z1);
         GL11.glEnd();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableBlend();
+        GlStateManager.enableTexture2D();
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.disableBlend();
         GL11.glPopMatrix();
     }
 
@@ -1784,8 +1786,8 @@ public final class RenderUtil implements GameInstance {
     }
 
     public static void drawCircle(final int x, final int y, final double r, final float f1, final float f2, final float f3, final float f) {
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(f1, f2, f3, f);
@@ -1799,8 +1801,8 @@ public final class RenderUtil implements GameInstance {
 
         GL11.glEnd();
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
 
     public static void drawFilledCircle(final int x, final int y, final double r, final int c) {
@@ -1808,8 +1810,8 @@ public final class RenderUtil implements GameInstance {
         final float f1 = ((c >> 16) & 0xff) / 255F;
         final float f2 = ((c >> 8) & 0xff) / 255F;
         final float f3 = (c & 0xff) / 255F;
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(f1, f2, f3, f);
@@ -1823,8 +1825,8 @@ public final class RenderUtil implements GameInstance {
 
         GL11.glEnd();
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
 
     public static void drawFilledCircle(final int x, final int y, final double r, final int c, final int quality) {
@@ -1832,8 +1834,8 @@ public final class RenderUtil implements GameInstance {
         final float f1 = ((c >> 16) & 0xff) / 255F;
         final float f2 = ((c >> 8) & 0xff) / 255F;
         final float f3 = (c & 0xff) / 255F;
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(f1, f2, f3, f);
@@ -1847,8 +1849,8 @@ public final class RenderUtil implements GameInstance {
 
         GL11.glEnd();
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
 
     public static void drawFilledCircle(final double x, final double y, final double r, final int c, final int quality) {
@@ -1856,8 +1858,8 @@ public final class RenderUtil implements GameInstance {
         final float f1 = ((c >> 16) & 0xff) / 255F;
         final float f2 = ((c >> 8) & 0xff) / 255F;
         final float f3 = (c & 0xff) / 255F;
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(f1, f2, f3, f);
@@ -1871,8 +1873,8 @@ public final class RenderUtil implements GameInstance {
 
         GL11.glEnd();
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
 
     public static void drawFilledCircleNoGL(final int x, final int y, final double r, final int c) {

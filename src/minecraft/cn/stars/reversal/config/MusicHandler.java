@@ -13,12 +13,9 @@ import java.io.File;
 @UtilityClass
 public final class MusicHandler {
 
-    private final String s = File.separator;
-
     public void save() {
         FileUtil.saveFile("MusicAccount.txt", true, MusicUtil.gson.fromJson(MusicUtil.gson.toJson(MusicAPI.user), JsonObject.class) + "\r\n");
     }
-
 
     public void load() {
         final String config = FileUtil.loadFile("MusicAccount.txt");

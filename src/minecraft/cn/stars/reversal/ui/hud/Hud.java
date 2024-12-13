@@ -1,7 +1,6 @@
 package cn.stars.reversal.ui.hud;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.module.Category;
@@ -18,7 +17,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class Hud implements GameInstance {
     public static float ticks, ticksSinceClickgui;
@@ -143,7 +141,7 @@ public class Hud implements GameInstance {
             if (module.getModuleInfo().category().equals(Category.RENDER) && ModuleInstance.getModule(Arraylist.class).noRenderModules.isEnabled())
                 continue;
 
-            if (RainyAPI.isSpecialModule(module))
+            if (ModuleInstance.isSpecialModule(module))
                 continue;
 
             switch (mode) {
@@ -645,7 +643,7 @@ public class Hud implements GameInstance {
     }
 
     public static void renderGameOverlay() {
-        if (RainyAPI.canDrawHUD()) {
+        if (ModuleInstance.canDrawHUD()) {
             renderKeyStrokes();
             renderClientName();
             renderArrayList();

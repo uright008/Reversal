@@ -1,7 +1,7 @@
 package cn.stars.reversal.util.render;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.shader.RiseShaders;
 import cn.stars.reversal.util.shader.base.ShaderRenderType;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import static cn.stars.reversal.GameInstance.UI_BLOOM_RUNNABLES;
 @Setter
 @UtilityClass
 public class UIUtil {
-    public void renderButton(CuriosityTextButton[] buttons, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(TextButton[] buttons, int mouseX, int mouseY, float partialTicks) {
         // blur
         RiseShaders.GAUSSIAN_BLUR_SHADER.update();
         RiseShaders.GAUSSIAN_BLUR_SHADER.run(ShaderRenderType.OVERLAY, partialTicks, NORMAL_BLUR_RUNNABLES);
@@ -25,7 +25,7 @@ public class UIUtil {
 
         GameInstance.clearRunnables();
 
-        for (CuriosityTextButton button : buttons) {
+        for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
 
@@ -33,9 +33,9 @@ public class UIUtil {
         UI_BLOOM_RUNNABLES.clear();
     }
 
-    public void onButtonClick(CuriosityTextButton[] buttons, int mouseX, int mouseY, int mouseButton) {
+    public void onButtonClick(TextButton[] buttons, int mouseX, int mouseY, int mouseButton) {
         if (mouseButton == 0) {
-            for (CuriosityTextButton menuButton : buttons) {
+            for (TextButton menuButton : buttons) {
                 if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), mouseX, mouseY)) {
                     mc.getSoundHandler().playButtonPress();
                     menuButton.runAction();

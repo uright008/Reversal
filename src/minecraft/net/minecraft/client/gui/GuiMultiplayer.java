@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.shader.RiseShaders;
@@ -43,8 +43,8 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
     private LanServerDetector.LanServerList lanServerList;
     private LanServerDetector.ThreadLanServerFind lanServerDetector;
     private boolean initialized;
-    private CuriosityTextButton editButton, deleteButton, selectButton, directButton, addButton, refreshButton, cancelButton;
-    private CuriosityTextButton[] buttons;
+    private TextButton editButton, deleteButton, selectButton, directButton, addButton, refreshButton, cancelButton;
+    private TextButton[] buttons;
     GuiListExtended.IGuiListEntry guilistextended$iguilistentry;
 
     public GuiMultiplayer(GuiScreen parentScreen)
@@ -93,19 +93,19 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
 
     public void createButtons()
     {
-        selectButton = new CuriosityTextButton(this.width / 2.0 - 154, this.height - 52, 100, 20, this::connectToSelected, "连接服务器", "", true, 1, 25, 5, 20);
+        selectButton = new TextButton(this.width / 2.0 - 154, this.height - 52, 100, 20, this::connectToSelected, "连接服务器", "", true, 1, 25, 5, 20);
 
-        directButton = new CuriosityTextButton(this.width / 2.0 - 50, this.height - 52, 100, 20, () -> {
+        directButton = new TextButton(this.width / 2.0 - 50, this.height - 52, 100, 20, () -> {
             this.directConnect = true;
             this.mc.displayGuiScreen(new GuiScreenServerList(this, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
         }, "直接连接", "", true, 1, 30, 5, 20);
 
-        addButton = new CuriosityTextButton(this.width / 2.0 + 4 + 50, this.height - 52, 100, 20, () -> {
+        addButton = new TextButton(this.width / 2.0 + 4 + 50, this.height - 52, 100, 20, () -> {
             this.addingServer = true;
             this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
         }, "添加服务器", "", true, 1, 25, 5, 20);
 
-        editButton = new CuriosityTextButton(this.width / 2.0 - 154, this.height - 28, 70, 20, () -> {
+        editButton = new TextButton(this.width / 2.0 - 154, this.height - 28, 70, 20, () -> {
             if (guilistextended$iguilistentry instanceof ServerListEntryNormal) {
                 this.editingServer = true;
                 ServerData serverdata = ((ServerListEntryNormal)guilistextended$iguilistentry).getServerData();
@@ -115,7 +115,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
             }
         }, "编辑", "", true, 1, 25, 5, 20);
 
-        deleteButton = new CuriosityTextButton(this.width / 2.0 - 74, this.height - 28, 70, 20, () -> {
+        deleteButton = new TextButton(this.width / 2.0 - 74, this.height - 28, 70, 20, () -> {
             if (guilistextended$iguilistentry instanceof ServerListEntryNormal) {
                 String s4 = ((ServerListEntryNormal)guilistextended$iguilistentry).getServerData().serverName;
                 if (s4 != null)
@@ -131,12 +131,12 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
             }
         }, "删除", "", true, 1, 25, 5, 20);
 
-        refreshButton = new CuriosityTextButton(this.width / 2.0 + 4, this.height - 28, 70, 20, this::refreshServerList, "刷新", "", true, 1, 25, 5, 20);
+        refreshButton = new TextButton(this.width / 2.0 + 4, this.height - 28, 70, 20, this::refreshServerList, "刷新", "", true, 1, 25, 5, 20);
 
-        cancelButton = new CuriosityTextButton(this.width / 2.0 + 4 + 80, this.height - 28, 70, 20, () -> this.mc.displayGuiScreen(this.parentScreen), "取消", "", true, 1, 25, 5, 20);
+        cancelButton = new TextButton(this.width / 2.0 + 4 + 80, this.height - 28, 70, 20, () -> this.mc.displayGuiScreen(this.parentScreen), "取消", "", true, 1, 25, 5, 20);
 
         this.selectServer(this.serverListSelector.func_148193_k());
-        buttons = new CuriosityTextButton[] {selectButton, directButton, addButton, editButton, deleteButton, refreshButton, cancelButton};
+        buttons = new TextButton[] {selectButton, directButton, addButton, editButton, deleteButton, refreshButton, cancelButton};
     }
 
     public void updateScreen()
@@ -353,7 +353,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
 
         RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, new Color(30, 30, 30, 160));
 
-        for (CuriosityTextButton button : buttons) {
+        for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
 
@@ -431,7 +431,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         if (mouseButton == 0) {
-            for (CuriosityTextButton menuButton : this.buttons) {
+            for (TextButton menuButton : this.buttons) {
                 if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), mouseX, mouseY)) {
                     mc.getSoundHandler().playButtonPress();
                     menuButton.runAction();

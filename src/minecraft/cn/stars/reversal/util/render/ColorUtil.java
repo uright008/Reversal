@@ -38,12 +38,23 @@ public final class ColorUtil {
         return alpha << 24 | red << 16 | green << 8 | blue;
     }
 
+    public static int getAlphaFromColor(int color) {
+        return color >> 24 & 0xFF;
+    }
+
     public static int reAlpha(int color, float alpha) {
         Color c = new Color(color);
         float r = 0.003921569f * (float)c.getRed();
         float g = 0.003921569f * (float)c.getGreen();
         float b = 0.003921569f * (float)c.getBlue();
         return new Color(r, g, b, alpha).getRGB();
+    }
+
+    public static int swapAlpha(int color, float alpha) {
+        int f = color >> 16 & 0xFF;
+        int f1 = color >> 8 & 0xFF;
+        int f2 = color & 0xFF;
+        return hexColor(f, f1, f2, (int) alpha);
     }
 
     public static Color withAlpha(final Color color, final int alpha) {
@@ -69,6 +80,14 @@ public final class ColorUtil {
     public static Color applyOpacity(Color color, float opacity) {
         opacity = Math.min(1, Math.max(0, opacity));
         return new Color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, opacity);
+    }
+
+    public static int getOverallColorFrom(int color1, int color2, float percentTo2) {
+        final int finalRed = (int) MathUtil.lerp(color1 >> 16 & 0xFF, color2 >> 16 & 0xFF, percentTo2),
+                finalGreen = (int) MathUtil.lerp(color1 >> 8 & 0xFF, color2 >> 8 & 0xFF, percentTo2),
+                finalBlue = (int) MathUtil.lerp(color1 & 0xFF, color2 & 0xFF, percentTo2),
+                finalAlpha = (int) MathUtil.lerp(color1 >> 24 & 0xFF, color2 >> 24 & 0xFF, percentTo2);
+        return new Color(finalRed, finalGreen, finalBlue, finalAlpha).getRGB();
     }
 
     public Color liveColorBrighter(final Color c, final float factor) {
@@ -243,6 +262,14 @@ public final class ColorUtil {
                 Math.max((int) (c.getGreen() * FACTOR), 0),
                 Math.max((int) (c.getBlue() * FACTOR), 0),
                 c.getAlpha());
+    }
+
+    public static int darker(int color, float factor) {
+        int r = (int) ((color >> 16 & 0xFF) * factor);
+        int g = (int) ((color >> 8 & 0xFF) * factor);
+        int b = (int) ((color & 0xFF) * factor);
+        int a = color >> 24 & 0xFF;
+        return (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF | (a & 0xFF) << 24;
     }
 
     public static int getColor(final float hueoffset, final float saturation, final float brightness) {

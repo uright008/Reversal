@@ -1,6 +1,5 @@
 package cn.stars.reversal.command.impl;
 
-import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.command.Command;
 import cn.stars.reversal.command.api.CommandInfo;
@@ -12,7 +11,7 @@ public final class Config extends Command {
 
     @Override
     public void onCommand(final String command, final String[] args) {
-        RainyAPI.executorService.execute(() -> {
+        Reversal.threadPoolExecutor.execute(() -> {
             switch (args[0].toLowerCase()) {
                 case "save": {
                     if (args[1].isEmpty()) {

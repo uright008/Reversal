@@ -5,7 +5,7 @@ import cn.stars.elixir.account.MinecraftAccount
 import cn.stars.elixir.compat.OAuthServer
 import cn.stars.reversal.GameInstance
 import cn.stars.reversal.font.FontManager
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton
+import cn.stars.reversal.ui.modern.TextButton
 import cn.stars.reversal.util.ReversalLogger
 import cn.stars.reversal.util.math.TimeUtil
 import cn.stars.reversal.util.shader.RiseShaders
@@ -24,18 +24,19 @@ class GuiMicrosoftLoginPending(private val prevGui: GuiScreen) : GuiScreen() {
     val timer = TimeUtil()
     private var stage = "Initializing..."
     private lateinit var server: OAuthServer
-    private var cancelButton : CuriosityTextButton? = null
+    private var cancelButton : TextButton? = null
     private var isError = false;
 
     override fun initGui() {
         GameInstance.clearRunnables()
         cancelButton =
-            CuriosityTextButton(width / 2 - 40.0, height / 2 + 100.0, 80.0, 30.0,
+            TextButton(width / 2 - 40.0, height / 2 + 100.0, 80.0, 30.0,
                 {
                     server.stop(true)
                     mc.displayGuiScreen(prevGui);
 
-                }, "取消", "g", true, 6, 35, 9)
+                }, "取消", "g", true, 6, 35, 9
+            )
         server = MicrosoftAccount.buildFromOpenBrowser(object : MicrosoftAccount.OAuthHandler {
             override fun openUrl(url: String) {
                 stage = "Check your browser to continue..."

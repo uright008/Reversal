@@ -5,9 +5,10 @@
 package cn.stars.reversal.ui.gui;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.module.impl.hud.PostProcessing;
 import cn.stars.reversal.util.Transformer;
-import cn.stars.reversal.ui.curiosity.CuriosityTextButton;
+import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
@@ -23,20 +24,22 @@ import java.io.IOException;
 import static cn.stars.reversal.GameInstance.*;
 
 public class GuiPreInit extends GuiScreen {
-    private CuriosityTextButton acceptButton, rejectButton;
-    private CuriosityTextButton[] buttons;
+    private TextButton acceptButton, rejectButton;
+    private TextButton[] buttons;
 
     @Override
     public void initGui() {
-        acceptButton = new CuriosityTextButton(this.width / 2 - 100, this.height - 60, 200, 20, () -> {
+        acceptButton = new TextButton(this.width / 2 - 100, this.height - 60, 200, 20, () -> {
+            RainyAPI.isPreInited = true;
             ModuleInstance.getModule(PostProcessing.class).setEnabled(true);
             mc.displayGuiScreen(Transformer.transformMainMenu());
         }, "开启", "", true, 1, 90, 5, 20);
-        rejectButton = new CuriosityTextButton(this.width / 2 - 100, this.height - 35, 200, 20, () -> {
+        rejectButton = new TextButton(this.width / 2 - 100, this.height - 35, 200, 20, () -> {
+            RainyAPI.isPreInited = true;
             ModuleInstance.getModule(PostProcessing.class).setEnabled(false);
             mc.displayGuiScreen(Transformer.transformMainMenu());
         }, "关闭", "", true, 1, 90, 5, 20);
-        buttons = new CuriosityTextButton[]{acceptButton, rejectButton};
+        buttons = new TextButton[]{acceptButton, rejectButton};
     }
 
     @SneakyThrows
@@ -56,7 +59,7 @@ public class GuiPreInit extends GuiScreen {
         RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, new Color(30, 30, 30, 160));
         GameInstance.NORMAL_BLUR_RUNNABLES.add(() -> RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, Color.BLACK));
 
-        for (CuriosityTextButton button : buttons) {
+        for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
 

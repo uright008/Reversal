@@ -36,7 +36,7 @@ public final class ClickGui extends Module {
             }
         }
 
-        toggleModule();
+        this.setEnabled(false);
         Reversal.saveAll();
     }
 

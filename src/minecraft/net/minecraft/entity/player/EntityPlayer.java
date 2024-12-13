@@ -4,7 +4,11 @@ import cn.stars.addons.skinlayers3d.CustomizableModelPart;
 import cn.stars.addons.skinlayers3d.PlayerSettings;
 import cn.stars.addons.waveycapes.CapeHolder;
 import cn.stars.addons.waveycapes.StickSimulation;
+import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.event.impl.AttackEvent;
+import cn.stars.reversal.module.impl.misc.IRC;
+import cn.stars.reversal.util.Transformer;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
@@ -1984,7 +1988,15 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
 
     public String getName()
     {
-        return this.gameProfile.getName();
+        String name = this.gameProfile.getName();
+        if (ModuleInstance.getModule(IRC.class).isEnabled() && ModuleInstance.getModule(IRC.class).markOnlineUsers.isEnabled()) {
+            for (String onlineName : RainyAPI.ircUser.onlinePlayers) {
+                if (onlineName.equals(name.toLowerCase())) {
+                    name = "§7[§b§l★§r§7]" + Transformer.getIRCTitle(name) + name;
+                }
+            }
+        }
+        return name;
     }
 
     public InventoryEnderChest getInventoryEnderChest()

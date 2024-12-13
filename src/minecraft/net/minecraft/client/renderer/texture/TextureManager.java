@@ -50,7 +50,7 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
             resource = CustomGuis.getTextureLocation(resource);
         }
 
-        ITextureObject itextureobject = (ITextureObject)this.mapTextureObjects.get(resource);
+        ITextureObject itextureobject = this.mapTextureObjects.get(resource);
 
         if (EmissiveTextures.isActive())
         {
@@ -76,6 +76,11 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
         this.boundTextureLocation = resource;
     }
 
+    public void resetTexture() {
+        this.boundTexture = null;
+        this.boundTextureLocation = null;
+    }
+
     public boolean loadTickableTexture(ResourceLocation textureLocation, ITickableTextureObject textureObj)
     {
         if (this.loadTexture(textureLocation, textureObj))
@@ -95,13 +100,13 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
 
         try
         {
-            ((ITextureObject)textureObj).loadTexture(this.theResourceManager);
+            textureObj.loadTexture(this.theResourceManager);
         }
         catch (IOException ioexception)
         {
-            logger.warn((String)("Failed to load texture: " + textureLocation), (Throwable)ioexception);
+            logger.warn("Failed to load texture: " + textureLocation, ioexception);
             textureObj = TextureUtil.missingTexture;
-            this.mapTextureObjects.put(textureLocation, (ITextureObject)textureObj);
+            this.mapTextureObjects.put(textureLocation, textureObj);
             flag = false;
         }
         catch (Throwable throwable)
@@ -211,8 +216,8 @@ public class TextureManager implements ITickable, IResourceManagerReloadListener
         for (Object o : new HashSet(this.mapTextureObjects.entrySet()))
         {
             Entry<ResourceLocation, ITextureObject> entry = (Entry<ResourceLocation, ITextureObject>) o;
-            ResourceLocation resourcelocation = (ResourceLocation)entry.getKey();
-            ITextureObject itextureobject = (ITextureObject)entry.getValue();
+            ResourceLocation resourcelocation = entry.getKey();
+            ITextureObject itextureobject = entry.getValue();
 
             if (itextureobject instanceof LayeredColorMaskTexture)
             {

@@ -2,6 +2,7 @@ package cn.stars.reversal.ui.splash.utils;
 
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.ui.splash.SplashScreen;
+import cn.stars.reversal.util.ReversalLogger;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
@@ -75,7 +76,6 @@ public class AsyncGLContentLoader {
 
                         } catch (Exception ignored) {
                             // the error is raised, but I don't give a fuck :) so just leave it alone
-                            ignored.printStackTrace();
                         }
                     }
                 } else {
@@ -114,7 +114,7 @@ public class AsyncGLContentLoader {
 
         AsyncGLContentLoader.startDaemonThread();
 
-        System.out.print("Async Content Loader Started.");
+        ReversalLogger.info("Async Content Loader Started.");
     }
 
     private static void startDaemonThread() {

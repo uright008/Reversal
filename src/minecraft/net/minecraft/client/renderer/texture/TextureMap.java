@@ -681,7 +681,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
 
     public TextureAtlasSprite getTextureExtry(String p_getTextureExtry_1_)
     {
-        return (TextureAtlasSprite)this.mapRegisteredSprites.get(p_getTextureExtry_1_);
+        return this.mapRegisteredSprites.get(p_getTextureExtry_1_);
     }
 
     public boolean setTextureEntry(String p_setTextureEntry_1_, TextureAtlasSprite p_setTextureEntry_2_)

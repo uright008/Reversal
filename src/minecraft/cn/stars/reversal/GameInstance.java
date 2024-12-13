@@ -20,6 +20,7 @@ public interface GameInstance {
     MFont gs = FontManager.getPSR(18);
     MFont gsTitle = FontManager.getPSR(24);
 
+    MFont psr16 = FontManager.getPSR(16);
     MFont psm16 = FontManager.getPSM(16);
     MFont psm17 = FontManager.getPSM(17);
     MFont psb20 = FontManager.getPSB(20);
