@@ -4,6 +4,7 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
+import cn.stars.reversal.module.ResidentProcessor;
 import cn.stars.reversal.module.impl.hud.ClientSettings;
 import cn.stars.reversal.ui.clickgui.modern.MMTClickGUI;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
@@ -18,8 +19,7 @@ import java.awt.*;
 public final class EventHandler {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
-    private static EntityPlayer target = null;
-    public static boolean canUpdateDeaths;
+    public static ResidentProcessor residentProcessor = new ResidentProcessor();
 
     public static void handle(final Event e) {
         final Module[] modules = Reversal.moduleManager.getModuleList();
@@ -129,6 +129,7 @@ public final class EventHandler {
                     module.onTick(event);
                 }
             }
+            residentProcessor.onTick(event);
         } else if (e instanceof ClickEvent) {
             final ClickEvent event = (ClickEvent) e;
             for (final Module module : modules) {
@@ -137,6 +138,7 @@ public final class EventHandler {
                     module.onClick(event);
                 }
             }
+            residentProcessor.onClick(event);
         } else if (e instanceof KeyEvent) {
             final KeyEvent event = ((KeyEvent) e);
 

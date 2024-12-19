@@ -2,9 +2,11 @@ package cn.stars.reversal.util.reversal;
 
 import cn.stars.reversal.module.impl.render.EnvironmentEffect;
 import cn.stars.reversal.module.impl.render.JumpCircle;
+import cn.stars.reversal.module.impl.render.TargetESP;
 import cn.stars.reversal.module.impl.render.Trail;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.util.ResourceLocation;
@@ -23,31 +25,36 @@ public class Preloader {
 
         for (List<Trail.ResourceLocationWithSizes> rs1: trail.DASH_CUBIC_ANIMATED_TEXTURES) {
             for (Trail.ResourceLocationWithSizes rs2: rs1) {
-                bindResource(rs2.getResource());
+                loadResource(rs2.getResource());
             }
         }
         for (Trail.ResourceLocationWithSizes rs: trail.DASH_CUBIC_TEXTURES) {
-            bindResource(rs.getResource());
+            loadResource(rs.getResource());
         }
 
         // Load EnvironmentEffect.class
         EnvironmentEffect environmentEffect = ModuleInstance.getModule(EnvironmentEffect.class);
-        bindResource(environmentEffect.FIRE_PART_TEX);
-        bindResource(environmentEffect.STARS_TEX);
-        bindResource(environmentEffect.SNOWFLAKE_TEX);
+        loadResource(environmentEffect.FIRE_PART_TEX);
+        loadResource(environmentEffect.STARS_TEX);
+        loadResource(environmentEffect.SNOWFLAKE_TEX);
 
         // Load JumpCircle.class
         JumpCircle jumpCircle = ModuleInstance.getModule(JumpCircle.class);
         jumpCircle.initResources();
-        bindResource(new ResourceLocation(jumpCircle.staticLoc + "circle.png"));
-        bindResource(new ResourceLocation(jumpCircle.staticLoc + "konchal.png"));
+        loadResource(new ResourceLocation(jumpCircle.staticLoc + "circle.png"));
+        loadResource(new ResourceLocation(jumpCircle.staticLoc + "konchal.png"));
+
+        // Load TargetHud.class
+        loadResource(RenderUtil.getESPImage());
+        loadResource(TargetESP.BUBBLE_TEXTURE);
+        loadResource(TargetESP.SURROUNDING_TEXTURE);
 
         Minecraft.getMinecraft().getTextureManager().resetTexture();
 
         ReversalLogger.info("Successfully loaded " + count + " resources!");
     }
 
-    private void bindResource(ResourceLocation toBind) {
+    private void loadResource(ResourceLocation toBind) {
         SimpleTexture texture = new SimpleTexture(toBind);
         Minecraft.getMinecraft().getTextureManager().loadTexture(toBind, texture);
         count++;

@@ -54,7 +54,7 @@ import java.util.concurrent.Executors;
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
-    public static final String VERSION = "v0.12.2";
+    public static final String VERSION = "v0.13.0";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
@@ -277,6 +277,7 @@ public class Reversal {
             new AppleSkin(),
             new BAHalo(),
             new BetterFont(),
+            new BlockinDisplay(),
             new BlockOverlay(),
             new Trail(),
             new ChinaHat(),
@@ -290,6 +291,7 @@ public class Reversal {
             new HurtCam(), // Special Module
             new ItemPhysics(),
             new JumpCircle(),
+            new LineGlyphs(),
             new MotionBlur(),
             new NoBob(),
             new ReachDisplay(),

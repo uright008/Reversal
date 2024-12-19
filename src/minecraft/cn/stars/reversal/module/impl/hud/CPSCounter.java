@@ -110,20 +110,4 @@ public class CPSCounter extends Module {
             psm.drawString(cpsString, getX() + 17, getY() + 2.5f, new Color(250, 250, 250, 200).getRGB());
         }
     }
-
-    @Override
-    public void onTick(TickEvent event) {
-        this.Lclicks.removeIf(l -> l < System.currentTimeMillis() - 1000L);
-        this.Rclicks.removeIf(t -> t < System.currentTimeMillis() - 1000L);
-    }
-
-    @Override
-    public void onClick(ClickEvent event) {
-        if (event.getType() == ClickEvent.ClickType.LEFT) {
-            this.Lclicks.add(System.currentTimeMillis());
-        }
-        if (event.getType() == ClickEvent.ClickType.RIGHT) {
-            this.Rclicks.add(System.currentTimeMillis());
-        }
-    }
 }

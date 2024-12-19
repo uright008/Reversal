@@ -8,10 +8,18 @@ import cn.stars.reversal.module.impl.render.AppleSkin;
 import cn.stars.reversal.module.impl.render.Crosshair;
 import cn.stars.reversal.module.impl.render.Hotbar;
 import cn.stars.reversal.ui.hud.Hud;
+import cn.stars.reversal.util.animation.rise.Animation;
+import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.ColorUtil;
+import cn.stars.reversal.util.render.ColorUtils;
+import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.RoundedUtil;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+
+import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -407,12 +415,15 @@ public class GuiIngame extends Gui {
             String s = "" + this.mc.thePlayer.experienceLevel;
             int l1 = (scaledRes.getScaledWidth() - this.getFontRenderer().getStringWidth(s)) / 2;
             int i1 = scaledRes.getScaledHeight() - 31 - 4;
-            int j1 = 0;
-            this.getFontRenderer().drawString(s, l1 + 1, i1, 0);
-            this.getFontRenderer().drawString(s, l1 - 1, i1, 0);
-            this.getFontRenderer().drawString(s, l1, i1 + 1, 0);
-            this.getFontRenderer().drawString(s, l1, i1 - 1, 0);
-            this.getFontRenderer().drawString(s, l1, i1, k1);
+            if (ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) {
+                GameInstance.psm18.drawStringWithShadow(s, l1 + 1, i1, Color.GREEN.getRGB());
+            } else {
+                this.getFontRenderer().drawString(s, l1 + 1, i1, 0);
+                this.getFontRenderer().drawString(s, l1 - 1, i1, 0);
+                this.getFontRenderer().drawString(s, l1, i1 + 1, 0);
+                this.getFontRenderer().drawString(s, l1, i1 - 1, 0);
+                this.getFontRenderer().drawString(s, l1, i1, k1);
+            }
             this.mc.mcProfiler.endSection();
         }
     }
@@ -574,6 +585,10 @@ public class GuiIngame extends Gui {
         }
     }
 
+    private final Animation armorAnimation = new Animation(Easing.EASE_OUT_EXPO, 800);
+    private final Animation healthAnimation = new Animation(Easing.EASE_OUT_EXPO, 800);
+    private final Animation foodAnimation = new Animation(Easing.EASE_OUT_EXPO, 800);
+
     private void renderPlayerStats(ScaledResolution scaledRes)
     {
         if (this.mc.getRenderViewEntity() instanceof EntityPlayer)
@@ -616,6 +631,11 @@ public class GuiIngame extends Gui {
             int l1 = MathHelper.ceiling_float_int((f + f1) / 2.0F / 10.0F);
             int i2 = Math.max(10 - (l1 - 2), 3);
             int j2 = k1 - (l1 - 1) * i2 - 10;
+
+            int l1_ = MathHelper.ceiling_float_int((f) / 2.0F / 10.0F);
+            int i2_ = Math.max(10 - (l1_ - 2), 3);
+            int j2_ = k1 - (l1_ - 1) * i2_ - 10;
+
             float f2 = f1;
             int k2 = entityplayer.getTotalArmorValue();
             int l2 = -1;
@@ -627,111 +647,110 @@ public class GuiIngame extends Gui {
 
             this.mc.mcProfiler.startSection("armor");
 
-            for (int i3 = 0; i3 < 10; ++i3)
-            {
-                if (k2 > 0)
-                {
-                    int j3 = i1 + i3 * 8;
+            if (ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) {
+                armorAnimation.run(k2 * 4);
+                if (k2 > 0) {
+                    RoundedUtil.drawRound(i1, j2_, (float) armorAnimation.getValue(), 7, 2, new Color(150, 150, 150, 150 + k2 * 5));
+                    GameInstance.regular16.drawString(k2 + "", i1 - GameInstance.regular16.width(k2 + "") + armorAnimation.getValue(), j2_ + 2, new Color(250, 250, 250, 150 + k2 * 5).getRGB());
+                }
+            } else {
+                for (int i3 = 0; i3 < 10; ++i3) {
+                    if (k2 > 0) {
+                        int j3 = i1 + i3 * 8;
 
-                    if (i3 * 2 + 1 < k2)
-                    {
-                        this.drawTexturedModalRect(j3, j2, 34, 9, 9, 9);
-                    }
+                        if (i3 * 2 + 1 < k2) {
+                            this.drawTexturedModalRect(j3, j2, 34, 9, 9, 9);
+                        }
 
-                    if (i3 * 2 + 1 == k2)
-                    {
-                        this.drawTexturedModalRect(j3, j2, 25, 9, 9, 9);
-                    }
+                        if (i3 * 2 + 1 == k2) {
+                            this.drawTexturedModalRect(j3, j2, 25, 9, 9, 9);
+                        }
 
-                    if (i3 * 2 + 1 > k2)
-                    {
-                        this.drawTexturedModalRect(j3, j2, 16, 9, 9, 9);
+                        if (i3 * 2 + 1 > k2) {
+                            this.drawTexturedModalRect(j3, j2, 16, 9, 9, 9);
+                        }
                     }
                 }
             }
 
             this.mc.mcProfiler.endStartSection("health");
 
-            for (int i6 = MathHelper.ceiling_float_int((f + f1) / 2.0F) - 1; i6 >= 0; --i6)
-            {
-                int j6 = 16;
+            int i4 = MathHelper.ceiling_float_int(f / 2.0F) - 1;
+            int l3 = MathHelper.ceiling_float_int((float) (i4 + 1) / 10.0F) - 1;
+            int j4 = k1 - l3 * i2;
+            if (ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) {
+                healthAnimation.run(mc.thePlayer.getHealth() * 4);
+                if (entityplayer.isPotionActive(Potion.regeneration)) {
+                    RoundedUtil.drawGradientRound(i1, j4, (float) healthAnimation.getValue(), 7, 2,
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 1000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true),
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 1000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true),
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 2000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true),
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 2000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true));
+                } else RoundedUtil.drawRound(i1, j4, (float) healthAnimation.getValue(), 7, 2, new Color(Math.min(150 + (int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) * 5, 255), Math.min(20 + (int) mc.thePlayer.getAbsorptionAmount() * 15, 255), 20, 250));
+                GameInstance.regular16.drawString((int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) + "", i1 - GameInstance.regular16.width((int) mc.thePlayer.getHealth() + "") + healthAnimation.getValue(), j4 + 2, new Color(250, 250, 250, Math.min(150 + (int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) * 5, 255)).getRGB());
+            } else {
+                for (int i6 = MathHelper.ceiling_float_int((f + f1) / 2.0F) - 1; i6 >= 0; --i6) {
+                    int j6 = 16;
 
-                if (entityplayer.isPotionActive(Potion.poison))
-                {
-                    j6 += 36;
-                }
-                else if (entityplayer.isPotionActive(Potion.wither))
-                {
-                    j6 += 72;
-                }
-
-                int k3 = 0;
-
-                if (flag)
-                {
-                    k3 = 1;
-                }
-
-                int l3 = MathHelper.ceiling_float_int((float)(i6 + 1) / 10.0F) - 1;
-                int i4 = i1 + i6 % 10 * 8;
-                int j4 = k1 - l3 * i2;
-
-                if (i <= 4)
-                {
-                    j4 += this.rand.nextInt(2);
-                }
-
-                if (i6 == l2)
-                {
-                    j4 -= 2;
-                }
-
-                int k4 = 0;
-
-                if (entityplayer.worldObj.getWorldInfo().isHardcoreModeEnabled())
-                {
-                    k4 = 5;
-                }
-
-                this.drawTexturedModalRect(i4, j4, 16 + k3 * 9, 9 * k4, 9, 9);
-
-                if (flag)
-                {
-                    if (i6 * 2 + 1 < j)
-                    {
-                        this.drawTexturedModalRect(i4, j4, j6 + 54, 9 * k4, 9, 9);
+                    if (entityplayer.isPotionActive(Potion.poison)) {
+                        j6 += 36;
+                    } else if (entityplayer.isPotionActive(Potion.wither)) {
+                        j6 += 72;
                     }
 
-                    if (i6 * 2 + 1 == j)
-                    {
-                        this.drawTexturedModalRect(i4, j4, j6 + 63, 9 * k4, 9, 9);
-                    }
-                }
+                    int k3 = 0;
 
-                if (f2 <= 0.0F)
-                {
-                    if (i6 * 2 + 1 < i)
-                    {
-                        this.drawTexturedModalRect(i4, j4, j6 + 36, 9 * k4, 9, 9);
+                    if (flag) {
+                        k3 = 1;
                     }
 
-                    if (i6 * 2 + 1 == i)
-                    {
-                        this.drawTexturedModalRect(i4, j4, j6 + 45, 9 * k4, 9, 9);
-                    }
-                }
-                else
-                {
-                    if (f2 == f1 && f1 % 2.0F == 1.0F)
-                    {
-                        this.drawTexturedModalRect(i4, j4, j6 + 153, 9 * k4, 9, 9);
-                    }
-                    else
-                    {
-                        this.drawTexturedModalRect(i4, j4, j6 + 144, 9 * k4, 9, 9);
+                    l3 = MathHelper.ceiling_float_int((float) (i6 + 1) / 10.0F) - 1;
+                    i4 = i1 + i6 % 10 * 8;
+                    j4 = k1 - l3 * i2;
+
+                    if (i <= 4) {
+                        j4 += this.rand.nextInt(2);
                     }
 
-                    f2 -= 2.0F;
+                    if (i6 == l2) {
+                        j4 -= 2;
+                    }
+
+                    int k4 = 0;
+
+                    if (entityplayer.worldObj.getWorldInfo().isHardcoreModeEnabled()) {
+                        k4 = 5;
+                    }
+
+                    this.drawTexturedModalRect(i4, j4, 16 + k3 * 9, 9 * k4, 9, 9);
+
+                    if (flag) {
+                        if (i6 * 2 + 1 < j) {
+                            this.drawTexturedModalRect(i4, j4, j6 + 54, 9 * k4, 9, 9);
+                        }
+
+                        if (i6 * 2 + 1 == j) {
+                            this.drawTexturedModalRect(i4, j4, j6 + 63, 9 * k4, 9, 9);
+                        }
+                    }
+
+                    if (f2 <= 0.0F) {
+                        if (i6 * 2 + 1 < i) {
+                            this.drawTexturedModalRect(i4, j4, j6 + 36, 9 * k4, 9, 9);
+                        }
+
+                        if (i6 * 2 + 1 == i) {
+                            this.drawTexturedModalRect(i4, j4, j6 + 45, 9 * k4, 9, 9);
+                        }
+                    } else {
+                        if (f2 == f1 && f1 % 2.0F == 1.0F) {
+                            this.drawTexturedModalRect(i4, j4, j6 + 153, 9 * k4, 9, 9);
+                        } else {
+                            this.drawTexturedModalRect(i4, j4, j6 + 144, 9 * k4, 9, 9);
+                        }
+
+                        f2 -= 2.0F;
+                    }
                 }
             }
 
@@ -739,54 +758,51 @@ public class GuiIngame extends Gui {
 
             if (entity == null)
             {
-                this.mc.mcProfiler.endStartSection("food");
+                if (ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) {
+                    this.mc.mcProfiler.endStartSection("food");
+                    int j9 = j1 - 80;
+                    foodAnimation.run(k * 4);
+                    RoundedUtil.drawRound(j9, j4, (float) foodAnimation.getValue(), 7, 2, new Color(220, Math.min(20 + 50 + k * 2, 255), 20, 150 + k * 5));
+                    GameInstance.regular16.drawString(k + "", j9 - GameInstance.regular16.width(k + "") + foodAnimation.getValue(), j4 + 2, new Color(250, 250, 250, Math.min(150 + k * 5, 255)).getRGB());
+                } else {
+                    for (int k6 = 0; k6 < 10; ++k6) {
+                        int j7 = k1;
+                        int l7 = 16;
+                        int k8 = 0;
 
-                for (int k6 = 0; k6 < 10; ++k6)
-                {
-                    int j7 = k1;
-                    int l7 = 16;
-                    int k8 = 0;
-
-                    if (entityplayer.isPotionActive(Potion.hunger))
-                    {
-                        l7 += 36;
-                        k8 = 13;
-                    }
-
-                    if (entityplayer.getFoodStats().getSaturationLevel() <= 0.0F && this.updateCounter % (k * 3 + 1) == 0)
-                    {
-                        j7 = k1 + (this.rand.nextInt(3) - 1);
-                    }
-
-                    if (flag1)
-                    {
-                        k8 = 1;
-                    }
-
-                    int j9 = j1 - k6 * 8 - 9;
-                    this.drawTexturedModalRect(j9, j7, 16 + k8 * 9, 27, 9, 9);
-
-                    if (flag1)
-                    {
-                        if (k6 * 2 + 1 < l)
-                        {
-                            this.drawTexturedModalRect(j9, j7, l7 + 54, 27, 9, 9);
+                        if (entityplayer.isPotionActive(Potion.hunger)) {
+                            l7 += 36;
+                            k8 = 13;
                         }
 
-                        if (k6 * 2 + 1 == l)
-                        {
-                            this.drawTexturedModalRect(j9, j7, l7 + 63, 27, 9, 9);
+                        if (entityplayer.getFoodStats().getSaturationLevel() <= 0.0F && this.updateCounter % (k * 3 + 1) == 0) {
+                            j7 = k1 + (this.rand.nextInt(3) - 1);
                         }
-                    }
 
-                    if (k6 * 2 + 1 < k)
-                    {
-                        this.drawTexturedModalRect(j9, j7, l7 + 36, 27, 9, 9);
-                    }
+                        if (flag1) {
+                            k8 = 1;
+                        }
 
-                    if (k6 * 2 + 1 == k)
-                    {
-                        this.drawTexturedModalRect(j9, j7, l7 + 45, 27, 9, 9);
+                        int j9 = j1 - k6 * 8 - 9;
+                        this.drawTexturedModalRect(j9, j7, 16 + k8 * 9, 27, 9, 9);
+
+                        if (flag1) {
+                            if (k6 * 2 + 1 < l) {
+                                this.drawTexturedModalRect(j9, j7, l7 + 54, 27, 9, 9);
+                            }
+
+                            if (k6 * 2 + 1 == l) {
+                                this.drawTexturedModalRect(j9, j7, l7 + 63, 27, 9, 9);
+                            }
+                        }
+
+                        if (k6 * 2 + 1 < k) {
+                            this.drawTexturedModalRect(j9, j7, l7 + 36, 27, 9, 9);
+                        }
+
+                        if (k6 * 2 + 1 == k) {
+                            this.drawTexturedModalRect(j9, j7, l7 + 45, 27, 9, 9);
+                        }
                     }
                 }
             }
@@ -859,7 +875,7 @@ public class GuiIngame extends Gui {
                 }
             }
 
-            ModuleInstance.getModule(AppleSkin.class).renderOverlay();
+            if (!ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) ModuleInstance.getModule(AppleSkin.class).renderOverlay();
 
             this.mc.mcProfiler.endSection();
         }

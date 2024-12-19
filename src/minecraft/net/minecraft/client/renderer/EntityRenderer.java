@@ -1827,10 +1827,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, renderglobal, Float.valueOf(partialTicks));
         }
 
-        final Render3DEvent render3DEvent = new Render3DEvent(partialTicks);
-        render3DEvent.call();
 
         this.mc.mcProfiler.endStartSection("hand");
+
+        final Render3DEvent render3DEvent = new Render3DEvent(partialTicks);
+        render3DEvent.call();
 
         if (this.renderHand && !Shaders.isShadowPass)
         {

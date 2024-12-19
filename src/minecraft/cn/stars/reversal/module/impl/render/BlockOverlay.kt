@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.BlockPos
 import net.minecraft.util.MovingObjectPosition
 import org.lwjgl.opengl.GL11
 
@@ -30,81 +31,86 @@ class BlockOverlay : Module() {
     private var lineWidth = NumberValue("Width", this,  1.0, 0.1, 10.0, 0.1)
 
     override fun onRender3D(event: Render3DEvent?) {
-        val color = ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, 0f)
         if (mc.objectMouseOver != null) {
             if (isHoveringOverBlock()) {
-                val pos = WrapperBlockPos(mc.objectMouseOver.blockPos)
-                val state = getBlockState(pos)
-                val block = getBlock(pos)
-                val x = pos.x - mc.renderManager.viewerPosX
-                val y = pos.y - mc.renderManager.viewerPosY
-                val z = pos.z - mc.renderManager.viewerPosZ
-                GL11.glPushMatrix()
-                GlStateManager.enableAlpha()
-                GlStateManager.enableBlend()
-                GlStateManager.blendFunc(770, 771)
-                GL11.glDisable(3553)
-                GL11.glEnable(2848)
-                if (throughBlock.enabled) {
-                    GL11.glDisable(2929)
-                }
-                GlStateManager.depthMask(false)
-                val blockBoundingBox = getBlockBoundingBox(pos, state)
-                val minX: Double = if (block is BlockStairs) 0.0 else blockBoundingBox.minX()
-                val minY: Double = if (block is BlockStairs) 0.0 else blockBoundingBox.minY()
-                val minZ: Double = if (block is BlockStairs) 0.0 else blockBoundingBox.minZ()
-                if (fill.enabled) {
-                    GL11.glPushMatrix()
-                    GlStateManager.color(
-                        color.red / 255.0f,
-                        color.green / 255.0f,
-                        color.blue / 255.0f,
-                        color.alpha / 255.0f
-                    )
-                    drawBoundingBox(
-                        WrapperAxisAlignedBB(
-                            x + minX - 0.01,
-                            y + minY - 0.01,
-                            z + minZ - 0.01,
-                            x + blockBoundingBox.maxX() + 0.01,
-                            y + blockBoundingBox.maxY() + 0.01,
-                            z + blockBoundingBox.maxZ() + 0.01
-                        )
-                    )
-                    GL11.glPopMatrix()
-                }
-                if (outline.enabled) {
-                    GL11.glPushMatrix()
-                    GlStateManager.color(
-                        color.red / 255.0f,
-                        color.green / 255.0f,
-                        color.blue / 255.0f,
-                        color.alpha / 255.0f
-                    )
-                    GL11.glLineWidth(lineWidth.value.toFloat())
-                    drawBoundingBoxOutline(
-                        WrapperAxisAlignedBB(
-                            x + minX - 0.005,
-                            y + minY - 0.005,
-                            z + minZ - 0.005,
-                            x + blockBoundingBox.maxX() + 0.005,
-                            y + blockBoundingBox.maxY() + 0.005,
-                            z + blockBoundingBox.maxZ() + 0.005
-                        )
-                    )
-                    GL11.glPopMatrix()
-                }
-                GL11.glDisable(2848)
-                GL11.glEnable(3553)
-                if (throughBlock.enabled) {
-                    GL11.glEnable(2929)
-                }
-                GlStateManager.depthMask(true)
-                GL11.glLineWidth(1.0f)
-                GL11.glPopMatrix()
+                drawBlock(mc.objectMouseOver.blockPos, fill.enabled, outline.enabled, throughBlock.enabled, lineWidth.value.toFloat())
             }
         }
     }
+
+    fun drawBlock(blockpos: BlockPos, filled: Boolean, outlined: Boolean, throughBlocked: Boolean, lineWidths: Float, fillAlpha: Float = 255f) {
+        val color = ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, 0f)
+        val pos = WrapperBlockPos(blockpos)
+        val state = getBlockState(pos)
+        val block = getBlock(pos)
+        val x = pos.x - mc.renderManager.viewerPosX
+        val y = pos.y - mc.renderManager.viewerPosY
+        val z = pos.z - mc.renderManager.viewerPosZ
+        GL11.glPushMatrix()
+        GlStateManager.enableAlpha()
+        GlStateManager.enableBlend()
+        GlStateManager.blendFunc(770, 771)
+        GL11.glDisable(3553)
+        GL11.glEnable(2848)
+        if (throughBlock.enabled) {
+            GL11.glDisable(2929)
+        }
+        GlStateManager.depthMask(false)
+        val blockBoundingBox = getBlockBoundingBox(pos, state)
+        val minX: Double = if (block is BlockStairs) 0.0 else blockBoundingBox.minX()
+        val minY: Double = if (block is BlockStairs) 0.0 else blockBoundingBox.minY()
+        val minZ: Double = if (block is BlockStairs) 0.0 else blockBoundingBox.minZ()
+        if (filled) {
+            GL11.glPushMatrix()
+            GlStateManager.color(
+                color.red / 255.0f,
+                color.green / 255.0f,
+                color.blue / 255.0f,
+                fillAlpha / 255.0f
+            )
+            drawBoundingBox(
+                WrapperAxisAlignedBB(
+                    x + minX - 0.01,
+                    y + minY - 0.01,
+                    z + minZ - 0.01,
+                    x + blockBoundingBox.maxX() + 0.01,
+                    y + blockBoundingBox.maxY() + 0.01,
+                    z + blockBoundingBox.maxZ() + 0.01
+                )
+            )
+            GL11.glPopMatrix()
+        }
+        if (outlined) {
+            GL11.glPushMatrix()
+            GlStateManager.color(
+                color.red / 255.0f,
+                color.green / 255.0f,
+                color.blue / 255.0f,
+                color.alpha / 255.0f
+            )
+            GL11.glLineWidth(lineWidths)
+            drawBoundingBoxOutline(
+                WrapperAxisAlignedBB(
+                    x + minX - 0.005,
+                    y + minY - 0.005,
+                    z + minZ - 0.005,
+                    x + blockBoundingBox.maxX() + 0.005,
+                    y + blockBoundingBox.maxY() + 0.005,
+                    z + blockBoundingBox.maxZ() + 0.005
+                )
+            )
+            GL11.glPopMatrix()
+        }
+        GL11.glDisable(2848)
+        GL11.glEnable(3553)
+        if (throughBlocked) {
+            GL11.glEnable(2929)
+        }
+        GlStateManager.depthMask(true)
+        GL11.glLineWidth(1.0f)
+        GL11.glPopMatrix()
+    }
+
     fun isHoveringOverBlock(): Boolean {
         return Minecraft.getMinecraft().objectMouseOver != null && Minecraft.getMinecraft().objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
     }

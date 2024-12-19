@@ -18,7 +18,7 @@ public class UserHandshakeThread extends Thread {
     public void run() {
         scheduler.scheduleAtFixedRate(() -> {
             try {
-                user.sendMessage("Handshake", user.id);
+                if (user != null && user.isConnected()) user.sendMessage("Handshake", user.id);
             } catch (Exception e) {
                 e.printStackTrace();
             }

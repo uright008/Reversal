@@ -37,7 +37,8 @@ public abstract class Module implements GameInstance {
 
     // Modern ClickGUI
     public float guiX, guiY;
-    public Animation alphaAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
+    public Animation posAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
+    public Animation alphaAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     public Animation yAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
     public Animation sizeAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
 
@@ -47,7 +48,7 @@ public abstract class Module implements GameInstance {
     public float descOpacityInGui = 1;
     public boolean hidden = false;
     public int x, y, draggingX, draggingY;
-    public int width, height;
+    public int width, height, additionalWidth, additionalHeight;
     public boolean dragging, hide, canBeEdited;
     public SimpleAnimation buttonAnimation = new SimpleAnimation(0.0F);
     public SimpleAnimation buttonOpacityAnimation = new SimpleAnimation(0.0F);
@@ -72,6 +73,8 @@ public abstract class Module implements GameInstance {
         this.y = 100;
         this.width = 100;
         this.height = 100;
+        this.additionalWidth = 0;
+        this.additionalHeight = 0;
     }
 
     public void registerNotification(String s) {

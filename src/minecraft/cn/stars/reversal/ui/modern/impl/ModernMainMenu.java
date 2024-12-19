@@ -177,6 +177,16 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         textAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
         updateLog.clear();
+        updateLog.add("[+] 重写BAHalo");
+        updateLog.add("[+] 加载地形界面允许渲染视频背景");
+        updateLog.add("[+] LineGlyphs");
+        updateLog.add("[+] BlockinDisplay");
+        updateLog.add("[+] Modern Hotbar");
+        updateLog.add("[+] TargetESP 新增: Bubble, Surrounding");
+        updateLog.add("[*] 修复Keystrokes的CPS一直为0");
+        updateLog.add("[/] 优化ClickGUI");
+        updateLog.add("[*] 修复Scoreboard对齐异常");
+        updateLog.add("[*] 修复TargetESP的效果十分卡顿");
 
         // 定义按钮
         this.singlePlayerButton = new TextButton(45, this.height / 6f + 80, 120, 35, () -> mc.displayGuiScreen(new GuiSelectWorld(this)),

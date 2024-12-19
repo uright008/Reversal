@@ -13,5 +13,5 @@ public enum Category {
     HUD,
     ADDONS;
 
-    public Animation alphaAnimation = new Animation(Easing.EASE_OUT_EXPO, 800);
+    public final Animation alphaAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 }

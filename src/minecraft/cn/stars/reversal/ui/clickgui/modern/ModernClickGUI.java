@@ -40,7 +40,7 @@ import static cn.stars.reversal.GameInstance.*;
 
 public class ModernClickGUI extends GuiScreen {
     public Color backgroundColor = new Color(20,20,20,255);
-    public Animation scaleAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    public Animation scaleAnimation = new Animation(Easing.EASE_IN_OUT_QUAD, 300);
     private Animation sideAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
     ScaledResolution sr;
     Category selectedCategory = Category.COMBAT;
@@ -50,23 +50,30 @@ public class ModernClickGUI extends GuiScreen {
     NumberValue selectedSlider;
     boolean hasEditedSliders = false;
     TimeUtil timer = new TimeUtil();
+    float wheel = Mouse.getDWheel();
     private cn.stars.reversal.util.animation.advanced.Animation windowAnim;
     private final TextField searchField = new TextField(150, 15, GameInstance.regular16, backgroundColor, new Color(100,100,100,100));
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (windowAnim.finished(Direction.BACKWARDS)) mc.displayGuiScreen(null);
+        if (scaleAnimation.getDestinationValue() == 0d) {
+            scaleAnimation.run(0d);
+            if (scaleAnimation.isFinished()) {
+                mc.displayGuiScreen(null);
+            }
+        } else {
+            scaleAnimation.run(1);
+        }
 
         sr = new ScaledResolution(mc);
         int x = width / 2 - 260;
         int y = height / 2 - 180;
-    //    scaleAnimation.run(1);
-    //    GlUtils.startScale(x, y, (float) scaleAnimation.getValue());
 
-        RenderUtil.scaleStart(x + 260, y + 180, windowAnim.getOutput().floatValue());
+    //    GlUtils.startScale(x, y, (float) scaleAnimation.getValue());
+        RenderUtil.scaleStart(x + 260, y + 180, (float) scaleAnimation.getValue());
 
         // Background
-        if (ModuleInstance.getModule(PostProcessing.class).blur.enabled && windowAnim.finished(Direction.FORWARDS)) {
+        if (ModuleInstance.getModule(PostProcessing.class).blur.enabled && scaleAnimation.isFinished()) {
             MODERN_BLUR_RUNNABLES.add(() -> {
             //    RenderUtil.roundedRectangle(x, y, 520, 320, 2, Color.BLACK);
             });
@@ -82,7 +89,7 @@ public class ModernClickGUI extends GuiScreen {
     //    RenderUtil.rectangle(x + 5, y + 62, 105, 0.7, new Color(100,100,100,100));
 
         // Shadow
-        if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled && windowAnim.finished(Direction.FORWARDS)) {
+        if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled && scaleAnimation.isFinished()) {
             MODERN_BLOOM_RUNNABLES.add(() -> {
                 RoundedUtil.drawRound(x, y, 520, 360, 5, backgroundColor);
             });
@@ -135,13 +142,13 @@ public class ModernClickGUI extends GuiScreen {
                     RenderUtil.scissor(moduleX, y, 400, 360);
                 }
                 if (canUseChinese(m)) {
-                    regular24Bold.drawString(m.getModuleInfo().chineseName(), m.guiX + 20, m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), ModuleInstance.isSpecialModule(m) ? new Color(240, 240, 10, 250).getRGB() : m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                    regular24Bold.drawString(m.getModuleInfo().chineseName(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), ModuleInstance.isSpecialModule(m) ? new Color(240, 240, 10, 250).getRGB() : m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                     regular16.drawString(m.getModuleInfo().chineseDescription(),
-                            m.guiX + 20, m.yAnimation.getValue() + 21, new Color(160, 160, 160, 160).getRGB());
+                            m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 21, new Color(160, 160, 160, 160).getRGB());
                 } else {
-                    psm24.drawString(m.getModuleInfo().name(), m.guiX + 20, m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), ModuleInstance.isSpecialModule(m) ? new Color(240, 240, 10, 250).getRGB() : m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                    psm24.drawString(m.getModuleInfo().name(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), ModuleInstance.isSpecialModule(m) ? new Color(240, 240, 10, 250).getRGB() : m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                     psr16.drawString(m.getModuleInfo().description(),
-                            m.guiX + 20, m.yAnimation.getValue() + 20, new Color(160, 160, 160, 160).getRGB());
+                            m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 20, new Color(160, 160, 160, 160).getRGB());
                 }
                 if (m.expanded || (!m.sizeAnimation.isFinished() && m.yAnimation.isFinished())) {
                     m.sizeInGui = 20;
@@ -238,7 +245,7 @@ public class ModernClickGUI extends GuiScreen {
                 }
 
             //    RenderUtil.roundedRectangle(m.guiX - 0.5, m.yAnimation.getValue() + 10, 1, 10, 1, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
-                RenderUtil.roundedRectangle(m.guiX, m.yAnimation.getValue(), 390, m.sizeAnimation.getValue() - 5, 3, new Color(80,80,80, (int) (60 + m.alphaAnimation.getValue())));
+                RenderUtil.roundedRectangle(m.guiX, m.yAnimation.getValue(), 390, m.sizeAnimation.getValue() - 5, 3, new Color(80,80,80, (int) (40 + m.alphaAnimation.getValue())));
                 RenderUtil.roundedRectangle(m.guiX + 8, m.yAnimation.getValue() + 12, 6, 6, 3, m.isEnabled() ? new Color(50,255,50, 220) : new Color(160, 160, 160, 200));
 
                 settingY = moduleY + m.sizeInGui;
@@ -269,6 +276,8 @@ public class ModernClickGUI extends GuiScreen {
                 } else {
                     m.alphaAnimation.run(0);
                 }
+                if (m.expanded && !m.getSettings().isEmpty()) m.posAnimation.run(5);
+                else m.posAnimation.run(0);
                 for (final Value s : m.getSettings()) {
                     if (s instanceof NumberValue) {
                         final NumberValue NumberValue = ((NumberValue) s);
@@ -420,9 +429,8 @@ public class ModernClickGUI extends GuiScreen {
 
     @Override
     public void updateScreen() {
-        final float wheel = Mouse.getDWheel();
-
-        scrollAmount += wheel / (11f - ModuleInstance.getModule(ClickGui.class).scrollSpeed.getValue()) * 200;
+        wheel = Mouse.getDWheel();
+        scrollAmount += wheel / (11f - ModuleInstance.getModule(ClickGui.class).scrollSpeed.getFloat()) * 200f;
     }
 
     @Override
@@ -430,8 +438,8 @@ public class ModernClickGUI extends GuiScreen {
         if (isCtrlKeyDown() && keyCode == Keyboard.KEY_F) {
             searchField.focused = true;
         }
-        if (keyCode == Keyboard.KEY_ESCAPE && windowAnim.getDirection() == Direction.FORWARDS) {
-            windowAnim.changeDirection();
+        if (keyCode == Keyboard.KEY_ESCAPE && scaleAnimation.getDestinationValue() == 1d) {
+            scaleAnimation.run(0);
             Keyboard.enableRepeatEvents(false);
         }
         searchField.keyTyped(typedChar, keyCode);
@@ -444,11 +452,13 @@ public class ModernClickGUI extends GuiScreen {
 
     @Override
     public void initGui() {
+        scaleAnimation = new Animation(Easing.EASE_OUT_EXPO, 300);
         Keyboard.enableRepeatEvents(true);
         windowAnim = new DecelerateAnimation(100, 1d);
         hasEditedSliders = false;
         sideAnimation.reset();
-        scaleAnimation.reset();
+        scaleAnimation.run(1d);
+        wheel = Mouse.getDWheel();
     }
 
     @Override

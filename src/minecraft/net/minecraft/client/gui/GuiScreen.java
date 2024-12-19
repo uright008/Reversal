@@ -734,6 +734,9 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         GlStateManager.enableAlpha();
     }
 
+    final Tessellator tessellator = Tessellator.getInstance();
+    final WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+
     public void drawMenuBackground(float partialTicks, int mouseX, int mouseY) {
         if (RainyAPI.backgroundId > 9 || RainyAPI.backgroundId < 0) RainyAPI.backgroundId = 9;
         if (RainyAPI.backgroundId == 9) {
@@ -751,14 +754,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
             GlStateManager.disableLighting();
             GlStateManager.disableFog();
             BackgroundShader.BACKGROUND_SHADER.startShader();
-            final Tessellator instance = Tessellator.getInstance();
-            final WorldRenderer worldRenderer = instance.getWorldRenderer();
             worldRenderer.begin(7, DefaultVertexFormats.POSITION);
             worldRenderer.pos(0, height, 0.0D).endVertex();
             worldRenderer.pos(width, height, 0.0D).endVertex();
             worldRenderer.pos(width, 0, 0.0D).endVertex();
             worldRenderer.pos(0, 0, 0.0D).endVertex();
-            instance.draw();
+            tessellator.draw();
             BackgroundShader.BACKGROUND_SHADER.stopShader();
         } else if (RainyAPI.backgroundId == 1) {
             RiseShaders.MAIN_MENU_SHADER.run(ShaderRenderType.OVERLAY, partialTicks, null);

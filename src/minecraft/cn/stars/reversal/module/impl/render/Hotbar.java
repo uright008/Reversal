@@ -5,6 +5,7 @@ import cn.stars.reversal.event.impl.Shader3DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
@@ -22,6 +23,7 @@ import java.awt.*;
 @ModuleInfo(name = "Hotbar", chineseName = "物品栏", description = "Change game hotbar", chineseDescription = "改变物品栏", category = Category.RENDER)
 public class Hotbar extends Module {
     public final ModeValue mode = new ModeValue("Mode", this, "Vanilla", "Vanilla", "Modern");
+    public final BoolValue modernBars = new BoolValue("Modern Bars", this, false);
     private static final ResourceLocation widgetsTexPath = new ResourceLocation("textures/gui/widgets.png");
     private ScaledResolution sr = new ScaledResolution(mc);
     EntityPlayer entityplayer;

@@ -51,7 +51,7 @@ public class Scoreboard extends Module {
 
         int scoreboardHeight = scoreCollection.size() * mc.fontRendererObj.FONT_HEIGHT;
         int scoreboardStartY = getY() + scoreboardHeight + 8;
-        int scoreboardStartX = getX() + 5;
+        int scoreboardStartX = getX() - getWidth() + 5;
         int horizontalMargin = 3;
         int currentLineIndex = 0;
 
@@ -78,6 +78,7 @@ public class Scoreboard extends Module {
 
         // Set the width and height of the scoreboard
         setWidth(maxStringWidth + horizontalMargin + 12);
+        setAdditionalWidth(-getWidth());
         setHeight(scoreboardHeight + 15);
     }
 

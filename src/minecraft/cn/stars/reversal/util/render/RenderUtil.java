@@ -230,9 +230,9 @@ public final class RenderUtil implements GameInstance {
     public static Vector2f targetESPSPos(EntityLivingBase entity, float partialTicks) {
         EntityRenderer entityRenderer = mc.entityRenderer;
         int scaleFactor = new ScaledResolution(mc).getScaleFactor();
-        double x = interpolate(entity.prevPosX, entity.posX, partialTicks);
-        double y = interpolate(entity.prevPosY, entity.posY, partialTicks);
-        double z = interpolate(entity.prevPosZ, entity.posZ, partialTicks);
+        double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * mc.timer.renderPartialTicks;
+        double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * mc.timer.renderPartialTicks;
+        double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * mc.timer.renderPartialTicks;
         double height = entity.height / (entity.isChild() ? 1.75f : 1.0f) / 2.0f;
         AxisAlignedBB aabb = new AxisAlignedBB(x - 0.0, y, z - 0.0, x + 0.0, y + height, z + 0.0);
         Vector3d[] vectors = new Vector3d[]{new Vector3d(aabb.minX, aabb.minY, aabb.minZ), new Vector3d(aabb.minX, aabb.maxY, aabb.minZ), new Vector3d(aabb.maxX, aabb.minY, aabb.minZ), new Vector3d(aabb.maxX, aabb.maxY, aabb.minZ), new Vector3d(aabb.minX, aabb.minY, aabb.maxZ), new Vector3d(aabb.minX, aabb.maxY, aabb.maxZ), new Vector3d(aabb.maxX, aabb.minY, aabb.maxZ), new Vector3d(aabb.maxX, aabb.maxY, aabb.maxZ)};
@@ -317,12 +317,12 @@ public final class RenderUtil implements GameInstance {
         GlStateManager.shadeModel(7424);
     }
 
-    private ResourceLocation getESPImage() {
+    public static ResourceLocation getESPImage() {
         switch (ModuleInstance.getModule(TargetESP.class).mode.getMode()) {
             case "Round":
-                return new ResourceLocation("reversal/images/round.png");
+                return new ResourceLocation("reversal/images/texture/targetesp/round.png");
             case "Rectangle":
-                return new ResourceLocation("reversal/images/rectangle.png");
+                return new ResourceLocation("reversal/images/texture/targetesp/rectangle.png");
         }
         return null;
     }
@@ -331,10 +331,6 @@ public final class RenderUtil implements GameInstance {
         GL11.glTranslated(oXpos + oWidth / 2.0f, oYpos + oHeight / 2.0f, 0.0);
         GL11.glRotated(rotate, 0.0, 0.0, 1.0);
         GL11.glTranslated(-oXpos - oWidth / 2.0f, -oYpos - oHeight / 2.0f, 0.0);
-    }
-
-    public static double interpolate(double current, double old, double scale) {
-        return old + (current - old) * scale;
     }
 
     public void begin(final int glMode) {
@@ -842,6 +838,22 @@ public final class RenderUtil implements GameInstance {
         color(color);
         image(resourceLocation, x, y, imgWidth, imgHeight);
         resetColor();
+    }
+
+    public static void image(ResourceLocation resource, float x, float y, float x2, float y2, int c) {
+        mc.getTextureManager().bindTexture(resource);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        worldRenderer.begin(9, DefaultVertexFormats.POSITION_TEX_COLOR);
+        worldRenderer.pos(x, y2).tex(0.0, 1.0).color(c).endVertex();
+        worldRenderer.pos(x2, y2).tex(1.0, 1.0).color(c).endVertex();
+        worldRenderer.pos(x2, y).tex(1.0, 0.0).color(c).endVertex();
+        worldRenderer.pos(x, y).tex(0.0, 0.0).color(c).endVertex();
+        GL11.glShadeModel(7425);
+        GL11.glDepthMask(false);
+        tessellator.draw();
+        GL11.glDepthMask(true);
+        GL11.glShadeModel(7424);
     }
 
     public void imageWithAlpha(final ResourceLocation imageLocation, final float x, final float y, final float width, final float height, float alpha) {
@@ -1695,6 +1707,13 @@ public final class RenderUtil implements GameInstance {
                                          final float alpha) {
         GL11.glPushMatrix();
         GL11.glColor4f(red, green, blue, alpha);
+        drawBoundingBox(new AxisAlignedBB(x, y, z, x + 1D, y + 1D, z + 1D));
+        GL11.glPopMatrix();
+    }
+
+    public static void drawSolidBlockESP(final double x, final double y, final double z, final Color color) {
+        GL11.glPushMatrix();
+        color(color);
         drawBoundingBox(new AxisAlignedBB(x, y, z, x + 1D, y + 1D, z + 1D));
         GL11.glPopMatrix();
     }

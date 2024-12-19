@@ -15,13 +15,10 @@ import cn.stars.reversal.util.animation.advanced.Direction;
 import cn.stars.reversal.util.animation.advanced.composed.CustomAnimation;
 import cn.stars.reversal.util.animation.advanced.impl.EaseBackIn;
 import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
-import cn.stars.reversal.util.render.ColorUtil;
-import cn.stars.reversal.util.render.GlUtils;
-import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.*;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.RenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -37,6 +34,7 @@ import java.awt.*;
 public class BAHalo extends Module {
     private final ModeValue mode = new ModeValue("Student", this, "Shiroko", "Shiroko", "Hoshino", "Reisa", "Azusa");
     private final BoolValue showInFirstPerson = new BoolValue("First Person", this, true);
+    private final BoolValue lighting = new BoolValue("Lighting", this, false);
     CustomAnimation animation = new CustomAnimation(SmoothStepAnimation.class, 2000, 0.0, 0.1);
     Tessellator tessellator = Tessellator.getInstance();
     WorldRenderer worldRenderer = tessellator.getWorldRenderer();
@@ -67,7 +65,7 @@ public class BAHalo extends Module {
                 break;
             }
             case "Azusa": {
-                drawModernHalo(AZUSA, vec.add(new Vec3(1.0, 0.5, 0.2)), 1.0f, () -> {
+                drawModernHalo(AZUSA, vec.add(new Vec3(1.0, 0.6, 0.4)), 1.0f, () -> {
                     GL11.glRotatef(-180, 0F, 0F, 1F);
                 });
                 break;
@@ -104,6 +102,7 @@ public class BAHalo extends Module {
         GlUtils.doAntiAtlas();
 
         drawBoundTexture(radius);
+        if (lighting.isEnabled()) drawLightTexture(radius);
 
         GlUtils.stopAntiAtlas();
         GlStateManager.disableBlend();
@@ -142,6 +141,7 @@ public class BAHalo extends Module {
         GlUtils.doAntiAtlas();
 
         drawBoundTexture(radius);
+        if (lighting.isEnabled()) drawLightTexture(radius);
 
         GlUtils.stopAntiAtlas();
         GlStateManager.disableBlend();
@@ -157,6 +157,15 @@ public class BAHalo extends Module {
         worldRenderer.pos(0, radius, 0).tex(0, 1).endVertex();
         worldRenderer.pos(radius, radius, 0).tex(1, 1).endVertex();
         worldRenderer.pos(radius, 0, 0).tex(1, 0).endVertex();
+        tessellator.draw();
+    }
+
+    private void drawLightTexture(float radius) {
+        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+        worldRenderer.pos(radius * -0.02, radius * -0.02, 0).tex(0, 0).color(ColorUtil.swapAlpha(Color.WHITE.getRGB(), 20 + (float)(animation.getOutput() * 2000))).endVertex();
+        worldRenderer.pos(radius * -0.02, radius * 1.02, 0).tex(0, 1).color(ColorUtil.swapAlpha(Color.WHITE.getRGB(), 20 + (float) (animation.getOutput() * 2000))).endVertex();
+        worldRenderer.pos(radius * 1.02, radius * 1.02, 0).tex(1, 1).color(ColorUtil.swapAlpha(Color.WHITE.getRGB(), 20 + (float) (animation.getOutput() * 2000))).endVertex();
+        worldRenderer.pos(radius * 1.02, radius * -0.02, 0).tex(1, 0).color(ColorUtil.swapAlpha(Color.WHITE.getRGB(), 20 + (float) (animation.getOutput() * 2000))).endVertex();
         tessellator.draw();
     }
 

@@ -1,6 +1,7 @@
 package cn.stars.reversal.util.math;
 
 import lombok.experimental.UtilityClass;
+import net.minecraft.util.Vec3;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -87,5 +88,23 @@ public final class MathUtil {
 
     public double clamp(double min, double max, double n) {
         return Math.max(min, Math.min(max, n));
+    }
+
+    public static float interpolate(float old,
+                                    float now,
+                                    float partialTicks) {
+
+        return old + (now - old) * partialTicks;
+    }
+
+    public static Vec3 interpolate(Vec3 end, Vec3 start, float multiple) {
+        return new Vec3(
+                (float) interpolate(end.xCoord, start.xCoord, multiple),
+                (float) interpolate(end.yCoord, start.yCoord, multiple),
+                (float) interpolate(end.zCoord, start.zCoord, multiple));
+    }
+
+    public static double interpolate(double current, double old, double scale) {
+        return old + (current - old) * scale;
     }
 }

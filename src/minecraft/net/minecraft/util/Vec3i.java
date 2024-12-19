@@ -1,6 +1,7 @@
 package net.minecraft.util;
 
 import com.google.common.base.Objects;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class Vec3i implements Comparable<Vec3i>
 {
@@ -115,6 +116,18 @@ public class Vec3i implements Comparable<Vec3i>
     public double distanceSq(Vec3i to)
     {
         return this.distanceSq((double)to.getX(), (double)to.getY(), (double)to.getZ());
+    }
+
+    public double distanceTo(Vec3 vec)
+    {
+        double d0 = vec.xCoord - this.x;
+        double d1 = vec.yCoord - this.y;
+        double d2 = vec.zCoord - this.z;
+        return MathHelper.sqrt_double(d0 * d0 + d1 * d1 + d2 * d2);
+    }
+
+    public double distanceTo(final EntityPlayer vec) {
+        return distanceTo(new Vec3(vec.posX, vec.posY, vec.posZ));
     }
 
     public String toString()

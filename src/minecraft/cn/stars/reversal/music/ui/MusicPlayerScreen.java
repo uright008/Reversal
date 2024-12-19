@@ -121,7 +121,7 @@ public class MusicPlayerScreen extends GuiScreen {
         if (x + width > sr.getScaledWidth() - 10) x = sr.getScaledWidth() - 10 - width;
         if (y + height > sr.getScaledHeight() - 10) y = sr.getScaledHeight() - 10 - height;
 
-        RenderUtil.scaleStart(x + width / 2, y + height / 2, windowAnim.getOutput().floatValue());
+        RenderUtil.scaleStart(x + width / 2, y + height / 2, (float) windowAnim.getOutput());
         RoundedUtil.drawRoundOutline(x, y, width, height, 3f, 0.2f, ThemeColor.bgColor, ThemeColor.outlineColor);
         RoundedUtil.drawRound(x + 2f, y + 2f, leftWidth - 2f, height - 4f, 2.6f, ThemeColor.categoryColor);
 
@@ -150,7 +150,7 @@ public class MusicPlayerScreen extends GuiScreen {
 
         currentGUI.setWidth(width - leftWidth);
         currentGUI.setHeight(height - topWidth - bottomWidth);
-        currentGUI.draw(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, windowAnim.getOutput().floatValue());
+        currentGUI.draw(x + leftWidth, y + topWidth, mouseX, mouseY, x + width / 2f, y + width / 2f, (float) windowAnim.getOutput());
 
         if (RenderUtil.isHovered(x + leftWidth, y + topWidth, width - leftWidth, height - topWidth - bottomWidth, mouseX, mouseY)) {
             currentGUI.handleScroll();

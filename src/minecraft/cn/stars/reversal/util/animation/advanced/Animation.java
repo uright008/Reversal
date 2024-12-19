@@ -66,7 +66,7 @@ public abstract class Animation {
         return false;
     }
 
-    public Double getOutput() {
+    public double getOutput() {
         if (direction.forwards()) {
             if (isDone()) {
                 return endPoint;

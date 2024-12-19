@@ -62,7 +62,7 @@ public class MMTClickGUI extends GuiScreen {
     //    scaleAnimation.run(1);
     //    GlUtils.startScale(x, y, (float) scaleAnimation.getValue());
 
-        RenderUtil.scaleStart(x + 260, y + 160, windowAnim.getOutput().floatValue());
+        RenderUtil.scaleStart(x + 260, y + 160, (float) windowAnim.getOutput());
 
         if (!windowAnim.isDone()) windowAnim2.reset();
         RenderUtil.roundedRectangle(x, y, 520, 320, 3, new Color(250,250,250,255));
