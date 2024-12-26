@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render3DEvent;
 import cn.stars.reversal.module.impl.addons.FreeLook;
 import cn.stars.reversal.module.impl.misc.Protocol;
@@ -266,6 +267,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             if (this.shaderIndex != shaderCount)
             {
                 this.loadShader(shaderResourceLocations[this.shaderIndex]);
+                Reversal.showMsg("当前Shader: " + this.shaderIndex);
             }
             else
             {
@@ -411,7 +413,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (entity != null && this.mc.theWorld != null)
         {
-            Protocol protocol = (Protocol) ModuleInstance.getModule(Protocol.class);
+            Protocol protocol = ModuleInstance.getModule(Protocol.class);
             this.mc.mcProfiler.startSection("pick");
             this.mc.pointedEntity = null;
             double reachDistance = this.mc.playerController.getBlockReachDistance() - (3.0D - protocol.getReachDistance());
@@ -440,7 +442,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.pointedEntity = null;
             Vec3 vec33 = null;
             float f = 1.0F;
-            List<Entity> list = this.mc.theWorld.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().addCoord(vec31.xCoord * reachDistance, vec31.yCoord * reachDistance, vec31.zCoord * reachDistance).expand((double)f, (double)f, (double)f), Predicates.and(EntitySelectors.NOT_SPECTATING, Entity::canBeCollidedWith));
+            List<Entity> list = this.mc.theWorld.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().addCoord(vec31.xCoord * reachDistance, vec31.yCoord * reachDistance, vec31.zCoord * reachDistance).expand(f, f, f), Predicates.and(EntitySelectors.NOT_SPECTATING, Entity::canBeCollidedWith));
             double d2 = distanceToVec;
 
             for (Entity entity1 : list) {
@@ -588,7 +590,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 f = f * 60.0F / 70.0F;
             }
 
-            return Reflector.ForgeHooksClient_getFOVModifier.exists() ? Reflector.callFloat(Reflector.ForgeHooksClient_getFOVModifier, new Object[] {this, entity, block, Float.valueOf(partialTicks), Float.valueOf(f)}): f;
+            return Reflector.ForgeHooksClient_getFOVModifier.exists() ? Reflector.callFloat(Reflector.ForgeHooksClient_getFOVModifier, this, entity, block, partialTicks, f): f;
         }
     }
 
@@ -2382,7 +2384,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (Reflector.ForgeHooksClient_getFogDensity.exists())
         {
-            f = Reflector.callFloat(Reflector.ForgeHooksClient_getFogDensity, new Object[] {this, entity, block, Float.valueOf(partialTicks), Float.valueOf(0.1F)});
+            f = Reflector.callFloat(Reflector.ForgeHooksClient_getFogDensity, this, entity, block, partialTicks, 0.1F);
         }
 
         if (f >= 0.0F)
@@ -2480,7 +2482,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             if (Reflector.ForgeHooksClient_onFogRender.exists())
             {
-                Reflector.callVoid(Reflector.ForgeHooksClient_onFogRender, new Object[] {this, entity, block, Float.valueOf(partialTicks), Integer.valueOf(startCoords), Float.valueOf(f3)});
+                Reflector.callVoid(Reflector.ForgeHooksClient_onFogRender, this, entity, block, partialTicks, startCoords, f3);
             }
         }
 
@@ -2525,7 +2527,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                         if (this.serverWaitTime > 0)
                         {
                             Lagometer.timerServer.start();
-                            Config.sleep((long)this.serverWaitTime);
+                            Config.sleep(this.serverWaitTime);
                             Lagometer.timerServer.end();
                         }
 

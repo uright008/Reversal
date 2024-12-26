@@ -52,6 +52,7 @@ public class VideoUtil {
     }
 
     public static void retryIfFailed(File file) throws InterruptedException, FFmpegFrameGrabber.Exception {
+        ReversalLogger.warn("[*] Video player init error! Retry 1 time.");
         Thread.sleep(1000L);
         init(file);
     }

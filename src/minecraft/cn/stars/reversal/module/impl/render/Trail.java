@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
         chineseDescription = "在你走过的地方渲染足迹", category = Category.RENDER)
 public final class Trail extends Module {
     public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Minecraft", "Round", "Modern");
+    private final BoolValue showInFirstPerson = new BoolValue("First Person", this, true);
     private final BoolValue timeoutBool = new BoolValue("Fade", this, true);
     private final NumberValue timeout = new NumberValue("Fade Time", this, 15, 1, 150, 0.1);
     private final NumberValue delay = new NumberValue("Spawn Delay (100ms)", this, 0, 0, 10, 0.1);
@@ -129,6 +130,7 @@ public final class Trail extends Module {
 
     @Override
     public void onRender3D(final Render3DEvent event) {
+        if (mc.gameSettings.thirdPersonView == 0 && !showInFirstPerson.isEnabled()) return;
         if (mode.getMode().equals("Round")) {
             RenderUtil.renderBreadCrumbs(path);
         } else if (mode.getMode().equals("Modern")) {

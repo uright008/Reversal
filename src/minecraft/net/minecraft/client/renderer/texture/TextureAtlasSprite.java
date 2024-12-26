@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer.texture;
 
+import cn.stars.reversal.Reversal;
+import cn.stars.reversal.ui.splash.SplashScreen;
 import com.google.common.collect.Lists;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -211,7 +213,7 @@ public class TextureAtlasSprite
     {
         if (this.animationMetadata != null)
         {
-            this.animationActive = SmartAnimations.isActive() ? SmartAnimations.isSpriteRendered(this.animationIndex) : true;
+            this.animationActive = !SmartAnimations.isActive() || SmartAnimations.isSpriteRendered(this.animationIndex);
             ++this.tickCounter;
 
             if (this.tickCounter >= this.animationMetadata.getFrameTimeSingle(this.frameCounter))
@@ -231,7 +233,7 @@ public class TextureAtlasSprite
 
                 if (i != k && k >= 0 && k < this.framesTextureData.size())
                 {
-                    TextureUtil.uploadTextureMipmap((int[][])((int[][])this.framesTextureData.get(k)), this.width, this.height, this.originX, this.originY, flag, flag1);
+                    TextureUtil.uploadTextureMipmap(this.framesTextureData.get(k), this.width, this.height, this.originX, this.originY, flag, flag1);
                 }
             }
             else if (this.animationMetadata.isInterpolate())

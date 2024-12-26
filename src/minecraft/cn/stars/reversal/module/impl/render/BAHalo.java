@@ -33,7 +33,7 @@ import java.awt.*;
 @ModuleInfo(name = "BAHalo",  chineseName = "蔚蓝档案光环", description = "Blue archive halos", chineseDescription = "蔚蓝档案角色的光环", category = Category.RENDER)
 public class BAHalo extends Module {
     private final ModeValue mode = new ModeValue("Student", this, "Shiroko", "Shiroko", "Hoshino", "Reisa", "Azusa");
-    private final BoolValue showInFirstPerson = new BoolValue("First Person", this, true);
+    private final BoolValue showInFirstPerson = new BoolValue("First Person", this, false);
     private final BoolValue lighting = new BoolValue("Lighting", this, false);
     CustomAnimation animation = new CustomAnimation(SmoothStepAnimation.class, 2000, 0.0, 0.1);
     Tessellator tessellator = Tessellator.getInstance();

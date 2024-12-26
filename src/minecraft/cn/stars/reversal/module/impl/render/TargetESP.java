@@ -10,6 +10,7 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
 import cn.stars.reversal.util.math.MathUtil;
+import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.animation.advanced.Animation;
@@ -37,13 +38,15 @@ import java.util.ConcurrentModificationException;
 
 @ModuleInfo(name = "TargetESP", chineseName = "敌人标记", description = "Display a ESP when you hit targets", chineseDescription = "当你攻击目标时渲染ESP", category = Category.RENDER)
 public class TargetESP extends Module {
-    public final ModeValue mode = new ModeValue("Mode", this, "Rectangle", "Rectangle", "Round", "Bubble", "Surrounding");
+    public final ModeValue mode = new ModeValue("Mode", this, "Rectangle", "Rectangle", "Round", "Bubble", "Stars", "Surrounding");
     public final NumberValue surroundingSpeed = new NumberValue("Surrounding Speed", this, 2.0F, 1.0F, 5.0F, 0.1F);
     EntityLivingBase attackedEntity;
     private final Animation auraESPAnim = new SmoothStepAnimation(650, 1);
     static final ArrayList<Bubble> bubbles = new ArrayList<>();
+    static final ArrayList<Bubble> stars = new ArrayList<>();
     private final Tessellator tessellator = Tessellator.getInstance();
     private final WorldRenderer buffer = this.tessellator.getWorldRenderer();
+    public static final ResourceLocation STAR_TEXTURE = new ResourceLocation("reversal/images/texture/fireflies/star.png");
     public static final ResourceLocation BUBBLE_TEXTURE = new ResourceLocation("reversal/images/texture/targetesp/bubble.png");
     public static final ResourceLocation SURROUNDING_TEXTURE = new ResourceLocation("reversal/images/texture/targetesp/glow_circle.png");
     private final long lastTime = System.currentTimeMillis();
@@ -61,6 +64,8 @@ public class TargetESP extends Module {
             if (attackedEntity.isEntityAlive()) {
                 Vec3 to = attackedEntity.getPositionVector().addVector(0.0, attackedEntity.height / 1.6f, 0.0);
                 addBubble(to);
+                addStar(to, 3);
+                addStar(to, 3);
             }
         }
     }
@@ -80,6 +85,24 @@ public class TargetESP extends Module {
                     this.setupDrawsBubbles3D(() -> bubbles.forEach(bubble -> {
                         if (bubble != null && bubble.getDeltaTime() <= 1.0f) {
                             this.drawBubble(bubble, aPC);
+                        }
+                    }));
+                    this.removeAuto();
+                } catch (ConcurrentModificationException ignored) {
+                    // you can actually ignore this.
+                }
+            } else if (mode.getMode().equals("Stars")) {
+                float aPC = this.getAlphaPC();
+                if ((double) aPC < 0.05) {
+                    return;
+                }
+                if (stars.isEmpty()) {
+                    return;
+                }
+                try {
+                    this.setupDrawsBubbles3D(() -> stars.forEach(star -> {
+                        if (star != null && star.getDeltaTime() <= 1.0f) {
+                            this.drawStar(star, aPC);
                         }
                     }));
                     this.removeAuto();
@@ -185,10 +208,23 @@ public class TargetESP extends Module {
         attackedEntity = null;
     }
 
+    private static void addStar(Vec3 addToCoord, int bubbleCount) {
+        float angleStep = 360.0f / bubbleCount;
+
+        for (int i = 0; i < bubbleCount; i++) {
+            float viewYaw = i * angleStep;
+
+            float viewPitch = (float) Math.asin(2 * (i / (float) bubbleCount) - 1) * (180 / (float) Math.PI);
+
+            stars.add(new Bubble(viewYaw, viewPitch, addToCoord));
+        }
+    }
+
     private static void addBubble(Vec3 addToCoord) {
         RenderManager manager = mc.getRenderManager();
         bubbles.add(new Bubble(manager.playerViewX, -manager.playerViewY, addToCoord));
     }
+
 
     private void setupDrawsBubbles3D(Runnable render) {
         RenderManager manager = mc.getRenderManager();
@@ -205,7 +241,6 @@ public class TargetESP extends Module {
         GL11.glShadeModel(GL11.GL_SMOOTH);
         GlStateManager.tryBlendFuncSeparate(770, 32772, 1, 0);
         GL11.glTranslated(-conpense.xCoord, -conpense.yCoord, -conpense.zCoord);
-        mc.getTextureManager().bindTexture(this.BUBBLE_TEXTURE);
         render.run();
 
         GL11.glTranslated(conpense.xCoord, conpense.yCoord, conpense.zCoord);
@@ -223,19 +258,53 @@ public class TargetESP extends Module {
 
     private void drawBubble(Bubble bubble, float alphaPC) {
         GL11.glPushMatrix();
+
+        mc.getTextureManager().bindTexture(BUBBLE_TEXTURE);
+
         GL11.glTranslated(bubble.pos.xCoord, bubble.pos.yCoord, bubble.pos.zCoord);
+
         float extS = bubble.getDeltaTime();
-        GlStateManager.translate(-Math.sin(Math.toRadians(bubble.viewPitch)) * (double) extS / 3.0, Math.sin(Math.toRadians(bubble.viewYaw)) * (double) extS / 2.0, -Math.cos(Math.toRadians(bubble.viewPitch)) * (double) extS / 3.0);
+        GlStateManager.translate(-Math.sin(Math.toRadians(bubble.viewPitch)) * (double) extS / 3.0,
+                Math.sin(Math.toRadians(bubble.viewYaw)) * (double) extS / 2.0,
+                -Math.cos(Math.toRadians(bubble.viewPitch)) * (double) extS / 3.0);
+
         GL11.glNormal3d(1.0, 1.0, 1.0);
         GL11.glRotated(bubble.viewPitch, 0.0, 1.0, 0.0);
         GL11.glRotated(bubble.viewYaw, mc.gameSettings.thirdPersonView == 2 ? -1.0 : 1.0, 0.0, 0.0);
         GL11.glScaled(-0.1, -0.1, 0.1);
+
         this.drawBeginsNullCoord(bubble, alphaPC);
+
+        GL11.glPopMatrix();
+    }
+
+    private void drawStar(Bubble bubble, float alphaPC) {
+        GL11.glPushMatrix();
+
+        mc.getTextureManager().bindTexture(STAR_TEXTURE);
+
+        // gravity
+        bubble.updatePosition();
+
+        GL11.glTranslated(bubble.pos.xCoord, bubble.pos.yCoord, bubble.pos.zCoord);
+
+        float extS = bubble.getDeltaTime();
+        GlStateManager.translate(-Math.sin(Math.toRadians(bubble.viewPitch)) * (double) extS / 3.0,
+                Math.sin(Math.toRadians(bubble.viewYaw)) * (double) extS / 2.0,
+                -Math.cos(Math.toRadians(bubble.viewPitch)) * (double) extS / 3.0);
+
+        GL11.glNormal3d(1.0, 1.0, 1.0);
+        GL11.glRotated(bubble.viewPitch, 0.0, 1.0, 0.0);
+        GL11.glRotated(bubble.viewYaw, mc.gameSettings.thirdPersonView == 2 ? -1.0 : 1.0, 0.0, 0.0);
+        GL11.glScaled(-0.1, -0.1, 0.1);
+
+        this.drawBeginsNullCoord(bubble, alphaPC);
+
         GL11.glPopMatrix();
     }
 
     private void drawBeginsNullCoord(Bubble bubble, float alphaPC) {
-        float r = 50.0f * bubble.getDeltaTime() * (1.0f - bubble.getDeltaTime());
+        float r = 25.0f * bubble.getDeltaTime() * (1.0f - bubble.getDeltaTime());
         int speedRotate = 3;
         float III = (float) (System.currentTimeMillis() % (long) (3600 / speedRotate)) / 10.0f * (float) speedRotate;
         RenderUtil.customRotatedObject2D(-1.0f, -1.0f, 2.0f, 2.0f, -III);
@@ -273,14 +342,65 @@ public class TargetESP extends Module {
         float viewYaw;
         float viewPitch;
 
+        // 新增的属性
+        double initialUpwardSpeed = 0.006;
+        double fallSpeed = 0.0001;
+        double horizontalSpeed = 0.01;
+
+        double velocityY = initialUpwardSpeed;
+        double velocityX;
+        double velocityZ;
+
+        boolean isRising = true;
+        boolean oppositeX;
+        boolean oppositeZ;
+
         public Bubble(float viewYaw, float viewPitch, Vec3 pos) {
             this.viewYaw = viewYaw;
             this.viewPitch = viewPitch;
             this.pos = pos;
+            this.oppositeX = RandomUtil.INSTANCE.nextBoolean();
+            this.oppositeZ = RandomUtil.INSTANCE.nextBoolean();
+
+            this.initialUpwardSpeed *= RandomUtil.INSTANCE.nextDouble(1.0, 1.6);
+            this.fallSpeed *= RandomUtil.INSTANCE.nextDouble(0.5, 0.8);
+            this.horizontalSpeed *= RandomUtil.INSTANCE.nextDouble(0.4, 0.8);
+
+            this.velocityX = Math.sin(Math.toRadians(viewYaw)) * horizontalSpeed;
+            this.velocityZ = Math.cos(Math.toRadians(viewYaw)) * horizontalSpeed;
         }
 
         private float getDeltaTime() {
             return (float) (System.currentTimeMillis() - this.time) / this.maxTime;
         }
+
+        public void updatePosition() {
+            if (isRising) {
+                pos.yCoord += velocityY;
+                velocityY -= fallSpeed;
+
+                if (velocityY <= 0) {
+                    isRising = false;
+                }
+            } else {
+                pos.yCoord -= velocityY;
+                velocityY += fallSpeed;
+            }
+
+            if (oppositeX) {
+                pos.xCoord -= velocityX;
+            } else {
+                pos.xCoord += velocityX;
+            }
+            if (oppositeZ) {
+                pos.zCoord -= velocityZ;
+            } else {
+                pos.zCoord += velocityZ;
+            }
+        }
     }
+
+
+
+
 }

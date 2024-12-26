@@ -45,21 +45,25 @@ public class RainyAPI {
     public static int backgroundId = 9;
     public static boolean isShaderCompatibility = false;
     public static boolean isViaCompatibility = false;
-    public static boolean isSplashScreenDiabled = false;
+    public static boolean isSplashScreenDisabled = false;
     public static boolean isPreInited = false;
     public static boolean mainMenuDate = false;
     public static boolean guiSnow = false;
     public static boolean backgroundBlur = false;
 
-    // 崩溃报告随机语录
+    /**
+     * 崩溃报告上面的字
+     */
     public static final String[] wittyCrashReport = new String[]
             {"玩原神玩的", "原神?启动!", "哇真的是你啊", "你怎么似了", "加瓦,救一下啊", "Bomb has been planted",
                     "闭嘴!我的父亲在mojang工作,他可以使你的mInEcRaFt崩溃", "纪狗气死我了", "致敬传奇耐崩王MiNeCrAfT", "你的客户端坠机了",
                     "It's been a long day without you my friend", "回来吧牢端", "为了你,我变成狼人模样"};
-    // 随机标题
+    /**
+     * 初开我想你了
+     */
     public static final String[] wittyTitle = new String[]
-            {"我们因缘分而相遇，因共同而相聚。", "人生有欢喜也有悲剧,一切已是命中注定。", "在那灿烂的群星中,总有一颗代表我正与你对视。", "东风初开小桃杏，万里故人应有情。", "躲进小楼成一统，管他冬夏与春秋。", "庭院深深花初开，欲寄相思无雁来。", "十年生死两茫茫，不思量，自难忘。",
-            "When hope fade into less, it becomes hopeless.", "去年花里逢君别，今日花开又一年。", "曾经沧海难为水，除却巫山不是云。", "vanitas vanitatum et omnia vanitas.", "你为什么要花时间维护一个没人用的客户端?"};
+            {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "我们经历成败的交替,我们看透人心的变幻",
+             "time.elapsed(93d)", "相见时难别亦难,东风无力百花残"};
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];
@@ -102,7 +106,8 @@ public class RainyAPI {
                             VideoUtil.init(videoFile);
                             Reversal.notificationManager.registerNotification("成功更换视频背景!", "主菜单", 2000L, NotificationType.SUCCESS);
                         } catch (Exception e) {
-                            throw new RuntimeException("Failed to load new background file.");
+                            ReversalLogger.error("Error while loading file.", e);
+                            Reversal.notificationManager.registerNotification("更换视频背景时出现错误!", "主菜单", 2000L, NotificationType.ERROR);
                         }
                     } else {
                         Reversal.notificationManager.registerNotification("不支持的文件类型!", "主菜单", 2000L, NotificationType.ERROR);
@@ -140,7 +145,7 @@ public class RainyAPI {
                 isViaCompatibility = Boolean.parseBoolean(split[1]);
             }
             if (split[0].contains("DisableSplashScreen")) {
-                isSplashScreenDiabled = Boolean.parseBoolean(split[1]);
+                isSplashScreenDisabled = Boolean.parseBoolean(split[1]);
             }
             if (split[0].contains("IsPreInited")) {
                 isPreInited = Boolean.parseBoolean(split[1]);
@@ -167,7 +172,7 @@ public class RainyAPI {
         final StringBuilder clientBuilder = new StringBuilder();
         clientBuilder.append("DisableShader_").append(isShaderCompatibility).append("\r\n");
         clientBuilder.append("DisableViaMCP_").append(isViaCompatibility).append("\r\n");
-        clientBuilder.append("DisableSplashScreen_").append(isSplashScreenDiabled).append("\r\n");
+        clientBuilder.append("DisableSplashScreen_").append(isSplashScreenDisabled).append("\r\n");
         clientBuilder.append("IsPreInited_").append(isPreInited).append("\r\n");
         clientBuilder.append("LicenseReviewed_").append(isPreInited).append("\r\n");
         clientBuilder.append("MainMenuDate_").append(mainMenuDate).append("\r\n");

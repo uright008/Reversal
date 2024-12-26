@@ -632,7 +632,7 @@ public class GuiIngame extends Gui {
             int i2 = Math.max(10 - (l1 - 2), 3);
             int j2 = k1 - (l1 - 1) * i2 - 10;
 
-            int l1_ = MathHelper.ceiling_float_int((f) / 2.0F / 10.0F);
+            int l1_ = MathHelper.ceiling_float_int(20f / 2.0F / 10.0F);
             int i2_ = Math.max(10 - (l1_ - 2), 3);
             int j2_ = k1 - (l1_ - 1) * i2_ - 10;
 
@@ -650,8 +650,8 @@ public class GuiIngame extends Gui {
             if (ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) {
                 armorAnimation.run(k2 * 4);
                 if (k2 > 0) {
-                    RoundedUtil.drawRound(i1, j2_, (float) armorAnimation.getValue(), 7, 2, new Color(150, 150, 150, 150 + k2 * 5));
-                    GameInstance.regular16.drawString(k2 + "", i1 - GameInstance.regular16.width(k2 + "") + armorAnimation.getValue(), j2_ + 2, new Color(250, 250, 250, 150 + k2 * 5).getRGB());
+                    RoundedUtil.drawRound(i1, j2_, (float) armorAnimation.getValue(), 7, 2, new Color(150, 150, 150, Math.min(150 + k2 * 5, 255)));
+                    GameInstance.regular16.drawString(k2 + "", i1 - GameInstance.regular16.width(k2 + "") + armorAnimation.getValue(), j2_ + 2, new Color(250, 250, 250, Math.min(150 + k2 * 5, 255)).getRGB());
                 }
             } else {
                 for (int i3 = 0; i3 < 10; ++i3) {
@@ -675,19 +675,26 @@ public class GuiIngame extends Gui {
 
             this.mc.mcProfiler.endStartSection("health");
 
-            int i4 = MathHelper.ceiling_float_int(f / 2.0F) - 1;
+            int i4 = MathHelper.ceiling_float_int(20.0f / 2.0F) - 1;
             int l3 = MathHelper.ceiling_float_int((float) (i4 + 1) / 10.0F) - 1;
             int j4 = k1 - l3 * i2;
             if (ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) {
-                healthAnimation.run(mc.thePlayer.getHealth() * 4);
+                healthAnimation.run(80 / f * mc.thePlayer.getHealth()); // max health may above 20
                 if (entityplayer.isPotionActive(Potion.regeneration)) {
                     RoundedUtil.drawGradientRound(i1, j4, (float) healthAnimation.getValue(), 7, 2,
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 1000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true),
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 1000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true),
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 2000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true),
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 2000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true));
-                } else RoundedUtil.drawRound(i1, j4, (float) healthAnimation.getValue(), 7, 2, new Color(Math.min(150 + (int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) * 5, 255), Math.min(20 + (int) mc.thePlayer.getAbsorptionAmount() * 15, 255), 20, 250));
-                GameInstance.regular16.drawString((int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) + "", i1 - GameInstance.regular16.width((int) mc.thePlayer.getHealth() + "") + healthAnimation.getValue(), j4 + 2, new Color(250, 250, 250, Math.min(150 + (int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) * 5, 255)).getRGB());
+                } else if (entityplayer.isPotionActive(Potion.poison)) {
+                    RoundedUtil.drawRound(i1, j4, (float) healthAnimation.getValue(), 7, 2, new Color(40, 100, 40, 250));
+                } else if (entityplayer.isPotionActive(Potion.wither)) {
+                    RoundedUtil.drawRound(i1, j4, (float) healthAnimation.getValue(), 7, 2, new Color(35, 20, 20, 250));
+                } else {
+                    RoundedUtil.drawRound(i1, j4, (float) healthAnimation.getValue(), 7, 2, new Color(Math.min(150 + (int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) * 5, 255), Math.min(20 + (int) mc.thePlayer.getAbsorptionAmount() * 15, 255), 20, 250));
+                }
+
+                GameInstance.regular16.drawString((int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) + "", i1 - GameInstance.regular16.width((int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) + "") + healthAnimation.getValue(), j4 + 2, new Color(250, 250, 250, Math.min(150 + (int) (mc.thePlayer.getHealth() + mc.thePlayer.getAbsorptionAmount()) * 5, 255)).getRGB());
             } else {
                 for (int i6 = MathHelper.ceiling_float_int((f + f1) / 2.0F) - 1; i6 >= 0; --i6) {
                     int j6 = 16;
@@ -762,7 +769,7 @@ public class GuiIngame extends Gui {
                     this.mc.mcProfiler.endStartSection("food");
                     int j9 = j1 - 80;
                     foodAnimation.run(k * 4);
-                    RoundedUtil.drawRound(j9, j4, (float) foodAnimation.getValue(), 7, 2, new Color(220, Math.min(20 + 50 + k * 2, 255), 20, 150 + k * 5));
+                    RoundedUtil.drawRound(j9, j4, (float) foodAnimation.getValue(), 7, 2, new Color(220, Math.min(20 + 50 + k * 2, 255), 20, Math.min(150 + k2 * 5, 255)));
                     GameInstance.regular16.drawString(k + "", j9 - GameInstance.regular16.width(k + "") + foodAnimation.getValue(), j4 + 2, new Color(250, 250, 250, Math.min(150 + k * 5, 255)).getRGB());
                 } else {
                     for (int k6 = 0; k6 < 10; ++k6) {

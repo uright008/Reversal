@@ -9,6 +9,6 @@ import net.minecraft.client.gui.GuiScreen;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CloseGUIEvent extends Event {
+public class GUIClosedEvent extends Event {
     private final GuiScreen closedScreen;
 }

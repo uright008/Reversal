@@ -256,7 +256,7 @@ public class ModernClickGUI extends GuiScreen {
 
         RenderUtil.scissor(x, y, 520, 360);
         RenderUtil.rect(x + 120, y - 1, 398, 30, backgroundColor);
-        String titleText = searchField.text.isEmpty() ? StringUtils.capitalize(selectedCategory.name().toLowerCase()) : "\"" + searchField.text + "\"";
+        String titleText = searchField.text.isEmpty() ? StringUtils.capitalize(selectedCategory.name().toLowerCase()) : "\"" + psm20.trimStringToWidth(searchField.text, 160, false,true) + "\"";
         psm20.drawString(titleText, x + 125, y + 10, new Color(200,200,200,240).getRGB());
         icon16.drawString("i", x + 126 + psm24.width(titleText), y + 13, new Color(200,200,200,240).getRGB());
         RenderUtil.rectangle(x + 116, y + 25, 404, 0.8, new Color(100,100,100,100));
@@ -388,6 +388,8 @@ public class ModernClickGUI extends GuiScreen {
                 }
             }
         }
+
+        super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     private void setSelectedCategory(Category category) {
@@ -431,6 +433,7 @@ public class ModernClickGUI extends GuiScreen {
     public void updateScreen() {
         wheel = Mouse.getDWheel();
         scrollAmount += wheel / (11f - ModuleInstance.getModule(ClickGui.class).scrollSpeed.getFloat()) * 200f;
+        super.updateScreen();
     }
 
     @Override
@@ -443,6 +446,7 @@ public class ModernClickGUI extends GuiScreen {
             Keyboard.enableRepeatEvents(false);
         }
         searchField.keyTyped(typedChar, keyCode);
+        super.keyTyped(typedChar, keyCode);
     }
 
     @Override
@@ -459,6 +463,7 @@ public class ModernClickGUI extends GuiScreen {
         sideAnimation.reset();
         scaleAnimation.run(1d);
         wheel = Mouse.getDWheel();
+        super.initGui();
     }
 
     @Override
@@ -466,6 +471,7 @@ public class ModernClickGUI extends GuiScreen {
         Keyboard.enableRepeatEvents(false);
         selectedSlider = null;
         searchField.setText("");
+        super.onGuiClosed();
     }
 
     @Override

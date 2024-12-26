@@ -244,4 +244,7 @@ public abstract class Module implements GameInstance {
 
     public void onLoad() {
     }
+
+    public void onGuiClosed(GUIClosedEvent event) {
+    }
 }

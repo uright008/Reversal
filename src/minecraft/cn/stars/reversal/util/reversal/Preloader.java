@@ -54,7 +54,7 @@ public class Preloader {
         ReversalLogger.info("Successfully loaded " + count + " resources!");
     }
 
-    private void loadResource(ResourceLocation toBind) {
+    private synchronized void loadResource(ResourceLocation toBind) {
         SimpleTexture texture = new SimpleTexture(toBind);
         Minecraft.getMinecraft().getTextureManager().loadTexture(toBind, texture);
         count++;

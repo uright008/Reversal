@@ -12,7 +12,6 @@ import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 
 import java.awt.*;
 
@@ -240,6 +239,16 @@ public final class EventHandler {
                     module.onTeleport(event);
                 }
             }
+        } else if (e instanceof GUIClosedEvent) {
+            final GUIClosedEvent event = ((GUIClosedEvent) e);
+
+            for (final Module module : modules) {
+                if (module.isEnabled()) {
+                    module.onGuiClosed(event);
+                }
+            }
+
+            residentProcessor.onGuiClosed(event);
         }
     }
 }

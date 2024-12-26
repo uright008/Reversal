@@ -255,7 +255,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private long debugCrashKeyPressTime = -1L;
     private IReloadableResourceManager mcResourceManager;
     private final IMetadataSerializer metadataSerializer_ = new IMetadataSerializer();
-    private final List<IResourcePack> defaultResourcePacks = Lists.<IResourcePack>newArrayList();
+    private final List<IResourcePack> defaultResourcePacks = Lists.newArrayList();
     private final DefaultResourcePack mcDefaultResourcePack;
     private ResourcePackRepository mcResourcePackRepository;
     private LanguageManager mcLanguageManager;
@@ -266,7 +266,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private ResourceLocation mojangLogo;
     public final MinecraftSessionService sessionService;
     private SkinManager skinManager;
-    private final Queue < FutureTask<? >> scheduledTasks = Queues. < FutureTask<? >> newArrayDeque();
+    private final Queue < FutureTask<? >> scheduledTasks = Queues.newArrayDeque();
     private final Thread mcThread = Thread.currentThread();
     private ModelManager modelManager;
     private BlockRendererDispatcher blockRenderDispatcher;
@@ -277,8 +277,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     int fpsCounter;
     long prevFrameTime = -1L;
     private String debugProfilerName = "root";
-    private FoliageColorReloadListener foliageColorReloadListener;
-    private GrassColorReloadListener grassColorReloadListener;
 
     public Minecraft(GameConfiguration gameConfig)
     {
@@ -432,12 +430,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
         SplashScreen.setProgress(30, "Minecraft - Font Renderer");
         this.standardGalacticFontRenderer = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii_sga.png"), this.renderEngine, false);
-        this.foliageColorReloadListener = new FoliageColorReloadListener();
-        this.grassColorReloadListener = new GrassColorReloadListener();
+        FoliageColorReloadListener foliageColorReloadListener = new FoliageColorReloadListener();
+        GrassColorReloadListener grassColorReloadListener = new GrassColorReloadListener();
         this.mcResourceManager.registerReloadListener(this.fontRendererObj);
         this.mcResourceManager.registerReloadListener(this.standardGalacticFontRenderer);
-        this.mcResourceManager.registerReloadListener(this.foliageColorReloadListener);
-        this.mcResourceManager.registerReloadListener(this.grassColorReloadListener);
+        this.mcResourceManager.registerReloadListener(foliageColorReloadListener);
+        this.mcResourceManager.registerReloadListener(grassColorReloadListener);
         AchievementList.openInventory.setStatStringFormatter(str -> {
             try {
                 return str.replace("%s", GameSettings.getKeyDisplayString(Minecraft.this.gameSettings.keyBindInventory.getKeyCode()));
@@ -541,7 +539,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     private void createDisplay() {
         Display.setResizable(true);
-        Display.setTitle(RainyAPI.getRandomTitle());
+        Display.setTitle("Reversal");
 
         Display.create((new PixelFormat()).withDepthBits(24));
 
@@ -958,7 +956,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         openGUIEvent.call();
         if (this.currentScreen != null)
         {
-            final CloseGUIEvent closeGUIEvent = new CloseGUIEvent(this.currentScreen);
+            final GUIClosedEvent closeGUIEvent = new GUIClosedEvent(this.currentScreen);
             closeGUIEvent.call();
             this.currentScreen.onGuiClosed();
         //    GLFW.glfwSetCursor(Display., MemoryUtil.NULL);
@@ -1833,8 +1831,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                             this.setIngameFocus();
                         }
                     }
-                    else if (this.currentScreen != null)
-                    {
+                    else {
                         this.currentScreen.handleMouseInput();
                     }
                 }

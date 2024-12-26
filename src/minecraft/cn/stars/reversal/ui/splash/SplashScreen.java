@@ -62,6 +62,7 @@ public class SplashScreen {
 
     @SneakyThrows
     public static void init() {
+        if (RainyAPI.isSplashScreenDisabled) return;
         // INIT LOL
         subWindow = RainyAPI.createSubWindow();
         GLFW.glfwMakeContextCurrent(subWindow);
@@ -221,10 +222,13 @@ public class SplashScreen {
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, .1f);
 
+        GLFW.glfwMakeContextCurrent(Display.getWindow());
+        GL.createCapabilities();
     }
 
     @SneakyThrows
     public static void notifyGameLoaded() {
+        if (RainyAPI.isSplashScreenDisabled) return;
         if (!crashDetected) {
             loadingScreenRenderer.onGameLoadFinishedNotify();
 
@@ -269,6 +273,7 @@ public class SplashScreen {
 
     @SneakyThrows
     public static void setProgress(int progress, String detail) {
+        if (RainyAPI.isSplashScreenDisabled) return;
         SplashScreen.progress = progress;
         SplashScreen.progressText = detail;
         mc.updateDisplay();

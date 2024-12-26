@@ -25,7 +25,7 @@ public class IMetadataSerializer
 
     public <T extends IMetadataSection> void registerMetadataSectionType(IMetadataSectionSerializer<T> metadataSectionSerializer, Class<T> clazz)
     {
-        this.metadataSectionSerializerRegistry.putObject(metadataSectionSerializer.getSectionName(), new IMetadataSerializer.Registration<>(metadataSectionSerializer, clazz));
+        this.metadataSectionSerializerRegistry.putObject(metadataSectionSerializer.getSectionName(), new Registration<>(metadataSectionSerializer, clazz));
         this.gsonBuilder.registerTypeAdapter(clazz, metadataSectionSerializer);
         this.gson = null;
     }
@@ -54,7 +54,7 @@ public class IMetadataSerializer
             }
             else
             {
-                return (T) this.getGson().fromJson((JsonElement)json.getAsJsonObject(sectionName), registration.clazz);
+                return (T) this.getGson().fromJson(json.getAsJsonObject(sectionName), registration.clazz);
             }
         }
     }
@@ -69,7 +69,7 @@ public class IMetadataSerializer
         return this.gson;
     }
 
-    class Registration<T extends IMetadataSection>
+    static class Registration<T extends IMetadataSection>
     {
         final IMetadataSectionSerializer<T> section;
         final Class<T> clazz;

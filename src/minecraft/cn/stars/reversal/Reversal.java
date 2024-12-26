@@ -54,7 +54,7 @@ import java.util.concurrent.Executors;
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
-    public static final String VERSION = "v0.13.0";
+    public static final String VERSION = "v1.1.0";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
@@ -100,9 +100,9 @@ public class Reversal {
 
             postInitialize();
 
-        //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
+            Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
         //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH));
-            Display.setTitle(NAME + " (" + VERSION + "/" + BRANCH.name() + "/RainyAPI/LWJGL " + Sys.getVersion() + ")");
+        //    Display.setTitle(NAME + " (" + VERSION + "/" + BRANCH.name() + "/RainyAPI/LWJGL " + Sys.getVersion() + ")");
             ReversalLogger.info("Client loaded successfully.");
             ReversalLogger.info(NAME + " " + VERSION + " (Minecraft " + MINECRAFT_VERSION + "), made with love by " + AUTHOR + ".");
         } catch (Exception e) {
@@ -198,10 +198,6 @@ public class Reversal {
 
             entityCullingMod = new EntityCullingMod();
             entityCullingMod.onInitialize();
-
-            if (!FileUtil.exists("Background" + File.separator)) {
-                FileUtil.createDirectory("Background" + File.separator);
-            }
 
             File tempFile = new File(Minecraft.getMinecraft().mcDataDir, "Reversal/Background");
             File videoFile = new File(tempFile, "background.mp4");
