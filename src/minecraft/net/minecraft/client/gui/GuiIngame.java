@@ -8,6 +8,7 @@ import cn.stars.reversal.module.impl.render.AppleSkin;
 import cn.stars.reversal.module.impl.render.Crosshair;
 import cn.stars.reversal.module.impl.render.Hotbar;
 import cn.stars.reversal.ui.hud.Hud;
+import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -817,7 +818,7 @@ public class GuiIngame extends Gui {
             {
                 this.mc.mcProfiler.endStartSection("mountHealth");
                 EntityLivingBase entitylivingbase = (EntityLivingBase)entity;
-                int i7 = (int)Math.ceil((double)entitylivingbase.getHealth());
+                int i7 = (int)Math.ceil(entitylivingbase.getHealth());
                 float f3 = entitylivingbase.getMaxHealth();
                 int j8 = (int)(f3 + 0.5F) / 2;
 
@@ -838,13 +839,8 @@ public class GuiIngame extends Gui {
                         int j5 = 52;
                         int k5 = 0;
 
-                        if (flag1)
-                        {
-                            k5 = 1;
-                        }
-
                         int l5 = j1 - i5 * 8 - 9;
-                        this.drawTexturedModalRect(l5, i9, j5 + k5 * 9, 9, 9, 9);
+                        this.drawTexturedModalRect(l5, i9, j5, 9, 9, 9);
 
                         if (i5 * 2 + 1 + k9 < i7)
                         {
@@ -882,9 +878,15 @@ public class GuiIngame extends Gui {
                 }
             }
 
-            if (!ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) ModuleInstance.getModule(AppleSkin.class).renderOverlay();
-
             this.mc.mcProfiler.endSection();
+
+
+            if (!ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled())
+                try {
+                    ModuleInstance.getModule(AppleSkin.class).renderOverlay();
+                } catch (Exception e) {
+                    ReversalLogger.error("Error occurred while rendering overlay.", e);
+                }
         }
     }
 

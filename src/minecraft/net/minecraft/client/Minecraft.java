@@ -402,11 +402,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         OpenGlHelper.initializeTextures();
         AsyncGLContentLoader.initLoader();
         RainyAPI.loadAPI(false);
-        SplashScreen.init();
-        SplashScreen.setProgress(10, "Minecraft - Display");
         this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
         this.framebufferMc.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
         this.registerMetadataSerializers();
+        SplashScreen.init();
+        SplashScreen.setProgress(10, "Minecraft - Display");
         this.mcResourcePackRepository = new ResourcePackRepository(this.fileResourcepacks, new File(this.mcDataDir, "server-resource-packs"), this.mcDefaultResourcePack, this.metadataSerializer_, this.gameSettings);
         this.mcResourceManager = new SimpleReloadableResourceManager(this.metadataSerializer_);
         this.mcLanguageManager = new LanguageManager(this.metadataSerializer_, this.gameSettings.language);

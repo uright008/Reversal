@@ -1,15 +1,13 @@
 package cn.stars.reversal.util.animation;
 
+import lombok.Getter;
 import net.minecraft.util.MathHelper;
 
 import java.util.function.Function;
 
 public class SmoothScrolling {
+    @Getter
     private static Function<Double, Double> easingMethod = v -> v;
-
-    public static Function<Double, Double> getEasingMethod() {
-        return easingMethod;
-    }
 
     public static long getScrollDuration() {
         return 400;

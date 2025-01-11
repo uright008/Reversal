@@ -1,28 +1,44 @@
 package cn.stars.reversal.ui.notification;
 
+import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.FontManager;
+import cn.stars.reversal.ui.atmoic.Atomic;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.apache.commons.lang3.StringUtils;
 
+import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ConcurrentModificationException;
 import java.util.Deque;
 
-public final class NotificationManager {
+public final class NotificationManager implements GameInstance {
 
     private static final Deque<Notification> notifications = new ArrayDeque<>();
 
     public void registerNotification(final String description, final String title, final long delay, final NotificationType type) {
         notifications.add(new Notification(description, title, delay, type));
+        Atomic.submitTask(() -> {
+            Atomic.width = psm18.width(description) + 10;
+            Atomic.height = 30;
+            psb20.drawString(title, Atomic.INSTANCE.x.getValue() + 5, Atomic.INSTANCE.y.getValue() + 5,  new Color(250, 250, 250, 250).getRGB());
+            psm18.drawString(description, Atomic.INSTANCE.x.getValue() + 5, Atomic.INSTANCE.y.getValue() + 15,  new Color(250, 250, 250, 250).getRGB());
+        }, delay);
     }
 
     public void registerNotification(final String description, final String title, final NotificationType type) {
         notifications.add(new Notification(description, title, (long) (FontManager.getPSM(20).getWidth(description) * 30), type));
+
     }
 
     public void registerNotification(final String description, final long delay, final NotificationType type) {
         notifications.add(new Notification(description, StringUtils.capitalize(type.name().toLowerCase()), delay, type));
+        Atomic.submitTask(() -> {
+            Atomic.width = psm18.width(description) + 10;
+            Atomic.height = 30;
+            psb20.drawString(StringUtils.capitalize(type.name().toLowerCase()), Atomic.INSTANCE.x.getValue() + 5, Atomic.INSTANCE.y.getValue() + 5,  new Color(250, 250, 250, 250).getRGB());
+            psm18.drawString(description, Atomic.INSTANCE.x.getValue() + 5, Atomic.INSTANCE.y.getValue() + 15,  new Color(250, 250, 250, 250).getRGB());
+        }, delay);
     }
 
     public void registerNotification(final String description, final NotificationType type) {
@@ -52,7 +68,7 @@ public final class NotificationManager {
             }
         }
 
-        if (notifications.size() > 0) {
+        if (!notifications.isEmpty()) {
             int i = 0;
             try {
                 for (final Notification notification : notifications) {

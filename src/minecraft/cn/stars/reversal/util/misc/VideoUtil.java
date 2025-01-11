@@ -30,7 +30,6 @@ public class VideoUtil {
         frameGrabber = new FFmpegFrameGrabber(file.getPath());
         frameGrabber.setPixelFormat(2);
         frameGrabber.setOption("loglevel", "quiet");
-        frameGrabber.setOption("threads", "2");
         frameGrabber.setOption("buffer_size", "1024000");
         time = 0L;
         ticks = 0;

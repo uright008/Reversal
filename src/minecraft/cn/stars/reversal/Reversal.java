@@ -211,6 +211,7 @@ public class Reversal {
             try {
                 VideoUtil.init(videoFile);
             } catch (Exception e) {
+                FileUtil.unpackFile(videoFile, "/assets/minecraft/reversal/background.mp4");
                 VideoUtil.retryIfFailed(videoFile);
             }
         } catch (final Exception e) {
@@ -301,6 +302,7 @@ public class Reversal {
             new ClientSettings(), // Special Module
             new PostProcessing(), // Special Module
             new Arraylist(),
+            new AtomicIsland(),
             new BASticker(),
             new BPSCounter(),
             new CPSCounter(),

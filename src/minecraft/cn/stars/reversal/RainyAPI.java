@@ -59,11 +59,11 @@ public class RainyAPI {
                     "闭嘴!我的父亲在mojang工作,他可以使你的mInEcRaFt崩溃", "纪狗气死我了", "致敬传奇耐崩王MiNeCrAfT", "你的客户端坠机了",
                     "It's been a long day without you my friend", "回来吧牢端", "为了你,我变成狼人模样"};
     /**
-     * 初开我想你了
+     * 随机标题
      */
     public static final String[] wittyTitle = new String[]
             {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "我们经历成败的交替,我们看透人心的变幻",
-             "time.elapsed(93d)", "相见时难别亦难,东风无力百花残"};
+             "time.elapsed(93d)", "在强权面前,你会低头吗?在命运面前,你会服从吗?", "Tough. Complex. Incomprehensible."};
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];

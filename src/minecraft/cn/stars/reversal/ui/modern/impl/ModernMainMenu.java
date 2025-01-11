@@ -211,7 +211,7 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
                 "", "f", true, 9, 0, 11);
 
         // 简化MouseClicked方法
-        this.buttons = new TextButton[] {this.singlePlayerButton, this.multiPlayerButton, this.settingsButton, this.viaVersionButton, this.exitButton, this.cbButton, this.updateLogButton, this.loginButton, this.donateButton} ;
+        this.buttons = new TextButton[] {this.singlePlayerButton, this.multiPlayerButton, this.settingsButton, this.viaVersionButton, this.exitButton, this.cbButton, this.updateLogButton, this.loginButton} ;
     }
 
     @Override
