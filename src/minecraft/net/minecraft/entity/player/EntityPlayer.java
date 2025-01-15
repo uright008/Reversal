@@ -15,6 +15,8 @@ import com.mojang.authlib.GameProfile;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
@@ -121,7 +123,6 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
     private int xpSeed;
     private ItemStack itemInUse;
     private int itemInUseCount;
-    protected float speedOnGround = 0.1F;
     protected float speedInAir = 0.02F;
     private int lastXPSound;
     private final GameProfile gameProfile;
@@ -138,7 +139,6 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
         this.openContainer = this.inventoryContainer;
         BlockPos blockpos = worldIn.getSpawnPoint();
         this.setLocationAndAngles((double)blockpos.getX() + 0.5D, (double)(blockpos.getY() + 1), (double)blockpos.getZ() + 0.5D, 0.0F, 0.0F);
-        this.unused180 = 180.0F;
         this.fireResistance = 20;
     }
 
@@ -173,10 +173,10 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(17, Float.valueOf(0.0F));
-        this.dataWatcher.addObject(18, Integer.valueOf(0));
-        this.dataWatcher.addObject(10, Byte.valueOf((byte)0));
+        this.dataWatcher.addObject(16, (byte) 0);
+        this.dataWatcher.addObject(17, 0.0F);
+        this.dataWatcher.addObject(18, 0);
+        this.dataWatcher.addObject(10, (byte) 0);
     }
 
     public ItemStack getItemInUse()
@@ -363,7 +363,6 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
             }
         }
 
-        int i = 29999999;
         double d3 = MathHelper.clamp_double(this.posX, -2.9999999E7D, 2.9999999E7D);
         double d4 = MathHelper.clamp_double(this.posZ, -2.9999999E7D, 2.9999999E7D);
 
@@ -588,7 +587,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
 
         if (this.getHealth() > 0.0F && !this.isSpectator())
         {
-            AxisAlignedBB axisalignedbb = null;
+            AxisAlignedBB axisalignedbb;
 
             if (this.ridingEntity != null && !this.ridingEntity.isDead)
             {
@@ -601,13 +600,10 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
 
             List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
 
-            for (int i = 0; i < list.size(); ++i)
-            {
-                Entity entity = (Entity)list.get(i);
+            for (Entity value : list) {
 
-                if (!entity.isDead)
-                {
-                    this.collideWithPlayer(entity);
+                if (!value.isDead) {
+                    this.collideWithPlayer(value);
                 }
             }
         }
@@ -625,13 +621,13 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
 
     public void setScore(int p_85040_1_)
     {
-        this.dataWatcher.updateObject(18, Integer.valueOf(p_85040_1_));
+        this.dataWatcher.updateObject(18, p_85040_1_);
     }
 
     public void addScore(int p_85039_1_)
     {
         int i = this.getScore();
-        this.dataWatcher.updateObject(18, Integer.valueOf(i + p_85039_1_));
+        this.dataWatcher.updateObject(18, i + p_85039_1_);
     }
 
     public void onDeath(DamageSource cause)
@@ -651,15 +647,8 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
             this.inventory.dropAllItems();
         }
 
-        if (cause != null)
-        {
-            this.motionX = (double)(-MathHelper.cos((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F);
-            this.motionZ = (double)(-MathHelper.sin((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F);
-        }
-        else
-        {
-            this.motionX = this.motionZ = 0.0D;
-        }
+        this.motionX = -MathHelper.cos((this.attackedAtYaw + this.rotationYaw) * (float) Math.PI / 180.0F) * 0.1F;
+        this.motionZ = -MathHelper.sin((this.attackedAtYaw + this.rotationYaw) * (float)Math.PI / 180.0F) * 0.1F;
 
         this.triggerAchievement(StatList.deathsStat);
         this.func_175145_a(StatList.timeSinceDeathStat);
@@ -728,15 +717,15 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
             }
         }
 
-        return Lists.<ScoreObjective>newArrayList();
+        return Lists.newArrayList();
     }
 
-    public EntityItem dropOneItem(boolean dropAll)
+    public void dropOneItem(boolean dropAll)
     {
-        return this.dropItem(this.inventory.decrStackSize(this.inventory.currentItem, dropAll && this.inventory.getCurrentItem() != null ? this.inventory.getCurrentItem().stackSize : 1), false, true);
+        this.dropItem(this.inventory.decrStackSize(this.inventory.currentItem, dropAll && this.inventory.getCurrentItem() != null ? this.inventory.getCurrentItem().stackSize : 1), false, true);
     }
 
-    public EntityItem dropPlayerItemWithRandomChoice(ItemStack itemStackIn, boolean unused)
+    public EntityItem dropPlayerItemWithRandomChoice(ItemStack itemStackIn)
     {
         return this.dropItem(itemStackIn, false, false);
     }
@@ -1004,7 +993,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
     {
         Team team = this.getTeam();
         Team team1 = other.getTeam();
-        return team == null ? true : (!team.isSameTeam(team1) ? true : team.getAllowFriendlyFire());
+        return team == null || (!team.isSameTeam(team1) || team.getAllowFriendlyFire());
     }
 
     protected void damageArmor(float p_70675_1_)
@@ -1468,7 +1457,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
                 blockpos = this.playerLocation.up();
             }
 
-            this.setPosition((double)((float)blockpos.getX() + 0.5F), (double)((float)blockpos.getY() + 0.1F), (double)((float)blockpos.getZ() + 0.5F));
+            this.setPosition((float)blockpos.getX() + 0.5F, (float)blockpos.getY() + 0.1F, (float)blockpos.getZ() + 0.5F);
         }
 
         this.sleeping = false;
@@ -1775,7 +1764,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
             this.triggerAchievement(AchievementList.killEnemy);
         }
 
-        EntityList.EntityEggInfo entitylist$entityegginfo = (EntityList.EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(EntityList.getEntityID(entityLivingIn)));
+        EntityList.EntityEggInfo entitylist$entityegginfo = EntityList.entityEggs.get(EntityList.getEntityID(entityLivingIn));
 
         if (entitylist$entityegginfo != null)
         {
@@ -1930,7 +1919,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
         else
         {
             int i = this.experienceLevel * 7;
-            return i > 100 ? 100 : i;
+            return Math.min(i, 100);
         }
     }
 
@@ -1970,7 +1959,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
 
         this.xpSeed = oldPlayer.xpSeed;
         this.theInventoryEnderChest = oldPlayer.theInventoryEnderChest;
-        this.getDataWatcher().updateObject(10, Byte.valueOf(oldPlayer.getDataWatcher().getWatchableObjectByte(10)));
+        this.getDataWatcher().updateObject(10, oldPlayer.getDataWatcher().getWatchableObjectByte(10));
     }
 
     protected boolean canTriggerWalking()
@@ -2032,7 +2021,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
         else
         {
             Team team = this.getTeam();
-            return team == null || player == null || player.getTeam() != team || !team.getSeeFriendlyInvisiblesEnabled();
+            return team == null || player.getTeam() != team || !team.getSeeFriendlyInvisiblesEnabled();
         }
     }
 
@@ -2091,7 +2080,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
             amount = 0.0F;
         }
 
-        this.getDataWatcher().updateObject(17, Float.valueOf(amount));
+        this.getDataWatcher().updateObject(17, amount);
     }
 
     public float getAbsorptionAmount()
@@ -2125,7 +2114,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
         else
         {
             ItemStack itemstack = this.getCurrentEquippedItem();
-            return itemstack != null && itemstack.hasDisplayName() ? itemstack.getDisplayName().equals(code.getLock()) : false;
+            return itemstack != null && itemstack.hasDisplayName() && itemstack.getDisplayName().equals(code.getLock());
         }
     }
 
@@ -2199,7 +2188,8 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
         this.hasReducedDebug = reducedDebug;
     }
 
-    public static enum EnumChatVisibility
+    @Getter
+    public enum EnumChatVisibility
     {
         FULL(0, "options.chat.visibility.full"),
         SYSTEM(1, "options.chat.visibility.system"),
@@ -2209,25 +2199,15 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
         private final int chatVisibility;
         private final String resourceKey;
 
-        private EnumChatVisibility(int id, String resourceKey)
+        EnumChatVisibility(int id, String resourceKey)
         {
             this.chatVisibility = id;
             this.resourceKey = resourceKey;
         }
 
-        public int getChatVisibility()
-        {
-            return this.chatVisibility;
-        }
-
         public static EntityPlayer.EnumChatVisibility getEnumChatVisibility(int id)
         {
             return ID_LOOKUP[id % ID_LOOKUP.length];
-        }
-
-        public String getResourceKey()
-        {
-            return this.resourceKey;
         }
 
         static {
@@ -2238,7 +2218,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
         }
     }
 
-    public static enum EnumStatus
+    public enum EnumStatus
     {
         OK,
         NOT_POSSIBLE_HERE,

@@ -54,10 +54,10 @@ import java.util.concurrent.Executors;
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
-    public static final String VERSION = "v1.1.0";
+    public static final String VERSION = "v1.1.2";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
-    public static final Branch BRANCH = Branch.DEVELOPMENT;
+    public static final Branch BRANCH = Branch.PRODUCTION;
 
     // Init
     public static Gson PRETTY_GSON = new GsonBuilder().setPrettyPrinting().create();

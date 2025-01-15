@@ -249,6 +249,14 @@ public final class EventHandler {
             }
 
             residentProcessor.onGuiClosed(event);
+        } else if (e instanceof ValueChangedEvent) {
+            final ValueChangedEvent event = ((ValueChangedEvent) e);
+
+            for (final Module module : modules) {
+                if (module.isEnabled()) {
+                    module.onValueChanged(event);
+                }
+            }
         }
     }
 }

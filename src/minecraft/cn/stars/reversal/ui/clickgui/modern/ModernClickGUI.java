@@ -2,6 +2,7 @@ package cn.stars.reversal.ui.clickgui.modern;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.event.impl.ValueChangedEvent;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
@@ -189,7 +190,7 @@ public class ModernClickGUI extends GuiScreen {
                                     else settingValue.value = value;
 
                                     hasEditedSliders = true;
-
+                                    new ValueChangedEvent(m, setting).call();
                                 }
 
                                 settingValue.percentage = (((NumberValue) setting).value - ((NumberValue) setting).minimum) / (((NumberValue) setting).maximum - ((NumberValue) setting).minimum);
@@ -365,22 +366,26 @@ public class ModernClickGUI extends GuiScreen {
                         if (!setting.isHidden()) {
                             if (setting instanceof NoteValue) {
                                 if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, x, 12, mouseX, mouseY)) {
+                                    new ValueChangedEvent(m, setting).call();
                                 }
                             }
                             if (setting instanceof BoolValue) {
                                 if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, x, 12, mouseX, mouseY) && mouseButton == 0) {
                                     ((BoolValue) setting).toggle();
+                                    new ValueChangedEvent(m, setting).call();
                                 }
                             }
                             if (setting instanceof NumberValue) {
                                 if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, x, 12, mouseX, mouseY) && mouseButton == 0) {
                                     selectedSlider = (NumberValue) setting;
+                                    new ValueChangedEvent(m, setting).call();
                                 }
                             }
                             if (setting instanceof ModeValue) {
                                 if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, x, 12, mouseX, mouseY)) {
                                     if (mouseButton == 0) ((ModeValue) setting).cycle(true);
                                     if (mouseButton == 1) ((ModeValue) setting).cycle(false);
+                                    new ValueChangedEvent(m, setting).call();
                                 }
                             }
                         }

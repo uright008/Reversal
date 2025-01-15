@@ -27,6 +27,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.RenderEnderCrystal;
@@ -215,7 +216,7 @@ public class RenderManager
 
     public <T extends Entity> Render<T> getEntityClassRenderObject(Class <? extends Entity > entityClass)
     {
-        Render <? extends Entity > render = (Render)this.entityRenderMap.get(entityClass);
+        Render render = this.entityRenderMap.get(entityClass);
 
         if (render == null && entityClass != Entity.class)
         {
@@ -231,12 +232,12 @@ public class RenderManager
         if (entityIn instanceof AbstractClientPlayer)
         {
             String s = ((AbstractClientPlayer)entityIn).getSkinType();
-            RenderPlayer renderplayer = (RenderPlayer)this.skinMap.get(s);
+            RenderPlayer renderplayer = this.skinMap.get(s);
             return (Render<T>)(renderplayer != null ? renderplayer : this.playerRenderer);
         }
         else
         {
-            return this.<T>getEntityClassRenderObject(entityIn.getClass());
+            return this.getEntityClassRenderObject(entityIn.getClass());
         }
     }
 
@@ -256,13 +257,16 @@ public class RenderManager
             if (Reflector.callBoolean(block, Reflector.ForgeBlock_isBed, new Object[] {iblockstate, worldIn, new BlockPos(livingPlayerIn), (EntityLivingBase)livingPlayerIn}))
             {
                 EnumFacing enumfacing = (EnumFacing)Reflector.call(block, Reflector.ForgeBlock_getBedDirection, new Object[] {iblockstate, worldIn, new BlockPos(livingPlayerIn)});
-                int i = enumfacing.getHorizontalIndex();
+                int i = 0;
+                if (enumfacing != null) {
+                    i = enumfacing.getHorizontalIndex();
+                }
                 this.playerViewY = (float)(i * 90 + 180);
                 this.playerViewX = 0.0F;
             }
             else if (block == Blocks.bed)
             {
-                int j = ((EnumFacing)iblockstate.getValue(BlockBed.FACING)).getHorizontalIndex();
+                int j = iblockstate.getValue(BlockBed.FACING).getHorizontalIndex();
                 this.playerViewY = (float)(j * 90 + 180);
                 this.playerViewX = 0.0F;
             }
@@ -371,8 +375,7 @@ public class RenderManager
 
     public boolean doRenderEntity(Entity entity, double x, double y, double z, float entityYaw, float partialTicks, boolean hideDebugBox)
     {
-        Cullable cullable = entity;
-        if (!cullable.isForcedVisible() && cullable.isCulled()) {
+        if (!((Cullable) entity).isForcedVisible() && ((Cullable) entity).isCulled()) {
             EntityRendererInter<Entity> entityRenderer = getEntityRenderObject(entity);
             if (entityRenderer.shadowShouldShowName(entity)) {
                 entityRenderer.shadowRenderNameTag(entity, x, y, z);
@@ -382,13 +385,13 @@ public class RenderManager
             return false;
         }
         EntityCullingModBase.instance.renderedEntities++;
-        cullable.setOutOfCamera(false);
+        ((Cullable) entity).setOutOfCamera(false);
 
         Render<Entity> render = null;
 
         try
         {
-            render = this.<Entity>getEntityRenderObject(entity);
+            render = this.getEntityRenderObject(entity);
 
             if (render != null && this.renderEngine != null)
             {
@@ -396,7 +399,7 @@ public class RenderManager
                 {
                     if (render instanceof RendererLivingEntity)
                     {
-                        ((RendererLivingEntity)render).setRenderOutlines(this.renderOutlines);
+                        ((RendererLivingEntity<?>)render).setRenderOutlines(this.renderOutlines);
                     }
 
                     if (CustomEntityModels.isActive())
@@ -427,7 +430,7 @@ public class RenderManager
                 {
                     try
                     {
-                        this.renderDebugBoundingBox(entity, x, y, z, entityYaw, partialTicks);
+                        this.renderDebugBoundingBox(entity, x, y, z, partialTicks);
                     }
                     catch (Throwable throwable)
                     {
@@ -450,13 +453,13 @@ public class RenderManager
             CrashReportCategory crashreportcategory1 = crashreport.makeCategory("Renderer details");
             crashreportcategory1.addCrashSection("Assigned renderer", render);
             crashreportcategory1.addCrashSection("Location", CrashReportCategory.getCoordinateInfo(x, y, z));
-            crashreportcategory1.addCrashSection("Rotation", Float.valueOf(entityYaw));
-            crashreportcategory1.addCrashSection("Delta", Float.valueOf(partialTicks));
+            crashreportcategory1.addCrashSection("Rotation", entityYaw);
+            crashreportcategory1.addCrashSection("Delta", partialTicks);
             throw new ReportedException(crashreport);
         }
     }
 
-    private void renderDebugBoundingBox(Entity entityIn, double x, double y, double z, float entityYaw, float partialTicks)
+    private void renderDebugBoundingBox(Entity entityIn, double x, double y, double z, float partialTicks)
     {
         if (!Shaders.isShadowPass)
         {

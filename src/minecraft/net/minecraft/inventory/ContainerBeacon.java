@@ -56,7 +56,7 @@ public class ContainerBeacon extends Container
 
             if (itemstack != null)
             {
-                playerIn.dropPlayerItemWithRandomChoice(itemstack, false);
+                playerIn.dropPlayerItemWithRandomChoice(itemstack);
             }
         }
     }

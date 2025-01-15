@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.FontManager;
+import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
@@ -22,6 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiDisconnected;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.network.NetHandlerLoginClient;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetworkManager;
@@ -144,6 +146,7 @@ public class GuiConnecting extends GuiScreen
     public void initGui()
     {
         GameInstance.clearRunnables();
+        Atomic.registerAtomic("Connecting to: " + mc.getCurrentServerData().serverIP, "Server", 3000L);
         this.cancelButton = new TextButton(width / 2 - 100, height / 2 + 100, 200, 20, this::action, "取消", "", true, 6, 90, 5, 20);
         this.animation = new Animation(Easing.EASE_OUT_QUINT, 600);
     }
@@ -232,6 +235,8 @@ public class GuiConnecting extends GuiScreen
         regular16.drawString("Open Source PVP Client By Stars.", 4, height - 30, new Color(220, 220, 220, 240).getRGB());
         regular16.drawString("https://www.github.com/RinoRika/Reversal", 4, height - 20, new Color(220, 220, 220, 240).getRGB());
         regular16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")), 4, height - 10, new Color(220, 220, 220, 240).getRGB());
+
+        Atomic.INSTANCE.render(new ScaledResolution(mc));
 
         UI_BLOOM_RUNNABLES.forEach(Runnable::run);
         UI_BLOOM_RUNNABLES.clear();

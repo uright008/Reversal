@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
@@ -365,6 +366,8 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
         RenderUtil.rect(width / 2f - 225, 30, 450, 0.5, new Color(220, 220, 220, 240));
         GameInstance.NORMAL_BLUR_RUNNABLES.add(() -> RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, Color.BLACK));
         GameInstance.regular24Bold.drawCenteredString("多人游戏", width / 2f, 16, new Color(220, 220, 220, 240).getRGB());
+
+        Atomic.INSTANCE.render(new ScaledResolution(mc));
 
         UI_BLOOM_RUNNABLES.forEach(Runnable::run);
         UI_BLOOM_RUNNABLES.clear();

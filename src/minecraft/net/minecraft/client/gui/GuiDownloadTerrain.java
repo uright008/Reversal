@@ -1,6 +1,9 @@
 package net.minecraft.client.gui;
 
 import java.io.IOException;
+
+import cn.stars.reversal.ui.atmoic.Atomic;
+import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
@@ -11,7 +14,6 @@ public class GuiDownloadTerrain extends GuiScreen
 {
     private NetHandlerPlayClient netHandlerPlayClient;
     private int progress;
-    private CustomLoadingScreen customLoadingScreen = CustomLoadingScreens.getCustomLoadingScreen();
 
     public GuiDownloadTerrain(NetHandlerPlayClient netHandler)
     {
@@ -48,6 +50,12 @@ public class GuiDownloadTerrain extends GuiScreen
             this.drawBackground(0);
         } */
         this.drawDefaultBackground();
+
+        updatePostProcessing(true, partialTicks);
+
+        Atomic.INSTANCE.render(new ScaledResolution(mc));
+
+        updatePostProcessing(false, partialTicks);
 
         this.drawCenteredString(this.fontRendererObj, I18n.format("multiplayer.downloadingTerrain", new Object[0]), this.width / 2, this.height / 2 - 50, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);

@@ -19,7 +19,7 @@ import static cn.stars.reversal.GameInstance.*;
 
 public class GuiReversalSettings extends GuiScreen {
     public GuiScreen parent;
-    private TextButton exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton;
+    private TextButton exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton, imageScreenButton;
     private TextButton[] buttons;
 
     public GuiReversalSettings(GuiScreen parent) {
@@ -39,7 +39,7 @@ public class GuiReversalSettings extends GuiScreen {
         RoundedUtil.drawRound(width / 2f - 500, 10, 1000, height - 15, 4, new Color(30, 30, 30, 160));
         RenderUtil.rect(width / 2f - 500, 30, 1000, 0.5, new Color(220, 220, 220, 240));
         NORMAL_BLUR_RUNNABLES.add(() -> RoundedUtil.drawRound(width / 2f - 500, 10, 1000, height - 15, 4, Color.BLACK));
-        regular24Bold.drawCenteredString("Reversal 设置 (按钮显示当前状态)", width / 2f, 16, new Color(220, 220, 220, 240).getRGB());
+        regular24Bold.drawCenteredString("Reversal设置 (按钮显示当前状态)", width / 2f, 16, new Color(220, 220, 220, 240).getRGB());
 
         // Shader
         regular20Bold.drawString("Background Shader", width / 2f - 490, 40, new Color(220, 220, 220, 240).getRGB());
@@ -61,6 +61,10 @@ public class GuiReversalSettings extends GuiScreen {
         regular20Bold.drawString("Background Blur", width / 2f - 490, 320, new Color(220, 220, 220, 240).getRGB());
         regular16.drawString("使你的背景有模糊效果。", width / 2f - 490, 335, new Color(220, 220, 220, 240).getRGB());
 
+        // Image Screen
+        regular20Bold.drawString("Image Screen", width / 2f - 490, 390, new Color(220, 220, 220, 240).getRGB());
+        regular16.drawString("在游戏窗口出现时显示一个Hoshino Shield的界面。\n纯属整活。（不会拖慢加载速度）", width / 2f - 490, 405, new Color(220, 220, 220, 240).getRGB());
+
         updatePostProcessing(false, partialTicks);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -72,14 +76,14 @@ public class GuiReversalSettings extends GuiScreen {
 
         createButton();
 
-        buttons = new TextButton[]{exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton};
+        buttons = new TextButton[]{exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton, imageScreenButton};
     }
 
     private void switchOption(Runnable runnable) {
         runnable.run();
         createButton();
         RainyAPI.processAPI(true);
-        buttons = new TextButton[]{exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton};
+        buttons = new TextButton[]{exitButton, shaderButton, viaButton, mainMenuDateButton, guiSnowButton, backgroundBlurButton, imageScreenButton};
     }
 
     private void createButton() {
@@ -116,6 +120,13 @@ public class GuiReversalSettings extends GuiScreen {
                     "开", "9", true, 10, 34, 7);
         } else {
             this.backgroundBlurButton = new TextButton(width / 2f - 490, 355, 60, 25, () -> switchOption(() -> RainyAPI.backgroundBlur = !RainyAPI.backgroundBlur),
+                    "关", "0", true, 10, 34, 7);
+        }
+        if (RainyAPI.imageScreen) {
+            this.imageScreenButton = new TextButton(width / 2f - 490, 425, 60, 25, () -> switchOption(() -> RainyAPI.imageScreen = !RainyAPI.imageScreen),
+                    "开", "9", true, 10, 34, 7);
+        } else {
+            this.imageScreenButton = new TextButton(width / 2f - 490, 425, 60, 25, () -> switchOption(() -> RainyAPI.imageScreen = !RainyAPI.imageScreen),
                     "关", "0", true, 10, 34, 7);
         }
     }

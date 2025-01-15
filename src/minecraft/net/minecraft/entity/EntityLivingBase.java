@@ -93,7 +93,6 @@ public abstract class EntityLivingBase extends Entity
     protected float onGroundSpeedFactor;
     protected float movedDistance;
     protected float prevMovedDistance;
-    protected float unused180;
     protected int scoreValue;
     protected float lastDamage;
     protected boolean isJumping;

@@ -13,6 +13,7 @@ import cn.stars.reversal.util.math.StopWatch;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;
+import cn.stars.reversal.util.reversal.ImageScreen;
 import cn.stars.reversal.util.reversal.Preloader;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -383,11 +384,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     }
     private void startGame() throws LWJGLException {
         startTimer = new StopWatch();
-    //    ImageWindow.load();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
+        RainyAPI.loadAPI(false);
 
+        if (RainyAPI.imageScreen) ImageScreen.load();
 
         if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0)
         {
@@ -401,7 +403,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.createDisplay();
         OpenGlHelper.initializeTextures();
         AsyncGLContentLoader.initLoader();
-        RainyAPI.loadAPI(false);
         this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
         this.framebufferMc.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
         this.registerMetadataSerializers();
@@ -497,6 +498,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         else
         {
             this.displayGuiScreen(Transformer.transformMainMenu());
+
             Reversal.notificationManager.registerNotification(Reversal.NAME + " " + Reversal.VERSION + ", made with love by " + Reversal.AUTHOR + ".", "Reversal", NotificationType.NOTIFICATION);
         }
 
@@ -1127,9 +1129,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         GlStateManager.popMatrix();
         GlStateManager.pushMatrix();
         this.framebufferMc.framebufferRender(this.displayWidth, this.displayHeight);
-        GlStateManager.popMatrix();
-        GlStateManager.pushMatrix();
-        this.entityRenderer.renderStreamIndicator(this.timer.renderPartialTicks);
         GlStateManager.popMatrix();
         this.mcProfiler.startSection("root");
         this.updateDisplay();

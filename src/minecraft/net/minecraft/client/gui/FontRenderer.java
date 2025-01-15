@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.module.impl.hud.ClientSettings;
 import cn.stars.reversal.module.impl.render.BetterFont;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -117,10 +118,7 @@ public class FontRenderer implements IResourceManagerReloadListener
     {
         this.locationFontTexture = FontUtils.getHdFontLocation(this.locationFontTextureBase);
 
-        for (int i = 0; i < unicodePageLocations.length; ++i)
-        {
-            unicodePageLocations[i] = null;
-        }
+        Arrays.fill(unicodePageLocations, null);
 
         this.readFontTexture();
         this.readGlyphSizes();
@@ -169,15 +167,15 @@ public class FontRenderer implements IResourceManagerReloadListener
                 int i2 = j1 * k + l1;
                 boolean flag = true;
 
-                for (int j2 = 0; j2 < l && flag; ++j2)
+                for (int j2 = 0; j2 < l; ++j2)
                 {
                     int k2 = (k1 * l + j2) * i;
                     int l2 = aint[i2 + k2];
                     int i3 = l2 >> 24 & 255;
 
-                    if (i3 > 16)
-                    {
+                    if (i3 > 16) {
                         flag = false;
+                        break;
                     }
                 }
 
@@ -185,11 +183,6 @@ public class FontRenderer implements IResourceManagerReloadListener
                 {
                     break;
                 }
-            }
-
-            if (i1 == 65)
-            {
-                i1 = i1;
             }
 
             if (i1 == 32)

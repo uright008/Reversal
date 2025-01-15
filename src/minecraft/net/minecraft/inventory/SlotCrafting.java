@@ -133,7 +133,7 @@ public class SlotCrafting extends Slot
                 }
                 else if (!this.thePlayer.inventory.addItemStackToInventory(itemstack1))
                 {
-                    this.thePlayer.dropPlayerItemWithRandomChoice(itemstack1, false);
+                    this.thePlayer.dropPlayerItemWithRandomChoice(itemstack1);
                 }
             }
         }

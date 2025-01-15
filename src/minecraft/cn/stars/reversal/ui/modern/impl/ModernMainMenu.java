@@ -3,7 +3,9 @@ package cn.stars.reversal.ui.modern.impl;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.font.FontManager;
+import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.gui.GuiDonate;
 import cn.stars.reversal.ui.gui.GuiMicrosoftLoginPending;
@@ -16,10 +18,7 @@ import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.reversal.Branch;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiOptions;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiSelectWorld;
+import net.minecraft.client.gui.*;
 import org.lwjgl.opengl.GL11;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
@@ -167,6 +166,7 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         regular18.drawString("<", this.width / 2f - regular18.width(title) / 2f * textAnimation.getValue() - 10, this.height - 20, colorAnimation.getOutput().getRGB());
 
         NotificationManager.onRender2D();
+        Atomic.INSTANCE.render(new ScaledResolution(mc));
 
         updatePostProcessing(false, partialTicks);
     }

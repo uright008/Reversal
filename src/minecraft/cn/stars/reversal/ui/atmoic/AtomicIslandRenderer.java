@@ -1,28 +1,35 @@
 package cn.stars.reversal.ui.atmoic;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.Reversal;
-import cn.stars.reversal.event.impl.Render2DEvent;
-import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.font.MFont;
+import cn.stars.reversal.module.impl.hud.AtomicIsland;
+import cn.stars.reversal.ui.gui.GuiMicrosoftLoginPending;
+import cn.stars.reversal.ui.gui.GuiReversalSettings;
+import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.math.TimeUtil;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RoundedUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.multiplayer.GuiConnecting;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+/**
+ * 原子岛
+ * @author Stars
+ */
 @Getter
 @Setter
 public class AtomicIslandRenderer implements GameInstance {
@@ -30,11 +37,12 @@ public class AtomicIslandRenderer implements GameInstance {
     public Animation y = new Animation(Easing.EASE_OUT_EXPO, 800);
     private ScaledResolution sr;
     public String mainText;
-    public final ArrayList<Runnable> toRender = new ArrayList<>();
+    public final Map<Runnable, Long> tasks = new LinkedHashMap<>();
 
     private boolean taskScheduled = false;
     private long currentTaskTimeout;
-    private TimeUtil taskTimeout = new TimeUtil();
+    private TimeUtil taskTimeoutTimer = new TimeUtil();
+    private long startTime;
 
     public AtomicIslandRenderer() {
         this.sr = new ScaledResolution(mc);
@@ -42,56 +50,87 @@ public class AtomicIslandRenderer implements GameInstance {
         update(this.sr);
     }
 
-    public void render(Render2DEvent event) {
-        this.sr = event.getScaledResolution();
-        if (!taskScheduled) {
+    public void render(ScaledResolution sr) {
+        this.sr = sr;
+        if (tasks.isEmpty()) {
             update(this.sr);
             runToXy(Atomic.x, Atomic.y);
 
-            if (!x.isFinished() || !y.isFinished()) {
-                GL11.glEnable(GL11.GL_SCISSOR_TEST);
-                RenderUtil.scissor(x.getValue() - 2, y.getValue() - 2, (float) ((Atomic.x - x.getValue()) * 2) + 4, (float) ((Atomic.y - y.getValue()) * 2) + 4);
-            }
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_SCISSOR_TEST);
+            RenderUtil.scissor(x.getValue() - 1, y.getValue() - 1, (float) ((Atomic.x - x.getValue()) * 2) + 2, (float) ((Atomic.y - y.getValue()) * 2) + 2);
 
-            RoundedUtil.drawRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, ColorUtil.empathyColor());
+            RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, ColorUtil.empathyColor());
+            MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, Color.BLACK));
+            MODERN_BLUR_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, Color.BLACK));
+
             psm18.drawString(mainText, x.getValue() + 5, y.getValue() + 5, new Color(250, 250, 250, 250).getRGB());
 
-            if (!x.isFinished() || !y.isFinished()) GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            GL11.glPopMatrix();
         } else {
+            Map.Entry<Runnable, Long> entry = tasks.entrySet().iterator().next();
+
             updateTask();
             runToXy(Atomic.x, Atomic.y);
 
-            if (!x.isFinished() || !y.isFinished()) {
-                GL11.glEnable(GL11.GL_SCISSOR_TEST);
-                RenderUtil.scissor(x.getValue() - 2, y.getValue() - 2, (float) ((Atomic.x - x.getValue()) * 2) + 4, (float) ((Atomic.y - y.getValue()) * 2) + 4);
-            }
+            GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
-            RoundedUtil.drawRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, ColorUtil.empathyColor());
-            toRender.forEach(Runnable::run);
+            RenderUtil.scissor(x.getValue() - 1, y.getValue() - 1, (float) ((Atomic.x - x.getValue()) * 2) + 2, (float) ((Atomic.y - y.getValue()) * 2) + 2);
 
-            if (!x.isFinished() || !y.isFinished()) GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, ColorUtil.empathyColor());
+            if (ModuleInstance.getModule(AtomicIsland.class).percentBar.enabled) RenderUtil.roundedRectangle((float) x.getValue() + 3, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) - 0.5), (Atomic.width - (System.currentTimeMillis() - startTime) * (Atomic.width / entry.getValue()) - 3), 1f, 4, new Color(255,255,255,255));
+            MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, Color.BLACK));
+            MODERN_BLUR_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, Color.BLACK));
+
+            entry.getKey().run();
+
+            GL11.glDisable(GL11.GL_SCISSOR_TEST);
             //    FontManager.getPSM(18).drawString(mainText, x.getValue() + 5, y.getValue() + 5, new Color(250, 250, 250, 250).getRGB());
         }
     }
 
+    /**
+     * XY渲染动画
+     * @param realX 实际渲染的X
+     * @param realY 实际渲染的Y
+     */
     public void runToXy(float realX, float realY) {
         x.run(Atomic.getRenderX(realX));
         y.run(Atomic.getRenderY(realY));
     //    RenderUtil.scissor(x.getValue(), y.getValue(), (realX - x.getValue()) * 2, (realY - y.getValue()) * 2);
     }
 
+    /**
+     * 更新文字内容
+     * 在有界面时隐藏
+     */
     public void update(ScaledResolution sr) {
-        Atomic.x = sr.getScaledWidth() / 2f;
-        Atomic.y = 40;
-        this.updateMainText();
+        if (mc.currentScreen instanceof ModernMainMenu || mc.currentScreen instanceof GuiMultiplayer || mc.currentScreen instanceof GuiConnecting || mc.currentScreen instanceof GuiSelectWorld || mc.currentScreen instanceof GuiDisconnected
+        || mc.currentScreen instanceof GuiOptions || mc.currentScreen instanceof GuiMicrosoftLoginPending || mc.currentScreen instanceof GuiReversalSettings) {
+            Atomic.x = sr.getScaledWidth() / 2f;
+            Atomic.y = 40 + ModuleInstance.getModule(AtomicIsland.class).yOffset.getFloat();
+            Atomic.width = 0;
+            Atomic.height = 0;
+            this.mainText = "";
+        } else {
+            Atomic.x = sr.getScaledWidth() / 2f;
+            Atomic.y = 40 + ModuleInstance.getModule(AtomicIsland.class).yOffset.getFloat();
+            this.updateMainText();
+        }
     }
 
+    /**
+     * 更新任务
+     */
     public void updateTask() {
-        if (taskScheduled) {
-            if (taskTimeout.hasReached(currentTaskTimeout)) {
-                toRender.clear();
-                taskTimeout.reset();
-                taskScheduled = false;
+        Atomic.x = sr.getScaledWidth() / 2f;
+        if (!tasks.isEmpty()) {
+            Map.Entry<Runnable, Long> entry = tasks.entrySet().iterator().next();
+            if (taskTimeoutTimer.hasReached(entry.getValue())) {
+                tasks.remove(entry.getKey());
+                taskTimeoutTimer.reset();
+                if (!tasks.isEmpty()) startTime = System.currentTimeMillis();
             }
         }
     }

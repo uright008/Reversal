@@ -524,10 +524,6 @@ public class GuiIngame extends Gui {
         }
     }
 
-    public void renderStreamIndicator(ScaledResolution scaledRes)
-    {
-    }
-
     private void renderScoreboard(ScoreObjective objective, ScaledResolution scaledRes)
     {
         Scoreboard scoreboard = objective.getScoreboard();

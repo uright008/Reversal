@@ -50,6 +50,7 @@ public class RainyAPI {
     public static boolean mainMenuDate = false;
     public static boolean guiSnow = false;
     public static boolean backgroundBlur = false;
+    public static boolean imageScreen = false;
 
     /**
      * 崩溃报告上面的字
@@ -62,8 +63,8 @@ public class RainyAPI {
      * 随机标题
      */
     public static final String[] wittyTitle = new String[]
-            {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "我们经历成败的交替,我们看透人心的变幻",
-             "time.elapsed(93d)", "在强权面前,你会低头吗?在命运面前,你会服从吗?", "Tough. Complex. Incomprehensible."};
+            {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "time.elapsed(93d)",
+                    "在强权面前,你会低头吗?在命运面前,你会服从吗?", "Tough. Complex. Incomprehensible.", "时间永远是最难跨过的分界线"};
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];
@@ -159,6 +160,9 @@ public class RainyAPI {
             if (split[0].contains("BackgroundBlur")) {
                 backgroundBlur = Boolean.parseBoolean(split[1]);
             }
+            if (split[0].contains("ImageScreen")) {
+                imageScreen = Boolean.parseBoolean(split[1]);
+            }
             if (split[0].contains("CustomText") && post) {
                 Reversal.customText = split[1];
             }
@@ -178,6 +182,7 @@ public class RainyAPI {
         clientBuilder.append("MainMenuDate_").append(mainMenuDate).append("\r\n");
         clientBuilder.append("GuiSnow_").append(guiSnow).append("\r\n");
         clientBuilder.append("BackgroundBlur_").append(backgroundBlur).append("\r\n");
+        clientBuilder.append("ImageScreen_").append(imageScreen).append("\r\n");
         if (post) clientBuilder.append("CustomText_").append(Reversal.customText).append("\r\n");
 
         FileUtil.saveFile("client.txt", true, clientBuilder.toString());

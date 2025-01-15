@@ -25,6 +25,7 @@ public final class ClientSettings extends Module {
 
     public final BoolValue showNotifications = new BoolValue("Show Notifications", this, false);
     public final BoolValue chinese = new BoolValue("Chinese", this, false);
+
     public final BoolValue thunderHack = new BoolValue("ThunderHack", this, true);
     public final BoolValue empathyGlow = new BoolValue("Empathy Glow", this, true);
 

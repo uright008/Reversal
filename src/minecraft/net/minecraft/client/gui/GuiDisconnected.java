@@ -8,6 +8,7 @@ import java.util.List;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.FontManager;
+import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -128,6 +129,8 @@ public class GuiDisconnected extends GuiScreen
             regular16.drawString("Open Source PVP Client By Stars.", 4, height - 30, new Color(220, 220, 220, 240).getRGB());
             regular16.drawString("https://www.github.com/RinoRika/Reversal", 4, height - 20, new Color(220, 220, 220, 240).getRGB());
             regular16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")), 4, height - 10, new Color(220, 220, 220, 240).getRGB());
+
+            Atomic.INSTANCE.render(new ScaledResolution(mc));
 
             UI_BLOOM_RUNNABLES.forEach(Runnable::run);
             UI_BLOOM_RUNNABLES.clear();

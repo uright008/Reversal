@@ -1,7 +1,11 @@
 package net.minecraft.client;
 
+import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
+import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.util.misc.VideoUtil;
+import cn.stars.reversal.util.shader.RiseShaders;
+import cn.stars.reversal.util.shader.base.ShaderRenderType;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,6 +19,9 @@ import net.minecraft.util.MinecraftError;
 import net.optifine.CustomLoadingScreen;
 import net.optifine.CustomLoadingScreens;
 import net.optifine.reflect.Reflector;
+
+import static cn.stars.reversal.GameInstance.NORMAL_BLUR_RUNNABLES;
+import static cn.stars.reversal.GameInstance.NORMAL_POST_BLOOM_RUNNABLES;
 
 public class LoadingScreenRenderer implements IProgressUpdate
 {
@@ -113,6 +120,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
 
             if (i - this.systemTime >= 100L)
             {
+                this.mc.updateDisplay();
                 this.systemTime = i;
                 ScaledResolution scaledresolution = new ScaledResolution(this.mc);
                 int j = scaledresolution.getScaleFactor();
@@ -136,6 +144,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
                 GlStateManager.loadIdentity();
                 GlStateManager.translate(0.0F, 0.0F, -200.0F);
 
+                this.mc.updateDisplay();
                 if (!OpenGlHelper.isFramebufferEnabled())
                 {
                     GlStateManager.clear(16640);
@@ -145,16 +154,17 @@ public class LoadingScreenRenderer implements IProgressUpdate
 
                 if (Reflector.FMLClientHandler_handleLoadingScreen.exists())
                 {
-                    Object object = Reflector.call(Reflector.FMLClientHandler_instance, new Object[0]);
+                    Object object = Reflector.call(Reflector.FMLClientHandler_instance);
 
                     if (object != null)
                     {
-                        flag = !Reflector.callBoolean(object, Reflector.FMLClientHandler_handleLoadingScreen, new Object[] {scaledresolution});
+                        flag = !Reflector.callBoolean(object, Reflector.FMLClientHandler_handleLoadingScreen, scaledresolution);
                     }
                 }
 
                 if (flag)
                 {
+                    this.mc.updateDisplay();
                     if (RainyAPI.backgroundId == 9) {
                         VideoUtil.render(0,0,scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
                     }
@@ -199,10 +209,17 @@ public class LoadingScreenRenderer implements IProgressUpdate
                         GlStateManager.enableBlend();
                         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
                     }
+                    this.mc.updateDisplay();
+
+                    Atomic.INSTANCE.render(scaledresolution);
+
+                    this.mc.updateDisplay();
 
                     this.mc.fontRendererObj.drawStringWithShadow(this.currentlyDisplayedText, (float)((k - this.mc.fontRendererObj.getStringWidth(this.currentlyDisplayedText)) / 2), (float)(l / 2 - 4 - 16), 16777215);
                     this.mc.fontRendererObj.drawStringWithShadow(this.message, (float)((k - this.mc.fontRendererObj.getStringWidth(this.message)) / 2), (float)(l / 2 - 4 + 8), 16777215);
                 }
+
+                this.mc.updateDisplay();
 
                 this.framebuffer.unbindFramebuffer();
 
@@ -212,15 +229,6 @@ public class LoadingScreenRenderer implements IProgressUpdate
                 }
 
                 this.mc.updateDisplay();
-
-                try
-                {
-                    Thread.yield();
-                }
-                catch (Exception var16)
-                {
-                    ;
-                }
             }
         }
     }

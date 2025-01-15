@@ -86,8 +86,9 @@ public class Hud implements GameInstance {
 //            final String name = o1 instanceof Module ? ((Module) o1).getModuleInfo().name() : ((Script) o1).getName();
 //            final String name2 = o2 instanceof Module ? ((Module) o2).getModuleInfo().name() : ((Script) o2).getName();
 
-            final String name = (mode.equals("Simple") || mode.equals("Minecraft")) && ModuleInstance.getModule(Arraylist.class).chinese.isEnabled() && !((Module) o1).getModuleInfo().chineseName().isEmpty() ? ((Module) o1).getModuleInfo().chineseName() : ((Module) o1).getModuleInfo().name();
-            final String name2 = (mode.equals("Simple") || mode.equals("Minecraft"))
+            boolean chinese = mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy");
+            final String name = chinese && ModuleInstance.getModule(Arraylist.class).chinese.isEnabled() && !((Module) o1).getModuleInfo().chineseName().isEmpty() ? ((Module) o1).getModuleInfo().chineseName() : ((Module) o1).getModuleInfo().name();
+            final String name2 = chinese
                     && ModuleInstance.getModule(Arraylist.class).chinese.isEnabled() && !((Module) o2).getModuleInfo().chineseName().isEmpty() ? ((Module) o2).getModuleInfo().chineseName() : ((Module) o2).getModuleInfo().name();
 
             switch (mode) {
@@ -130,7 +131,7 @@ public class Hud implements GameInstance {
 
             float posOnArraylist = offset + moduleCount * 10.8f * (mode.equals("Empathy") ? 1.25f : 1f);
             
-            final String name = (mode.equals("Simple") || mode.equals("Minecraft")) && ModuleInstance.getModule(Arraylist.class).chinese.isEnabled() && !((Module) module).getModuleInfo().chineseName().isEmpty() ? ((Module) module).getModuleInfo().chineseName() : ((Module) module).getModuleInfo().name();
+            final String name = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy")) && ModuleInstance.getModule(Arraylist.class).chinese.isEnabled() && !module.getModuleInfo().chineseName().isEmpty() ? module.getModuleInfo().chineseName() : module.getModuleInfo().name();
 
             float finalX = 0;
             final float speed = 6;

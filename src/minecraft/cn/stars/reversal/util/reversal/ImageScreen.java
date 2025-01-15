@@ -1,11 +1,12 @@
 package cn.stars.reversal.util.reversal;
 
 import cn.stars.reversal.util.MiscUtil;
+import cn.stars.reversal.util.ReversalLogger;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ImageWindow {
+public class ImageScreen {
     public static void load() {
         Thread thread = new Thread(() ->{
             JWindow window = new JWindow();
@@ -15,7 +16,7 @@ public class ImageWindow {
 
             // image
             try {
-                ImageIcon imageIcon = new ImageIcon(MiscUtil.inputStreamToByteArray(ImageWindow.class.getResourceAsStream("/assets/minecraft/reversal/images/imagescreen.jpg"))); // 这里替换为你图片的路径
+                ImageIcon imageIcon = new ImageIcon(MiscUtil.inputStreamToByteArray(ImageScreen.class.getResourceAsStream("/assets/minecraft/reversal/images/imagescreen.jpg")));
                 label.setIcon(imageIcon);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -30,6 +31,7 @@ public class ImageWindow {
             window.setLocation(x, y);
             window.setVisible(true);
 
+            ReversalLogger.info("[ImageScreen] Loaded.");
             // wait some sec
             try {
                 Thread.sleep(3000);
@@ -37,6 +39,7 @@ public class ImageWindow {
                 e.printStackTrace();
             }
             window.dispose();
+            ReversalLogger.info("[ImageScreen] Unloaded.");
         });
         thread.start();
 

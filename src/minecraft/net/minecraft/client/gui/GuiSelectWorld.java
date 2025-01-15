@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
@@ -243,6 +244,8 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
         RenderUtil.scissor(width / 2f - 225, 31, 450, height - 95);
         this.availableWorlds.drawScreen(mouseX, mouseY, partialTicks);
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
+
+        Atomic.INSTANCE.render(new ScaledResolution(mc));
 
         UI_BLOOM_RUNNABLES.forEach(Runnable::run);
         UI_BLOOM_RUNNABLES.clear();

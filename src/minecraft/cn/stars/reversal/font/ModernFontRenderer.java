@@ -291,7 +291,7 @@ public class ModernFontRenderer extends MFont {
         return 1 + currentReturns;
     }
 
-    public float drawString(final String text, final double x, final double y, final int color) {
+    public int drawString(final String text, final double x, final double y, final int color) {
         return drawString(text, x, y, color, false);
     }
 
@@ -303,17 +303,17 @@ public class ModernFontRenderer extends MFont {
         return drawString(text, x - (width(text)), y, color, false);
     }
 
-    public float drawStringWithShadow(final String text, final double x, final double y, final int color) {
+    public int drawStringWithShadow(final String text, final double x, final double y, final int color) {
         drawString(text, x + 0.25, y + 0.25, color, true);
         return drawString(text, x, y, color, false);
     }
 
-    public float drawString(String text, double x, double y, int color, final boolean shadow) {
+    public int drawString(String text, double x, double y, int color, final boolean shadow) {
         if (text == null) return 0;
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");
 
         if (!this.international && this.requiresInternationalFont(text)) {
-            return FontManager.getRegular(this.font.getSize() - 1).drawString(text, x, y, color);
+            return FontManager.getRegular(this.font.getSize() - 1).drawString(text, x, y + 1, color);
         }
 
         final FontCharacter[] characterSet = this.international ? internationalCharacters : defaultCharacters;
@@ -393,10 +393,10 @@ public class ModernFontRenderer extends MFont {
         GL11.glPopMatrix();
         GlStateManager.bindTexture(0);
 
-        return (float) (x - givenX);
+        return (int) (x - givenX);
     }
 
-    public float width(String text) {
+    public int width(String text) {
         if (text == null) return 0;
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");;
 
@@ -430,7 +430,7 @@ public class ModernFontRenderer extends MFont {
             width += characterSet[character].getWidth() - MARGIN_WIDTH * 2f;
         }
 
-        return width / 2f;
+        return (int) width / 2;
     }
 
     public float height() {
