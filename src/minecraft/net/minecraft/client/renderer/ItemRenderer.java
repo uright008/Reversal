@@ -398,22 +398,10 @@ public class ItemRenderer
                                         GlStateManager.rotate(1F, 0.0F, 0.0F,- 0.1F);
                                         break;
                                     }
-                                    case "Smooth": {
-                                        transformFirstPersonItem(f, 0.0F);
-                                        final float y = -convertedProgress * 2.0F;
-                                        GlStateManager.translate(0.0F, y / 10.0F + 0.1F, 0.0F);
-                                        GlStateManager.rotate(y * 10.0F, 0.0F, 1.0F, 0.0F);
-                                        GlStateManager.rotate(250, 0.2F, 1.0F, -0.6F);
-                                        GlStateManager.rotate(-10.0F, 1.0F, 0.5F, 1.0F);
-                                        GlStateManager.rotate(-y * 20.0F, 1.0F, 0.5F, 1.0F);
-                                        break;
-                                    }
                                     case "Spin": {
                                         transformFirstPersonItem(f, 0.0F);
-                                        GlStateManager.translate(0, 0.2F, -1);
-                                        GlStateManager.rotate(-59, -1, 0, 3);
-                                        GlStateManager.rotate(-(System.currentTimeMillis() / 2f % 360), 1, 0, 0.0F);
-                                        GlStateManager.rotate(60.0F, 0.0F, 1.0F, 0.0F);
+                                        GlStateManager.translate(-0.2f, 0.4f, 0.0f);
+                                        GlStateManager.rotate(System.currentTimeMillis() % 360, 1, 0, 0.0F);
                                         break;
                                     }
                                     case "Leaked": {

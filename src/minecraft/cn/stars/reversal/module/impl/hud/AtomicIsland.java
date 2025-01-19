@@ -27,6 +27,7 @@ public class AtomicIsland extends Module {
     public final BoolValue allowRepeat = new BoolValue("Allow Repeat", this, false);
     public final NoteValue note = new NoteValue("< FEATURES >", this);
     public final BoolValue enemyInfo = new BoolValue("Enemy Info", this, true);
+    public final BoolValue blockInfo = new BoolValue("Block Info", this, true);
 
     public AtomicIsland() {
         setCanBeEdited(false);
@@ -47,7 +48,7 @@ public class AtomicIsland extends Module {
     public void onAttack(AttackEvent event) {
         Entity entity = event.getTarget();
         if (entity instanceof EntityPlayer && enemyInfo.enabled) {
-            Atomic.registerAtomic("HP: " + ((EntityPlayer) entity).getHealth() + " | Food: " + ((EntityPlayer) entity).getFoodStats().getFoodLevel() + " | Distance: " + MathUtil.round(mc.thePlayer.getDistanceToEntity(entity), 1) + "m", entity.getName(), 5000, "a", false);
+            Atomic.registerAtomic("HP: " + ((EntityPlayer) entity).getHealth() + " | Food: " + ((EntityPlayer) entity).getFoodStats().getFoodLevel() + " | Distance: " + MathUtil.round(mc.thePlayer.getDistanceToEntity(entity), 1) + "m", entity.getName(), 5000, "a", false, -1);
         }
     }
 
@@ -61,11 +62,11 @@ public class AtomicIsland extends Module {
 
     @Override
     public void onClick(ClickEvent event) {
-        if (event.getType() == ClickEvent.ClickType.RIGHT) {
+        if (event.getType() == ClickEvent.ClickType.RIGHT && blockInfo.enabled) {
             ItemStack item = mc.thePlayer.getHeldItem();
             if (item != null && item.getItem() instanceof ItemBlock) {
                 int size = mc.thePlayer.getHeldItem().stackSize;
-                Atomic.registerAtomic("Count: " + size + "  " + (size > 32 ? "" : size > 16 ? "(!)" : size > 8 ? "(!!)" : "(!!!)"), item.getDisplayName(), 3000, "c", false);
+                Atomic.registerAtomic("Count: " + size + "  " + (size > 32 ? "" : size > 16 ? "(!)" : size > 8 ? "(!!)" : "(!!!)"), item.getDisplayName(), 3000, "c", false, -1);
             }
         }
     }

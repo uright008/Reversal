@@ -37,7 +37,7 @@ public class AtomicIslandRenderer implements GameInstance {
     public Animation y = new Animation(Easing.EASE_OUT_EXPO, 800);
     private ScaledResolution sr;
     public String mainText;
-    public final Map<Runnable, Long> tasks = new LinkedHashMap<>();
+    public final ArrayList<AtomicTask> tasks = new ArrayList<>();
 
     private boolean taskScheduled = false;
     private long currentTaskTimeout;
@@ -52,6 +52,7 @@ public class AtomicIslandRenderer implements GameInstance {
 
     public void render(ScaledResolution sr) {
         this.sr = sr;
+        Atomic.sortTasksByPriority(tasks);
         if (tasks.isEmpty()) {
             update(this.sr);
             runToXy(Atomic.x, Atomic.y);
@@ -69,9 +70,6 @@ public class AtomicIslandRenderer implements GameInstance {
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
             GL11.glPopMatrix();
         } else {
-            Map.Entry<Runnable, Long> entry = tasks.entrySet().iterator().next();
-
-            updateTask();
             runToXy(Atomic.x, Atomic.y);
 
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
@@ -79,14 +77,15 @@ public class AtomicIslandRenderer implements GameInstance {
             RenderUtil.scissor(x.getValue() - 1, y.getValue() - 1, (float) ((Atomic.x - x.getValue()) * 2) + 2, (float) ((Atomic.y - y.getValue()) * 2) + 2);
 
             RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, ColorUtil.empathyColor());
-            if (ModuleInstance.getModule(AtomicIsland.class).percentBar.enabled) RenderUtil.roundedRectangle((float) x.getValue() + 3, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) - 0.5), (Atomic.width - (System.currentTimeMillis() - startTime) * (Atomic.width / entry.getValue()) - 3), 1f, 4, new Color(255,255,255,255));
+            if (ModuleInstance.getModule(AtomicIsland.class).percentBar.enabled) RenderUtil.roundedRectangle((float) x.getValue() + 3, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) - 0.5), (Atomic.width - (System.currentTimeMillis() - startTime) * (Atomic.width / tasks.get(0).getDelay()) - 3), 1f, 4, new Color(255,255,255,255));
             MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, Color.BLACK));
             MODERN_BLUR_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, Color.BLACK));
 
-            entry.getKey().run();
+            tasks.get(0).getTask().run();
 
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
             //    FontManager.getPSM(18).drawString(mainText, x.getValue() + 5, y.getValue() + 5, new Color(250, 250, 250, 250).getRGB());
+            updateTask();
         }
     }
 
@@ -126,9 +125,8 @@ public class AtomicIslandRenderer implements GameInstance {
     public void updateTask() {
         Atomic.x = sr.getScaledWidth() / 2f;
         if (!tasks.isEmpty()) {
-            Map.Entry<Runnable, Long> entry = tasks.entrySet().iterator().next();
-            if (taskTimeoutTimer.hasReached(entry.getValue())) {
-                tasks.remove(entry.getKey());
+            if (taskTimeoutTimer.hasReached(tasks.get(0).getDelay())) {
+                tasks.remove(tasks.get(0));
                 taskTimeoutTimer.reset();
                 if (!tasks.isEmpty()) startTime = System.currentTimeMillis();
             }

@@ -9,9 +9,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -146,7 +148,7 @@ public class GuiConnecting extends GuiScreen
     public void initGui()
     {
         GameInstance.clearRunnables();
-        Atomic.registerAtomic("Connecting to: " + mc.getCurrentServerData().serverIP, "Server", 3000L);
+        Reversal.notificationManager.registerNotification("Connecting to: " + mc.getCurrentServerData().serverIP, "Server", 3000L, NotificationType.NOTIFICATION);
         this.cancelButton = new TextButton(width / 2 - 100, height / 2 + 100, 200, 20, this::action, "取消", "", true, 6, 90, 5, 20);
         this.animation = new Animation(Easing.EASE_OUT_QUINT, 600);
     }

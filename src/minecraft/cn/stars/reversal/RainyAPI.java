@@ -64,7 +64,7 @@ public class RainyAPI {
      */
     public static final String[] wittyTitle = new String[]
             {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "time.elapsed(93d)",
-                    "在强权面前,你会低头吗?在命运面前,你会服从吗?", "Tough. Complex. Incomprehensible.", "时间永远是最难跨过的分界线"};
+                    "在强权面前,你会低头吗?在命运面前,你会服从吗?", "Tough. Complex. Incomprehensible.", "时间永远是最难跨过的分界线", "自己选择的路终究由你自己跨过"};
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];
@@ -94,7 +94,7 @@ public class RainyAPI {
 
                     // 检测后缀名
                     if (droppedFile.exists() && droppedFile.getName().toLowerCase().endsWith(".mp4")) {
-                        ReversalLogger.info("Dragged file successfully detected: " + droppedFile.getAbsolutePath());
+                        ReversalLogger.info("Dragged file detected: " + droppedFile.getAbsolutePath());
 
                         try {
                             // 停止加载

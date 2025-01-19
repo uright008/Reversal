@@ -175,14 +175,14 @@ public class AppleSkin extends Module {
                 u += iconSize;
             }
 
-            GlStateManager.color(0.95F, 0.75F, 0.0F, alpha);
+            GlStateManager.color(0.75F, 0.65F, 0.0F, alpha);
             mc.ingameGUI.drawTexturedModalRect(ubX, y, ub, v, ubIconSize, iconSize);
 
             if (modifiedSaturation > modifiedFood) {
                 continue;
             }
 
-            GlStateManager.color(1F, 1F, 0.0F, alpha);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
             mc.ingameGUI.drawTexturedModalRect(x, y, u, v, iconSize, iconSize);
         }
 

@@ -2,7 +2,9 @@ package net.minecraft.client;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
+import cn.stars.reversal.module.impl.hud.ClientSettings;
 import cn.stars.reversal.ui.atmoic.Atomic;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.misc.VideoUtil;
 import cn.stars.reversal.util.shader.RiseShaders;
 import cn.stars.reversal.util.shader.base.ShaderRenderType;
@@ -120,7 +122,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
 
             if (i - this.systemTime >= 100L)
             {
-                this.mc.updateDisplay();
+                
                 this.systemTime = i;
                 ScaledResolution scaledresolution = new ScaledResolution(this.mc);
                 int j = scaledresolution.getScaleFactor();
@@ -144,7 +146,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
                 GlStateManager.loadIdentity();
                 GlStateManager.translate(0.0F, 0.0F, -200.0F);
 
-                this.mc.updateDisplay();
+                
                 if (!OpenGlHelper.isFramebufferEnabled())
                 {
                     GlStateManager.clear(16640);
@@ -164,8 +166,8 @@ public class LoadingScreenRenderer implements IProgressUpdate
 
                 if (flag)
                 {
-                    this.mc.updateDisplay();
-                    if (RainyAPI.backgroundId == 9) {
+                    
+                    if (RainyAPI.backgroundId == 9 && ModuleInstance.getModule(ClientSettings.class).loadingScreenBackground.enabled) {
                         VideoUtil.render(0,0,scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
                     }
                     else {
@@ -209,17 +211,12 @@ public class LoadingScreenRenderer implements IProgressUpdate
                         GlStateManager.enableBlend();
                         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
                     }
-                    this.mc.updateDisplay();
 
                     Atomic.INSTANCE.render(scaledresolution);
-
-                    this.mc.updateDisplay();
 
                     this.mc.fontRendererObj.drawStringWithShadow(this.currentlyDisplayedText, (float)((k - this.mc.fontRendererObj.getStringWidth(this.currentlyDisplayedText)) / 2), (float)(l / 2 - 4 - 16), 16777215);
                     this.mc.fontRendererObj.drawStringWithShadow(this.message, (float)((k - this.mc.fontRendererObj.getStringWidth(this.message)) / 2), (float)(l / 2 - 4 + 8), 16777215);
                 }
-
-                this.mc.updateDisplay();
 
                 this.framebuffer.unbindFramebuffer();
 

@@ -879,6 +879,7 @@ public class GuiIngame extends Gui {
 
             if (!ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled())
                 try {
+                    this.mc.getTextureManager().bindTexture(new ResourceLocation("reversal/images/texture/appleskin/icons.png"));
                     ModuleInstance.getModule(AppleSkin.class).renderOverlay();
                 } catch (Exception e) {
                     ReversalLogger.error("Error occurred while rendering overlay.", e);

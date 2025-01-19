@@ -54,7 +54,7 @@ import java.util.concurrent.Executors;
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
-    public static final String VERSION = "v1.1.2";
+    public static final String VERSION = "v1.2.0";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
     public static final Branch BRANCH = Branch.PRODUCTION;
@@ -250,7 +250,6 @@ public class Reversal {
             new SkinLayers3D(), // Special Module
             // Combat
             new ClickSound(),
-            new ExperimentReachDistanceChecker(),
             new NoClickDelay(),
             // Movement
             new Sprint(),

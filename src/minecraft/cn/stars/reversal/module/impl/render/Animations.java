@@ -20,7 +20,7 @@ public class Animations extends Module {
     public final NumberValue swingSpeed = new NumberValue("Swing Speed", this, 1.0, 1, 5, 1);
     public final BoolValue swordSwing = new BoolValue("Sword Swing", this, true);
     public final ModeValue swordMode = new ModeValue("Sword Mode", this, "1.7",
-            "None" ,"1.7", "Smooth", "Spin", "Leaked", "Old", "Exhibition", "SlideDown", "Liquid");
+            "None" ,"1.7", "Spin", "Leaked", "Old", "Exhibition", "SlideDown", "Liquid");
     public final BoolValue foodSwing = new BoolValue("Food Swing", this, true);
     public final BoolValue drinkSwing = new BoolValue("Drink Swing", this, true);
     public final BoolValue bowSwing = new BoolValue("Bow Swing", this, true);

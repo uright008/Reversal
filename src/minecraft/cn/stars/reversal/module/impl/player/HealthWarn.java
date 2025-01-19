@@ -1,5 +1,6 @@
 package cn.stars.reversal.module.impl.player;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.PreMotionEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
@@ -24,7 +25,7 @@ public class HealthWarn extends Module {
     public void onPreMotion(PreMotionEvent event) {
         if (mc.thePlayer.getHealth() <= health.getValue()) {
             if (canWarn) {
-                registerNotification("You dont have enough health!","HP Warning", NotificationType.WARNING, 3000);
+                Reversal.notificationManager.registerNotification("You dont have enough health!","HP Warning", 3000, NotificationType.WARNING, 5);
                 canWarn = false;
             }
         } else {
