@@ -2,8 +2,7 @@ package cn.stars.reversal.util.render;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.module.impl.hud.ClientSettings;
-import cn.stars.reversal.value.impl.ModeValue;
+import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import lombok.Getter;
@@ -11,7 +10,6 @@ import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
 import java.awt.*;
-import java.util.Objects;
 
 @UtilityClass
 public final class ThemeUtil implements GameInstance {

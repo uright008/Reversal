@@ -4,16 +4,12 @@
  */
 package cn.stars.reversal.module.impl.render;
 
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render3DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.module.impl.player.SmallPlayer;
-import cn.stars.reversal.util.animation.advanced.Animation;
-import cn.stars.reversal.util.animation.advanced.Direction;
 import cn.stars.reversal.util.animation.advanced.composed.CustomAnimation;
-import cn.stars.reversal.util.animation.advanced.impl.EaseBackIn;
 import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.stars.reversal.util.render.*;
 import cn.stars.reversal.value.impl.BoolValue;
@@ -30,6 +26,9 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+/**
+ * SKID?!
+ */
 @ModuleInfo(name = "BAHalo",  chineseName = "蔚蓝档案光环", description = "Blue archive halos", chineseDescription = "蔚蓝档案角色的光环", category = Category.RENDER)
 public class BAHalo extends Module {
     private final ModeValue mode = new ModeValue("Student", this, "Shiroko", "Shiroko", "Hoshino", "Reisa", "Azusa");

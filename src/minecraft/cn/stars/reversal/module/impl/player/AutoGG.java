@@ -25,14 +25,14 @@ public class AutoGG extends Module {
             if (MiscUtil.containsAnyIgnoreCase(message, winMessage) && !MiscUtil.containsAnyIgnoreCase(message, exceptMessage) && !isWinning) {
                 isWinning = true;
                 mc.thePlayer.sendChatMessage("gg");
-                Reversal.notificationManager.registerNotification("Sent GG at chat!", "AutoGG", 3000L, NotificationType.SUCCESS);
+                Reversal.notificationManager.registerNotification("Sent GG at chat!", "AutoGG", 3000L, NotificationType.SUCCESS, 5);
             }
         }
     }
 
     @Override
     public void onUpdate(UpdateEvent event) {
-        if (timeUtil.hasReached(5000L) && isWinning) {
+        if (timeUtil.hasReached(5000L)) {
             isWinning = false;
             timeUtil.reset();
         }

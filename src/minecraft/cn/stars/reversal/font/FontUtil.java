@@ -1,15 +1,16 @@
 package cn.stars.reversal.font;
 
 import cn.stars.reversal.GameInstance;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 import java.io.IOException;
 
-public class FontUtil implements GameInstance {
+public class FontUtil {
 
-    private static final IResourceManager RESOURCE_MANAGER = mc.getResourceManager();
+    private static final IResourceManager RESOURCE_MANAGER = Minecraft.getMinecraft().getResourceManager();
 
     /**
      * Method which gets a font by a resource name

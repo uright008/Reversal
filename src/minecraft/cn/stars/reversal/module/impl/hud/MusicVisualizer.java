@@ -63,7 +63,11 @@ public class MusicVisualizer extends Module {
             }
 
             for (int i = 0; i < magnitudeInterp.length; i++) {
-                magnitudeInterp[i] = (float) lerp(magnitudeInterp[i], magnitudes[i], timeUtil.getElapsedTime() * 0.5);
+                try {
+                    magnitudeInterp[i] = (float) lerp(magnitudeInterp[i], magnitudes[i], timeUtil.getElapsedTime() * 0.5);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    // simply ignore this due to array modifications
+                }
             }
 
             vertex[0] = renderX;

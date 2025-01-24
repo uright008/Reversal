@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.RainyAPI;
-import cn.stars.reversal.module.impl.misc.IRC;
+import cn.stars.reversal.module.impl.client.IRC;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.collect.ComparisonChain;

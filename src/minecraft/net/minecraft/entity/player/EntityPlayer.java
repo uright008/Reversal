@@ -6,9 +6,11 @@ import cn.stars.addons.waveycapes.CapeHolder;
 import cn.stars.addons.waveycapes.StickSimulation;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.event.impl.AttackEvent;
-import cn.stars.reversal.module.impl.misc.IRC;
+import cn.stars.reversal.module.impl.client.IRC;
+import cn.stars.reversal.module.impl.player.SmoothSneak;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.player.SmoothSneakUtil;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
@@ -128,6 +130,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
     private final GameProfile gameProfile;
     private boolean hasReducedDebug = false;
     public EntityFishHook fishEntity;
+    private SmoothSneakUtil smoothSneakingState = new SmoothSneakUtil();
 
     public EntityPlayer(World worldIn, GameProfile gameProfileIn)
     {
@@ -2065,10 +2068,15 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
             f = 0.2F;
         }
 
-        if (this.isSneaking())
-        {
-            f -= 0.08F;
+        if (!ModuleInstance.getModule(SmoothSneak.class).enabled) {
+            if (this.isSneaking()) {
+                f -= 0.08F;
+            }
+        } else {
+            f += smoothSneakingState.getSneakingHeightOffset(isSneaking());
         }
+
+
 
         return f;
     }

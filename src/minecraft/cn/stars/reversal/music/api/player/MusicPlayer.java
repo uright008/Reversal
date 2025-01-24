@@ -6,6 +6,7 @@ import cn.stars.reversal.module.impl.hud.MusicVisualizer;
 import cn.stars.reversal.music.api.base.LyricLine;
 import cn.stars.reversal.music.api.base.Music;
 import cn.stars.reversal.music.thread.ChangeMusicThread;
+import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
@@ -64,9 +65,6 @@ public class MusicPlayer {
     }
 
     public void setMusic(Music music) {
-        this.music = music;
-
-        MusicInfo.currentLyric = "";
         MusicVisualizer.magnitudeInterp = null;
 
         String songURL = music.getSongURL();
@@ -107,8 +105,11 @@ public class MusicPlayer {
         mediaPlayer.setVolume(volume);
         music.getLyrics().forEach(LyricLine::reset);
     //    ((MusicLyricWidget) Client.instance.uiManager.getWidget(MusicLyricWidget.class)).reset();
-        ((MusicInfo) ModuleInstance.getModule(MusicInfo.class)).reset();
+        ModuleInstance.getModule(MusicInfo.class).reset();
+        Atomic.INSTANCE.reset();
         mediaPlayer.play();
+
+        this.music = music;
     }
 
     public int getPlayedLyricCount() {
@@ -154,5 +155,44 @@ public class MusicPlayer {
 
     public boolean isPaused() {
         return mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED;
+    }
+
+    public String getCurrentLyric(boolean translated) {
+        if (music == null) return "无音乐";
+        // 歌词为空
+        if (music.getLyrics().isEmpty()) {
+            return "纯音乐，请欣赏";
+        }
+
+        // 获取歌词列表
+        List<LyricLine> lyrics = music.hasTranslate && translated ? music.getTranslatedLyrics() : music.getLyrics();
+        double currentTime = getCurrentTime();
+
+        // 遍历时只考虑当前时间已经跨越的歌词行
+        if (getCurrentTime() < lyrics.get(0).getStart()) {
+            return "...";
+        }
+
+        // 优化：使用二分查找来快速定位当前时间所在的歌词行
+        int start = 0, end = lyrics.size() - 1;
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            LyricLine lyricLine = lyrics.get(mid);
+
+            // 如果当前时间在该行歌词的时间范围内
+            if (currentTime >= lyricLine.getStart() && (mid == lyrics.size() - 1 || currentTime < lyrics.get(mid + 1).getStart())) {
+                return lyricLine.getLine();
+            }
+            // 如果当前时间小于该行歌词的开始时间，往前查找
+            if (currentTime < lyricLine.getStart()) {
+                end = mid - 1;
+            } else {
+                // 否则往后查找
+                start = mid + 1;
+            }
+        }
+
+        // 如果没有找到，返回默认的歌词（例如"..."）
+        return "...";
     }
 }

@@ -1720,7 +1720,7 @@ public abstract class EntityLivingBase extends Entity
             this.motionZ *= 0.98D;
         }
 
-        Protocol protocol = (Protocol) ModuleInstance.getModule(Protocol.class);
+        Protocol protocol = ModuleInstance.getModule(Protocol.class);
         double minimumMotion = protocol.getMinimumMotion(this);
 
         if (Math.abs(this.motionX) < minimumMotion)

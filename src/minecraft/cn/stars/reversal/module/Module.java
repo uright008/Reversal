@@ -3,7 +3,7 @@ package cn.stars.reversal.module;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
-import cn.stars.reversal.module.impl.hud.ClientSettings;
+import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.value.Value;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.animation.rise.Animation;

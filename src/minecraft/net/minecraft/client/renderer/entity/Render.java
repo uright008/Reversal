@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer.entity;
 
 import cn.stars.addons.optimization.entityculling.EntityRendererInter;
+import cn.stars.reversal.module.impl.client.NameTag;
 import cn.stars.reversal.module.impl.player.SmallPlayer;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.block.Block;
@@ -361,7 +362,8 @@ public abstract class Render<T extends Entity> implements IEntityRenderer, Entit
             }
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+            if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 2) GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+            else GlStateManager.rotate(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
             GlStateManager.scale(-f1, -f1, f1);
             GlStateManager.disableLighting();
             GlStateManager.depthMask(false);
@@ -378,14 +380,16 @@ public abstract class Render<T extends Entity> implements IEntityRenderer, Entit
             }
 
             int j = fontrenderer.getStringWidth(str) / 2;
-            GlStateManager.disableTexture2D();
-            worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-            worldrenderer.pos((double)(-j - 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            worldrenderer.pos((double)(-j - 1), (double)(8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            worldrenderer.pos((double)(j + 1), (double)(8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            worldrenderer.pos((double)(j + 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            tessellator.draw();
-            GlStateManager.enableTexture2D();
+            if (ModuleInstance.getModule(NameTag.class).background.enabled) {
+                GlStateManager.disableTexture2D();
+                worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                worldrenderer.pos(-j - 1, (-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                worldrenderer.pos((-j - 1), (8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                worldrenderer.pos((j + 1), (8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                worldrenderer.pos((j + 1), (-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                tessellator.draw();
+                GlStateManager.enableTexture2D();
+            }
             fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, 553648127);
             GlStateManager.enableDepth();
             GlStateManager.depthMask(true);

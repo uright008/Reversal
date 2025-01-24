@@ -5,7 +5,7 @@
 package cn.stars.reversal.util.reversal;
 
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.module.impl.misc.IRC;
+import cn.stars.reversal.module.impl.client.IRC;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.blogspot.debukkitsblog.net.Client;
 import com.blogspot.debukkitsblog.net.Datapackage;

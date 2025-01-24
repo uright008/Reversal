@@ -51,7 +51,6 @@ public class Locale
 
     private void checkUnicode()
     {
-        this.unicode = false;
         int i = 0;
         int j = 0;
 

@@ -4,6 +4,7 @@
  */
 package cn.stars.reversal.music.api.base;
 
+import cn.stars.reversal.util.ReversalLogger;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -54,5 +55,11 @@ public class Music {
     }
 
     public void generateTranslateMap() {
+        ReversalLogger.info(lyrics.size() + "/" + translatedLyrics.size());
+        if (lyrics.size() == translatedLyrics.size()) {
+            for (int i = 0; i < lyrics.size(); i++) {
+                translateMap.put(lyrics.get(i), translatedLyrics.get(i));
+            }
+        }
     }
 }

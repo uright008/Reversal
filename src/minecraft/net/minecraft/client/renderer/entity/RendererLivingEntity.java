@@ -5,7 +5,7 @@ import cn.stars.reversal.module.impl.addons.MoBends;
 import cn.stars.reversal.module.impl.addons.SkinLayers3D;
 import cn.stars.reversal.module.impl.player.Dinnerbone;
 import cn.stars.reversal.module.impl.player.SmallPlayer;
-import cn.stars.reversal.module.impl.player.SelfTag;
+import cn.stars.reversal.module.impl.client.NameTag;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.collect.Lists;
@@ -740,11 +740,6 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                     }
                 }
             }
-
-            if (Reflector.RenderLivingEvent_Specials_Post_Constructor.exists())
-            {
-                Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Specials_Post_Constructor, new Object[] {entity, this, Double.valueOf(x), Double.valueOf(y), Double.valueOf(z)});
-            }
         }
     }
 
@@ -752,7 +747,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     {
         EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
 
-        if (ModuleInstance.getModule(SelfTag.class).isEnabled() && entity == entityplayersp) return true;
+        if (ModuleInstance.getModule(NameTag.class).self.enabled && entity == entityplayersp) return true;
 
         if (entity instanceof EntityPlayer && entity != entityplayersp)
         {

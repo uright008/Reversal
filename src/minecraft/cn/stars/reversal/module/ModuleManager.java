@@ -1,11 +1,7 @@
 package cn.stars.reversal.module;
 
-import cn.stars.reversal.Reversal;
-import cn.stars.reversal.module.impl.hud.Arraylist;
-import cn.stars.reversal.module.impl.hud.ClientSettings;
-import cn.stars.reversal.ui.hud.Hud;
+import cn.stars.reversal.event.EventHandler;
 import cn.stars.reversal.value.Value;
-import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.ClassUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,6 +40,7 @@ public final class ModuleManager {
         for (Module module : moduleList) {
             module.onLoad();
         }
+        EventHandler.residentProcessor.onLoad();
     }
 
     public void registerModules(Module[] modules) {
@@ -54,6 +51,7 @@ public final class ModuleManager {
             moduleCache.put(module.getModuleInfo().name().toLowerCase(), module);
             module.onLoad();
         }
+        EventHandler.residentProcessor.onLoad();
     }
 
     public List<Module> getEnabledModules() {
@@ -92,20 +90,16 @@ public final class ModuleManager {
      */
 
     public Module getModule(final String name) {
-        if (lastGetModuleName != null && lastGetModule != null) {
-            if (lastGetModuleName.equalsIgnoreCase(name)) {
-                return lastGetModule;
+        Module module = moduleCache.get(name.toLowerCase());
+        if (module != null) {
+            return module;
+        } else {
+            for (final Module m : moduleList) {
+                if (m.getModuleInfo().name().equalsIgnoreCase(name)) {
+                    return m;
+                }
             }
         }
-
-        for (final Module module : moduleList) {
-            if (module.getModuleInfo().name().equalsIgnoreCase(name)) {
-                lastGetModuleName = name;
-                lastGetModule = module;
-                return module;
-            }
-        }
-
         return null;
     }
 

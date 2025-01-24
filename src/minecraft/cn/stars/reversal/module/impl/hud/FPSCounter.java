@@ -7,6 +7,8 @@ import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.render.*;
@@ -20,7 +22,6 @@ public class FPSCounter extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
     private final BoolValue rainbow = new BoolValue("Rainbow", this, false);
     private final BoolValue background = new BoolValue("Background", this, true);
-    private final BoolValue middleBracket = new BoolValue("Middle Bracket", this, false);
     public FPSCounter() {
         setCanBeEdited(true);
         setWidth(100);
@@ -32,7 +33,7 @@ public class FPSCounter extends Module {
     @Override
     public void onShader3D(Shader3DEvent event) {
         String fpsString = Minecraft.getDebugFPS() + " fps";
-        if (middleBracket.isEnabled()) fpsString = "[" + Minecraft.getDebugFPS() + " fps]";
+        if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) fpsString = "[" + Minecraft.getDebugFPS() + " fps]";
 
         Color color = rainbow.isEnabled() ? ThemeUtil.getThemeColor(ThemeType.LOGO) : new Color(250, 250, 250, 200);
 
@@ -65,7 +66,7 @@ public class FPSCounter extends Module {
     @Override
     public void onRender2D(Render2DEvent event) {
         String fpsString = Minecraft.getDebugFPS() + " fps";
-        if (middleBracket.isEnabled()) fpsString = "[" + Minecraft.getDebugFPS() + " fps]";
+        if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) fpsString = "[" + Minecraft.getDebugFPS() + " fps]";
         Color color = rainbow.isEnabled() ? ThemeUtil.getThemeColor(ThemeType.LOGO) : new Color(250, 250, 250, 200);
 
         if (background.isEnabled()) {

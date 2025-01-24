@@ -1,7 +1,6 @@
 package net.minecraft.client.gui;
 
-import cn.stars.reversal.module.impl.hud.ClientSettings;
-import cn.stars.reversal.module.impl.misc.Chat;
+import cn.stars.reversal.module.impl.client.Chat;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.collect.Lists;
 import java.util.Iterator;
@@ -86,7 +85,7 @@ public class GuiNewChat extends Gui
                             {
                                 int i2 = 0;
                                 int j2 = -i1 * 9;
-                                if (ModuleInstance.getModule(Chat.class).chatBackground.isEnabled())
+                                if (ModuleInstance.getModule(Chat.class).chatBackground.enabled)
                                     drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
                                 String s = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();

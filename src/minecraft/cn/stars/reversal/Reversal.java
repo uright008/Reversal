@@ -1,8 +1,6 @@
 package cn.stars.reversal;
 
 import cn.stars.addons.creativetab.ReversalTab;
-import cn.stars.addons.optimization.entityculling.EntityCullingMod;
-import cn.stars.addons.optimization.util.FastTrig;
 import cn.stars.reversal.command.Command;
 import cn.stars.reversal.command.CommandManager;
 import cn.stars.reversal.command.impl.*;
@@ -10,6 +8,7 @@ import cn.stars.reversal.command.impl.Chat;
 import cn.stars.reversal.config.DefaultHandler;
 import cn.stars.reversal.config.MusicHandler;
 import cn.stars.reversal.module.*;
+import cn.stars.reversal.module.impl.client.*;
 import cn.stars.reversal.module.impl.hud.*;
 import cn.stars.reversal.module.impl.render.*;
 import cn.stars.reversal.module.impl.player.*;
@@ -25,7 +24,6 @@ import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.ui.theme.GuiTheme;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
-import cn.stars.reversal.util.misc.VideoUtil;
 import cn.stars.reversal.util.reversal.Branch;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,7 +32,6 @@ import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ChatComponentText;
-import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import tech.skidonion.obfuscator.annotations.StringEncryption;
@@ -45,8 +42,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Copyright (c) 2024 Stars, All rights reserved.
- * A Hack-Visual PVP Client, a small dream planted by Stars.
+ * Copyright (c) 2025 Reversal, All rights reserved.
+ * A Hack-Visual PVP Client by Stars.
  */
 @NativeObfuscation
 @StringEncryption
@@ -54,7 +51,7 @@ import java.util.concurrent.Executors;
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
-    public static final String VERSION = "v1.2.0";
+    public static final String VERSION = "v1.4.3";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
     public static final Branch BRANCH = Branch.PRODUCTION;
@@ -63,8 +60,6 @@ public class Reversal {
     public static Gson PRETTY_GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
     public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(2);
-
-    public static EntityCullingMod entityCullingMod;
 
     public static String customName = "";
     public static String customText = ".setText <text>";
@@ -98,21 +93,17 @@ public class Reversal {
 
             DefaultHandler.loadConfigs();
 
-            postInitialize();
-
-            Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
-        //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH));
-        //    Display.setTitle(NAME + " (" + VERSION + "/" + BRANCH.name() + "/RainyAPI/LWJGL " + Sys.getVersion() + ")");
             ReversalLogger.info("Client loaded successfully.");
             ReversalLogger.info(NAME + " " + VERSION + " (Minecraft " + MINECRAFT_VERSION + "), made with love by " + AUTHOR + ".");
         } catch (Exception e) {
             ReversalLogger.error("An error has occurred while loading Reversal: ", e);
         }
     }
+
     public static void stop() {
+        saveAll();
         threadExecutor.shutdownNow();
         threadPoolExecutor.shutdownNow();
-        saveAll();
     }
 
     // Usages
@@ -187,6 +178,10 @@ public class Reversal {
             if (!FileUtil.exists("Cache" + File.separator)) {
                 FileUtil.createDirectory("Cache" + File.separator);
             }
+
+            if (!FileUtil.exists("Background" + File.separator)) {
+                FileUtil.createDirectory("Background" + File.separator);
+            }
         } catch (final Exception e) {
             ReversalLogger.error("An error has occurred while loading Reversal: ", e);
         }
@@ -194,26 +189,9 @@ public class Reversal {
 
     public static void postInitialize() {
         try {
-            FastTrig.init();
-
-            entityCullingMod = new EntityCullingMod();
-            entityCullingMod.onInitialize();
-
-            File tempFile = new File(Minecraft.getMinecraft().mcDataDir, "Reversal/Background");
-            File videoFile = new File(tempFile, "background.mp4");
-            if (!tempFile.exists()) {
-                tempFile.mkdir();
-            }
-            if (!videoFile.exists()) {
-                FileUtil.unpackFile(videoFile, "assets/minecraft/reversal/background.mp4");
-            }
-
-            try {
-                VideoUtil.init(videoFile);
-            } catch (Exception e) {
-                FileUtil.unpackFile(videoFile, "/assets/minecraft/reversal/background.mp4");
-                VideoUtil.retryIfFailed(videoFile);
-            }
+            Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
+            //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH));
+            //    Display.setTitle(NAME + " (" + VERSION + "/" + BRANCH.name() + "/RainyAPI/LWJGL " + Sys.getVersion() + ")");
         } catch (final Exception e) {
             ReversalLogger.error("An error has occurred while loading Reversal: ", e);
         }
@@ -242,19 +220,17 @@ public class Reversal {
 
     public static final Module[] modules = new Module[] {
             // Addons
-            new Optimization(), // Special Module
             new FreeLook(),
             new MoBends(),
             new MusicPlayer(),
             new WaveyCapes(),
-            new SkinLayers3D(), // Special Module
+            new SkinLayers3D(),
             // Combat
             new ClickSound(),
             new NoClickDelay(),
             // Movement
             new Sprint(),
             // Misc
-            new cn.stars.reversal.module.impl.misc.Chat(),
             new ClientSpoofer(),
             new CustomName(),
             new NoAchievements(),
@@ -265,9 +241,8 @@ public class Reversal {
             new AutoGG(),
             new Dinnerbone(),
             new HealthWarn(),
-            new IRC(),
-            new SelfTag(),
             new SmallPlayer(),
+            new SmoothSneak(),
             // Render
             new Animations(),
             new AppleSkin(),
@@ -277,14 +252,12 @@ public class Reversal {
             new BlockOverlay(),
             new Trail(),
             new ChinaHat(),
-            new ClickGui(), // Special Module
+            new ClickGui(),
             new Crosshair(),
             new DamageParticle(),
             new EnvironmentEffect(),
             new Fullbright(),
             new HitEffect(),
-            new Hotbar(),
-            new HurtCam(), // Special Module
             new ItemPhysics(),
             new JumpCircle(),
             new LineGlyphs(),
@@ -298,8 +271,6 @@ public class Reversal {
             new SpeedGraph(),
             new Wings(),
             // Hud
-            new ClientSettings(), // Special Module
-            new PostProcessing(), // Special Module
             new Arraylist(),
             new AtomicIsland(),
             new BASticker(),
@@ -313,11 +284,19 @@ public class Reversal {
             new MusicVisualizer(),
             new PingCounter(),
             new PotionEffects(),
-            new PVPStats(),
             new Scoreboard(),
             new SessionInfo(),
             new TargetHud(),
             new TextGui(),
+            // Client
+            new ClientSettings(),
+            new PostProcessing(),
+            new cn.stars.reversal.module.impl.client.Chat(),
+            new HurtCam(),
+            new Hotbar(),
+            new NameTag(),
+            new Optimization(),
+            new IRC(),
     };
 
     public static int CLIENT_THEME_COLOR = new Color(159, 24, 242).hashCode();

@@ -29,11 +29,9 @@ import org.lwjgl.compatibility.util.vector.Vector3f;
 @ModuleInfo(name = "MoBends", chineseName = "更多动作", description = "Show more animations on entity",
         chineseDescription = "在玩家和部分生物上渲染更真实的动作", category = Category.ADDONS)
 public class MoBends extends Module {
-    public static boolean loaded = false;
-    public static float partialTicks;
-    public static float ticks;
-    public static float ticksPerFrame;
-    public static final ResourceLocation texture_NULL;
+    public static float ticks = 0.0f;
+    public static float ticksPerFrame = 0.0f;
+    public static final ResourceLocation texture_NULL = new ResourceLocation("reversal/images/white.png");
 
     @Override
     public void onUpdateAlways() {
@@ -70,13 +68,14 @@ public class MoBends extends Module {
     }
 
     @Override
+    public void onLoad() {
+        AnimatedEntity.register();
+    }
+
+    @Override
     public void onTick(final TickEvent event) {
         if (mc.theWorld == null) {
             return;
-        }
-        if (!loaded) {
-            AnimatedEntity.register();
-            loaded = true;
         }
         for (int i = 0; i < Data_Player.dataList.size(); ++i) {
             final Data_Player data = Data_Player.dataList.get(i);
@@ -87,7 +86,7 @@ public class MoBends extends Module {
                     Data_Player.add(new Data_Player(entity.getEntityId()));
                 }
                 else {
-                    data.motion_prev.set((ReadableVector3f)data.motion);
+                    data.motion_prev.set(data.motion);
                     data.motion.x = (float)entity.posX - data.position.x;
                     data.motion.y = (float)entity.posY - data.position.y;
                     data.motion.z = (float)entity.posZ - data.position.z;
@@ -107,7 +106,7 @@ public class MoBends extends Module {
                     Data_Zombie.add(new Data_Zombie(entity.getEntityId()));
                 }
                 else {
-                    data2.motion_prev.set((ReadableVector3f)data2.motion);
+                    data2.motion_prev.set(data2.motion);
                     data2.motion.x = (float)entity.posX - data2.position.x;
                     data2.motion.y = (float)entity.posY - data2.position.y;
                     data2.motion.z = (float)entity.posZ - data2.position.z;
@@ -127,7 +126,7 @@ public class MoBends extends Module {
                     Data_Spider.add(new Data_Spider(entity.getEntityId()));
                 }
                 else {
-                    data3.motion_prev.set((ReadableVector3f)data3.motion);
+                    data3.motion_prev.set(data3.motion);
                     data3.motion.x = (float)entity.posX - data3.position.x;
                     data3.motion.y = (float)entity.posY - data3.position.y;
                     data3.motion.z = (float)entity.posZ - data3.position.z;
@@ -162,12 +161,5 @@ public class MoBends extends Module {
             return true;
         }
         return false;
-    }
-
-    static {
-        partialTicks = 0.0f;
-        ticks = 0.0f;
-        ticksPerFrame = 0.0f;
-        texture_NULL = new ResourceLocation("reversal/images/white.png");
     }
 }

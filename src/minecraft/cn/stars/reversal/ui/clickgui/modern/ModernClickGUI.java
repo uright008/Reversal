@@ -7,8 +7,8 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
-import cn.stars.reversal.module.impl.hud.ClientSettings;
-import cn.stars.reversal.module.impl.hud.PostProcessing;
+import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.util.render.*;
@@ -17,7 +17,6 @@ import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import cn.stars.reversal.util.animation.advanced.Direction;
 import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
@@ -143,11 +142,11 @@ public class ModernClickGUI extends GuiScreen {
                     RenderUtil.scissor(moduleX, y, 400, 360);
                 }
                 if (canUseChinese(m)) {
-                    regular24Bold.drawString(m.getModuleInfo().chineseName(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), ModuleInstance.isSpecialModule(m) ? new Color(240, 240, 10, 250).getRGB() : m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                    regular24Bold.drawString(m.getModuleInfo().chineseName(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                     regular16.drawString(m.getModuleInfo().chineseDescription(),
                             m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 21, new Color(160, 160, 160, 160).getRGB());
                 } else {
-                    psm24.drawString(m.getModuleInfo().name(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), ModuleInstance.isSpecialModule(m) ? new Color(240, 240, 10, 250).getRGB() : m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                    psm24.drawString(m.getModuleInfo().name(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                     psr16.drawString(m.getModuleInfo().description(),
                             m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 20, new Color(160, 160, 160, 160).getRGB());
                 }
@@ -349,6 +348,9 @@ public class ModernClickGUI extends GuiScreen {
         if (RenderUtil.isHovered(x + 5, y + 205, 105, 20, mouseX, mouseY)) {
             setSelectedCategory(Category.ADDONS);
         }
+        if (RenderUtil.isHovered(x + 5, y + 230, 105, 20, mouseX, mouseY)) {
+            setSelectedCategory(Category.CLIENT);
+        }
 
         float moduleX = x + 120;
         float moduleY = y + 5;
@@ -429,6 +431,9 @@ public class ModernClickGUI extends GuiScreen {
             }
             case ADDONS: {
                 return "H";
+            }
+            case CLIENT: {
+                return "e";
             }
         }
         return "A";

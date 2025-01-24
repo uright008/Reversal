@@ -34,7 +34,6 @@ public class MusicInfo extends Module {
     private final BoolValue lyrics = new BoolValue("Lyrics", this, false);
     private final NumberValue heightValue = new NumberValue("Height", this, 50, 50, 100, 1);
     private DynamicTexture coverTexture;
-    public static String currentLyric = "暂无歌词...";
 
     public MusicInfo() {
         setCanBeEdited(true);
@@ -73,28 +72,10 @@ public class MusicInfo extends Module {
         if (lyrics.isEnabled()) {
             regular20Bold.drawString(player.getMusic().getName(), getX() + getHeight() + 2, getY() + getHeight() / 2f - 18, Color.WHITE.getRGB());
             regular16.drawString(player.getMusic().getArtist(), getX() + getHeight() + 2, getY() + getHeight() / 2f - 7, ThemeColor.greyColor.getRGB());
-            if (player.getMusic().getLyrics().isEmpty()) currentLyric = "纯音乐，请欣赏";
-            else for (LyricLine lyricLine : player.getMusic().getLyrics()) {
-                try {
-                    if (lyricLine.getLine().contains("纯音乐") || lyricLine.getLine().contains("暂无")) {
-                        currentLyric = lyricLine.getLine();
-                        break;
-                    }
-                    if (player.getCurrentTime() < player.getMusic().getLyrics().get(0).getStart()) {
-                        currentLyric = "...";
-                        break;
-                    }
-                    if (player.getCurrentTime() >= lyricLine.getStart() && player.getCurrentTime() < player.getMusic().getLyrics().get(player.getMusic().getLyrics().indexOf(lyricLine) + 1).getStart()) {
-                        currentLyric = lyricLine.getLine();
-                        break;
-                    }
-                } catch (Exception e) {
-                }
-            }
-            regular16.drawString(currentLyric, getX() + getHeight() + 2, getY() + getHeight() / 2f + 8, ThemeColor.greyColor.getRGB());
+            regular16.drawString(player.getCurrentLyric(false), getX() + getHeight() + 2, getY() + getHeight() / 2f + 8, ThemeColor.greyColor.getRGB());
             setWidth((int) (getHeight() + Math.max(Math.max(
                                 regular20Bold.getStringWidth(player.getMusic().getName()),
-                                regular18.getStringWidth(player.getMusic().getArtist())) + 4, regular16.getWidth(currentLyric) + 4)));
+                                regular18.getStringWidth(player.getMusic().getArtist())) + 4, regular16.getWidth(player.getCurrentLyric(false)) + 4)));
         } else {
             regular20Bold.drawString(player.getMusic().getName(), getX() + getHeight() + 2, getY() + getHeight() / 2f - 8, Color.WHITE.getRGB());
             regular16.drawString(player.getMusic().getArtist(), getX() + getHeight() + 2, getY() + getHeight() / 2f + 3, ThemeColor.greyColor.getRGB());

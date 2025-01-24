@@ -51,18 +51,18 @@ public class LanguageManager implements IResourceManagerReloadListener
             }
             catch (RuntimeException runtimeexception)
             {
-                logger.warn((String)("Unable to parse metadata section of resourcepack: " + iresourcepack.getPackName()), (Throwable)runtimeexception);
+                logger.warn("Unable to parse metadata section of resourcepack: " + iresourcepack.getPackName(), (Throwable)runtimeexception);
             }
             catch (IOException ioexception)
             {
-                logger.warn((String)("Unable to parse metadata section of resourcepack: " + iresourcepack.getPackName()), (Throwable)ioexception);
+                logger.warn("Unable to parse metadata section of resourcepack: " + iresourcepack.getPackName(), (Throwable)ioexception);
             }
         }
     }
 
     public void onResourceManagerReload(IResourceManager resourceManager)
     {
-        List<String> list = Lists.newArrayList(new String[] {"en_US"});
+        List<String> list = Lists.newArrayList("en_US");
 
         if (!"en_US".equals(this.currentLanguage))
         {

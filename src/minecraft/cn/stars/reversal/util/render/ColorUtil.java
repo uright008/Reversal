@@ -1,7 +1,7 @@
 package cn.stars.reversal.util.render;
 
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.module.impl.hud.ClientSettings;
+import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.ui.theme.Theme;
 import cn.stars.reversal.util.animation.simple.SimpleAnimation;
 import cn.stars.reversal.util.math.MathUtil;

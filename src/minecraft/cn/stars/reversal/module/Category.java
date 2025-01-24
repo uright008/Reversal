@@ -11,7 +11,8 @@ public enum Category {
     MISC,
     WORLD,
     HUD,
-    ADDONS;
+    ADDONS,
+    CLIENT;
 
     public final Animation alphaAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 }

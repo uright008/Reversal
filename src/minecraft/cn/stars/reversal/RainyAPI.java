@@ -10,7 +10,7 @@ import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.reversal.IRCInstance;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.misc.FileUtil;
-import cn.stars.reversal.util.misc.VideoUtil;
+import cn.stars.reversal.util.render.video.VideoUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.UtilityClass;
@@ -63,8 +63,8 @@ public class RainyAPI {
      * 随机标题
      */
     public static final String[] wittyTitle = new String[]
-            {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "time.elapsed(93d)",
-                    "在强权面前,你会低头吗?在命运面前,你会服从吗?", "Tough. Complex. Incomprehensible.", "时间永远是最难跨过的分界线", "自己选择的路终究由你自己跨过"};
+            {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "Tough. Complex. Incomprehensible.", "时间永远是最难跨过的分界线", "自己选择的路终究由你自己跨过",
+            "友谊即陪伴,没有陪伴,友谊终会消散", "冲破梦境,却又逃避现实", "SKID?!"};
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];

@@ -9,6 +9,8 @@ import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.render.*;
@@ -24,7 +26,6 @@ public class CPSCounter extends Module {
     private final BoolValue displayOnClick = new BoolValue("Display On Click", this, false);
     private final BoolValue rainbow = new BoolValue("Rainbow", this, false);
     private final BoolValue background = new BoolValue("Background", this, true);
-    private final BoolValue middleBracket = new BoolValue("Middle Bracket", this, false);
     public CPSCounter() {
         setCanBeEdited(true);
         setWidth(100);
@@ -41,7 +42,7 @@ public class CPSCounter extends Module {
     public void onShader3D(Shader3DEvent event) {
         if (displayOnClick.isEnabled() && (Lclicks.isEmpty() && Rclicks.isEmpty())) return;
         String cpsString = Lclicks.size() + " CPS | " + Rclicks.size() + " CPS";
-        if (middleBracket.isEnabled()) cpsString = "[" + Lclicks.size() + " CPS | " + Rclicks.size() + " CPS]";
+        if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) cpsString = "[" + Lclicks.size() + " CPS | " + Rclicks.size() + " CPS]";
 
         Color color = rainbow.isEnabled() ? ThemeUtil.getThemeColor(ThemeType.LOGO) : new Color(250, 250, 250, 200);
 
@@ -75,7 +76,7 @@ public class CPSCounter extends Module {
     public void onRender2D(Render2DEvent event) {
         if (displayOnClick.isEnabled() && (Lclicks.isEmpty() && Rclicks.isEmpty())) return;
         String cpsString = Lclicks.size() + " CPS | " + Rclicks.size() + " CPS";
-        if (middleBracket.isEnabled()) cpsString = "[" + Lclicks.size() + " CPS | " + Rclicks.size() + " CPS]";
+        if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) cpsString = "[" + Lclicks.size() + " CPS | " + Rclicks.size() + " CPS]";
         Color color = rainbow.isEnabled() ? ThemeUtil.getThemeColor(ThemeType.LOGO) : new Color(250, 250, 250, 200);
 
         if (background.isEnabled()) {

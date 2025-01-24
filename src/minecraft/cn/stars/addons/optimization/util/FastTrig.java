@@ -2,9 +2,6 @@ package cn.stars.addons.optimization.util;
 
 public class FastTrig
 {
-    //TODO recode to be object based to allow for several versions to exist
-    //TODO move to core when recoded
-    //TODO recode vector math to use this helper
     private static final int ATAN2_BITS = 8;
 
     private static final int ATAN2_BITS2 = ATAN2_BITS << 1;
@@ -16,8 +13,7 @@ public class FastTrig
 
     private static final float[] atan2 = new float[ATAN2_COUNT];
 
-    public static void init()
-    {
+    public static void init() {
         for (int i = 0; i < ATAN2_DIM; i++)
         {
             for (int j = 0; j < ATAN2_DIM; j++)
@@ -31,7 +27,7 @@ public class FastTrig
     }
 
 
-    public static final float atan2(double y, double x)
+    public static float atan2(double y, double x)
     {
         float add, mul;
 
@@ -67,7 +63,7 @@ public class FastTrig
             add = 0.0f;
         }
 
-        double invDiv = 1.0f / (((x < y) ? y : x) * INV_ATAN2_DIM_MINUS_1);
+        double invDiv = 1.0f / ((Math.max(x, y)) * INV_ATAN2_DIM_MINUS_1);
 
         int xi = (int) (x * invDiv);
         int yi = (int) (y * invDiv);

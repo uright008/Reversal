@@ -1,7 +1,10 @@
 package cn.stars.reversal.ui.splash;
 
 import cn.stars.reversal.RainyAPI;
+import cn.stars.reversal.Reversal;
+import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.splash.impl.FadeInOutLoadingScreen;
+import cn.stars.reversal.ui.splash.impl.VideoLoadingScreen;
 import cn.stars.reversal.ui.splash.utils.AsyncGLContentLoader;
 import cn.stars.reversal.ui.splash.utils.Interpolations;
 import cn.stars.reversal.ui.splash.utils.Rect;
@@ -10,6 +13,8 @@ import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.video.VideoManager;
+import cn.stars.reversal.util.render.video.VideoUtil;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -18,6 +23,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.Random;
 
@@ -57,7 +64,7 @@ public class SplashScreen {
      */
     @SneakyThrows
     private static LoadingScreenRenderer getLoadingScreen() {
-        return new FadeInOutLoadingScreen();
+        return new VideoLoadingScreen();
     }
 
     @SneakyThrows
@@ -68,7 +75,8 @@ public class SplashScreen {
         GLFW.glfwMakeContextCurrent(subWindow);
         GL.createCapabilities();
         mc.updateDisplay();
-        Display.sync(60);
+        VideoManager.loadSplash();
+        Display.setTitle("Initialize Catalog [100.00%]");
 
         splashThread = new Thread(new Runnable() {
             @Override
@@ -127,19 +135,15 @@ public class SplashScreen {
 
                         loadingScreenRenderer.render(Display.getWidth(), Display.getHeight());
 
-//                        Random random = new Random();
-//                        Rect.draw(random.nextInt(width - 100), random.nextInt(height - 50), 100, 50, 0xff0090ff, Rect.RectType.EXPAND);
-
-//                        System.out.println(progress);
                         if (progress != 100)
                             alpha = (Interpolations.interpBezier(alpha * 255, 0, 0.1f) * 0.003921568627451F);
 
                         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
                         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 
-                        Rect.draw(0, 0, width, height, ColorUtil.hexColor(0, 0, 0, (int) (alpha * 255)), Rect.RectType.EXPAND);
+                    //    Rect.draw(0, 0, width, height, ColorUtil.hexColor(0, 0, 0, (int) (alpha * 255)), Rect.RectType.EXPAND);
 
-                        Rect.draw(0, height - 2, animation.getValue(), 2, ColorUtil.hexColor(255,255,255, 150 + (int) animation2.getValue()), Rect.RectType.EXPAND);
+                    //    Rect.draw(0, height - 2, animation.getValue(), 2, ColorUtil.hexColor(255,255,255, 150 + (int) animation2.getValue()), Rect.RectType.EXPAND);
 
                         GlStateManager.enableAlpha();
                         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
@@ -241,6 +245,10 @@ public class SplashScreen {
             GL.createCapabilities();
             hide();
 
+            VideoUtil.stop();
+            VideoManager.loadBackground();
+            Reversal.postInitialize();
+
             Display.sync(60);
             mc.updateDisplay();
         }
@@ -278,6 +286,7 @@ public class SplashScreen {
         SplashScreen.progressText = detail;
         mc.updateDisplay();
         ReversalLogger.info("[Startup] " + progress + "% - " + detail);
+        Display.setTitle("正在初始化游戏数据... [Data Initialize..." + progress + "%]");
     }
 
 }

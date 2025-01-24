@@ -5,7 +5,7 @@ import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ResidentProcessor;
-import cn.stars.reversal.module.impl.hud.ClientSettings;
+import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.ui.clickgui.modern.MMTClickGUI;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.ui.notification.NotificationManager;
@@ -36,6 +36,7 @@ public final class EventHandler {
                 }
             }
             NotificationManager.onRender2D();
+            residentProcessor.onRender2D(event);
 
             Reversal.CLIENT_THEME_COLOR = new Color(ClientSettings.red1, ClientSettings.green1, ClientSettings.blue1, 255).getRGB();
             Reversal.CLIENT_THEME_COLOR_BRIGHT = new Color(Math.min(ClientSettings.red1 + 26, 255), Math.min(ClientSettings.green1 + 45, 255), Math.min(ClientSettings.blue1 + 13, 255)).hashCode();
@@ -72,6 +73,8 @@ public final class EventHandler {
                     module.onShader3D(event);
                 }
             }
+
+            residentProcessor.onShader3D(event);
         } else if (e instanceof PreBlurEvent) {
             final PreBlurEvent event = ((PreBlurEvent) e);
 
@@ -249,6 +252,16 @@ public final class EventHandler {
             }
 
             residentProcessor.onGuiClosed(event);
+        } else if (e instanceof OpenGUIEvent) {
+            final OpenGUIEvent event = ((OpenGUIEvent) e);
+
+            for (final Module module : modules) {
+                if (module.isEnabled()) {
+                    module.onOpenGUI(event);
+                }
+            }
+
+            residentProcessor.onOpenGUI(event);
         } else if (e instanceof ValueChangedEvent) {
             final ValueChangedEvent event = ((ValueChangedEvent) e);
 
@@ -257,6 +270,8 @@ public final class EventHandler {
                     module.onValueChanged(event);
                 }
             }
+
+            residentProcessor.onValueChanged(event);
         }
     }
 }

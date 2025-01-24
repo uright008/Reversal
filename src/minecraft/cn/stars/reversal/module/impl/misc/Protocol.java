@@ -1,11 +1,13 @@
 package cn.stars.reversal.module.impl.misc;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.BlockCollideEvent;
 import cn.stars.reversal.event.impl.PacketSendEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.NoteValue;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.block.Block;
@@ -23,11 +25,19 @@ import static net.minecraft.util.EnumFacing.*;
 @ModuleInfo(name = "Protocol", chineseName = "跨版本协议", description = "Fix something when you enter specified servers",
         chineseDescription = "在你进入特定服务器时修复一些东西", category = Category.MISC)
 public class Protocol extends Module {
+    private final NoteValue note = new NoteValue("DON'T ENABLE IF YOU AREN'T CROSSING VERSION !!!!!", this);
     private final BoolValue fix1_9_plusAttackDistance = new BoolValue("1.9+ Attack Distance", this, true);
     private final BoolValue fix1_11_plusBlockPlacement = new BoolValue("1.12+ Block Placement", this, false);
     private final BoolValue fix1_9_plusBlockCollide = new BoolValue("1.9+ Block Collide", this, false);
     private final BoolValue fix1_9_plusMinimumMotion = new BoolValue("1.9+ Minimum Motion", this, false);
-    private final BoolValue lessC03 = new BoolValue("Less C03", this, false);
+
+    @Override
+    public void onUpdateAlways() {
+        if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() == ViaLoadingBase.getInstance().getNativeVersion() && this.enabled) {
+            Reversal.showMsg("没跨版本你开集贸跨版本协议,封了又要怪我");
+            setEnabled(false);
+        }
+    }
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
@@ -39,12 +49,6 @@ public class Protocol extends Module {
             blockPacket.facingY /= 16.0F;
             blockPacket.facingZ /= 16.0F;
             event.setPacket(blockPacket);
-        }
-        if (lessC03.isEnabled() && packet instanceof C03PacketPlayer) {
-            C03PacketPlayer c03 = (C03PacketPlayer) packet;
-            if (!c03.isMoving() && !c03.getRotating()) {
-                event.setCancelled(true);
-            }
         }
     }
 

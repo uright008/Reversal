@@ -1,10 +1,11 @@
 package cn.stars.reversal.module.impl.hud;
 
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.math.MathUtil;

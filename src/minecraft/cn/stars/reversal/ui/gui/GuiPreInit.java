@@ -6,7 +6,7 @@ package cn.stars.reversal.ui.gui;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
-import cn.stars.reversal.module.impl.hud.PostProcessing;
+import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.misc.ModuleInstance;

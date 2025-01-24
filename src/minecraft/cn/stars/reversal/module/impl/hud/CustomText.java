@@ -69,11 +69,11 @@ public class CustomText extends Module {
 
     private void setWidthAndHeight() {
         if (bold.isEnabled()) {
-            setWidth(FontManager.getRegularBold((int)size.getValue()).width(Reversal.customText) + 2);
-            setHeight((int) (FontManager.getRegularBold((int)size.getValue()).height() + 1));
+            setWidth(FontManager.getRegularBold((int)size.getValue()).width(Reversal.customText) + 5);
+            setHeight((int) (FontManager.getRegularBold((int)size.getValue()).height() + 5));
         } else {
-            setWidth(FontManager.getRegular((int)size.getValue()).width(Reversal.customText) + 2);
-            setHeight((int) (FontManager.getRegular((int)size.getValue()).height() + 1));
+            setWidth(FontManager.getRegular((int)size.getValue()).width(Reversal.customText) + 5);
+            setHeight((int) (FontManager.getRegular((int)size.getValue()).height() + 5));
         }
     }
 

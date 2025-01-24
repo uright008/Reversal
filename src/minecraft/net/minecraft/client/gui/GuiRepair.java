@@ -1,5 +1,8 @@
 package net.minecraft.client.gui;
 
+import com.github.skystardust.InputMethodBlocker.NativeUtils;
+import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import io.netty.buffer.Unpooled;
 import java.io.IOException;
 import java.util.List;
@@ -54,23 +57,24 @@ public class GuiRepair extends GuiContainer implements ICrafting
         super.onGuiClosed();
         Keyboard.enableRepeatEvents(false);
         this.inventorySlots.removeCraftingFromCrafters(this);
+        if (ModuleInstance.getModule(ClientSettings.class).inputMethodBlocker.enabled) NativeUtils.inactiveInputMethod("");
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         GlStateManager.disableLighting();
         GlStateManager.disableBlend();
-        this.fontRendererObj.drawString(I18n.format("container.repair", new Object[0]), 60, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.repair"), 60, 6, 4210752);
 
         if (this.anvil.maximumCost > 0)
         {
             int i = 8453920;
             boolean flag = true;
-            String s = I18n.format("container.repair.cost", new Object[] {Integer.valueOf(this.anvil.maximumCost)});
+            String s = I18n.format("container.repair.cost", this.anvil.maximumCost);
 
             if (this.anvil.maximumCost >= 40 && !this.mc.thePlayer.capabilities.isCreativeMode)
             {
-                s = I18n.format("container.repair.expensive", new Object[0]);
+                s = I18n.format("container.repair.expensive");
                 i = 16736352;
             }
             else if (!this.anvil.getSlot(2).getHasStack())
@@ -84,7 +88,7 @@ public class GuiRepair extends GuiContainer implements ICrafting
 
             if (flag)
             {
-                int j = -16777216 | (i & 16579836) >> 2 | i & -16777216;
+                int j = -16777216 | (i & 16579836) >> 2;
                 int k = this.xSize - 8 - this.fontRendererObj.getStringWidth(s);
                 int l = 67;
 
@@ -145,6 +149,10 @@ public class GuiRepair extends GuiContainer implements ICrafting
         GlStateManager.disableLighting();
         GlStateManager.disableBlend();
         this.nameField.drawTextBox(mouseX, mouseY);
+        if (ModuleInstance.getModule(ClientSettings.class).inputMethodBlocker.enabled) {
+            if (nameField.isFocused()) NativeUtils.activeInputMethod("");
+            else NativeUtils.inactiveInputMethod("");
+        }
     }
 
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)

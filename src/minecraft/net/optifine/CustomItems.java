@@ -33,6 +33,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
+import net.optifine.cache.OptifineCustomItemCache;
 import net.optifine.config.NbtTagValue;
 import net.optifine.render.Blender;
 import net.optifine.shaders.Shaders;
@@ -46,22 +47,10 @@ public class CustomItems
     private static CustomItemProperties[][] itemProperties = null;
     private static CustomItemProperties[][] enchantmentProperties = null;
     private static Map mapPotionIds = null;
-    private static ItemModelGenerator itemModelGenerator = new ItemModelGenerator();
+    private static final ItemModelGenerator itemModelGenerator = new ItemModelGenerator();
     private static boolean useGlint = true;
     private static boolean renderOffHand = false;
-    public static final int MASK_POTION_SPLASH = 16384;
-    public static final int MASK_POTION_NAME = 63;
-    public static final int MASK_POTION_EXTENDED = 64;
-    public static final String KEY_TEXTURE_OVERLAY = "texture.potion_overlay";
-    public static final String KEY_TEXTURE_SPLASH = "texture.potion_bottle_splash";
-    public static final String KEY_TEXTURE_DRINKABLE = "texture.potion_bottle_drinkable";
-    public static final String DEFAULT_TEXTURE_OVERLAY = "items/potion_overlay";
-    public static final String DEFAULT_TEXTURE_SPLASH = "items/potion_bottle_splash";
-    public static final String DEFAULT_TEXTURE_DRINKABLE = "items/potion_bottle_drinkable";
     private static final int[][] EMPTY_INT2_ARRAY = new int[0][];
-    private static final String TYPE_POTION_NORMAL = "normal";
-    private static final String TYPE_POTION_SPLASH = "splash";
-    private static final String TYPE_POTION_LINGER = "linger";
 
     public static void update()
     {
@@ -656,16 +645,14 @@ public class CustomItems
 
     private static CustomItemProperties getCustomItemProperties(ItemStack itemStack, int type)
     {
-        if (itemProperties == null)
+        if (OptifineCustomItemCache.retrieveCacheHit(itemStack, type) != null) {
+            return OptifineCustomItemCache.retrieveCacheHit(itemStack, type);
+        }
+        else if (itemProperties == null)
         {
             return null;
         }
-        else if (itemStack == null)
-        {
-            return null;
-        }
-        else
-        {
+        else {
             Item item = itemStack.getItem();
             int i = Item.getIdFromItem(item);
 
@@ -675,18 +662,16 @@ public class CustomItems
 
                 if (acustomitemproperties != null)
                 {
-                    for (int j = 0; j < acustomitemproperties.length; ++j)
-                    {
-                        CustomItemProperties customitemproperties = acustomitemproperties[j];
-
-                        if (customitemproperties.type == type && matchesProperties(customitemproperties, itemStack, (int[][])null))
-                        {
+                    for (CustomItemProperties customitemproperties : acustomitemproperties) {
+                        if (customitemproperties.type == type && matchesProperties(customitemproperties, itemStack, null)) {
+                            OptifineCustomItemCache.storeCustomItemProperties(itemStack, type, customitemproperties);
                             return customitemproperties;
                         }
                     }
                 }
             }
 
+            OptifineCustomItemCache.storeNoCustomItemProperties(itemStack, type);
             return null;
         }
     }

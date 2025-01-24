@@ -3,11 +3,9 @@ package cn.stars.reversal.ui.modern.impl;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.ui.modern.TextButton;
-import cn.stars.reversal.ui.gui.GuiDonate;
 import cn.stars.reversal.ui.gui.GuiMicrosoftLoginPending;
 import cn.stars.reversal.ui.modern.MenuButton;
 import cn.stars.reversal.ui.notification.NotificationManager;
@@ -19,6 +17,7 @@ import cn.stars.reversal.util.reversal.Branch;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
@@ -46,7 +45,7 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
     private final ColorAnimation colorAnimation = new ColorAnimation(new Color(220,220,220,220), new Color(120,120,120,220), 2000);
     private String title = "";
 
-    private TextButton singlePlayerButton, multiPlayerButton, settingsButton, viaVersionButton, exitButton, cbButton, updateLogButton, loginButton, donateButton;
+    private TextButton singlePlayerButton, multiPlayerButton, settingsButton, viaVersionButton, exitButton, cbButton, updateLogButton, loginButton;
     private TextButton[] buttons;
     private boolean showUpdateLog = false;
     private final ArrayList<String> updateLog = new ArrayList<>();
@@ -113,29 +112,9 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         regular32.drawString("Reversal", this.width - 280, 14, new Color(220, 220, 220, 240).getRGB());
         regular32.drawString("Announcements™", this.width - 250, 31, new Color(220, 220, 220, 240).getRGB());
         regular16.drawString(Reversal.VERSION + " " + Branch.getBranchName(Reversal.BRANCH), this.width - 290, 400, new Color(220, 220, 220, 240).getRGB());
+        RenderUtil.image(new ResourceLocation("reversal/images/joker.png"), this.width - 280, 70, 165, 160);
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
-
-        // 动画
-    /*    boolean isHoveringLeft = RenderUtil.isHovered(0, height - 37, 140, 37, mouseX, mouseY);
-        boolean isHoveringRight = RenderUtil.isHovered(width - regular.getWidth(copyright) - 1, height - 13, regular.getWidth(copyright), 13, mouseX, mouseY);
-        textHoverAnimation.run(isHoveringLeft ? 255 : 155);
-        textHoverAnimation2.run(isHoveringRight ? 255 : 155);
-
-        if (viaVersionButton.isHovering) tipString = "跨版本";
-        else if (exitButton.isHovering) tipString = "退出游戏";
-        else if (cbButton.isHovering) tipString = "更换背景";
-        else if (isHoveringLeft) tipString = "版本日志";
-        else if (isHoveringRight) tipString = "作者信息";
-
-        fontAnimation.run(viaVersionButton.isHovering || exitButton.isHovering || cbButton.isHovering || isHoveringLeft || isHoveringRight ? 240 : 0);
-
-
-        Color stringColor = new Color(160, 160, 160, 220);
-        regular.drawString(copyright, width - regular.getWidth(copyright) - 1, height - 12, ColorUtil.withAlpha(stringColor, (int) textHoverAnimation2.getValue()).getRGB());
-        regular.drawString("Minecraft 1.8.9 (Reversal/mcp/vanilla)", 2, height - 36, ColorUtil.withAlpha(stringColor, (int) textHoverAnimation.getValue()).getRGB());
-        regular.drawString("OptiFine_1.8.9_HD_U_M6_pre2", 2, height - 24, ColorUtil.withAlpha(stringColor, (int) textHoverAnimation.getValue()).getRGB());
-        regular.drawString("当前背景ID: " + LonelyAPI.backgroundId, 2, height - 12, ColorUtil.withAlpha(stringColor, (int) textHoverAnimation.getValue()).getRGB()); */
 
         // MainMenu
         RenderUtil.rect(0, 0, 230, height, new Color(0, 0, 0, 50));
@@ -147,7 +126,7 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         FontManager.getRegular(56).drawCenteredString(Reversal.NAME.toUpperCase(), 100, height / 6f + 18, new Color(250,250,250,250).getRGB());
         FontManager.getRegular(32).drawCenteredString(Reversal.VERSION, 170, height / 6f + 42, new Color(220,220,220,150).getRGB());
 
-        regular18.drawCenteredString("© 2024 Reversal, 保留部分权利.", this.width / 2f, this.height - 10, colorAnimation.getOutput().getRGB());
+        regular18.drawCenteredString("© 2025 Reversal, 保留部分权利.", this.width / 2f, this.height - 10, colorAnimation.getOutput().getRGB());
         if (RainyAPI.isShaderCompatibility) regular18.drawCenteredString("警告: 配置已开启DisableShader选项！你将只能使用ID 9作为背景！", this.width / 2f, this.height - 30, new Color(220, 20, 20, 220).getRGB());
 
         //    regular.drawCenteredString(tipString, width / 2f, height / 2f + 100,
@@ -177,16 +156,8 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         textAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
         updateLog.clear();
-        updateLog.add("[+] 重写BAHalo");
-        updateLog.add("[+] 加载地形界面允许渲染视频背景");
-        updateLog.add("[+] LineGlyphs");
-        updateLog.add("[+] BlockinDisplay");
-        updateLog.add("[+] Modern Hotbar");
-        updateLog.add("[+] TargetESP 新增: Bubble, Surrounding");
-        updateLog.add("[*] 修复Keystrokes的CPS一直为0");
-        updateLog.add("[/] 优化ClickGUI");
-        updateLog.add("[*] 修复Scoreboard对齐异常");
-        updateLog.add("[*] 修复TargetESP的效果十分卡顿");
+        updateLog.add("典中典之我觉得不合法,豆瓣评分1.3");
+        updateLog.add("小鬼看到以后手忙脚乱转发聊天记录,我会永远视奸你的");
 
         // 定义按钮
         this.singlePlayerButton = new TextButton(45, this.height / 6f + 80, 120, 35, () -> mc.displayGuiScreen(new GuiSelectWorld(this)),
@@ -195,9 +166,6 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
                 "多人游戏", "b", true, 9, 40, 11);
         this.viaVersionButton = new TextButton(45, this.height / 6f + 170, 120, 35, () -> mc.displayGuiScreen(new ModernViaMenu(this)),
                 "跨版本", "d", true, 10, 44, 11);
-        this.donateButton = new TextButton(45, this.height / 6f + 215, 120, 35, () -> mc.displayGuiScreen(new GuiDonate()),
-                "赞助开发", "H", true, 12, 40, 11);
-
         this.loginButton = new TextButton(this.width - 60, this.height - 190, 35, 35, () -> mc.displayGuiScreen(new GuiMicrosoftLoginPending(this)),
                 "", "9", true, 9, 50, 11);
         this.settingsButton = new TextButton(this.width - 60, this.height - 145, 35, 35, () -> mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings)),

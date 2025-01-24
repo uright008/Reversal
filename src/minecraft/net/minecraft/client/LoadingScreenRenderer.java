@@ -1,13 +1,10 @@
 package net.minecraft.client;
 
-import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
-import cn.stars.reversal.module.impl.hud.ClientSettings;
+import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.ui.atmoic.Atomic;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.misc.VideoUtil;
-import cn.stars.reversal.util.shader.RiseShaders;
-import cn.stars.reversal.util.shader.base.ShaderRenderType;
+import cn.stars.reversal.util.render.video.VideoUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,9 +18,6 @@ import net.minecraft.util.MinecraftError;
 import net.optifine.CustomLoadingScreen;
 import net.optifine.CustomLoadingScreens;
 import net.optifine.reflect.Reflector;
-
-import static cn.stars.reversal.GameInstance.NORMAL_BLUR_RUNNABLES;
-import static cn.stars.reversal.GameInstance.NORMAL_POST_BLOOM_RUNNABLES;
 
 public class LoadingScreenRenderer implements IProgressUpdate
 {

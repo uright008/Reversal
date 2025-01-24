@@ -2,6 +2,7 @@ package net.optifine.config;
 
 import net.minecraft.nbt.*;
 import net.minecraft.src.Config;
+import net.optifine.cache.OptifineRegexCache;
 import net.optifine.util.StrUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -10,30 +11,18 @@ import java.util.regex.Pattern;
 
 public class NbtTagValue
 {
-    private String[] parents = null;
-    private String name = null;
+    private final String[] parents;
+    private final String name;
     private boolean negative = false;
-    private int type = 0;
-    private String value = null;
+    private final int type;
+    private final String value;
     private int valueFormat = 0;
-    private static final int TYPE_TEXT = 0;
-    private static final int TYPE_PATTERN = 1;
-    private static final int TYPE_IPATTERN = 2;
-    private static final int TYPE_REGEX = 3;
-    private static final int TYPE_IREGEX = 4;
-    private static final String PREFIX_PATTERN = "pattern:";
-    private static final String PREFIX_IPATTERN = "ipattern:";
-    private static final String PREFIX_REGEX = "regex:";
-    private static final String PREFIX_IREGEX = "iregex:";
-    private static final int FORMAT_DEFAULT = 0;
-    private static final int FORMAT_HEX_COLOR = 1;
-    private static final String PREFIX_HEX_COLOR = "#";
     private static final Pattern PATTERN_HEX_COLOR = Pattern.compile("^#[0-9a-f]{6}+$");
 
     public NbtTagValue(String tag, String value)
     {
         String[] astring = Config.tokenize(tag, ".");
-        this.parents = (String[])Arrays.copyOfRange(astring, 0, astring.length - 1);
+        this.parents = Arrays.copyOfRange(astring, 0, astring.length - 1);
         this.name = astring[astring.length - 1];
 
         if (value.startsWith("!"))
@@ -79,7 +68,7 @@ public class NbtTagValue
 
     public boolean matches(NBTTagCompound nbt)
     {
-        return this.negative ? !this.matchesCompound(nbt) : this.matchesCompound(nbt);
+        return this.negative != this.matchesCompound(nbt);
     }
 
     public boolean matchesCompound(NBTTagCompound nbt)
@@ -241,7 +230,8 @@ public class NbtTagValue
 
     private boolean matchesRegex(String str, String regex)
     {
-        return str.matches(regex);
+        return OptifineRegexCache.INSTANCE.matchesRegex(str, regex);
+    //    return str.matches(regex);
     }
 
     private static String getNbtString(NBTBase nbtBase, int format)

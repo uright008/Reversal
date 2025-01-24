@@ -1,7 +1,6 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.module.impl.hud.ClientSettings;
 import cn.stars.reversal.module.impl.render.BetterFont;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.util.misc.ModuleInstance;

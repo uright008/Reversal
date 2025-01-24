@@ -1,5 +1,6 @@
 package cn.stars.reversal.ui.modern;
 
+import com.github.skystardust.InputMethodBlocker.NativeUtils;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.music.ui.ThemeColor;
@@ -63,8 +64,12 @@ public class TextField {
 
         if (!canLoseFocus) focused = true;
 
-        if (focused)
+        if (focused) {
+            NativeUtils.activeInputMethod("");
             Keyboard.enableRepeatEvents(true);
+        } else {
+            NativeUtils.inactiveInputMethod("");
+        }
 
         if (focused && textColorAnim.getDirection() == Direction.FORWARDS) {
             textColorAnim.changeDirection();

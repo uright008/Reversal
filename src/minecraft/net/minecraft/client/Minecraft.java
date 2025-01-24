@@ -1,8 +1,11 @@
 package net.minecraft.client;
 
+import cn.stars.addons.rawinput.RawInput;
+import cn.stars.addons.rawinput.RawMouseHelper;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
+import cn.stars.reversal.module.impl.client.Optimization;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.ui.splash.SplashScreen;
@@ -13,6 +16,7 @@ import cn.stars.reversal.util.math.StopWatch;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;
+import cn.stars.reversal.util.render.video.VideoManager;
 import cn.stars.reversal.util.reversal.ImageScreen;
 import cn.stars.reversal.util.reversal.Preloader;
 import com.google.common.collect.Lists;
@@ -169,6 +173,8 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
+import net.optifine.cache.OptifineCustomItemCache;
+import net.optifine.cache.OptifineRegexCache;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -382,12 +388,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             return;
         }
     }
-    private void startGame() throws LWJGLException {
+
+    private void startGame() throws LWJGLException, IOException {
         startTimer = new StopWatch();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
         RainyAPI.loadAPI(false);
+        VideoManager.loadFiles();
 
         if (RainyAPI.imageScreen) ImageScreen.load();
 
@@ -403,13 +411,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.createDisplay();
         OpenGlHelper.initializeTextures();
         AsyncGLContentLoader.initLoader();
+        SplashScreen.init();
         this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
         this.framebufferMc.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
         this.registerMetadataSerializers();
-        SplashScreen.init();
-        SplashScreen.setProgress(10, "Minecraft - Display");
         this.mcResourcePackRepository = new ResourcePackRepository(this.fileResourcepacks, new File(this.mcDataDir, "server-resource-packs"), this.mcDefaultResourcePack, this.metadataSerializer_, this.gameSettings);
         this.mcResourceManager = new SimpleReloadableResourceManager(this.metadataSerializer_);
+        SplashScreen.setProgress(10, "Minecraft - Display");
         this.mcLanguageManager = new LanguageManager(this.metadataSerializer_, this.gameSettings.language);
         this.mcResourceManager.registerReloadListener(this.mcLanguageManager);
         this.refreshResources();
@@ -445,6 +453,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             }
         });
         this.mouseHelper = new MouseHelper();
+        RawInput.startRawInputThread();
         SplashScreen.setProgress(40, "Reversal - Client Loading");
         Reversal.start();
         SplashScreen.setProgress(60, "Minecraft - GL Startup");
@@ -530,6 +539,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         AsyncGLContentLoader.loadGLContentAsync(preloader::loadResources);
     }
 
+
+
     private void registerMetadataSerializers()
     {
         this.metadataSerializer_.registerMetadataSectionType(new TextureMetadataSectionSerializer(), TextureMetadataSection.class);
@@ -541,7 +552,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     private void createDisplay() {
         Display.setResizable(true);
-        Display.setTitle("Reversal");
+        Display.setTitle("Initialize Catalog [0.00%]");
 
         Display.create((new PixelFormat()).withDepthBits(24));
 
@@ -549,7 +560,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         RainyAPI.setupDrag();
     }
 
-    private void setInitialDisplayMode() throws LWJGLException {
+    private void setInitialDisplayMode() {
         if (this.fullscreen)
         {
             Display.setFullscreen(true);
@@ -793,6 +804,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         {
             this.renderGlobal.loadRenderers();
         }
+
+        OptifineRegexCache.INSTANCE.onResourcePackReload();
+        OptifineCustomItemCache.INSTANCE.onResourcePackReload();
     }
 
     public void refreshLanguage() {
@@ -979,7 +993,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.ingameGUI.getChatGUI().clearChatMessages();
         }
 
-        this.currentScreen = (GuiScreen)guiScreenIn;
+        this.currentScreen = guiScreenIn;
 
         if (guiScreenIn != null)
         {
@@ -1464,7 +1478,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             {
                 BlockPos blockpos = this.objectMouseOver.getBlockPos();
 
-                if (this.theWorld.getBlockState(blockpos).getBlock().getMaterial() != Material.air && this.playerController.onPlayerDamageBlock(blockpos, this.objectMouseOver.sideHit))
+                if (this.theWorld.getBlockState(blockpos).getBlock().getMaterial() != Material.air)
                 {
                     this.effectRenderer.addBlockHitEffects(blockpos, this.objectMouseOver.sideHit);
                 }
@@ -1681,8 +1695,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     public void runTick() throws IOException
     {
-        new TickEvent().call();
-
         if (this.rightClickDelayTimer > 0)
         {
             --this.rightClickDelayTimer;
@@ -2219,7 +2231,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
 
-        if (Reversal.entityCullingMod != null) Reversal.entityCullingMod.doClientTick();
+        new TickEvent().call();
+
+        if (Optimization.entityCullingMod != null) Optimization.entityCullingMod.doClientTick();
     }
 
     public void launchIntegratedServer(String folderName, String worldName, WorldSettings worldSettingsIn)
