@@ -15,10 +15,7 @@ import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.ColorUtil;
-import cn.stars.reversal.util.render.ColorUtils;
-import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RoundedUtil;
+import cn.stars.reversal.util.render.*;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -91,9 +88,14 @@ public class AtomicIslandRenderer implements GameInstance {
                 Atomic.width = 45 + Math.max(Math.max(psm20.width(musicPlayer.getMusic().getName()), psr18.width(musicPlayer.getMusic().getArtist())), psr18.width(getLyrics(musicPlayer)));
                 runToXy(Atomic.x, Atomic.y);
 
-                RenderUtil.scissor(x.getValue() - 1, y.getValue() - 1, (float) ((Atomic.x - x.getValue()) * 2) + 2, (float) ((Atomic.y - y.getValue()) * 2) + 2);
+                drawBackgroundAuto(1);
 
-                drawBackgroundAuto();
+                if (ModuleInstance.getModule(AtomicIsland.class).percentBar.enabled) {
+                    RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) + 0.5f), Atomic.width - 12, 5f, 2.5f, new Color(255, 255, 255, 80));
+                    RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) + 0.5f), (musicPlayer.getCurrentTime() * ((Atomic.width - 12) / musicPlayer.getMusic().getDuration())), 5f, 2.5f, new Color(255, 255, 255, 255));
+                    MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) + 0.5f), (musicPlayer.getCurrentTime() * ((Atomic.width - 12) / musicPlayer.getMusic().getDuration())), 5f, 2.5f, new Color(255, 255, 255, 255)));
+                }
+
                 RoundedUtil.drawRoundTextured((float) x.getValue() + 5, (float) y.getValue() + 5, 30, 30, 5, 255);
 
                 psm20.drawString(musicPlayer.getMusic().getName(), x.getValue() + 40,  y.getValue() + 5, new Color(250, 250, 250, 250).getRGB());
@@ -110,9 +112,7 @@ public class AtomicIslandRenderer implements GameInstance {
                 GL11.glPushMatrix();
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
-                RenderUtil.scissor(x.getValue() - 1, y.getValue() - 1, (float) ((Atomic.x - x.getValue()) * 2) + 2, (float) ((Atomic.y - y.getValue()) * 2) + 2);
-
-                drawBackgroundAuto();
+                drawBackgroundAuto(0);
 
                 psm18.drawString(mainText, x.getValue() + 5, y.getValue() + 5, new Color(250, 250, 250, 250).getRGB());
 
@@ -124,12 +124,16 @@ public class AtomicIslandRenderer implements GameInstance {
 
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
-            RenderUtil.scissor(x.getValue() - 1, y.getValue() - 1, (float) ((Atomic.x - x.getValue()) * 2) + 2, (float) ((Atomic.y - y.getValue()) * 2) + 2);
+            drawBackgroundAuto(1);
 
-            drawBackgroundAuto();
-            if (ModuleInstance.getModule(AtomicIsland.class).percentBar.enabled) RenderUtil.roundedRectangle((float) x.getValue() + 3, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) - 0.5), (Atomic.width - (System.currentTimeMillis() - startTime) * (Atomic.width / tasks.get(0).getDelay()) - 3), 1f, 4, new Color(255,255,255,255));
+            AtomicTask task = tasks.get(0);
 
-            tasks.get(0).getTask().run();
+            if (ModuleInstance.getModule(AtomicIsland.class).percentBar.enabled) {
+                RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2)), Atomic.width - 12, 5f, 2.5f, new Color(255, 255, 255, 80));
+                RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2)), ((System.currentTimeMillis() - startTime) * ((Atomic.width - 12) / task.getDelay())), 5f, 2.5f, new Color(255, 255, 255, 255));
+                MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2)), ((System.currentTimeMillis() - startTime) * ((Atomic.width - 12) / task.getDelay())), 5f, 2.5f, new Color(255, 255, 255, 255)));
+            }
+            task.getTask().run();
 
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
             //    FontManager.getPSM(18).drawString(mainText, x.getValue() + 5, y.getValue() + 5, new Color(250, 250, 250, 250).getRGB());
@@ -152,23 +156,27 @@ public class AtomicIslandRenderer implements GameInstance {
      * 绘制黑色背景
      * GUI和世界不是一个后处理机制，分别处理
      */
-    public void drawBackgroundAuto() {
+    public void drawBackgroundAuto(int identifier) {
+        float renderHeight = (float) ((Atomic.y - y.getValue()) * 2) + (ModuleInstance.getModule(AtomicIsland.class).percentBar.enabled && identifier == 1 ? 10 : 0);
+
+        RenderUtil.scissor(x.getValue() - 1, y.getValue() - 1, (float) ((Atomic.x - x.getValue()) * 2) + 2, renderHeight + 2);
+
         if (!ModuleInstance.getModule(AtomicIsland.class).runningLight.enabled) {
-            RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, ColorUtil.empathyColor());
-            MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, Color.BLACK));
-            MODERN_BLUR_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, Color.BLACK));
+            RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, ColorUtil.empathyColor());
+            MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, Color.BLACK));
+            MODERN_BLUR_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, Color.BLACK));
         } else {
-            RoundedUtil.drawGradientRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 8,
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true));
-            RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 7, ColorUtil.empathyColor());
-            MODERN_BLOOM_RUNNABLES.add(() -> RoundedUtil.drawGradientRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), (float) ((Atomic.y - y.getValue()) * 2), 8,
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true)));
+            RoundedUtil.drawGradientRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 8,
+                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, ColorUtil.transparent, true),
+                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, ColorUtil.transparent, true),
+                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, ColorUtil.transparent, true),
+                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, ColorUtil.transparent, true));
+            RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, ColorUtil.empathyColor());
+            MODERN_BLOOM_RUNNABLES.add(() -> RoundedUtil.drawGradientRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 8,
+                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, ColorUtil.transparent, true),
+                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, ColorUtil.transparent, true),
+                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, ColorUtil.transparent, true),
+                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, ColorUtil.transparent, true)));
         }
     }
 
@@ -177,17 +185,18 @@ public class AtomicIslandRenderer implements GameInstance {
      * 在有界面时隐藏
      */
     public void update(ScaledResolution sr) {
-        if (mc.currentScreen instanceof ModernMainMenu || mc.currentScreen instanceof GuiMultiplayer || mc.currentScreen instanceof GuiConnecting || mc.currentScreen instanceof GuiSelectWorld || mc.currentScreen instanceof GuiDisconnected
-        || mc.currentScreen instanceof GuiOptions || mc.currentScreen instanceof GuiMicrosoftLoginPending || mc.currentScreen instanceof GuiReversalSettings) {
+        if (mc.theWorld == null) {
             Atomic.x = sr.getScaledWidth() / 2f;
             Atomic.y = 40 + ModuleInstance.getModule(AtomicIsland.class).yOffset.getFloat();
             Atomic.width = 0;
             Atomic.height = 0;
             this.mainText = "";
         } else {
+            mainText = "Reversal | " + Minecraft.getDebugFPS() + " FPS | " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+            Atomic.width = psm18.width(mainText) + 10;
+            Atomic.height = 15;
             Atomic.x = sr.getScaledWidth() / 2f;
             Atomic.y = 40 + ModuleInstance.getModule(AtomicIsland.class).yOffset.getFloat();
-            this.updateMainText();
         }
     }
 
@@ -204,12 +213,6 @@ public class AtomicIslandRenderer implements GameInstance {
                 if (!tasks.isEmpty()) startTime = System.currentTimeMillis();
             }
         }
-    }
-
-    public void updateMainText() {
-        mainText = "Reversal | " + Minecraft.getDebugFPS() + " FPS | " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
-        Atomic.width = psm18.width(mainText) + 10;
-        Atomic.height = 15;
     }
 
     public void reset() {

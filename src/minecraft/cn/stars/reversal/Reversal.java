@@ -24,6 +24,8 @@ import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.ui.theme.GuiTheme;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
+import cn.stars.reversal.util.render.video.VideoManager;
+import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.reversal.Branch;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -51,10 +53,10 @@ import java.util.concurrent.Executors;
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
-    public static final String VERSION = "v1.4.3";
+    public static final String VERSION = "v1.5.0";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
-    public static final Branch BRANCH = Branch.PRODUCTION;
+    public static final Branch BRANCH = Branch.DEVELOPMENT;
 
     // Init
     public static Gson PRETTY_GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -128,7 +130,7 @@ public class Reversal {
     public static void initialize() {
         try {
             // Minecraft Pre-Initialize
-            // Shut the fuck fast render off
+            // Shut the fast render off
             Minecraft.getMinecraft().gameSettings.ofFastRender = false;
 
             // Reversal Initialize
@@ -189,6 +191,9 @@ public class Reversal {
 
     public static void postInitialize() {
         try {
+            VideoUtil.stop();
+            VideoManager.loadBackground();
+
             Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
             //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH));
             //    Display.setTitle(NAME + " (" + VERSION + "/" + BRANCH.name() + "/RainyAPI/LWJGL " + Sys.getVersion() + ")");
@@ -214,8 +219,8 @@ public class Reversal {
             new Help(),
             new Name(),
             new Say(),
-            new SelfDestruct(),
-            new SetText()
+            new SetText(),
+            new Toggle()
     };
 
     public static final Module[] modules = new Module[] {
@@ -303,6 +308,5 @@ public class Reversal {
     public static int CLIENT_THEME_COLOR_2 = new Color(159, 24, 242).hashCode();
     public static int CLIENT_THEME_COLOR_BRIGHT = new Color(185, 69, 255).hashCode();
     public static int CLIENT_THEME_COLOR_BRIGHT_2 = new Color(185, 69, 255).hashCode();
-    public static boolean isDestructed = false;
 
 }

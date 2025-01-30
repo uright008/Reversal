@@ -42,7 +42,6 @@ public class SplashScreen {
     public static final Object finishLock = new Object();
     private static Minecraft mc = Minecraft.getMinecraft();
     private static final int backgroundColor = ColorUtil.hexColor(0, 0, 0, 255);
-    private static final Random random = new Random();
     private static final LoadingScreenRenderer loadingScreenRenderer = getLoadingScreen();
     public static int progress = 0;
     public static String progressText = "";
@@ -138,8 +137,8 @@ public class SplashScreen {
                         if (progress != 100)
                             alpha = (Interpolations.interpBezier(alpha * 255, 0, 0.1f) * 0.003921568627451F);
 
-                        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-                        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+                    //    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+                    //    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 
                     //    Rect.draw(0, 0, width, height, ColorUtil.hexColor(0, 0, 0, (int) (alpha * 255)), Rect.RectType.EXPAND);
 
@@ -233,25 +232,21 @@ public class SplashScreen {
     @SneakyThrows
     public static void notifyGameLoaded() {
         if (RainyAPI.isSplashScreenDisabled) return;
-        if (!crashDetected) {
-            loadingScreenRenderer.onGameLoadFinishedNotify();
+        loadingScreenRenderer.onGameLoadFinishedNotify();
 
-            waiting = true;
-            synchronized (finishLock) {
-                finishLock.wait();
-            }
-
-            GLFW.glfwMakeContextCurrent(Display.getWindow());
-            GL.createCapabilities();
-            hide();
-
-            VideoUtil.stop();
-            VideoManager.loadBackground();
-            Reversal.postInitialize();
-
-            Display.sync(60);
-            mc.updateDisplay();
+        waiting = true;
+        synchronized (finishLock) {
+            finishLock.wait();
         }
+
+        GLFW.glfwMakeContextCurrent(Display.getWindow());
+        GL.createCapabilities();
+        hide();
+
+        Reversal.postInitialize();
+
+        Display.sync(60);
+        mc.updateDisplay();
     }
 
     @SneakyThrows

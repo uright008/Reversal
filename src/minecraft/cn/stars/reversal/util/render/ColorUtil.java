@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 @UtilityClass
 public final class ColorUtil {
+    public static Color transparent = new Color(0, 0, 0, 0);
 
     public static SimpleAnimation[] animation = {
             new SimpleAnimation(0.0F), new SimpleAnimation(0.0F), new SimpleAnimation(0.0F),
