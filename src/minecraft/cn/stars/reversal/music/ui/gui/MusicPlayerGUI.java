@@ -26,13 +26,13 @@ public abstract class MusicPlayerGUI implements GameInstance {
     protected CustomAnimation scrollAnim = new CustomAnimation(SmoothStepAnimation.class, 100);
     public void handleScroll() {
         // Scroll
-        int wheel = Mouse.getDWheel() * 400;
+        int wheel = Mouse.getDWheel() * 420;
         if (wheel != 0) {
             scrollAnim.setStartPoint(scrollAnim.getOutput());
             if (wheel > 0) {
-                scrollAnim.setEndPoint(scrollAnim.getEndPoint() + 20f);
+                scrollAnim.setEndPoint(scrollAnim.getEndPoint() + 30f);
             } else {
-                scrollAnim.setEndPoint(scrollAnim.getEndPoint() - 20f);
+                scrollAnim.setEndPoint(scrollAnim.getEndPoint() - 30f);
             }
             if (scrollAnim.getEndPoint() > 0) scrollAnim.setEndPoint(0f);
             float maxScroll = height - (MusicPlayerScreen.height - MusicPlayerScreen.topWidth - MusicPlayerScreen.bottomWidth - 3f);
@@ -47,8 +47,9 @@ public abstract class MusicPlayerGUI implements GameInstance {
     public abstract boolean draw(float x, float y, int mouseX, int mouseY, float cx, float cy, float scale);
 
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-
     }
+
+    public void onGuiClosed() {}
 
     public void freeMemory() {
 

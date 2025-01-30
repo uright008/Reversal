@@ -112,7 +112,7 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         regular32.drawString("Reversal", this.width - 280, 14, new Color(220, 220, 220, 240).getRGB());
         regular32.drawString("Announcements™", this.width - 250, 31, new Color(220, 220, 220, 240).getRGB());
         regular16.drawString(Reversal.VERSION + " " + Branch.getBranchName(Reversal.BRANCH), this.width - 290, 400, new Color(220, 220, 220, 240).getRGB());
-        RenderUtil.image(new ResourceLocation("reversal/images/joker.png"), this.width - 280, 70, 165, 160);
+        RenderUtil.image(new ResourceLocation("reversal/images/1.png"), this.width - 280, 70, 240, 160);
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
@@ -156,8 +156,7 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         textAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
         updateLog.clear();
-        updateLog.add("典中典之我觉得不合法,豆瓣评分1.3");
-        updateLog.add("小鬼看到以后手忙脚乱转发聊天记录,我会永远视奸你的");
+        updateLog.add("蛇年快乐!");
 
         // 定义按钮
         this.singlePlayerButton = new TextButton(45, this.height / 6f + 80, 120, 35, () -> mc.displayGuiScreen(new GuiSelectWorld(this)),

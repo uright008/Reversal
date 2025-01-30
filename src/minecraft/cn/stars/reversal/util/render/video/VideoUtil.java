@@ -3,9 +3,12 @@ package cn.stars.reversal.util.render.video;
 import java.io.File;
 import java.nio.ByteBuffer;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.util.ReversalLogger;
+import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.render.GlUtils;
 import cn.stars.reversal.util.render.RenderUtil;
+import lombok.SneakyThrows;
 import net.minecraft.client.renderer.GlStateManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,21 +22,21 @@ public class VideoUtil {
     private static FFmpegFrameGrabber frameGrabber;
     private static double frameRate;
     private static int ticks;
+    private static final TimeUtil nullTickTimer = new TimeUtil();
     private static boolean flag;
     private static long time;
     public static boolean suspended = false;
     private static boolean stopped = false;
-    private static final Logger logger = LogManager.getLogger("VideoPlayer");
 
     public static void init(File file) throws FFmpegFrameGrabber.Exception {
-        ReversalLogger.info("[*] Initializing video player...");
+        ReversalLogger.info("[VideoPlayer] Initializing video player...");
         Frame frame;
         frameGrabber = new FFmpegFrameGrabber(file.getPath());
         frameGrabber.setPixelFormat(2);
         frameGrabber.setOption("loglevel", "quiet");
-        frameGrabber.setOption("buffer_size", "1024000");
         time = 0L;
         ticks = 0;
+        nullTickTimer.reset();
         flag = false;
         stopped = false;
         frameGrabber.start();
@@ -41,7 +44,6 @@ public class VideoUtil {
         frameGrabber.grab();
 
         while ((frame = frameGrabber.grab()) == null || frame.image == null) {}
-
 
         RenderUtil.setBuffer((ByteBuffer)frame.image[0], frame.imageWidth, frame.imageHeight);
 
@@ -51,20 +53,12 @@ public class VideoUtil {
         thread.start();
     }
 
-    public static void retryIfFailed(File file) throws InterruptedException, FFmpegFrameGrabber.Exception {
-        ReversalLogger.warn("[*] Video player init error! Retry 1 time.");
-        Thread.sleep(1000L);
-        init(file);
-    }
-
+    @SneakyThrows
     public static void stop() {
-        try {
-            ReversalLogger.info("[*] Stopping video player...");
-            stopped = true;
-            frameGrabber.stop();
-            frameGrabber.release();
-        } catch (Exception ignored) {
-        }
+        ReversalLogger.info("[VideoPlayer] Stopping video player...");
+        stopped = true;
+        frameGrabber.stop();
+        frameGrabber.release();
     }
 
     private static Thread getThread() {
@@ -79,12 +73,13 @@ public class VideoUtil {
                     }
                 }
                 catch (Exception e) {
-                    logger.error(e.getMessage());
+                    ReversalLogger.error("[VideoPlayer] Error:", e);
                 }
                 this.interrupt();
             }
         };
         thread.setDaemon(true);
+        thread.setPriority(Thread.MAX_PRIORITY);
         return thread;
     }
 
@@ -96,6 +91,15 @@ public class VideoUtil {
                 RenderUtil.setBuffer((ByteBuffer)frame.image[0], frame.imageWidth, frame.imageHeight);
                 time = System.currentTimeMillis();
                 ++ticks;
+                nullTickTimer.reset();
+            } else {
+                if (nullTickTimer.hasReached(1000L)) {
+                    ReversalLogger.warn("[VideoPlayer] Frame remains null for more than 1s! This should not happen. Resetting progress.");
+                    time = System.currentTimeMillis();
+                    ticks = 0;
+                    frameGrabber.setFrameNumber(0);
+                    nullTickTimer.reset();
+                }
             }
         } else {
             ticks = 0;

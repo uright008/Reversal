@@ -137,16 +137,16 @@ public class PlayListGUI extends MusicPlayerGUI {
     @Override
     public void handleScroll() {
         // Scroll
-        int wheel = Mouse.getDWheel() * 400;
+        int wheel = Mouse.getDWheel() * 420;
         if (wheel != 0) {
             scrollAnim.setStartPoint(scrollAnim.getOutput());
             if (wheel > 0) {
-                scrollAnim.setEndPoint(scrollAnim.getEndPoint() + 20f);
+                scrollAnim.setEndPoint(scrollAnim.getEndPoint() + 30f);
             } else {
-                scrollAnim.setEndPoint(scrollAnim.getEndPoint() - 20f);
+                scrollAnim.setEndPoint(scrollAnim.getEndPoint() - 30f);
             }
             if (scrollAnim.getEndPoint() > 0) scrollAnim.setEndPoint(0f);
-            float maxScroll = height + (noMore || (currentLoadThread != null && currentLoadThread.isAlive())? 20f : 0f) - (MusicPlayerScreen.height - MusicPlayerScreen.topWidth - MusicPlayerScreen.bottomWidth - 90f);
+            float maxScroll = height + (noMore || (currentLoadThread != null && currentLoadThread.isAlive())? 30f : 0f) - (MusicPlayerScreen.height - MusicPlayerScreen.topWidth - MusicPlayerScreen.bottomWidth - 90f);
             if (-scrollAnim.getEndPoint() > maxScroll) {
                 scrollAnim.setEndPoint(-maxScroll);
                 isBottom = true;

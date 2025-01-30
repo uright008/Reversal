@@ -296,6 +296,12 @@ public class MusicPlayerScreen extends GuiScreen {
     }
 
     @Override
+    public void onGuiClosed() {
+        currentGUI.onGuiClosed();
+        super.onGuiClosed();
+    }
+
+    @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         dragging = false;
         if (player.getMusic() != null) {

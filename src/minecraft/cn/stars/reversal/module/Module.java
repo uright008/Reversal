@@ -98,7 +98,6 @@ public abstract class Module implements GameInstance {
     }
 
     public boolean toggleModule() {
-        if (Reversal.isDestructed) return false;
         boolean canNoti = ModuleInstance.getModule(ClientSettings.class).showNotifications.enabled && shouldCallNotification;
         enabled = !enabled;
 

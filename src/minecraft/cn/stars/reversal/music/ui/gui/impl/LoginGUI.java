@@ -96,4 +96,9 @@ public class LoginGUI extends MusicPlayerGUI {
 
         return state == QRCodeState.SUCCEED;
     }
+
+    @Override
+    public void onGuiClosed() {
+        if (thread != null) thread.interrupt();
+    }
 }

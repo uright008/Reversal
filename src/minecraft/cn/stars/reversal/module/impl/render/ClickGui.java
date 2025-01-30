@@ -19,7 +19,7 @@ import org.lwjgl.input.Keyboard;
         chineseDescription = "显示一个可以让你管理功能的界面", category = Category.RENDER, defaultKey = Keyboard.KEY_RSHIFT)
 public final class ClickGui extends Module {
 
-    private final ModeValue mode = new ModeValue("Mode", this, "Modern", "Modern", "MomoTalk");
+    private final ModeValue mode = new ModeValue("Mode", this, "Modern", "Modern");
     public final NumberValue scrollSpeed = new NumberValue("Scroll Speed", this, 4.0, 0.5, 10.0, 1.0);
 
     @Override

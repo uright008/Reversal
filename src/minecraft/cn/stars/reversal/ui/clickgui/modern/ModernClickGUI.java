@@ -101,7 +101,7 @@ public class ModernClickGUI extends GuiScreen {
         for (final Category category : Category.values()) {
             if (category == selectedCategory) {
                 sideAnimation.run(renderSelectY);
-                RoundedUtil.drawRound(x + 5, (float) sideAnimation.getValue() + 1, 100, 18, 5, ColorUtil.withAlpha(ThemeUtil.getThemeColor(ThemeType.ARRAYLIST), 100));
+                RoundedUtil.drawRound(x + 5, (float) sideAnimation.getValue() + 1, 100, 18, 5, ColorUtil.withAlpha(ThemeUtil.getThemeColor(ThemeType.FLAT_COLOR), 100));
                 cur26.drawString(getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(200,200,200, 240).getRGB());
                 psm20.drawString(StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(240,240,240, 240).getRGB());
             } else {
@@ -154,6 +154,7 @@ public class ModernClickGUI extends GuiScreen {
                     m.sizeInGui = 20;
                     settingY += m.sizeInGui;
                     if (m != firstModule) settingY += 15; // IDK why
+                    else settingY -= 5;
 
                     for (final Value setting : m.getSettings()) {
                         if (!setting.isHidden()) {
@@ -225,7 +226,6 @@ public class ModernClickGUI extends GuiScreen {
                             setting.yAnimation.run(setting.guiY);
                         }
                     }
-                    if (m == firstModule) m.sizeInGui += 5; // IDK why again
                 }
                 if (!m.expanded) {
                     m.sizeInGui = 20;
