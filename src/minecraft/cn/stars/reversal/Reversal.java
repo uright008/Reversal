@@ -56,7 +56,7 @@ public class Reversal {
     public static final String VERSION = "v1.5.0";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
-    public static final Branch BRANCH = Branch.DEVELOPMENT;
+    public static final Branch BRANCH = Branch.PRODUCTION;
 
     // Init
     public static Gson PRETTY_GSON = new GsonBuilder().setPrettyPrinting().create();
