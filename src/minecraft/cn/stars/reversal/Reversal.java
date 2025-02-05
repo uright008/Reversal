@@ -53,10 +53,10 @@ import java.util.concurrent.Executors;
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
-    public static final String VERSION = "v1.5.0";
+    public static final String VERSION = "v2.0.0+alpha.01";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
-    public static final Branch BRANCH = Branch.PRODUCTION;
+    public static final Branch BRANCH = Branch.DEVELOPMENT;
 
     // Init
     public static Gson PRETTY_GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -238,6 +238,7 @@ public class Reversal {
             // Misc
             new ClientSpoofer(),
             new CustomName(),
+            new FakeFPS(),
             new NoAchievements(),
             new Protocol(),
             // World

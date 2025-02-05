@@ -6,6 +6,7 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.impl.client.Optimization;
+import cn.stars.reversal.module.impl.misc.FakeFPS;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.ui.splash.SplashScreen;
@@ -3114,6 +3115,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     public static int getDebugFPS()
     {
+        if (ModuleInstance.getModule(FakeFPS.class).enabled) return ModuleInstance.getModule(FakeFPS.class).fps.getInt();
         return debugFPS;
     }
 
