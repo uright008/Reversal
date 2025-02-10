@@ -57,8 +57,10 @@ public class VideoUtil {
     public static void stop() {
         ReversalLogger.info("[VideoPlayer] Stopping video player...");
         stopped = true;
-        frameGrabber.stop();
-        frameGrabber.release();
+        if (frameGrabber != null) {
+            frameGrabber.stop();
+            frameGrabber.close();
+        }
     }
 
     private static void startPlaybackThread() {
