@@ -45,7 +45,6 @@ public class AtomicIslandRenderer implements GameInstance {
 
     // maybe another location better
     private DynamicTexture coverTexture;
-    public static String currentLyric = "暂无歌词...";
 
     public String mainText;
     public final ArrayList<AtomicTask> tasks = new ArrayList<>();

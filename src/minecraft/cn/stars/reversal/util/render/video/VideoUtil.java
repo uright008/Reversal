@@ -3,15 +3,11 @@ package cn.stars.reversal.util.render.video;
 import java.io.File;
 import java.nio.ByteBuffer;
 
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.render.GlUtils;
 import cn.stars.reversal.util.render.RenderUtil;
 import lombok.SneakyThrows;
-import net.minecraft.client.renderer.GlStateManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.lwjgl.opengl.GL11;
@@ -25,15 +21,20 @@ public class VideoUtil {
     private static final TimeUtil nullTickTimer = new TimeUtil();
     private static boolean flag;
     private static long time;
-    public static boolean suspended = false;
-    private static boolean stopped = false;
+    public static volatile boolean suspended = false;
+    private static volatile boolean stopped = false;
 
     public static void init(File file) throws FFmpegFrameGrabber.Exception {
         ReversalLogger.info("[VideoPlayer] Initializing video player...");
         Frame frame;
+
         frameGrabber = new FFmpegFrameGrabber(file.getPath());
         frameGrabber.setPixelFormat(2);
         frameGrabber.setOption("loglevel", "quiet");
+        frameGrabber.setOption("threads", "4");
+        frameGrabber.setOption("hwaccel", "auto");
+        frameGrabber.setOption("fflags", "nobuffer");
+
         time = 0L;
         ticks = 0;
         nullTickTimer.reset();
@@ -49,8 +50,7 @@ public class VideoUtil {
 
         time = System.currentTimeMillis();
         ++ticks;
-        Thread thread = getThread();
-        thread.start();
+        startPlaybackThread();
     }
 
     @SneakyThrows
@@ -61,7 +61,7 @@ public class VideoUtil {
         frameGrabber.release();
     }
 
-    private static Thread getThread() {
+    private static void startPlaybackThread() {
         Thread thread = new Thread("Video Background"){
 
             @Override
@@ -78,9 +78,10 @@ public class VideoUtil {
                 this.interrupt();
             }
         };
+
         thread.setDaemon(true);
         thread.setPriority(Thread.MAX_PRIORITY);
-        return thread;
+        thread.start();
     }
 
     private static void doGetBuffer() throws FFmpegFrameGrabber.Exception {
