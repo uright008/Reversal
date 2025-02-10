@@ -55,7 +55,13 @@ public class AtomicIsland extends Module {
     public void onAttack(AttackEvent event) {
         Entity entity = event.getTarget();
         if (entity instanceof EntityPlayer && enemyInfo.enabled) {
-            Atomic.registerAtomic("HP: " + MathUtil.round(((EntityPlayer) entity).getHealth(), 1) + " | Food: " + ((EntityPlayer) entity).getFoodStats().getFoodLevel() + " | Distance: " + MathUtil.round(mc.thePlayer.getDistanceToEntity(entity), 1) + "m", entity.getName(), 5000, "a", false, -1);
+            String hp;
+            try {
+                hp = "" + MathUtil.round(((EntityPlayer) entity).getHealth(), 1);
+            } catch (NumberFormatException e) {
+                hp = "NaN";
+            }
+            Atomic.registerAtomic("HP: " + hp + " | Food: " + ((EntityPlayer) entity).getFoodStats().getFoodLevel() + " | Distance: " + MathUtil.round(mc.thePlayer.getDistanceToEntity(entity), 1) + "m", entity.getName(), 5000, "a", false, -1);
         }
     }
 
