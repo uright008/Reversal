@@ -12,7 +12,6 @@ import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3i;
@@ -37,8 +36,7 @@ public class LineGlyphs extends Module {
 
     @Override
     public void onRender3D(Render3DEvent event) {
-        Frustum frustum = new Frustum(mc.getRenderManager().renderPosX, mc.getRenderManager().renderPosY, mc.getRenderManager().renderPosZ);
-        this.glyphsRemoveAuto(1);
+        this.glyphsRemoveAuto();
         this.drawAllGlyphs(event.getPartialTicks());
     }
 
@@ -145,8 +143,8 @@ public class LineGlyphs extends Module {
         }
     }
 
-    private void glyphsRemoveAuto(float moduleAlphaPC) {
-        this.Glyphs_VEC_GENS.removeIf(GlyphsVecGen -> GlyphsVecGen.isToRemove(moduleAlphaPC));
+    private void glyphsRemoveAuto() {
+        this.Glyphs_VEC_GENS.removeIf(GlyphsVecGen -> GlyphsVecGen.isToRemove(1));
     }
 
     private void glyphsUpdate() {

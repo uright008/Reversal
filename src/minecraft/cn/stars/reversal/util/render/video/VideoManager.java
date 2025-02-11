@@ -2,6 +2,7 @@ package cn.stars.reversal.util.render.video;
 
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
+import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 
 import java.io.File;
@@ -13,7 +14,8 @@ public class VideoManager {
     private static final File splashFile = new File(dictionary, "splash.mp4");
 
     @SuppressWarnings("all")
-    public static void loadFiles() throws IOException {
+    @SneakyThrows
+    public static void loadFiles() {
         if (!dictionary.exists()) {
             dictionary.mkdirs();
         }
@@ -26,7 +28,8 @@ public class VideoManager {
         }
     }
 
-    public static void loadSplash() throws IOException {
+    @SneakyThrows
+    public static void loadSplash() {
         if (!splashFile.exists()) {
             ReversalLogger.error("Splash file not found, this should not happen! Reload files.");
             loadFiles();
@@ -34,7 +37,8 @@ public class VideoManager {
         VideoUtil.init(splashFile);
     }
 
-    public static void loadBackground() throws IOException {
+    @SneakyThrows
+    public static void loadBackground() {
         if (!backgroundFile.exists()) {
             ReversalLogger.error("Background file not found, this should not happen! Reload files.");
             loadFiles();

@@ -24,7 +24,8 @@ public class VideoUtil {
     public static volatile boolean suspended = false;
     private static volatile boolean stopped = false;
 
-    public static void init(File file) throws FFmpegFrameGrabber.Exception {
+    @SneakyThrows
+    public static void init(File file) {
         ReversalLogger.info("[VideoPlayer] Initializing video player...");
         Frame frame;
 
@@ -63,6 +64,7 @@ public class VideoUtil {
         }
     }
 
+    @SneakyThrows
     private static void startPlaybackThread() {
         Thread thread = new Thread("Video Background"){
 
@@ -86,7 +88,8 @@ public class VideoUtil {
         thread.start();
     }
 
-    private static void doGetBuffer() throws FFmpegFrameGrabber.Exception {
+    @SneakyThrows
+    private static void doGetBuffer() {
         int fLength = frameGrabber.getLengthInFrames() - 5;
         if (ticks < fLength) {
             Frame frame = frameGrabber.grab();

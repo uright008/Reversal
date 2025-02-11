@@ -1,8 +1,3 @@
-/*
- Copyright Alan Wood 2021
- None of this code to be reused without my written permission
- Intellectual Rights owned by Alan Wood
- */
 package cn.stars.reversal.module.impl.render;
 
 import cn.stars.reversal.event.impl.AttackEvent;

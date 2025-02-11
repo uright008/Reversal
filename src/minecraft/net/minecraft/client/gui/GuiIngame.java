@@ -315,7 +315,7 @@ public class GuiIngame extends Gui {
         if (scoreobjective1 != null)
         {
             if (ModuleInstance.getModule(cn.stars.reversal.module.impl.hud.Scoreboard.class).enabled) {
-                ModuleInstance.getModule(cn.stars.reversal.module.impl.hud.Scoreboard.class).renderScoreboard(scoreobjective1, scaledresolution);
+                ModuleInstance.getModule(cn.stars.reversal.module.impl.hud.Scoreboard.class).renderScoreboard(scoreobjective1);
             } else {
                 renderScoreboard(scoreobjective1, scaledresolution);
             }
@@ -595,12 +595,12 @@ public class GuiIngame extends Gui {
             if (i < this.playerHealth && entityplayer.hurtResistantTime > 0)
             {
                 this.lastSystemTime = Minecraft.getSystemTime();
-                this.healthUpdateCounter = (long)(this.updateCounter + 20);
+                this.healthUpdateCounter = this.updateCounter + 20;
             }
             else if (i > this.playerHealth && entityplayer.hurtResistantTime > 0)
             {
                 this.lastSystemTime = Minecraft.getSystemTime();
-                this.healthUpdateCounter = (long)(this.updateCounter + 10);
+                this.healthUpdateCounter = this.updateCounter + 10;
             }
 
             if (Minecraft.getSystemTime() - this.lastSystemTime > 1000L)
@@ -781,22 +781,8 @@ public class GuiIngame extends Gui {
                             j7 = k1 + (this.rand.nextInt(3) - 1);
                         }
 
-                        if (flag1) {
-                            k8 = 1;
-                        }
-
                         int j9 = j1 - k6 * 8 - 9;
                         this.drawTexturedModalRect(j9, j7, 16 + k8 * 9, 27, 9, 9);
-
-                        if (flag1) {
-                            if (k6 * 2 + 1 < l) {
-                                this.drawTexturedModalRect(j9, j7, l7 + 54, 27, 9, 9);
-                            }
-
-                            if (k6 * 2 + 1 == l) {
-                                this.drawTexturedModalRect(j9, j7, l7 + 63, 27, 9, 9);
-                            }
-                        }
 
                         if (k6 * 2 + 1 < k) {
                             this.drawTexturedModalRect(j9, j7, l7 + 36, 27, 9, 9);

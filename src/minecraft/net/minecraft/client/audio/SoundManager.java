@@ -481,14 +481,16 @@ public class SoundManager
         {
             synchronized (SoundSystemConfig.THREAD_SYNC)
             {
-                if (this.soundLibrary == null)
-                {
+                try {
+                    if (this.soundLibrary == null) {
+                        return false;
+                    } else {
+                        Source source = this.soundLibrary.getSources().get(p_playing_1_);
+                        return source != null && (source.playing() || source.paused() || source.preLoad);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                     return false;
-                }
-                else
-                {
-                    Source source = (Source)this.soundLibrary.getSources().get(p_playing_1_);
-                    return source == null ? false : source.playing() || source.paused() || source.preLoad;
                 }
             }
         }

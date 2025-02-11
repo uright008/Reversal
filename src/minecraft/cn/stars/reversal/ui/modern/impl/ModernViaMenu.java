@@ -100,15 +100,7 @@ public class ModernViaMenu extends GuiScreen implements GuiYesNoCallback {
 
     public void handleMouseInput() throws IOException {
         list.handleMouseInput();
-        if (Mouse.getEventButton() == 0) {
-            for (TextButton menuButton : this.buttons) {
-                if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), this)) {
-                    mc.getSoundHandler().playButtonPress();
-                    menuButton.runAction();
-                    break;
-                }
-            }
-        }
+        super.handleMouseInput();
     }
 
     @Override
