@@ -1,9 +1,9 @@
 package cn.stars.reversal.util.render;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.hud.CPSCounter;
 import cn.stars.reversal.module.impl.hud.Keystrokes;
-import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -25,6 +25,7 @@ public class KeystrokeUtil implements GameInstance {
         key = k;
         forMouse = false;
     }
+
     public void setUpMouse(int m) {
         mouseButton = m;
         forMouse = true;
@@ -49,11 +50,11 @@ public class KeystrokeUtil implements GameInstance {
 
         if (ModuleInstance.getModule(Keystrokes.class).modeValue.getMode().equals("Modern")) {
             if (key == Minecraft.getMinecraft().gameSettings.keyBindJump) {
-                RenderUtil.roundedRectangle(x - width - 2, y, width * 3 + 8, width, 2, new Color(255, 255, 255, 15 + ticksSinceLastPress));
-                regular18.drawString(keyName, (float) (x - 2), (float) (y + 15 - 4), key.isKeyDown() && rainbow ? ThemeUtil.getThemeColor(ThemeType.GENERAL).getRGB() : -1);
+                RenderUtil.roundedRectangle(x - width - 2, y - 30, width * 3 + 8, width, 2, new Color(255, 255, 255, 15 + ticksSinceLastPress));
+                regular18.drawString(keyName, (float) (x + 1), (float) (y - 19), key.isKeyDown() && rainbow ? ThemeUtil.getThemeColor(ThemeType.GENERAL).getRGB() : -1);
                 if (shadow) {
                     MODERN_BLOOM_RUNNABLES.add(() -> {
-                        RenderUtil.roundedRectangle(x - width - 2, y, width * 3 + 8, width, 2, key.isKeyDown() ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 15));
+                        RenderUtil.roundedRectangle(x - width - 2, y - 30, width * 3 + 8, width, 2, key.isKeyDown() ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 15));
                     });
                 }
             } else {
