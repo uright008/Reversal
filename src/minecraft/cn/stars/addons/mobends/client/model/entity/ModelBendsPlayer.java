@@ -15,6 +15,7 @@ import cn.stars.addons.mobends.pack.BendsPack;
 import cn.stars.addons.mobends.pack.BendsVar;
 import cn.stars.addons.mobends.util.SmoothVector3f;
 import cn.stars.addons.skinlayers3d.PlayerEntityModelAccessor;
+import cn.stars.reversal.Reversal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
@@ -288,15 +289,23 @@ public class ModelBendsPlayer extends ModelPlayer
             this.bipedLeftForeLeg.resetScale();
             BendsVar.tempData = Data_Player.get(argEntity.getEntityId());
             if (argEntity.isRiding()) {
-                animatedEntity.get("riding").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
+                animatedEntity.get("riding").animate((EntityLivingBase)argEntity, this, Data_Player.get(argEntity.getEntityId()));
                 BendsPack.animate(this, "player", "riding");
             }
             else if (argEntity.isInWater()) {
-                animatedEntity.get("swimming").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
+                animatedEntity.get("swimming").animate((EntityLivingBase)argEntity, this, Data_Player.get(argEntity.getEntityId()));
                 BendsPack.animate(this, "player", "swimming");
             }
+            else if (((EntityPlayer)argEntity).isOnLadder() && argEntity.isCollidedHorizontally) {
+                animatedEntity.get("climb").animate((EntityLivingBase) argEntity, this, Data_Player.get(argEntity.getEntityId()));
+                BendsPack.animate(this, "player", "climb");
+            }
+            else if (((EntityPlayer) argEntity).capabilities.isFlying && argEntity.getSpeed() > 2) {
+                animatedEntity.get("fly").animate((EntityLivingBase) argEntity, this, Data_Player.get(argEntity.getEntityId()));
+                BendsPack.animate(this, "player", "fly");
+            }
             else if (!Data_Player.get(argEntity.getEntityId()).isOnGround() | Data_Player.get(argEntity.getEntityId()).ticksAfterTouchdown < 2.0f) {
-                animatedEntity.get("jump").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
+                animatedEntity.get("jump").animate((EntityLivingBase)argEntity, this, Data_Player.get(argEntity.getEntityId()));
                 BendsPack.animate(this, "player", "jump");
             }
             else {
@@ -317,22 +326,21 @@ public class ModelBendsPlayer extends ModelPlayer
                     BendsPack.animate(this, "player", "sneak");
                 }
             }
-            if (this.aimedBow) {
-                animatedEntity.get("bow").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
-                BendsPack.animate(this, "player", "bow");
-            }
-            else {
-                final ItemStack currentItem = ((EntityPlayer)argEntity).getCurrentEquippedItem();
-                if (currentItem != null && !(currentItem.getItem() instanceof ItemAxe) && !(currentItem.getItem() instanceof ItemSword)) {
-                    animatedEntity.get("mining").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
-                    BendsPack.animate(this, "player", "mining");
-                }
-                else if (currentItem != null && currentItem.getItem() instanceof ItemAxe) {
-                    animatedEntity.get("axe").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
-                    BendsPack.animate(this, "player", "axe");
-                }
-                else {
-                    animatedEntity.get("attack").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
+            if (!((EntityPlayer) argEntity).capabilities.isFlying && !argEntity.isInWater()) {
+                if (this.aimedBow) {
+                    animatedEntity.get("bow").animate((EntityLivingBase) argEntity, (ModelBase) this, (EntityData) Data_Player.get(argEntity.getEntityId()));
+                    BendsPack.animate(this, "player", "bow");
+                } else {
+                    final ItemStack currentItem = ((EntityPlayer) argEntity).getCurrentEquippedItem();
+                    if (currentItem != null && !(currentItem.getItem() instanceof ItemAxe) && !(currentItem.getItem() instanceof ItemSword)) {
+                        animatedEntity.get("mining").animate((EntityLivingBase) argEntity, (ModelBase) this, (EntityData) Data_Player.get(argEntity.getEntityId()));
+                        BendsPack.animate(this, "player", "mining");
+                    } else if (currentItem != null && currentItem.getItem() instanceof ItemAxe) {
+                        animatedEntity.get("axe").animate((EntityLivingBase) argEntity, (ModelBase) this, (EntityData) Data_Player.get(argEntity.getEntityId()));
+                        BendsPack.animate(this, "player", "axe");
+                    } else {
+                        animatedEntity.get("attack").animate((EntityLivingBase) argEntity, (ModelBase) this, (EntityData) Data_Player.get(argEntity.getEntityId()));
+                    }
                 }
             }
             ((ModelRendererBends)this.bipedHead).update(data.ticksPerFrame);

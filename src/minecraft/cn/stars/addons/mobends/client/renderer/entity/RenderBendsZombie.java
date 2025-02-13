@@ -52,7 +52,7 @@ public class RenderBendsZombie extends RenderBiped
     
     public void func_180579_a(final EntityZombie p_180579_1_, final double p_180579_2_, final double p_180579_4_, final double p_180579_6_, final float p_180579_8_, final float p_180579_9_) {
         this.func_82427_a(p_180579_1_);
-        super.doRender((EntityLiving)p_180579_1_, p_180579_2_, p_180579_4_, p_180579_6_, p_180579_8_, p_180579_9_);
+        super.doRender(p_180579_1_, p_180579_2_, p_180579_4_, p_180579_6_, p_180579_8_, p_180579_9_);
     }
     
     protected ResourceLocation func_180578_a(final EntityZombie p_180578_1_) {
@@ -75,7 +75,7 @@ public class RenderBendsZombie extends RenderBiped
         if (bat.isConverting()) {
             p_77043_3_ += (float)(Math.cos(bat.ticksExisted * 3.25) * 3.141592653589793 * 0.25);
         }
-        super.rotateCorpse((EntityLivingBase)bat, p_77043_2_, p_77043_3_, partialTicks);
+        super.rotateCorpse(bat, p_77043_2_, p_77043_3_, partialTicks);
     }
     
     protected ResourceLocation getEntityTexture(final EntityLiving entity) {

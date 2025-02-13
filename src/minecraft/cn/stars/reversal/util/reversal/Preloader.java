@@ -16,7 +16,7 @@ import java.util.List;
 public class Preloader {
     private int count = 0;
 
-    public void loadResources() {
+    public synchronized void loadResources() {
         ReversalLogger.info("Loading resources on thread: " + Thread.currentThread().getName());
         // Load Trail.class
         Trail trail = ModuleInstance.getModule(Trail.class);

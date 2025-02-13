@@ -93,6 +93,7 @@ public class SplashScreen {
                 while (true) {
 
                     if (Display.wasResized()) {
+                        Minecraft.getMinecraft().resize(mc.displayWidth, mc.displayHeight);
                         initGL();
                     }
 

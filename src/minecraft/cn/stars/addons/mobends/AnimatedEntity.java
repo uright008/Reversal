@@ -57,9 +57,27 @@ public class AnimatedEntity
     public static void register() {
         BendsLogger.log("Registering Animated Entities...", BendsLogger.INFO);
         AnimatedEntity.animatedEntities.clear();
-        registerEntity(new AnimatedEntity("player", "Player", Minecraft.getMinecraft().thePlayer, EntityPlayer.class, new RenderBendsPlayer(Minecraft.getMinecraft().getRenderManager())).add(new Animation_Stand()).add(new Animation_Walk()).add(new Animation_Sneak()).add(new Animation_Sprint()).add(new Animation_Jump()).add(new Animation_Attack()).add(new Animation_Swimming()).add(new Animation_Bow()).add(new Animation_Riding()).add(new Animation_Mining()).add(new Animation_Axe()));
-        registerEntity(new AnimatedEntity("zombie", "Zombie", new EntityZombie(null), EntityZombie.class, new RenderBendsZombie(Minecraft.getMinecraft().getRenderManager())).add(new cn.stars.addons.mobends.animation.zombie.Animation_Stand()).add(new cn.stars.addons.mobends.animation.zombie.Animation_Walk()));
-        registerEntity(new AnimatedEntity("spider", "Spider", new EntitySpider(null), EntitySpider.class, new RenderBendsSpider(Minecraft.getMinecraft().getRenderManager())).add(new Animation_OnGround()).add(new cn.stars.addons.mobends.animation.spider.Animation_Jump()).add(new Animation_WallClimb()));
+        registerEntity(new AnimatedEntity("player", "Player", Minecraft.getMinecraft().thePlayer, EntityPlayer.class, new RenderBendsPlayer(Minecraft.getMinecraft().getRenderManager()))
+                .add(new Animation_Stand())
+                .add(new Animation_Walk())
+                .add(new Animation_Sneak())
+                .add(new Animation_Sprint())
+                .add(new Animation_Jump())
+                .add(new Animation_Attack())
+                .add(new Animation_Swimming())
+                .add(new Animation_Bow())
+                .add(new Animation_Riding())
+                .add(new Animation_Mining())
+                .add(new Animation_Axe())
+                .add(new Animation_Climb())
+                .add(new Animation_Fly()));
+        registerEntity(new AnimatedEntity("zombie", "Zombie", new EntityZombie(null), EntityZombie.class, new RenderBendsZombie(Minecraft.getMinecraft().getRenderManager()))
+                .add(new cn.stars.addons.mobends.animation.zombie.Animation_Stand())
+                .add(new cn.stars.addons.mobends.animation.zombie.Animation_Walk()));
+        registerEntity(new AnimatedEntity("spider", "Spider", new EntitySpider(null), EntitySpider.class, new RenderBendsSpider(Minecraft.getMinecraft().getRenderManager()))
+                .add(new Animation_OnGround())
+                .add(new cn.stars.addons.mobends.animation.spider.Animation_Jump())
+                .add(new Animation_WallClimb()));
         AnimatedEntity.playerRenderer = new RenderBendsPlayer(Minecraft.getMinecraft().getRenderManager());
         AnimatedEntity.zombieRenderer = new RenderBendsZombie(Minecraft.getMinecraft().getRenderManager());
         AnimatedEntity.spiderRenderer = new RenderBendsSpider(Minecraft.getMinecraft().getRenderManager());
@@ -96,7 +114,7 @@ public class AnimatedEntity
     }
     
     static {
-        AnimatedEntity.animatedEntities = new ArrayList<AnimatedEntity>();
+        AnimatedEntity.animatedEntities = new ArrayList<>();
         AnimatedEntity.skinMap = Maps.newHashMap();
     }
 }

@@ -29,8 +29,9 @@ import org.lwjgl.compatibility.util.vector.Vector3f;
 @ModuleInfo(name = "MoBends", chineseName = "更多动作", description = "Show more animations on entity",
         chineseDescription = "在玩家和部分生物上渲染更真实的动作", category = Category.ADDONS)
 public class MoBends extends Module {
-    public static float ticks = 0.0f;
-    public static float ticksPerFrame = 0.0f;
+    public static boolean loaded = false;
+    public static float ticks;
+    public static float ticksPerFrame;
     public static final ResourceLocation texture_NULL = new ResourceLocation("reversal/images/white.png");
 
     @Override
@@ -68,14 +69,13 @@ public class MoBends extends Module {
     }
 
     @Override
-    public void onLoad() {
-        AnimatedEntity.register();
-    }
-
-    @Override
     public void onTick(final TickEvent event) {
         if (mc.theWorld == null) {
             return;
+        }
+        if (!loaded) {
+            AnimatedEntity.register();
+            loaded = true;
         }
         for (int i = 0; i < Data_Player.dataList.size(); ++i) {
             final Data_Player data = Data_Player.dataList.get(i);

@@ -13,7 +13,6 @@ public class NoClickDelay extends Module {
     public void onPreMotion(PreMotionEvent event) {
         if (mc.theWorld != null && mc.thePlayer != null) {
             if (!mc.inGameHasFocus) return;
-
             mc.leftClickCounter = 0;
         }
     }

@@ -53,14 +53,14 @@ import java.util.concurrent.Executors;
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
+
     public static final String VERSION = "v2.0.0";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "alpha.01";
+    public static final String BUILD_VERSION = "alpha.02";
 
     // Init
-    public static Gson PRETTY_GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
     public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(2);
 

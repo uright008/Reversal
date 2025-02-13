@@ -65,6 +65,12 @@ public class VideoUtil {
     }
 
     @SneakyThrows
+    public static void restart() {
+        ReversalLogger.info("[VideoPlayer] Restarting video player...");
+        frameGrabber.restart();
+    }
+
+    @SneakyThrows
     private static void startPlaybackThread() {
         Thread thread = new Thread("Video Background"){
 

@@ -320,7 +320,7 @@ public class GameSettings {
      * @param key The key to display
      */
     public static String getKeyDisplayString(final int key) {
-        return key < 0 ? I18n.format("key.mouseButton", Integer.valueOf(key + 101)) : (key < 256 ? Keyboard.getKeyName(key) : String.format("%c", Character.valueOf((char) (key - 256))).toUpperCase());
+        return key < 0 ? I18n.format("key.mouseButton", key + 101) : (key < 256 ? Keyboard.getKeyName(key) : String.format("%c", (char) (key - 256)).toUpperCase());
     }
 
     /**

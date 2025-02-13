@@ -162,6 +162,12 @@ public class GuiCreateWorld extends GuiScreen
         Keyboard.enableRepeatEvents(false);
     }
 
+    @Override
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        worldNameField.mouseDragged(mouseX, mouseY, clickedMouseButton);
+        worldSeedField.mouseDragged(mouseX, mouseY, clickedMouseButton);
+    }
+
     protected void actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)

@@ -11,6 +11,8 @@ import cn.stars.addons.mobends.data.EntityData;
 import cn.stars.addons.mobends.util.GUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.MathHelper;
 
 public class Animation_Sprint extends Animation

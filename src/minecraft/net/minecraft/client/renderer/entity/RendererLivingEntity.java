@@ -123,7 +123,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                 return;
             } */
 
-            if (ModuleInstance.getModule(MoBends.class).isEnabled()) {
+            if (ModuleInstance.getModule(MoBends.class).isEnabled() && entity != null) {
                 if (MoBends.onRenderLivingEvent(this, entity, x, y, z, entityYaw, partialTicks)) {
                     return;
                 }
