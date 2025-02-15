@@ -1,23 +1,17 @@
 package cn.stars.reversal.module.impl.hud;
 
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.ui.atmoic.Atomic;
+import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.util.math.MathUtil;
-import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 

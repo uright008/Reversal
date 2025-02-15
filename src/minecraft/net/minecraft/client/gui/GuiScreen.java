@@ -3,6 +3,7 @@ package net.minecraft.client.gui;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.render.video.VideoUtil;
@@ -108,14 +109,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        for (int i = 0; i < this.buttonList.size(); ++i)
-        {
-            this.buttonList.get(i).drawButton(this.mc, mouseX, mouseY);
+        for (GuiButton guiButton : this.buttonList) {
+            guiButton.drawButton(this.mc, mouseX, mouseY);
         }
 
-        for (int j = 0; j < this.labelList.size(); ++j)
-        {
-            this.labelList.get(j).drawLabel(this.mc, mouseX, mouseY);
+        for (GuiLabel guiLabel : this.labelList) {
+            guiLabel.drawLabel(this.mc, mouseX, mouseY);
         }
     }
 
@@ -452,15 +451,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         if (mouseButton == 0)
         {
-            for (int i = 0; i < this.buttonList.size(); ++i)
-            {
-                GuiButton guibutton = (GuiButton)this.buttonList.get(i);
+            for (GuiButton guiButton : this.buttonList) {
 
-                if (guibutton.mousePressed(this.mc, mouseX, mouseY))
-                {
-                    this.selectedButton = guibutton;
-                    guibutton.playPressSound(this.mc.getSoundHandler());
-                    this.actionPerformed(guibutton);
+                if (guiButton.mousePressed(this.mc, mouseX, mouseY)) {
+                    this.selectedButton = guiButton;
+                    guiButton.playPressSound(this.mc.getSoundHandler());
+                    this.actionPerformed(guiButton);
                 }
             }
         }
@@ -780,7 +776,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         }
     }
 
-    public void changeMenuBackground(boolean previous) {
+    public static void changeMenuBackground(boolean previous) {
         RenderUtil.initTime = System.currentTimeMillis();
         BackgroundShader.BACKGROUND_SHADER.stopShader();
         RiseShaders.MAIN_MENU_SHADER.setActive(false);

@@ -2,13 +2,10 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
-import cn.stars.reversal.ui.atmoic.Atomic;
-import cn.stars.reversal.util.render.UIUtil;
+import cn.stars.reversal.ui.atmoic.island.Atomic;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
-import net.optifine.CustomLoadingScreen;
-import net.optifine.CustomLoadingScreens;
 
 public class GuiDownloadTerrain extends GuiScreen
 {

@@ -1,5 +1,6 @@
 package cn.stars.reversal.module;
 
+import cn.stars.reversal.RainyAPI;
 import com.github.skystardust.InputMethodBlocker.InputMethodBlocker;
 import cn.stars.addons.optimization.util.FastTrig;
 import cn.stars.reversal.event.impl.*;
@@ -49,7 +50,7 @@ public class ResidentProcessor {
 
     public void onGuiClosed(GUIClosedEvent event) {
         // Fix text field cursor problems
-        GLFW.glfwSetCursor(Display.getWindow(), MemoryUtil.NULL);
+        GLFW.glfwSetCursor(RainyAPI.window, MemoryUtil.NULL);
     }
 
     public void onRender2D(Render2DEvent event) {

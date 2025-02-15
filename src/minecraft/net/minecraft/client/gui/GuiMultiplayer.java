@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.ui.atmoic.Atomic;
+import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;

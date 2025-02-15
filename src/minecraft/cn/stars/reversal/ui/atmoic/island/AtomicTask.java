@@ -1,4 +1,4 @@
-package cn.stars.reversal.ui.atmoic;
+package cn.stars.reversal.ui.atmoic.island;
 
 import lombok.Getter;
 

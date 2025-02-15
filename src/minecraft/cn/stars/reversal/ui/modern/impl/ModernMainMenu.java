@@ -4,7 +4,8 @@ import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.ui.atmoic.Atomic;
+import cn.stars.reversal.ui.atmoic.island.Atomic;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.gui.GuiMicrosoftLoginPending;
 import cn.stars.reversal.ui.modern.MenuButton;
@@ -45,7 +46,7 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
     private final ColorAnimation colorAnimation = new ColorAnimation(new Color(220,220,220,220), new Color(120,120,120,220), 2000);
     private String title = "";
 
-    private TextButton singlePlayerButton, multiPlayerButton, settingsButton, viaVersionButton, exitButton, cbButton, updateLogButton, loginButton;
+    private TextButton singlePlayerButton, multiPlayerButton, settingsButton, viaVersionButton, exitButton, cbButton, updateLogButton, loginButton, atomicButton;
     private TextButton[] buttons;
     private boolean showUpdateLog = false;
     private final ArrayList<String> updateLog = new ArrayList<>();
@@ -165,6 +166,8 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
                 "多人游戏", "b", true, 9, 40, 11);
         this.viaVersionButton = new TextButton(45, this.height / 6f + 170, 120, 35, () -> mc.displayGuiScreen(new ModernViaMenu(this)),
                 "跨版本", "d", true, 10, 44, 11);
+        this.atomicButton = new TextButton(45, this.height / 6f + 215, 120, 35, () -> mc.displayGuiScreen(Reversal.atomicMenu),
+                "AtomicGui", "", true, 10, 30, 11);
         this.loginButton = new TextButton(this.width - 60, this.height - 190, 35, 35, () -> mc.displayGuiScreen(new GuiMicrosoftLoginPending(this)),
                 "", "9", true, 9, 50, 11);
         this.settingsButton = new TextButton(this.width - 60, this.height - 145, 35, 35, () -> mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings)),
@@ -178,7 +181,7 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
                 "", "f", true, 9, 0, 11);
 
         // 简化MouseClicked方法
-        this.buttons = new TextButton[] {this.singlePlayerButton, this.multiPlayerButton, this.settingsButton, this.viaVersionButton, this.exitButton, this.cbButton, this.updateLogButton, this.loginButton} ;
+        this.buttons = new TextButton[] {this.singlePlayerButton, this.multiPlayerButton, this.settingsButton, this.viaVersionButton, this.exitButton, this.cbButton, this.updateLogButton, this.loginButton, this.atomicButton} ;
     }
 
     @Override

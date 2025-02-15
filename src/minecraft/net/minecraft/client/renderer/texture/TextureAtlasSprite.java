@@ -233,7 +233,9 @@ public class TextureAtlasSprite
 
                 if (i != k && k >= 0 && k < this.framesTextureData.size())
                 {
-                    TextureUtil.uploadTextureMipmap(this.framesTextureData.get(k), this.width, this.height, this.originX, this.originY, flag, flag1);
+                    synchronized (SplashScreen.renderLock) {
+                        TextureUtil.uploadTextureMipmap(this.framesTextureData.get(k), this.width, this.height, this.originX, this.originY, flag, flag1);
+                    }
                 }
             }
             else if (this.animationMetadata.isInterpolate())

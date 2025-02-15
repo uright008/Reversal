@@ -18,6 +18,7 @@ import cn.stars.reversal.module.impl.movement.*;
 import cn.stars.reversal.module.impl.addons.*;
 import cn.stars.reversal.module.impl.world.*;
 import cn.stars.reversal.music.MusicManager;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.clickgui.modern.MMTClickGUI;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.ui.notification.NotificationManager;
@@ -58,7 +59,7 @@ public class Reversal {
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "alpha.02";
+    public static final String BUILD_VERSION = "alpha.03";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -74,6 +75,7 @@ public class Reversal {
 
     public static ModernClickGUI modernClickGUI;
     public static MMTClickGUI mmtClickGUI;
+    public static AtomicMenu atomicMenu;
 
     public static GuiTheme guiTheme;
     public static CreativeTabs creativeTab;
@@ -155,6 +157,7 @@ public class Reversal {
             guiTheme = new GuiTheme();
             modernClickGUI = new ModernClickGUI();
             mmtClickGUI = new MMTClickGUI();
+            atomicMenu = new AtomicMenu();
 
             creativeTab = new ReversalTab();
 
@@ -296,6 +299,7 @@ public class Reversal {
             new SessionInfo(),
             new TargetHud(),
             new TextGui(),
+            new TestElement(),
             // Client
             new ClientSettings(),
             new PostProcessing(),

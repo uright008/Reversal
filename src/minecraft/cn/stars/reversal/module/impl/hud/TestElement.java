@@ -2,9 +2,11 @@ package cn.stars.reversal.module.impl.hud;
 
 import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.event.impl.Shader3DEvent;
+import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.render.ColorUtils;
@@ -33,25 +35,13 @@ public class TestElement extends Module {
     public void onShader3D(Shader3DEvent event) {
         int x = getX() + 2;
         int y = getY() + 2;
-        RoundedUtil.drawGradientRound(x, y, 124, 84, 4,
-                ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 1000, new Color(0, 200, 200, 255), Color.BLACK, true),
-                ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 2000, new Color(0, 200, 200, 255), Color.BLACK, true),
-                ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 4000, new Color(0, 200, 200, 255), Color.BLACK, true),
-                ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 3000, new Color(0, 200, 200, 255), Color.BLACK, true));
-        RoundedUtil.drawRound(x + 1, y + 1, 122, 82, 4, new Color(0,0,0, 200));
     }
 
     @Override
     public void onRender2D(Render2DEvent event) {
         int x = getX() + 2;
         int y = getY() + 2;
-        RoundedUtil.drawGradientRound(x, y, 124, 84, 4,
-                ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 1000, new Color(0, 200, 200, 255), Color.BLACK, true),
-                ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 2000, new Color(0, 200, 200, 255), Color.BLACK, true),
-                ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 4000, new Color(0, 200, 200, 255), Color.BLACK, true),
-                ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 3000, new Color(0, 200, 200, 255), Color.BLACK, true));
-        RoundedUtil.drawRound(x + 1, y + 1, 122, 82, 4, new Color(0,0,0, 200));
-
+        FontManager.getPSM(32).drawString("Test", x, y, new Color(255,255,255,255).getRGB());
     }
 
     @Override

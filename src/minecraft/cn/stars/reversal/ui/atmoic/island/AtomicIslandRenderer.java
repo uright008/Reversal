@@ -1,16 +1,12 @@
-package cn.stars.reversal.ui.atmoic;
+package cn.stars.reversal.ui.atmoic.island;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
-import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.hud.AtomicIsland;
 import cn.stars.reversal.music.api.player.MusicPlayer;
-import cn.stars.reversal.ui.gui.GuiMicrosoftLoginPending;
-import cn.stars.reversal.ui.gui.GuiReversalSettings;
-import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.math.TimeUtil;
@@ -20,10 +16,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;

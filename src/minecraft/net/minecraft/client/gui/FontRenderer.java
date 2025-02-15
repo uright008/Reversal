@@ -1018,4 +1018,9 @@ public class FontRenderer implements IResourceManagerReloadListener
         final float width = this.getStringWidth(text) / 2.0f;
         this.drawString(text, x - width, y, color, true);
     }
+
+    public void drawCenteredString(final String text, final float x, final float y, final int color) {
+        final float width = this.getStringWidth(text) / 2.0f;
+        this.drawString(text, x - width, y, color, false);
+    }
 }

@@ -105,8 +105,9 @@ public class VideoUtil {
                 ++ticks;
                 nullTickTimer.reset();
             } else {
-                if (nullTickTimer.hasReached(1000L)) {
-                    ReversalLogger.warn("[VideoPlayer] Frame remains null for more than 1s! This should not happen. Resetting progress.");
+                if (nullTickTimer.hasReached(500L)) {
+                    ReversalLogger.warn("[VideoPlayer] Frame remains null for more than 0.5s! This should not happen. Resetting progress.");
+                    ReversalLogger.warn("[VideoPlayer] Stats: {tick:" + ticks + ", frameNumber:" + frameGrabber.getFrameNumber() + " , totalFrames:" + fLength + "}");
                     time = System.currentTimeMillis();
                     ticks = 0;
                     frameGrabber.setFrameNumber(0);
@@ -134,8 +135,8 @@ public class VideoUtil {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-            GlUtils.startAntiAtlas();
-            GlUtils.doAntiAtlas();
+            GlUtils.startAntiAlias();
+            GlUtils.doAntiAlias();
 
             GL11.glDepthMask(false);
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -153,7 +154,7 @@ public class VideoUtil {
             GL11.glEnd();
 
             // 关闭
-            GlUtils.stopAntiAtlas();
+            GlUtils.stopAntiAlias();
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glDepthMask(true);
             GL11.glPopMatrix();

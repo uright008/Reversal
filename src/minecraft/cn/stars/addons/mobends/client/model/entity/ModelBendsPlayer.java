@@ -310,36 +310,36 @@ public class ModelBendsPlayer extends ModelPlayer
             }
             else {
                 if (Data_Player.get(argEntity.getEntityId()).motion.x == 0.0f & Data_Player.get(argEntity.getEntityId()).motion.z == 0.0f) {
-                    animatedEntity.get("stand").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
+                    animatedEntity.get("stand").animate((EntityLivingBase)argEntity, this, Data_Player.get(argEntity.getEntityId()));
                     BendsPack.animate(this, "player", "stand");
                 }
                 else if (argEntity.isSprinting()) {
-                    animatedEntity.get("sprint").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
+                    animatedEntity.get("sprint").animate((EntityLivingBase)argEntity, this, Data_Player.get(argEntity.getEntityId()));
                     BendsPack.animate(this, "player", "sprint");
                 }
                 else {
-                    animatedEntity.get("walk").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
+                    animatedEntity.get("walk").animate((EntityLivingBase)argEntity, this, Data_Player.get(argEntity.getEntityId()));
                     BendsPack.animate(this, "player", "walk");
                 }
                 if (argEntity.isSneaking()) {
-                    animatedEntity.get("sneak").animate((EntityLivingBase)argEntity, (ModelBase)this, (EntityData)Data_Player.get(argEntity.getEntityId()));
+                    animatedEntity.get("sneak").animate((EntityLivingBase)argEntity, this, Data_Player.get(argEntity.getEntityId()));
                     BendsPack.animate(this, "player", "sneak");
                 }
             }
             if (!((EntityPlayer) argEntity).capabilities.isFlying && !argEntity.isInWater()) {
                 if (this.aimedBow) {
-                    animatedEntity.get("bow").animate((EntityLivingBase) argEntity, (ModelBase) this, (EntityData) Data_Player.get(argEntity.getEntityId()));
+                    animatedEntity.get("bow").animate((EntityLivingBase) argEntity, this, Data_Player.get(argEntity.getEntityId()));
                     BendsPack.animate(this, "player", "bow");
                 } else {
                     final ItemStack currentItem = ((EntityPlayer) argEntity).getCurrentEquippedItem();
                     if (currentItem != null && !(currentItem.getItem() instanceof ItemAxe) && !(currentItem.getItem() instanceof ItemSword)) {
-                        animatedEntity.get("mining").animate((EntityLivingBase) argEntity, (ModelBase) this, (EntityData) Data_Player.get(argEntity.getEntityId()));
+                        animatedEntity.get("mining").animate((EntityLivingBase) argEntity, this, Data_Player.get(argEntity.getEntityId()));
                         BendsPack.animate(this, "player", "mining");
                     } else if (currentItem != null && currentItem.getItem() instanceof ItemAxe) {
-                        animatedEntity.get("axe").animate((EntityLivingBase) argEntity, (ModelBase) this, (EntityData) Data_Player.get(argEntity.getEntityId()));
+                        animatedEntity.get("axe").animate((EntityLivingBase) argEntity, this, Data_Player.get(argEntity.getEntityId()));
                         BendsPack.animate(this, "player", "axe");
                     } else {
-                        animatedEntity.get("attack").animate((EntityLivingBase) argEntity, (ModelBase) this, (EntityData) Data_Player.get(argEntity.getEntityId()));
+                        animatedEntity.get("attack").animate((EntityLivingBase) argEntity, this, Data_Player.get(argEntity.getEntityId()));
                     }
                 }
             }

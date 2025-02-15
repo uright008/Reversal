@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.ui.atmoic.Atomic;
+import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.animation.rise.Animation;

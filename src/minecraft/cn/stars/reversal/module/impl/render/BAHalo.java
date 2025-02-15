@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
@@ -97,13 +96,13 @@ public class BAHalo extends Module {
         GlStateManager.enableBlend();
         GlStateManager.disableCull();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlUtils.startAntiAtlas();
-        GlUtils.doAntiAtlas();
+        GlUtils.startAntiAlias();
+        GlUtils.doAntiAlias();
 
         drawBoundTexture(radius);
         if (lighting.isEnabled()) drawLightTexture(radius);
 
-        GlUtils.stopAntiAtlas();
+        GlUtils.stopAntiAlias();
         GlStateManager.disableBlend();
         GlStateManager.enableDepth();
         GlStateManager.enableCull();
@@ -136,13 +135,13 @@ public class BAHalo extends Module {
         GlStateManager.enableBlend();
         GlStateManager.disableCull();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlUtils.startAntiAtlas();
-        GlUtils.doAntiAtlas();
+        GlUtils.startAntiAlias();
+        GlUtils.doAntiAlias();
 
         drawBoundTexture(radius);
         if (lighting.isEnabled()) drawLightTexture(radius);
 
-        GlUtils.stopAntiAtlas();
+        GlUtils.stopAntiAlias();
         GlStateManager.disableBlend();
         GlStateManager.enableDepth();
         GlStateManager.enableCull();

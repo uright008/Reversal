@@ -304,7 +304,7 @@ public class ModernFontRenderer extends MFont {
     }
 
     public int drawStringWithShadow(final String text, final double x, final double y, final int color) {
-        drawString(text, x + 0.25, y + 0.25, color, true);
+        drawString(text, x + 1, y + 1, new Color(50,50,50,50).getRGB(), false);
         return drawString(text, x, y, color, false);
     }
 

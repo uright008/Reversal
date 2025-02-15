@@ -57,7 +57,7 @@ public class Scoreboard extends Module {
             maxStringWidth = Math.max(maxStringWidth, fontWidth(playerScoreString));
         }
 
-        if (modernFont.enabled) maxStringWidth /= 2;
+        if (modernFont.enabled) maxStringWidth /= 1.8f;
 
         float scoreboardHeight = scoreCollection.size() * fontHeight();
         float scoreboardStartY = getY() + scoreboardHeight + 8;
@@ -107,7 +107,7 @@ public class Scoreboard extends Module {
             {
                 String objectiveDisplayName = scoreObjective.getDisplayName();
                 NORMAL_RENDER_RUNNABLES.add(() -> {
-                    drawString(objectiveDisplayName, scoreboardStartX + finalMaxStringWidth / 2f - fontWidth(objectiveDisplayName) / 2f + extraWidth, currentLineY - fontHeight(), Color.WHITE.getRGB());
+                    drawString(objectiveDisplayName, scoreboardStartX + finalMaxStringWidth / 2f - fontWidth(objectiveDisplayName) / 2f + extraWidth, currentLineY - fontHeight() + (modernFont.enabled ? 2 : 0), Color.WHITE.getRGB());
                 });
             }
 

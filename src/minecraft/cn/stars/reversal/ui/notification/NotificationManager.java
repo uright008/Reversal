@@ -2,13 +2,11 @@ package cn.stars.reversal.ui.notification;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.font.MFont;
-import cn.stars.reversal.ui.atmoic.Atomic;
+import cn.stars.reversal.ui.atmoic.island.Atomic;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.apache.commons.lang3.StringUtils;
 
-import java.awt.*;
 import java.util.ArrayDeque;
 import java.util.ConcurrentModificationException;
 import java.util.Deque;

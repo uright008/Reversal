@@ -440,13 +440,12 @@ public abstract class GuiSlot {
             }
 
             if (this.showSelectionBox && this.isSelected(itemIndex)) {
-                animation.run(itemTopY);
                 int selectionBoxLeftX = this.left + (this.width / 2 - this.getListWidth() / 2);
                 int selectionBoxWidth = this.getListWidth();
-                RenderUtil.roundedRectangle(selectionBoxLeftX, animation.getValue() - 2, selectionBoxWidth, itemHeight + 4, 2f, new Color(20, 20, 20, 100));
-                RenderUtil.roundedOutlineRectangle(selectionBoxLeftX, animation.getValue() - 2, selectionBoxWidth, itemHeight + 4, 2f, 1f, new Color(220, 220, 220, 240));
+                RenderUtil.roundedRectangle(selectionBoxLeftX, itemTopY - 2, selectionBoxWidth, itemHeight + 4, 2f, new Color(20, 20, 20, 100));
+                RenderUtil.roundedOutlineRectangle(selectionBoxLeftX, itemTopY - 2, selectionBoxWidth, itemHeight + 4, 2f, 1f, new Color(220, 220, 220, 240));
 
-                FontManager.getCheck(24).drawString("o", selectionBoxLeftX + selectionBoxWidth - 20, animation.getValue() + itemHeight / 2f - 4, new Color(220, 220, 220, 240).getRGB());
+                FontManager.getCheck(24).drawString("o", selectionBoxLeftX + selectionBoxWidth - 20, itemTopY + itemHeight / 2f - 4, new Color(220, 220, 220, 240).getRGB());
             }
 
             if (!(this instanceof GuiResourcePackList) || itemTopY >= this.top - this.slotHeight && itemTopY <= this.bottom) {

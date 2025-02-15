@@ -36,8 +36,8 @@ public class Hotbar extends Module {
 
     @Override
     public void onRender2D(Render2DEvent event) {
-        if (this.mc.getRenderViewEntity() instanceof EntityPlayer) {
-            entityplayer = (EntityPlayer) this.mc.getRenderViewEntity();
+        if (mc.getRenderViewEntity() instanceof EntityPlayer) {
+            entityplayer = (EntityPlayer) mc.getRenderViewEntity();
             sr = event.getScaledResolution();
             animation.run(entityplayer.inventory.currentItem * 20);
             if (!mode.getMode().equals("Vanilla")) renderModernTooltip(sr, event.getPartialTicks());
@@ -46,7 +46,7 @@ public class Hotbar extends Module {
 
     @Override
     public void onShader3D(Shader3DEvent event) {
-        if (mode.getMode().equals("Modern") && this.mc.getRenderViewEntity() instanceof EntityPlayer) {
+        if (mode.getMode().equals("Modern") && mc.getRenderViewEntity() instanceof EntityPlayer) {
             int x = sr.getScaledWidth() / 2;
             RenderUtil.roundedRectangle(x - 91, sr.getScaledHeight() - 22, 182, 25, 2, Color.BLACK);
             RenderUtil.roundedRectangle(x - 91 + animation.getValue(), sr.getScaledHeight() - 22, 22, 22, 3, Color.BLACK);
@@ -62,7 +62,7 @@ public class Hotbar extends Module {
     public void renderMinecraftTooltip(ScaledResolution sr, float partialTicks) {
         if (entityplayer == null) return;
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(widgetsTexPath);
+        mc.getTextureManager().bindTexture(widgetsTexPath);
         int x = sr.getScaledWidth() / 2;
         float f = Gui.zLevel;
         Gui.zLevel = -90.0F;

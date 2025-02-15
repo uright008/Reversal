@@ -1,4 +1,4 @@
-package cn.stars.reversal.ui.atmoic;
+package cn.stars.reversal.ui.atmoic.island;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.FontManager;
@@ -9,8 +9,6 @@ import lombok.Setter;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * 原子

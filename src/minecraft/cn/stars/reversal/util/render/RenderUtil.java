@@ -456,6 +456,68 @@ public final class RenderUtil implements GameInstance {
         GL11.glColor3d(255, 255, 255);
     }
 
+    public static void drawParallelogram(double x, double y, double width, double height, final double skew, final boolean filled, final Color color) {
+        start();
+
+        if (filled) {
+            x += 0.2;
+            y += 0.2;
+            width -= 0.4;
+            height -= 0.4;
+            // Draw filled shape
+            if (color != null)
+                color(color);
+
+            begin(GL11.GL_TRIANGLE_FAN);
+            vertex(x, y);
+            vertex(x + width, y);
+            vertex(x + width + skew, y + height);
+            vertex(x + skew, y + height);
+            end();
+
+            // Draw smooth outline with slightly darker color
+            Color outlineColor = new Color(
+                    Math.max(0, color.getRed() - 15),
+                    Math.max(0, color.getGreen() - 15),
+                    Math.max(0, color.getBlue() - 15),
+                    color.getAlpha()
+            );
+            color(outlineColor);
+
+            GL11.glEnable(GL11.GL_LINE_SMOOTH);
+            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+            GL11.glLineWidth(1.0f);
+
+            begin(GL11.GL_LINE_LOOP);
+            vertex(x, y);
+            vertex(x + width, y);
+            vertex(x + width + skew, y + height);
+            vertex(x + skew, y + height);
+            end();
+
+            GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        } else {
+            // Draw non-filled shape with smooth lines
+            if (color != null)
+                color(color);
+
+            GL11.glEnable(GL11.GL_LINE_SMOOTH);
+            GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+            GL11.glLineWidth(1.5f);
+
+            begin(GL11.GL_LINE_LOOP);
+            vertex(x, y);
+            vertex(x + width, y);
+            vertex(x + width + skew, y + height);
+            vertex(x + skew, y + height);
+            end();
+
+            GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        }
+
+        stop();
+    }
+
     public static void rect(final double x, final double y, final double width, final double height, final boolean filled, final Color color) {
         start();
         if (color != null)
@@ -802,17 +864,12 @@ public final class RenderUtil implements GameInstance {
     }
 
     public void image(final ResourceLocation imageLocation, final float x, final float y, final float width, final float height) {
-        // 平滑线条
-        GlUtils.startAntiAtlas();
-        GlUtils.doAntiAtlas();
         enable(GL11.GL_BLEND);
-        GlStateManager.disableAlpha();
-        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
         mc.getTextureManager().bindTexture(imageLocation);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
-        GlStateManager.enableAlpha();
         disable(GL11.GL_BLEND);
-        GlUtils.stopAntiAtlas();
     }
 
     public static void image(DynamicTexture image, float x, float y, float imgWidth, float imgHeight) {
@@ -835,7 +892,7 @@ public final class RenderUtil implements GameInstance {
     }
 
     public static void image(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight, Color color) {
-        color(color);
+        glColor(color);
         image(resourceLocation, x, y, imgWidth, imgHeight);
         resetColor();
     }
@@ -856,7 +913,7 @@ public final class RenderUtil implements GameInstance {
         GL11.glShadeModel(7424);
     }
 
-    public void imageWithAlpha(final ResourceLocation imageLocation, final float x, final float y, final float width, final float height, float alpha) {
+    public void image(final ResourceLocation imageLocation, final float x, final float y, final float width, final float height, float alpha) {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         enable(GL11.GL_BLEND);

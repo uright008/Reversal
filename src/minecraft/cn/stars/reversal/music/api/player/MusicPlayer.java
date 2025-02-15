@@ -6,7 +6,7 @@ import cn.stars.reversal.module.impl.hud.MusicVisualizer;
 import cn.stars.reversal.music.api.base.LyricLine;
 import cn.stars.reversal.music.api.base.Music;
 import cn.stars.reversal.music.thread.ChangeMusicThread;
-import cn.stars.reversal.ui.atmoic.Atomic;
+import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;

@@ -2,7 +2,7 @@ package net.minecraft.client;
 
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.module.impl.client.ClientSettings;
-import cn.stars.reversal.ui.atmoic.Atomic;
+import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import net.minecraft.client.gui.Gui;

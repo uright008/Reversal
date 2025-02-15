@@ -58,6 +58,7 @@ public class FontManager {
     private static final HashMap<Integer, ModernFontRenderer> CHECK = new HashMap<>();
     private static final HashMap<Integer, ModernFontRenderer> EAVES = new HashMap<>();
     private static final HashMap<Integer, ModernFontRenderer> CUR = new HashMap<>();
+    private static final HashMap<Integer, ModernFontRenderer> ATOMIC = new HashMap<>();
 
     // COPY THIS METHOD FOR EACH METHOD AND REPLACE FONTNAME WITH THE USED FONT FILE NAME
     public static MFont getMontserratMedium(final int size) {
@@ -86,6 +87,10 @@ public class FontManager {
 
     public static MFont getCur(int size) {
         return get(CUR,  size, "curiosity", true, true);
+    }
+
+    public static MFont getAtomic(int size) {
+        return get(ATOMIC,  size, "atomic", true, true);
     }
 
     public static MFont getRobotoLight(final int size) {
