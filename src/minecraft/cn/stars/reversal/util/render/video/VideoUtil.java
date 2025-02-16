@@ -50,7 +50,7 @@ public class VideoUtil {
         RenderUtil.setBuffer((ByteBuffer)frame.image[0], frame.imageWidth, frame.imageHeight);
 
         time = System.currentTimeMillis();
-        ++ticks;
+    //    ++ticks;
         startPlaybackThread();
     }
 
