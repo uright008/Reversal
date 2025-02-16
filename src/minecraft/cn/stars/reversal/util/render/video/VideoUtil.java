@@ -50,7 +50,7 @@ public class VideoUtil {
         RenderUtil.setBuffer((ByteBuffer)frame.image[0], frame.imageWidth, frame.imageHeight);
 
         time = System.currentTimeMillis();
-    //    ++ticks;
+        ticks++;
         startPlaybackThread();
     }
 
@@ -84,6 +84,7 @@ public class VideoUtil {
                 }
                 catch (Exception e) {
                     ReversalLogger.error("[VideoPlayer] Error:", e);
+                    ticks++;
                 }
                 this.interrupt();
             }
@@ -102,11 +103,11 @@ public class VideoUtil {
             if (frame != null && frame.image != null) {
                 RenderUtil.setBuffer((ByteBuffer)frame.image[0], frame.imageWidth, frame.imageHeight);
                 time = System.currentTimeMillis();
-                ++ticks;
+                ticks++;
                 nullTickTimer.reset();
             } else {
-                if (nullTickTimer.hasReached(500L)) {
-                    ReversalLogger.warn("[VideoPlayer] Frame remains null for more than 0.5s! This should not happen. Resetting progress.");
+                if (nullTickTimer.hasReached(100L)) {
+                    ReversalLogger.warn("[VideoPlayer] Frame remains null for more than 0.1s! This should not happen. Resetting progress.");
                     ReversalLogger.warn("[VideoPlayer] Stats: {tick:" + ticks + ", frameNumber:" + frameGrabber.getFrameNumber() + " , totalFrames:" + fLength + "}");
                     time = System.currentTimeMillis();
                     ticks = 0;
