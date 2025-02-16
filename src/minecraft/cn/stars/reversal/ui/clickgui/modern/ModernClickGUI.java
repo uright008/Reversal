@@ -11,17 +11,17 @@ import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.modern.TextField;
+import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
+import cn.stars.reversal.util.animation.rise.Animation;
+import cn.stars.reversal.util.animation.rise.Easing;
+import cn.stars.reversal.util.math.TimeUtil;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.*;
 import cn.stars.reversal.value.Value;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
-import cn.stars.reversal.util.animation.rise.Animation;
-import cn.stars.reversal.util.animation.rise.Easing;
-import cn.stars.reversal.util.math.TimeUtil;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -39,20 +39,34 @@ import java.util.ArrayList;
 import static cn.stars.reversal.GameInstance.*;
 
 public class ModernClickGUI extends GuiScreen {
-    public Color backgroundColor = new Color(20,20,20,255);
+    private static float scrollAmount;
+    private final MFont psm30 = FontManager.getPSM(30);
+    private final MFont psr18 = FontManager.getPSR(18);
+    private final MFont cur26 = FontManager.getCur(26);
+    private final MFont psm20 = FontManager.getPSM(20);
+    private final MFont psm24 = FontManager.getPSM(24);
+    private final MFont icon16 = FontManager.getIcon(16);
+    private final MFont icon20 = FontManager.getIcon(20);
+    public Color backgroundColor = new Color(20, 20, 20, 255);
+    private final TextField searchField = new TextField(150, 15, GameInstance.regular16, backgroundColor, new Color(100, 100, 100, 100));
     public Animation scaleAnimation = new Animation(Easing.EASE_IN_OUT_QUAD, 300);
-    private Animation sideAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
     ScaledResolution sr;
     Category selectedCategory = Category.COMBAT;
-    private static float scrollAmount;
     Module firstModule;
     float lastModuleY;
     NumberValue selectedSlider;
     boolean hasEditedSliders = false;
     TimeUtil timer = new TimeUtil();
     float wheel = Mouse.getDWheel();
+    private final Animation sideAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
     private cn.stars.reversal.util.animation.advanced.Animation windowAnim;
-    private final TextField searchField = new TextField(150, 15, GameInstance.regular16, backgroundColor, new Color(100,100,100,100));
+
+    private static double round(final double value, final float places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        final double precision = 1 / places;
+        return Math.round(value * precision) / precision;
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -69,24 +83,24 @@ public class ModernClickGUI extends GuiScreen {
         int x = width / 2 - 260;
         int y = height / 2 - 180;
 
-    //    GlUtils.startScale(x, y, (float) scaleAnimation.getValue());
+        //    GlUtils.startScale(x, y, (float) scaleAnimation.getValue());
         RenderUtil.scaleStart(x + 260, y + 180, (float) scaleAnimation.getValue());
 
         // Background
         if (ModuleInstance.getModule(PostProcessing.class).blur.enabled && scaleAnimation.isFinished()) {
             MODERN_BLUR_RUNNABLES.add(() -> {
-            //    RenderUtil.roundedRectangle(x, y, 520, 320, 2, Color.BLACK);
+                //    RenderUtil.roundedRectangle(x, y, 520, 320, 2, Color.BLACK);
             });
         }
         RoundedUtil.drawRound(x, y, 520, 360, 5, backgroundColor);
 
         // Client Name
-        psm30.drawString("★ REVERSAL", x + 8, y + 12, new Color(200,200,200,250).getRGB());
-        psr16.drawString(Reversal.VERSION, x + 82, y + 25, new Color(200,200,200,200).getRGB());
+        psm30.drawString("★ REVERSAL", x + 8, y + 12, new Color(200, 200, 200, 250).getRGB());
+        psr16.drawString(Reversal.VERSION, x + 82, y + 25, new Color(200, 200, 200, 200).getRGB());
 
         // Line
-        RenderUtil.rectangle(x + 115, y, 0.8, 360, new Color(100,100,100,100));
-    //    RenderUtil.rectangle(x + 5, y + 62, 105, 0.7, new Color(100,100,100,100));
+        RenderUtil.rectangle(x + 115, y, 0.8, 360, new Color(100, 100, 100, 100));
+        //    RenderUtil.rectangle(x + 5, y + 62, 105, 0.7, new Color(100,100,100,100));
 
         // Shadow
         if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled && scaleAnimation.isFinished()) {
@@ -96,14 +110,14 @@ public class ModernClickGUI extends GuiScreen {
         }
 
         // Category
-        psm16.drawString("CATEGORIES", x + 3, y + 40, new Color(200,200,200,200).getRGB());
+        psm16.drawString("CATEGORIES", x + 3, y + 40, new Color(200, 200, 200, 200).getRGB());
         int renderSelectY = y + 50;
         for (final Category category : Category.values()) {
             if (category == selectedCategory) {
                 sideAnimation.run(renderSelectY);
                 RoundedUtil.drawRound(x + 5, (float) sideAnimation.getValue() + 1, 100, 18, 5, ColorUtil.withAlpha(ThemeUtil.getThemeColor(ThemeType.FLAT_COLOR), 100));
-                cur26.drawString(getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(200,200,200, 240).getRGB());
-                psm20.drawString(StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(240,240,240, 240).getRGB());
+                cur26.drawString(getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(200, 200, 200, 240).getRGB());
+                psm20.drawString(StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(240, 240, 240, 240).getRGB());
             } else {
                 if (RenderUtil.isHovered(x + 5, renderSelectY, 100, 20, mouseX, mouseY)) {
                     category.alphaAnimation.run(80);
@@ -111,9 +125,9 @@ public class ModernClickGUI extends GuiScreen {
                 } else {
                     category.alphaAnimation.run(0);
                 }
-                RoundedUtil.drawRound(x + 5, renderSelectY + 1, 100, 18, 5, new Color(50,50,50,(int)category.alphaAnimation.getValue()));
+                RoundedUtil.drawRound(x + 5, renderSelectY + 1, 100, 18, 5, new Color(50, 50, 50, (int) category.alphaAnimation.getValue()));
                 cur26.drawString(getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(160, 160, 160, 200).getRGB());
-                psm20.drawString(StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(200,200,200, 200).getRGB());
+                psm20.drawString(StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(200, 200, 200, 200).getRGB());
             }
             renderSelectY += 25;
         }
@@ -238,15 +252,15 @@ public class ModernClickGUI extends GuiScreen {
                 RenderUtil.roundedOutlineRectangle(m.guiX + 340 - psr16.width(Keyboard.getKeyName(m.getKeyBind())), m.yAnimation.getValue() + 9,
                         4.5 + psr16.width(Keyboard.getKeyName(m.getKeyBind())), 12, 2, 0.7, new Color(160, 160, 160, 160));
                 psr16.drawString(Keyboard.getKeyName(m.getKeyBind()), m.guiX + 342 - psr16.width(Keyboard.getKeyName(m.getKeyBind())),
-                        m.yAnimation.getValue() + 12.5, new Color(160,160,160,160).getRGB());
+                        m.yAnimation.getValue() + 12.5, new Color(160, 160, 160, 160).getRGB());
 
                 if (!m.getSettings().isEmpty()) {
                     icon20.drawString(m.expanded ? "h" : "i", m.guiX + 375, m.yAnimation.getValue() + 14, new Color(160, 160, 160, 160).getRGB());
                 }
 
-            //    RenderUtil.roundedRectangle(m.guiX - 0.5, m.yAnimation.getValue() + 10, 1, 10, 1, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
-                RenderUtil.roundedRectangle(m.guiX, m.yAnimation.getValue(), 390, m.sizeAnimation.getValue() - 5, 3, new Color(80,80,80, (int) (40 + m.alphaAnimation.getValue())));
-                RenderUtil.roundedRectangle(m.guiX + 8, m.yAnimation.getValue() + 12, 6, 6, 3, m.isEnabled() ? new Color(50,255,50, 220) : new Color(160, 160, 160, 200));
+                //    RenderUtil.roundedRectangle(m.guiX - 0.5, m.yAnimation.getValue() + 10, 1, 10, 1, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                RenderUtil.roundedRectangle(m.guiX, m.yAnimation.getValue(), 390, m.sizeAnimation.getValue() - 5, 3, new Color(80, 80, 80, (int) (40 + m.alphaAnimation.getValue())));
+                RenderUtil.roundedRectangle(m.guiX + 8, m.yAnimation.getValue() + 12, 6, 6, 3, m.isEnabled() ? new Color(50, 255, 50, 220) : new Color(160, 160, 160, 200));
 
                 settingY = moduleY + m.sizeInGui;
                 moduleY += m.sizeInGui;
@@ -256,15 +270,15 @@ public class ModernClickGUI extends GuiScreen {
 
         RenderUtil.scissor(x, y, 520, 360);
         RenderUtil.rect(x + 120, y - 1, 398, 30, backgroundColor);
-        String titleText = searchField.text.isEmpty() ? StringUtils.capitalize(selectedCategory.name().toLowerCase()) : "\"" + psm20.trimStringToWidth(searchField.text, 160, false,true) + "\"";
-        psm20.drawString(titleText, x + 125, y + 10, new Color(200,200,200,240).getRGB());
-        icon16.drawString("i", x + 126 + psm24.width(titleText), y + 13, new Color(200,200,200,240).getRGB());
-        RenderUtil.rectangle(x + 116, y + 25, 404, 0.8, new Color(100,100,100,100));
+        String titleText = searchField.text.isEmpty() ? StringUtils.capitalize(selectedCategory.name().toLowerCase()) : "\"" + psm20.trimStringToWidth(searchField.text, 160, false, true) + "\"";
+        psm20.drawString(titleText, x + 125, y + 10, new Color(200, 200, 200, 240).getRGB());
+        icon16.drawString("i", x + 126 + psm24.width(titleText), y + 13, new Color(200, 200, 200, 240).getRGB());
+        RenderUtil.rectangle(x + 116, y + 25, 404, 0.8, new Color(100, 100, 100, 100));
         searchField.draw(x + 360, y + 5, mouseX, mouseY);
 
         RenderUtil.renderPlayerModelTexture(x + 6, y + 334, 3, 3, 3, 3, 20, 20, 24, 24, mc.thePlayer);
-        psr16.drawString(mc.session.getUsername(), x + 30, y + 337, new Color(200,200,200,240).getRGB());
-        psr16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")), x + 30, y + 347, new Color(200,200,200,200).getRGB());
+        psr16.drawString(mc.session.getUsername(), x + 30, y + 337, new Color(200, 200, 200, 240).getRGB());
+        psr16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")), x + 30, y + 347, new Color(200, 200, 200, 200).getRGB());
 
         if (timer.hasReached(10)) {
             timer.reset();
@@ -304,7 +318,7 @@ public class ModernClickGUI extends GuiScreen {
 
         GlStateManager.popMatrix();
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
-    //    GlUtils.stopScale();
+        //    GlUtils.stopScale();
 
         RenderUtil.scaleEnd();
 
@@ -360,8 +374,7 @@ public class ModernClickGUI extends GuiScreen {
                     if (m.guiY + psm24.height() < y || m.guiY + psm24.height() > y + 360) return;
                     if (mouseButton == 0) {
                         m.toggleModule();
-                    }
-                    else if (mouseButton == 1) m.expanded = !m.expanded;
+                    } else if (mouseButton == 1) m.expanded = !m.expanded;
                 }
                 for (final Value setting : m.getSettings()) {
                     if (m.expanded) {
@@ -489,13 +502,6 @@ public class ModernClickGUI extends GuiScreen {
         selectedSlider = null;
     }
 
-    private static double round(final double value, final float places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        final double precision = 1 / places;
-        return Math.round(value * precision) / precision;
-    }
-
     public boolean canUseChinese(Module module) {
         if (ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled()) {
             return !module.getModuleInfo().chineseDescription().isEmpty() && !module.getModuleInfo().chineseName().isEmpty();
@@ -517,12 +523,4 @@ public class ModernClickGUI extends GuiScreen {
 
         return relevantModules;
     }
-    
-    private final MFont psm30 = FontManager.getPSM(30);
-    private final MFont psr18 = FontManager.getPSR(18);
-    private final MFont cur26 = FontManager.getCur(26);
-    private final MFont psm20 = FontManager.getPSM(20);
-    private final MFont psm24 = FontManager.getPSM(24);
-    private final MFont icon16 = FontManager.getIcon(16);
-    private final MFont icon20 = FontManager.getIcon(20);
 }

@@ -1,7 +1,6 @@
 package cn.stars.reversal.ui.atmoic.mainmenu;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.impl.client.PostProcessing;
@@ -11,7 +10,6 @@ import cn.stars.reversal.ui.atmoic.mainmenu.menus.MultiPlayerGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.menus.SettingsGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.menus.SinglePlayerGui;
 import cn.stars.reversal.ui.notification.NotificationManager;
-import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -28,7 +26,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class AtomicMenu extends GuiScreen implements GameInstance {
     public static ArrayList<AtomicGui> atomicGuis = new ArrayList<>();

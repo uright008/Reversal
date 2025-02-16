@@ -5,7 +5,6 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
-import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.gui.GuiMicrosoftLoginPending;
 import cn.stars.reversal.ui.modern.MenuButton;
