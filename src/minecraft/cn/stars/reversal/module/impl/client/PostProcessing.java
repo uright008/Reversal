@@ -72,8 +72,25 @@ public class PostProcessing extends Module
             stencilFramebuffer.unbindFramebuffer();
 
             KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, (int) shadowRadius.getValue(), (int) shadowOffset.getValue());
-
         }
+    }
+
+    public void drawElementWithBlur(Runnable runnable, int iterations, int offset) {
+        stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
+        stencilFramebuffer.framebufferClear();
+        stencilFramebuffer.bindFramebuffer(false);
+        runnable.run();
+        stencilFramebuffer.unbindFramebuffer();
+        KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, iterations, offset);
+    }
+
+    public void drawElementWithBloom(Runnable runnable, int radius, int offset) {
+        stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
+        stencilFramebuffer.framebufferClear();
+        stencilFramebuffer.bindFramebuffer(false);
+        runnable.run();
+        stencilFramebuffer.unbindFramebuffer();
+        KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, radius, offset);
     }
 
     public void doBlur() {
@@ -83,6 +100,11 @@ public class PostProcessing extends Module
 
     public void doBloom() {
         MODERN_BLOOM_RUNNABLES.forEach(Runnable::run);
+        MODERN_BLOOM_RUNNABLES.clear();
+    }
+
+    public void clear() {
+        MODERN_BLUR_RUNNABLES.clear();
         MODERN_BLOOM_RUNNABLES.clear();
     }
 }

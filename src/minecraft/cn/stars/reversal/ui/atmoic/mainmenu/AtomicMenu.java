@@ -1,6 +1,9 @@
 package cn.stars.reversal.ui.atmoic.mainmenu;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.Reversal;
+import cn.stars.reversal.font.FontManager;
+import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.atmoic.mainmenu.menus.MainGui;
@@ -8,25 +11,29 @@ import cn.stars.reversal.ui.atmoic.mainmenu.menus.MultiPlayerGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.menus.SettingsGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.menus.SinglePlayerGui;
 import cn.stars.reversal.ui.notification.NotificationManager;
+import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.player.SkinUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.ThemeType;
 import cn.stars.reversal.util.render.ThemeUtil;
-import cn.stars.reversal.util.shader.RiseShaders;
-import cn.stars.reversal.util.shader.base.ShaderRenderType;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 
 import java.awt.*;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class AtomicMenu extends GuiScreen implements GameInstance {
     public static ArrayList<AtomicGui> atomicGuis = new ArrayList<>();
     public static AtomicGui currentGui;
+    private final MFont psm16 = FontManager.getPSM(16);
 
     private final Animation upperSelectionAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
 
@@ -39,8 +46,6 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-
-        ModuleInstance.getModule(PostProcessing.class).blurScreen();
 
         currentGui.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -56,9 +61,19 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8);
         }
 
-        MODERN_BLOOM_RUNNABLES.add(() -> currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8));
+        RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 50, 5, 15, 15);
+
+        psm16.drawString(GameInstance.mc.session.getUsername(), width - 50 - psm16.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 6, Color.WHITE.getRGB());
+        psm16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")), width - 50 - psm16.getStringWidth(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))) - 5, 14, Color.WHITE.getRGB());
+
+        ModuleInstance.getModule(PostProcessing.class).drawElementWithBloom(() -> RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST)), 1,1);
 
         RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+
+        ModuleInstance.getModule(PostProcessing.class).drawElementWithBloom(() -> {
+            currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8);
+            RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 50, 5, 15, 15);
+        }, 3,2);
 
         NotificationManager.onRender2D();
 

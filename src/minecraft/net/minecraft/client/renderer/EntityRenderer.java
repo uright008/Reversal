@@ -4,6 +4,7 @@ import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render3DEvent;
 import cn.stars.reversal.module.impl.addons.FreeLook;
+import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.misc.Protocol;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.module.impl.client.HurtCam;

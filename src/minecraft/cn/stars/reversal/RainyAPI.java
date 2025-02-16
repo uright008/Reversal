@@ -4,6 +4,7 @@
  */
 package cn.stars.reversal;
 
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
@@ -64,7 +65,7 @@ public class RainyAPI {
      */
     public static final String[] wittyTitle = new String[]
             {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "Tough. Complex. Incomprehensible.", "时间永远是最难跨过的分界线", "自己选择的路终究由你自己跨过",
-            "友谊即陪伴,没有陪伴,友谊终会消散", "冲破梦境,却又逃避现实", "SKID?!"};
+            "渴望陪伴,又渴望孤独"};
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];
@@ -88,7 +89,7 @@ public class RainyAPI {
     public static void setupDrag() {
         GLFW.glfwSetDropCallback(window, (window, count, names) -> {
             String filePath = GLFWDropCallback.getName(names, 0);
-            if (mc.currentScreen instanceof ModernMainMenu) {
+            if (mc.currentScreen instanceof ModernMainMenu || mc.currentScreen instanceof AtomicMenu) {
                 if (count == 1) {
                     File droppedFile = new File(filePath);
 
