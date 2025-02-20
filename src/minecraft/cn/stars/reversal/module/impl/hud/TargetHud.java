@@ -6,12 +6,12 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.module.impl.client.PostProcessing;
-import cn.stars.reversal.value.impl.BoolValue;
-import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.*;
+import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ModeValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
@@ -26,6 +26,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -40,21 +41,20 @@ import static cn.stars.reversal.util.render.RenderUtil.renderSteveModelTexture;
         chineseDescription = "显示你攻击敌人的信息", category = Category.HUD)
 public final class TargetHud extends Module {
 
+    public static Entity target;
     private final TimeUtil timer = new TimeUtil();
-    private final ModeValue mode = new ModeValue("Mode", this, "Normal", "Normal", "Simple", "Classic", "Other", "Exhibition", "Remix");
+    private final ModeValue mode = new ModeValue("Mode", this, "Normal", "Normal", "Simple", "Classic", "Other", "Exhibition", "Remix", "Minecraft");
     private final BoolValue backGround = new BoolValue("Background", this, true);
     private final BoolValue shadow = new BoolValue("Shadow", this, true);
-
-    public static Entity target;
+    private final List<THParticleUtils> particles = new ArrayList<>();
+    private final TimeUtil timeUtil = new TimeUtil();
+    ScaledResolution sr = new ScaledResolution(mc);
     private Entity lastTarget;
     private float displayHealth;
     private float health;
     private int ticks;
-    private final List<THParticleUtils> particles = new ArrayList<>();
     private boolean sentParticles;
     private double scale = 1;
-    private final TimeUtil timeUtil = new TimeUtil();
-    ScaledResolution sr = new ScaledResolution(mc);
 
     public TargetHud() {
         setCanBeEdited(true);
@@ -255,7 +255,7 @@ public final class TargetHud extends Module {
             GlStateManager.popMatrix();
             timeUtil.reset();
             break;
-            
+
             case "Exhibition": {
                 if (target == null || !(target instanceof EntityPlayer) || mc.theWorld.getEntityByID(target.getEntityId()) == null || mc.theWorld.getEntityByID(target.getEntityId()).getDistanceSqToEntity(mc.thePlayer) > 100) {
                     return;
@@ -266,9 +266,9 @@ public final class TargetHud extends Module {
                 final float height = mc.displayHeight / (float) (mc.gameSettings.guiScale * 2) + 280;
                 GlStateManager.translate(width - 660, height - 160.0f - 90.0f, 0.0f);
                 // Draws the skeet rectangles.
-                RenderUtil.rectangle(4, -2, mc.fontRendererObj.getStringWidth(((EntityPlayer) target).getName()) > 70.0f ? (124.0D + mc.fontRendererObj.getStringWidth(((EntityPlayer) target).getName()) - 70.0f) : 124.0, 37.0, new Color(0, 0, 0, 160).getRGB());
+                RenderUtil.rectangle(4, -2, mc.fontRendererObj.getStringWidth(target.getName()) > 70.0f ? (124.0D + mc.fontRendererObj.getStringWidth(target.getName()) - 70.0f) : 124.0, 37.0, new Color(0, 0, 0, 160).getRGB());
                 // Draws name.
-                mc.fontRendererObj.drawStringWithShadow(((EntityPlayer) target).getName(), 42.3f, 0.3f, -1);
+                mc.fontRendererObj.drawStringWithShadow(target.getName(), 42.3f, 0.3f, -1);
                 // Gets health.
                 final float health = ((EntityPlayer) target).getHealth();
                 // Gets health and absorption
@@ -335,7 +335,7 @@ public final class TargetHud extends Module {
                 // Main rect.
                 RenderUtil.rectangle(4, -4, 154.0, 45.0, new Color(45, 45, 45).getRGB());
                 // Draws name.
-                mc.fontRendererObj.drawStringWithShadow(((EntityPlayer) target).getName(), 46f, 0.3f, -1);
+                mc.fontRendererObj.drawStringWithShadow(target.getName(), 46f, 0.3f, -1);
                 // Gets health.
                 final float health = ((EntityPlayer) target).getHealth();
                 // Color stuff for the healthBar.
@@ -362,7 +362,8 @@ public final class TargetHud extends Module {
                 mc.fontRendererObj.drawCenteredStringWithShadow(ping, 240, 40, Color.WHITE.getRGB());
                 GlStateManager.popMatrix();
                 // Draws the ping thingy from tab. :sunglasses:
-                if (target != null && networkPlayerInfo != null) GuiPlayerTabOverlay.drawPingStatic(103, 50, 14, networkPlayerInfo);
+                if (target != null && networkPlayerInfo != null)
+                    GuiPlayerTabOverlay.drawPingStatic(103, 50, 14, networkPlayerInfo);
                 // Round.
                 double cockWidth = 0.0;
                 cockWidth = MathUtil.round(cockWidth, (int) 5.0);
@@ -392,7 +393,10 @@ public final class TargetHud extends Module {
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
                 // Draw targets armor the worst way possible.
-                if (target != null) drawHelmet(24, 11); drawChest(44, 11); drawLegs(64, 11); drawBoots(84, 11);
+                if (target != null) drawHelmet(24, 11);
+                drawChest(44, 11);
+                drawLegs(64, 11);
+                drawBoots(84, 11);
                 GlStateManager.disableAlpha();
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
@@ -453,7 +457,7 @@ public final class TargetHud extends Module {
                         offset += 1;
                     }
 
-                if (!((mc.thePlayer.getDistanceToEntity(target) > 20|| target.isDead))) {
+                if (!((mc.thePlayer.getDistanceToEntity(target) > 20 || target.isDead))) {
                     regular16.drawStringWithShadow(String.valueOf(MathUtil.round(displayHealth, 1)), drawBarPosX + 4 + offset, posY + 3, -1);
                 }
 
@@ -532,7 +536,7 @@ public final class TargetHud extends Module {
                     RenderUtil.rect(sr.getScaledWidth() / 2F + 50 + i, sr.getScaledHeight() / 2F + 50 + 78.5, 1, 1.5, new Color(ColorUtil.getStaticColor(i / 8f, 0.7f, 1)));
                 }
 
-                regular16.drawString(((EntityPlayer) target).getName(), (sr.getScaledWidth() / 2F) + 54 + 35, sr.getScaledHeight() / 2F + 50 + 6, Color.WHITE.getRGB());
+                regular16.drawString(target.getName(), (sr.getScaledWidth() / 2F) + 54 + 35, sr.getScaledHeight() / 2F + 50 + 6, Color.WHITE.getRGB());
 
                 if (enti.getHealth() / enti.getMaxHealth() <= mc.thePlayer.getHealth() / mc.thePlayer.getMaxHealth())
                     regular16.drawString("Winning", (sr.getScaledWidth() / 2F) + 54 + 35, sr.getScaledHeight() / 2F + 50 + 45 + regular16.height(), Color.WHITE.getRGB());
@@ -543,6 +547,46 @@ public final class TargetHud extends Module {
                 regular16.drawString("Hurt Resistant Time: " + enti.hurtResistantTime, (sr.getScaledWidth() / 2F) + 54 + 35.5, sr.getScaledHeight() / 2F + 50 + regular16.height() + 6 + regular16.height() + 1, Color.WHITE.getRGB());
             }
             break;
+
+            case "Minecraft": {
+                mc.fontRendererObj.drawStringWithShadow(target.getName(), sr.getScaledWidth() / 2.0f - mc.fontRendererObj.getStringWidth(target.getName()) / 2.0f, sr.getScaledHeight() / 2.0f - 30, 16777215);
+                mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/icons.png"));
+
+                int yOffset = 0;
+
+                float maxHealth_X = (float) (sr.getScaledWidth() / 2) - 40;
+                int maxHealth_Last = 9;
+                int maxHealth_Y_Offset = 0;
+                for (int i = 0; i < ((EntityPlayer) target).getMaxHealth() / 2; i++) {
+                    mc.ingameGUI.drawTexturedModalRect(maxHealth_X, (float) (sr.getScaledHeight() / 2 - 20) + yOffset + maxHealth_Y_Offset, 16, 0, 9, 9);
+
+                    maxHealth_X += 8;
+
+                    if (i >= maxHealth_Last) {
+                        maxHealth_X = (float) (sr.getScaledWidth() / 2) - 50;
+                        maxHealth_Y_Offset += 9;
+                        maxHealth_Last += 10;
+                    }
+                }
+
+                float health_X = (float) (sr.getScaledWidth() / 2) - 40;
+                int health_Last = 9;
+                int health_Y_Offset = 0;
+                boolean right = false;
+                for (float i = 0; i < ((EntityPlayer) target).getHealth() / 2; i += 0.5) {
+                    mc.ingameGUI.drawTexturedModalRect(health_X, (float) (sr.getScaledHeight() / 2 - 20) + yOffset + health_Y_Offset, 52 + (right ? 4 : 0), 0, 5, 9);
+                    health_X += 4;
+                    right = !right;
+
+                    if (i > health_Last) {
+                        health_X = (float) (sr.getScaledWidth() / 2) - 50;
+                        health_Y_Offset += 4;
+                        health_Last += 10;
+                        right = false;
+                    }
+                }
+
+            }
         }
     }
 

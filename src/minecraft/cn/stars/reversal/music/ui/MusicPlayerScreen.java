@@ -1,6 +1,5 @@
 package cn.stars.reversal.music.ui;
 
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.music.api.base.Music;
 import cn.stars.reversal.music.ui.component.Button;
 import cn.stars.reversal.GameInstance;

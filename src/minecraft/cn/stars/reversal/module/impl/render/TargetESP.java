@@ -1,16 +1,16 @@
 package cn.stars.reversal.module.impl.render;
 
+import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.event.impl.AttackEvent;
-import cn.stars.reversal.event.impl.Render3DEvent;
-import cn.stars.reversal.event.impl.Shader3DEvent;
-import cn.stars.reversal.event.impl.WorldEvent;
+import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.math.RandomUtil;
+import cn.stars.reversal.util.math.TimeUtil;
+import cn.stars.reversal.util.math.TimerUtil;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.animation.advanced.Animation;
@@ -20,6 +20,7 @@ import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.ThemeType;
 import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.value.impl.NumberValue;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -33,6 +34,7 @@ import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector2f;
 import java.awt.*;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
@@ -72,7 +74,8 @@ public class TargetESP extends Module {
 
     @Override
     public void onRender3D(Render3DEvent event) {
-        if (attackedEntity != null) {
+        if (attackedEntity == null) return;
+        if (attackedEntity.hurtTime != 0) {
             if (mode.getMode().equals("Bubble")) {
                 float aPC = this.getAlphaPC();
                 if ((double) aPC < 0.05) {

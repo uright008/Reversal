@@ -52,7 +52,7 @@ public class ModernClickGUI extends GuiScreen {
     TimeUtil timer = new TimeUtil();
     float wheel = Mouse.getDWheel();
     private cn.stars.reversal.util.animation.advanced.Animation windowAnim;
-    private TextField searchField;
+    private final TextField searchField = new TextField(150, 15, GameInstance.regular16, backgroundColor, new Color(100,100,100,100));
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -473,7 +473,6 @@ public class ModernClickGUI extends GuiScreen {
         sideAnimation.reset();
         scaleAnimation.run(1d);
         wheel = Mouse.getDWheel();
-        searchField = new TextField(150, 15, GameInstance.regular16, backgroundColor, new Color(100,100,100,100));
         super.initGui();
     }
 
