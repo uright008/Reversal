@@ -20,6 +20,7 @@ import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.ThemeType;
 import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.value.impl.NumberValue;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -53,6 +54,7 @@ public class TargetESP extends Module {
     public static final ResourceLocation SURROUNDING_TEXTURE = new ResourceLocation("reversal/images/texture/targetesp/glow_circle.png");
     private final long lastTime = System.currentTimeMillis();
     private final Animation alphaAnim = new DecelerateAnimation(400, 1);
+    private final TimeUtil drawTimer = new TimeUtil();
 
     @Override
     public void onUpdateAlwaysInGui() {
@@ -63,6 +65,7 @@ public class TargetESP extends Module {
     public void onAttack(AttackEvent event) {
         if (event.getTarget() instanceof EntityLivingBase) {
             attackedEntity = (EntityLivingBase) event.getTarget();
+            drawTimer.reset();
             if (attackedEntity.isEntityAlive()) {
                 Vec3 to = attackedEntity.getPositionVector().addVector(0.0, attackedEntity.height / 1.6f, 0.0);
                 addBubble(to);
@@ -75,8 +78,8 @@ public class TargetESP extends Module {
     @Override
     public void onRender3D(Render3DEvent event) {
         if (attackedEntity == null) return;
-        if (attackedEntity.hurtTime != 0) {
-            if (mode.getMode().equals("Bubble")) {
+        switch (mode.getMode()) {
+            case "Bubble": {
                 float aPC = this.getAlphaPC();
                 if ((double) aPC < 0.05) {
                     return;
@@ -94,7 +97,9 @@ public class TargetESP extends Module {
                 } catch (ConcurrentModificationException ignored) {
                     // you can actually ignore this.
                 }
-            } else if (mode.getMode().equals("Stars")) {
+                break;
+            }
+            case "Stars": {
                 float aPC = this.getAlphaPC();
                 if ((double) aPC < 0.05) {
                     return;
@@ -112,7 +117,9 @@ public class TargetESP extends Module {
                 } catch (ConcurrentModificationException ignored) {
                     // you can actually ignore this.
                 }
-            } else if (mode.getMode().equals("Surrounding")) {
+                break;
+            }
+            case "Surrounding":
                 if (attackedEntity.isDead || mc.thePlayer.getDistanceToEntity(attackedEntity) > 10) {
                     attackedEntity = null;
                     return;
@@ -189,9 +196,10 @@ public class TargetESP extends Module {
                 GlStateManager.enableAlpha();
                 GlStateManager.depthMask(true);
                 GlStateManager.popMatrix();
-            } else {
+                break;
+            default:
                 // No null pointer anymore
-                auraESPAnim.setDirection(!(attackedEntity.isDead || mc.thePlayer.getDistanceToEntity(attackedEntity) > 10) ? Direction.FORWARDS : Direction.BACKWARDS);
+                auraESPAnim.setDirection(!(attackedEntity.isDead || mc.thePlayer.getDistanceToEntity(attackedEntity) > 10 || drawTimer.hasReached(4350)) ? Direction.FORWARDS : Direction.BACKWARDS);
                 if (auraESPAnim.finished(Direction.BACKWARDS)) {
                     attackedEntity = null;
                     return;
@@ -202,12 +210,16 @@ public class TargetESP extends Module {
                 Vector2f vector2f = RenderUtil.targetESPSPos(attackedEntity, event.getPartialTicks());
                 if (vector2f == null) return;
                 RenderUtil.drawTargetESP2D(vector2f.x, vector2f.y, color, color2, 1.0f - MathHelper.clamp_float(Math.abs(dst - 6.0f) / 60.0f, 0.0f, 0.75f), 1, (float) auraESPAnim.getOutput());
-            }
+                break;
+        }
+        if (drawTimer.hasReached(5000)) {
+            attackedEntity = null;
         }
     }
 
     @Override
     public void onWorld(WorldEvent event) {
+        drawTimer.reset();
         attackedEntity = null;
     }
 
@@ -365,9 +377,9 @@ public class TargetESP extends Module {
             this.oppositeX = RandomUtil.INSTANCE.nextBoolean();
             this.oppositeZ = RandomUtil.INSTANCE.nextBoolean();
 
-            this.initialUpwardSpeed *= RandomUtil.INSTANCE.nextDouble(1.0, 1.6);
-            this.fallSpeed *= RandomUtil.INSTANCE.nextDouble(0.5, 0.8);
-            this.horizontalSpeed *= RandomUtil.INSTANCE.nextDouble(0.4, 0.8);
+            this.initialUpwardSpeed *= RandomUtil.INSTANCE.nextDouble(0.8, 1.2) / Minecraft.getDebugFPS() * 200;
+            this.fallSpeed *= RandomUtil.INSTANCE.nextDouble(0.5, 0.8) / Minecraft.getDebugFPS() * 200;
+            this.horizontalSpeed *= RandomUtil.INSTANCE.nextDouble(0.4, 0.8) / Minecraft.getDebugFPS() * 200;
 
             this.velocityX = Math.sin(Math.toRadians(viewYaw)) * horizontalSpeed;
             this.velocityZ = Math.cos(Math.toRadians(viewYaw)) * horizontalSpeed;
@@ -402,8 +414,5 @@ public class TargetESP extends Module {
             }
         }
     }
-
-
-
 
 }
