@@ -3,6 +3,8 @@ package cn.stars.reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Module;
+import cn.stars.reversal.module.impl.client.PostProcessing;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.value.Value;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
@@ -44,6 +46,8 @@ public interface GameInstance {
 
     List<Runnable> MODERN_BLUR_RUNNABLES = new ArrayList<>();
     List<Runnable> MODERN_BLOOM_RUNNABLES = new ArrayList<>();
+
+    List<Runnable> TEMP_TEXT_BUTTON_RUNNABLES = new ArrayList<>();
 
     static void render2DRunnables(float partialTicks, boolean shaders) {
 

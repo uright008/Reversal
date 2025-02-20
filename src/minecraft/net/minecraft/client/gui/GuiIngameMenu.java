@@ -44,7 +44,6 @@ public class GuiIngameMenu extends GuiScreen
 
             case 1:
                 boolean flag = this.mc.isIntegratedServerRunning();
-                boolean flag1 = this.mc.isConnectedToRealms();
                 button.enabled = false;
                 this.mc.theWorld.sendQuittingDisconnectingPacket();
                 this.mc.loadWorld(null);
@@ -58,8 +57,6 @@ public class GuiIngameMenu extends GuiScreen
 
             case 2:
             case 3:
-            default:
-                break;
 
             case 4:
                 this.mc.displayGuiScreen(null);
@@ -76,6 +73,8 @@ public class GuiIngameMenu extends GuiScreen
 
             case 7:
                 this.mc.displayGuiScreen(new GuiShareToLan(this));
+            default:
+                break;
         }
     }
 

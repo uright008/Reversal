@@ -205,14 +205,6 @@ public class FontManager {
         return get(PRODUCT_SANS_MEDIUM, size, "ProductSansMedium", true, true, false, false);
     }
 
-    public static MFont getProductSansLight(final int size) {
-        return get(PRODUCT_SANS_LIGHT, size, "product_sans_light", true, true, false, true);
-    }
-
-    public static MFont getHack(final int size) {
-        return get(HACK, size, "Hack-Regular", true, true);
-    }
-
     public static net.minecraft.client.gui.FontRenderer getMinecraft() {
         return Minecraft.getMinecraft().fontRendererObj;
     }
@@ -228,8 +220,8 @@ public class FontManager {
             if (font != null) {
                 map.put(size, new ModernFontRenderer(font, fractionalMetrics, AA, international));
             }
-        }
 
+        }
         return map.get(size);
     }
 }

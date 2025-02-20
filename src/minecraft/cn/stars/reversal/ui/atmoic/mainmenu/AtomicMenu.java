@@ -1,17 +1,13 @@
 package cn.stars.reversal.ui.atmoic.mainmenu;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
-import cn.stars.reversal.ui.atmoic.mainmenu.menus.MainGui;
-import cn.stars.reversal.ui.atmoic.mainmenu.menus.MultiPlayerGui;
-import cn.stars.reversal.ui.atmoic.mainmenu.menus.SettingsGui;
-import cn.stars.reversal.ui.atmoic.mainmenu.menus.SinglePlayerGui;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.*;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.AnnouncementGui;
 import cn.stars.reversal.ui.notification.NotificationManager;
-import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -19,23 +15,32 @@ import cn.stars.reversal.util.player.SkinUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.ThemeType;
 import cn.stars.reversal.util.render.ThemeUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class AtomicMenu extends GuiScreen implements GameInstance {
     public static ArrayList<AtomicGui> atomicGuis = new ArrayList<>();
     public static AtomicGui currentGui;
     private final MFont psm16 = FontManager.getPSM(16);
+    private final MFont atomic24 = FontManager.getAtomic(24);
+    private final LocalDateTime initTime;
 
-    private final Animation upperSelectionAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
+    private final Animation upperSelectionAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
+    private final Animation initAnimation = new Animation(Easing.LINEAR, 200);
+
+    private final Animation subHoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation subPosAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private boolean subMenu = false;
 
     @Override
     public void initGui() {
@@ -47,8 +52,14 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
 
+        // Background Blur
+        initAnimation.run(currentGui == atomicGuis.get(0) ? 0 : 255);
+        ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(0,0,0, (int) initAnimation.getValue())), 2, 2);
+
+        // Current AtomicGui
         currentGui.drawScreen(mouseX, mouseY, partialTicks);
 
+        // Upper part
         RenderUtil.rect(0, 0, this.width, 25, new Color(20,20,20,200));
 
         upperSelectionAnimation.run(50 + atomicGuis.indexOf(currentGui) * 25);
@@ -61,30 +72,65 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8);
         }
 
-        RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 50, 5, 15, 15);
+        // Player & Time
+        RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 150, 5, 15, 15);
+        psm18.drawString(GameInstance.mc.session.getUsername(), width - 150 - psm18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
+        RenderUtil.rect(width - 127, 5, 1, 15, Color.WHITE);
 
-        psm16.drawString(GameInstance.mc.session.getUsername(), width - 50 - psm16.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 6, Color.WHITE.getRGB());
-        psm16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")), width - 50 - psm16.getStringWidth(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))) - 5, 14, Color.WHITE.getRGB());
+        psm18.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + " " + (LocalDateTime.now().getHour() > 12 ? "PM" : "AM"),
+                width - 120, 6, Color.WHITE.getRGB());
+        Duration duration = Duration.between(initTime, LocalDateTime.now());
+        psm16.drawString("running " + String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60), width - 120, 14, Color.WHITE.getRGB());
 
-        ModuleInstance.getModule(PostProcessing.class).drawElementWithBloom(() -> RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST)), 1,1);
+        ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
+            RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+            currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8);
+            RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 150, 5, 15, 15);
+        }, 2, 2);
 
         RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
 
-        ModuleInstance.getModule(PostProcessing.class).drawElementWithBloom(() -> {
-            currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8);
-            RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 50, 5, 15, 15);
-        }, 3,2);
+        // Other
+        psm16.drawString(Minecraft.getDebugFPS() + " FPS", 1, 1, Color.WHITE.getRGB());
+        psm16.drawString(currentGui.name, 1, 8, Color.WHITE.getRGB());
 
+        // Gui Elements
         NotificationManager.onRender2D();
 
         Atomic.INSTANCE.render(new ScaledResolution(GameInstance.mc));
+
+        TEMP_TEXT_BUTTON_RUNNABLES.forEach(i -> {
+            ModuleInstance.getModule(PostProcessing.class).drawElementWithBlur(i, 2,2);
+            ModuleInstance.getModule(PostProcessing.class).drawElementWithBloom(i, 2, 2);
+        });
+        TEMP_TEXT_BUTTON_RUNNABLES.clear();
 
         UI_BLOOM_RUNNABLES.forEach(Runnable::run);
         UI_BLOOM_RUNNABLES.clear();
 
         GameInstance.clearRunnables();
 
+        // Sub Menu
+        drawSubMenu(mouseX, mouseY, partialTicks);
+
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    private void drawSubMenu(int mouseX, int mouseY, float partialTicks) {
+        subHoverAnimation.run(RenderUtil.isHovered(width - 25, 0, 25, 25, mouseX, mouseY) ? 80 : 0);
+        subPosAnimation.run(subMenu ? 200 : 0);
+        RenderUtil.rect(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height, new Color(20,20,20,240));
+        RenderUtil.rect(width - 25, 0, 25, 25, new Color(20,20,20,(int) subHoverAnimation.getValue()));
+        atomic24.drawString("4", width - 18, 9, Color.WHITE.getRGB());
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        RenderUtil.scissor(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height);
+
+        psb20.drawString("Sub Menu", width - subPosAnimation.getValue() + 6, 10, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+
+        psm18.drawString("Not implemented yet. (TwT)", width - subPosAnimation.getValue() + 8, 30, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        psr16.drawString("Stars will do everything you call him to do (not) =-=", width - subPosAnimation.getValue() + 8, 40, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 
     @Override
@@ -95,6 +141,13 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
                 currentGui.initGui();
                 GameInstance.mc.getSoundHandler().playButtonPress();
             }
+        }
+        if (RenderUtil.isHovered(width - 25, 0, 25, 25, mouseX, mouseY)) {
+            subMenu = !subMenu;
+            GameInstance.mc.getSoundHandler().playButtonPress();
+        } else if (subMenu && !RenderUtil.isHovered(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height, mouseX, mouseY)) {
+            subMenu = false;
+            GameInstance.mc.getSoundHandler().playButtonPress();
         }
         currentGui.mouseClicked(mouseX, mouseY, mouseButton);
         super.mouseClicked(mouseX, mouseY, mouseButton);
@@ -124,10 +177,29 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         super.confirmClicked(result, id);
     }
 
+    @Override
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+        currentGui.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        currentGui.keyTyped(typedChar, keyCode);
+        super.keyTyped(typedChar, keyCode);
+    }
+
+    @Override
+    public void onGuiClosed() {
+        currentGui.onGuiClosed();
+        super.onGuiClosed();
+    }
+
     public AtomicMenu() {
         init();
         currentGui = atomicGuis.get(0);
         currentGui.initGui();
+        initTime = LocalDateTime.now();
     }
 
     public static void switchGui(int index) {
@@ -143,6 +215,9 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         atomicGuis.add(new SinglePlayerGui());
         atomicGuis.add(new MultiPlayerGui());
         atomicGuis.add(new SettingsGui());
+        atomicGuis.add(new ReversalSettingsGui());
+        atomicGuis.add(new AnnouncementGui());
+        atomicGuis.add(new SponsorGui());
     }
 
 }

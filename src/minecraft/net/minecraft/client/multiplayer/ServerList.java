@@ -2,6 +2,7 @@ package net.minecraft.client.multiplayer;
 
 import com.google.common.collect.Lists;
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -14,7 +15,7 @@ public class ServerList
 {
     private static final Logger logger = LogManager.getLogger();
     private final Minecraft mc;
-    private final List<ServerData> servers = Lists.<ServerData>newArrayList();
+    public final List<ServerData> servers = Lists.newArrayList();
 
     public ServerList(Minecraft mcIn)
     {

@@ -1,4 +1,4 @@
-package cn.stars.reversal.ui.splash.utils;
+package cn.stars.reversal.ui.splash.util;
 
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.ui.splash.SplashScreen;

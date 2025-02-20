@@ -2,8 +2,8 @@ package cn.stars.reversal.ui.splash.impl;
 
 import cn.stars.reversal.ui.splash.LoadingScreenRenderer;
 import cn.stars.reversal.ui.splash.SplashScreen;
-import cn.stars.reversal.ui.splash.utils.Image;
-import cn.stars.reversal.ui.splash.utils.Rect;
+import cn.stars.reversal.ui.splash.util.Image;
+import cn.stars.reversal.ui.splash.util.Rect;
 import cn.stars.reversal.util.math.TimerUtil;
 import cn.stars.reversal.util.render.ColorUtil;
 import lombok.Getter;

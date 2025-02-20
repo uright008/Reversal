@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
 @NativeObfuscation
@@ -34,7 +35,7 @@ public class VideoUtil {
         frameGrabber.setOption("loglevel", "quiet");
         frameGrabber.setOption("threads", "4");
         frameGrabber.setOption("hwaccel", "auto");
-        frameGrabber.setOption("fflags", "nobuffer");
+    //    frameGrabber.setOption("fflags", "nobuffer");
 
         time = 0L;
         ticks = 0;
@@ -91,7 +92,6 @@ public class VideoUtil {
         };
 
         thread.setDaemon(true);
-        thread.setPriority(Thread.MAX_PRIORITY);
         thread.start();
     }
 
@@ -106,8 +106,8 @@ public class VideoUtil {
                 ticks++;
                 nullTickTimer.reset();
             } else {
-                if (nullTickTimer.hasReached(100L)) {
-                    ReversalLogger.warn("[VideoPlayer] Frame remains null for more than 0.1s! This should not happen. Resetting progress.");
+                if (nullTickTimer.hasReached(500L)) {
+                    ReversalLogger.warn("[VideoPlayer] Frame remains null for more than 0.5s! This should not happen. Resetting progress.");
                     ReversalLogger.warn("[VideoPlayer] Stats: {tick:" + ticks + ", frameNumber:" + frameGrabber.getFrameNumber() + " , totalFrames:" + fLength + "}");
                     time = System.currentTimeMillis();
                     ticks = 0;
@@ -136,26 +136,21 @@ public class VideoUtil {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-            GlUtils.startAntiAlias();
-            GlUtils.doAntiAlias();
-
             GL11.glDepthMask(false);
-            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
             // 绘制图片
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2f(0.0f, 1.0f);
-            GL11.glVertex3f((float)left, (float)bottom, 0.0f);
+            GL11.glVertex3f(left, bottom, 0.0f);
             GL11.glTexCoord2f(1.0f, 1.0f);
-            GL11.glVertex3f((float)right, (float)bottom, 0.0f);
+            GL11.glVertex3f(right, bottom, 0.0f);
             GL11.glTexCoord2f(1.0f, 0.0f);
-            GL11.glVertex3f((float)right, (float)top, 0.0f);
+            GL11.glVertex3f(right, top, 0.0f);
             GL11.glTexCoord2f(0.0f, 0.0f);
-            GL11.glVertex3f((float)left, (float)top, 0.0f);
+            GL11.glVertex3f(left, top, 0.0f);
             GL11.glEnd();
 
             // 关闭
-            GlUtils.stopAntiAlias();
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             GL11.glDepthMask(true);
             GL11.glPopMatrix();

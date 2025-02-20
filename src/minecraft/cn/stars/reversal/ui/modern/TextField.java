@@ -36,11 +36,14 @@ public class TextField {
 
     public boolean canLoseFocus = true;
 
+    public boolean selectedLine = false;
+
     private MFont font;
     public Color backgroundColor, outlineColor;
     private final ColorAnimation textColorAnim;
     private final ColorAnimation cursorColorAnim;
     private final Animation posAnimation = new Animation(Easing.EASE_OUT_EXPO, 150);
+    private final Animation selectedLineAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
     public TextField(float width, float height, MFont font, Color backgroundColor, Color outlineColor) {
         this.text = "";
@@ -94,6 +97,9 @@ public class TextField {
 
         // Border
         RoundedUtil.drawRoundOutline(posX, posY, width, height, radius, 0.04f, backgroundColor, outlineColor);
+
+        selectedLineAnimation.run((selectedLine && focused) ? 250 : 0);
+        RoundedUtil.drawRound(posX + 3, posY + height - 1, width - 6, 0.8f, 1, new Color(0,80,250,(int) selectedLineAnimation.getValue()));
 
         String visibleText = font.getStringWidth(text) > textMaxWidth - 3f - offsetX ? font.trimStringToWidth(text, textMaxWidth - 3f - offsetX, true, false) : text;
         float textX = posX + 2f;

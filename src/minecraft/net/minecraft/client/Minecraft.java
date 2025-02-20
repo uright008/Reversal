@@ -1,7 +1,6 @@
 package net.minecraft.client;
 
 import cn.stars.addons.rawinput.RawInput;
-import cn.stars.addons.rawinput.RawMouseHelper;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
@@ -10,7 +9,7 @@ import cn.stars.reversal.module.impl.misc.FakeFPS;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.ui.splash.SplashScreen;
-import cn.stars.reversal.ui.splash.utils.AsyncGLContentLoader;
+import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.util.math.StopWatch;
@@ -1221,7 +1220,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     public int getLimitFramerate()
     {
-        return this.theWorld == null && this.currentScreen != null ? 240 : this.gameSettings.limitFramerate;
+        return this.theWorld == null && this.currentScreen != null ? 300 : this.gameSettings.limitFramerate;
     }
 
     public boolean isFramerateLimitBelowMax()

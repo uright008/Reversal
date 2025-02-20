@@ -1,7 +1,11 @@
 package net.minecraft.world.storage;
 
+import cn.stars.reversal.util.animation.rise.Animation;
+import cn.stars.reversal.util.animation.rise.Easing;
+import lombok.Getter;
 import net.minecraft.world.WorldSettings;
 
+@Getter
 public class SaveFormatComparator implements Comparable<SaveFormatComparator>
 {
     private final String fileName;
@@ -12,6 +16,8 @@ public class SaveFormatComparator implements Comparable<SaveFormatComparator>
     private final WorldSettings.GameType theEnumGameType;
     private final boolean hardcore;
     private final boolean cheatsEnabled;
+    private final Animation hoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation selectAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
     public SaveFormatComparator(String fileNameIn, String displayNameIn, long lastTimePlayedIn, long sizeOnDiskIn, WorldSettings.GameType theEnumGameTypeIn, boolean requiresConversionIn, boolean hardcoreIn, boolean cheatsEnabledIn)
     {
@@ -25,29 +31,9 @@ public class SaveFormatComparator implements Comparable<SaveFormatComparator>
         this.cheatsEnabled = cheatsEnabledIn;
     }
 
-    public String getFileName()
-    {
-        return this.fileName;
-    }
-
-    public String getDisplayName()
-    {
-        return this.displayName;
-    }
-
-    public long getSizeOnDisk()
-    {
-        return this.sizeOnDisk;
-    }
-
     public boolean requiresConversion()
     {
         return this.requiresConversion;
-    }
-
-    public long getLastTimePlayed()
-    {
-        return this.lastTimePlayed;
     }
 
     public int compareTo(SaveFormatComparator p_compareTo_1_)

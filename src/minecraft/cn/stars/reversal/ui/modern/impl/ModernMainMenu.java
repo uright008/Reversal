@@ -148,6 +148,8 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         NotificationManager.onRender2D();
         Atomic.INSTANCE.render(new ScaledResolution(mc));
 
+        psm16.drawString(Minecraft.getDebugFPS() + " FPS", 1, 1, Color.WHITE.getRGB());
+
         updatePostProcessing(false, partialTicks);
     }
 

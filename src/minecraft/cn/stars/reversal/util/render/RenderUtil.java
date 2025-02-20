@@ -64,6 +64,8 @@ public final class RenderUtil implements GameInstance {
     private static int imageHeight;
     private static int internalformat;
     private static ByteBuffer imageBuffer;
+    private static int textureID = -1;
+    private static boolean textureUpdated = false;
 
     public static void calcDeltaFrameTime() {
         deltaFrameTime = (System.currentTimeMillis() - lastFrame) / 10F;
@@ -71,6 +73,7 @@ public final class RenderUtil implements GameInstance {
     }
 
     public static void setBuffer(ByteBuffer buffer, int width, int height) {
+        textureUpdated = true;
         internalformat = 6407;
         imageWidth = width;
         imageHeight = height;
@@ -78,11 +81,19 @@ public final class RenderUtil implements GameInstance {
     }
 
     public static void bindTexture() {
-        GL13.glActiveTexture(33984);
-        GL11.glBindTexture(3553, -1);
-        GL11.glTexParameteri(3553, 10241, 9728);
-        GL11.glTexParameteri(3553, 10240, 9728);
-        GL11.glTexImage2D(3553, 0, internalformat, imageWidth, imageHeight, 0, internalformat, 5121, imageBuffer);
+        if (!textureUpdated) {
+            // 在材质未变化时不上传材质
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
+            return;
+        }
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        if (textureID == -1) {
+            textureID = GL11.glGenTextures();
+        }
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
+        GlUtils.startAntiAlias();
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, internalformat, imageWidth, imageHeight, 0, internalformat, 5121, imageBuffer);
+        textureUpdated = false;
     }
 
     public void push() {

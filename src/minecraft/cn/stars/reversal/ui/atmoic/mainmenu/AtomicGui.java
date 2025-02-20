@@ -18,7 +18,7 @@ public class AtomicGui implements GameInstance {
     protected int height;
     protected List<GuiButton> buttonList = Lists.newArrayList();
 
-    public final Animation hoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1500);
+    public final Animation hoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
     public AtomicGui(String name, String icon) {
         this.name = name;
@@ -63,7 +63,7 @@ public class AtomicGui implements GameInstance {
 
     public void mouseReleased(int mouseX, int mouseY, int state) {}
 
-    public void mouseDragged(int mouseX, int mouseY, int state) {}
+    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {}
 
     public void onGuiClosed() {}
 

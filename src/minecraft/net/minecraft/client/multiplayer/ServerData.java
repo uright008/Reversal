@@ -12,7 +12,7 @@ public class ServerData
     public String serverMOTD;
     public long pingToServer;
     public int version = 47;
-    public String gameVersion = "1.8.9";
+    public String gameVersion = "Retrieving...";
     public boolean field_78841_f;
     public String playerList;
     private ServerData.ServerResourceMode resourceMode = ServerData.ServerResourceMode.PROMPT;

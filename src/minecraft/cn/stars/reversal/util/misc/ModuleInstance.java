@@ -47,6 +47,10 @@ public class ModuleInstance {
         return false;
     }
 
+    public static PostProcessing getPostProcessing() {
+        return ModuleInstance.getModule(PostProcessing.class);
+    }
+
     /**
      * 客户端特殊功能
      */

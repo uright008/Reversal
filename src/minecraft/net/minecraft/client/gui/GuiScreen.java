@@ -190,7 +190,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         this.drawHoveringText(Arrays.<String>asList(new String[] {tabName}), mouseX, mouseY);
     }
 
-    protected void drawHoveringText(List<String> textLines, int x, int y)
+    public void drawHoveringText(List<String> textLines, int x, int y)
     {
         if (!textLines.isEmpty())
         {

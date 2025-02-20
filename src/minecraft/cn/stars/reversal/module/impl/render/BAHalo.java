@@ -97,7 +97,6 @@ public class BAHalo extends Module {
         GlStateManager.disableCull();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlUtils.startAntiAlias();
-        GlUtils.doAntiAlias();
 
         drawBoundTexture(radius);
         if (lighting.isEnabled()) drawLightTexture(radius);
@@ -136,7 +135,6 @@ public class BAHalo extends Module {
         GlStateManager.disableCull();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlUtils.startAntiAlias();
-        GlUtils.doAntiAlias();
 
         drawBoundTexture(radius);
         if (lighting.isEnabled()) drawLightTexture(radius);

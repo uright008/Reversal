@@ -1,14 +1,12 @@
-package cn.stars.reversal.ui.atmoic.mainmenu.menus;
+package cn.stars.reversal.ui.atmoic.mainmenu.impl;
 
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
-import cn.stars.reversal.ui.gui.GuiReversalSettings;
-import cn.stars.reversal.ui.modern.TextButton;
-import cn.stars.reversal.util.render.UIUtil;
-import com.google.common.collect.Lists;
+import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RoundedUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.audio.SoundEventAccessorComposite;
@@ -22,17 +20,13 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.EnumDifficulty;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.ConcurrentModificationException;
-import java.util.List;
 
 public class SettingsGui extends AtomicGui {
     private final MFont upperIcon = FontManager.getAtomic(24);
     private static final GameSettings.Options[] field_146440_f = new GameSettings.Options[] {GameSettings.Options.FOV};
     private GuiButton field_175357_i;
     private GuiLockIconButton field_175356_r;
-    protected String field_146442_a = "Options";
-    private TextButton reversalSettings;
 
     public SettingsGui() {
         super("Settings", "d");
@@ -52,10 +46,7 @@ public class SettingsGui extends AtomicGui {
     public void initGui()
     {
         super.initGui();
-        reversalSettings = new TextButton(10, height - 40, 120, 35, () -> mc.displayGuiScreen(new GuiReversalSettings(Reversal.atomicMenu)),
-                "Reversal设置", "e", true, 12, 30, 11);
         int i = 0;
-        this.field_146442_a = I18n.format("options.title");
 
         for (GameSettings.Options gamesettings$options : field_146440_f)
         {
@@ -152,7 +143,6 @@ public class SettingsGui extends AtomicGui {
                 }
             } catch (ConcurrentModificationException ignored) {}
         }
-        if (mc.theWorld == null) UIUtil.onButtonClick(new TextButton[] {reversalSettings}, mouseX, mouseY, mouseButton);
     }
 
     @Override
@@ -243,12 +233,13 @@ public class SettingsGui extends AtomicGui {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
+        ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
+            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+            FontManager.getRainbowParty(48).drawString("options", 75, 35, Color.WHITE.getRGB());
+        }, 2, 2);
 
-        if (mc.theWorld == null) {
-            reversalSettings.draw(mouseX, mouseY, partialTicks);
-        }
-
-        mc.fontRendererObj.drawCenteredString(this.field_146442_a, this.width / 2f, 15, 16777215);
+        RoundedUtil.drawRound(55,45,4,4,1.5f, new Color(250, 250, 250, 250));
+        FontManager.getRainbowParty(48).drawString("options", 75, 35, new Color(250, 250, 250, 250).getRGB());
 
         for (GuiButton guiButton : this.buttonList) {
             guiButton.drawButton(mc, mouseX, mouseY);

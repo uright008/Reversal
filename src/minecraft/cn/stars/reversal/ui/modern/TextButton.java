@@ -2,8 +2,12 @@ package cn.stars.reversal.ui.modern;
 
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
+import cn.stars.reversal.module.impl.client.PostProcessing;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
+import lombok.Setter;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
 import java.awt.*;
@@ -55,13 +59,16 @@ public class TextButton extends MenuButton {
         super.draw(mouseX, mouseY, partialTicks);
         // Colors for rendering
         final double value = getY();
-        final double progress = value / this.getY();
-        final Color bloomColor = ColorUtil.withAlpha(Color.BLACK, (int) this.getCuriosityBorderAnimation().getValue());
-        final Color fontColor = ColorUtil.withAlpha(new Color(250, 250, 250, 250), (int) this.getCuriosityFontAnimation().getValue());
+        final Color fontColor = enabled ? ColorUtil.withAlpha(new Color(250, 250, 250, 250), (int) this.getCuriosityFontAnimation().getValue()) : new Color(200, 200, 200, 100);
 
-        // Renders the background of the button
-        NORMAL_BLUR_RUNNABLES.add(() -> RenderUtil.roundedRectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight(), 6, Color.WHITE));
-        NORMAL_POST_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle(this.getX(), value, this.getWidth(), this.getHeight(), 4, bloomColor));
+        Runnable i = () -> RenderUtil.roundedRectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight(), 4, Color.BLACK);
+
+        if (!(mc.currentScreen instanceof AtomicMenu)) {
+            ModuleInstance.getModule(PostProcessing.class).drawElementWithBlur(i, 2, 2);
+            ModuleInstance.getModule(PostProcessing.class).drawElementWithBloom(i, 2, 2);
+        } else {
+            TEMP_TEXT_BUTTON_RUNNABLES.add(i);
+        }
 
         // Renders the button text
         UI_BLOOM_RUNNABLES.add(() -> {

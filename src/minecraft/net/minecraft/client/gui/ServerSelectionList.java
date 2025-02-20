@@ -42,7 +42,7 @@ public class ServerSelectionList extends GuiListExtended
         }
     }
 
-    protected int getSize()
+    public int getSize()
     {
         return this.serverListInternet.size() + 1 + this.serverListLan.size();
     }

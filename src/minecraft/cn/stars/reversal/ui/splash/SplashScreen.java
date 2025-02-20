@@ -2,19 +2,15 @@ package cn.stars.reversal.ui.splash;
 
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.ui.splash.impl.FadeInOutLoadingScreen;
 import cn.stars.reversal.ui.splash.impl.VideoLoadingScreen;
-import cn.stars.reversal.ui.splash.utils.AsyncGLContentLoader;
-import cn.stars.reversal.ui.splash.utils.Interpolations;
-import cn.stars.reversal.ui.splash.utils.Rect;
+import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
+import cn.stars.reversal.ui.splash.util.Interpolations;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.video.VideoManager;
-import cn.stars.reversal.util.render.video.VideoUtil;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,10 +19,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
-import java.io.File;
 import java.nio.ByteBuffer;
-import java.util.Random;
 
 import static org.lwjgl.opengl.GL11.*;
 
