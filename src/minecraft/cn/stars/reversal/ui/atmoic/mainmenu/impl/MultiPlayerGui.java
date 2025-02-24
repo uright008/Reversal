@@ -3,18 +3,17 @@ package cn.stars.reversal.ui.atmoic.mainmenu.impl;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
-import cn.stars.reversal.ui.modern.TextButton;
-import cn.stars.reversal.ui.modern.TextField;
-import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.ColorUtil;
-import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RoundedUtil;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.DirectConnectGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerListEntryLanScan;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerListEntryNormal;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerSelectionList;
+import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.modern.TextField;
+import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.RoundedUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
@@ -36,7 +35,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultiPlayerGui extends AtomicGui {
-    private final MFont upperIcon = FontManager.getAtomic(24);
     private static final Logger logger = LogManager.getLogger();
     private final OldServerPinger oldServerPinger = new OldServerPinger();
     public ServerSelectionList serverListSelector;
@@ -60,8 +58,8 @@ public class MultiPlayerGui extends AtomicGui {
     }
 
     @Override
-    public void drawIcon(int posX, int posY) {
-        upperIcon.drawString(icon, posX, posY + 0.5, Color.WHITE.getRGB());
+    public void drawIcon(int posX, int posY, int color) {
+        atomic24.drawString(icon, posX, posY + 0.5, color);
     }
 
     @Override
@@ -69,7 +67,7 @@ public class MultiPlayerGui extends AtomicGui {
         super.initGui();
         Keyboard.enableRepeatEvents(true);
 
-        searchField = new TextField(width - 160, 20, GameInstance.regular16, new Color(30, 30, 30, 100), ColorUtil.transparent);
+        searchField = new TextField(width - 165, 20, GameInstance.regular16, new Color(30, 30, 30, 100), new Color(30,30,30,120));
         searchField.setSelectedLine(true);
 
         this.savedServerList = new ServerList(mc);
@@ -83,7 +81,7 @@ public class MultiPlayerGui extends AtomicGui {
             logger.warn("Unable to start LAN server detection: {}", exception.getMessage());
         }
 
-        this.serverListSelector = new ServerSelectionList(this, mc, this.width, this.height, 105, this.height - 155, 36);
+        this.serverListSelector = new ServerSelectionList(this, mc, this.width, this.height, 105, this.height - 90, 36);
         this.serverListSelector.loadInternetServerList(this.savedServerList);
         this.serverListSelector.setDimensions(this.width, this.height, 105, this.height - 155);
 
@@ -104,7 +102,8 @@ public class MultiPlayerGui extends AtomicGui {
 
         directButton = new TextButton(this.width / 2.0 - 50, this.height - 70, 100, 20, () -> {
             this.directConnect = true;
-            mc.displayGuiScreen(new GuiScreenServerList(Reversal.atomicMenu, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
+            AtomicMenu.atomicGuis.set(8, new DirectConnectGui(this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false), 2));
+            AtomicMenu.switchGui(8);
         }, "直接连接", "", true, 1, 30, 5, 20);
 
         addButton = new TextButton(this.width / 2.0 + 4 + 50, this.height - 70, 100, 20, () -> {
@@ -129,7 +128,7 @@ public class MultiPlayerGui extends AtomicGui {
                 {
                     this.deletingServer = true;
                     String s = I18n.format("selectServer.deleteQuestion", new Object[0]);
-                    String s1 = "\'" + s4 + "\' " + I18n.format("selectServer.deleteWarning", new Object[0]);
+                    String s1 = "'" + s4 + "' " + I18n.format("selectServer.deleteWarning", new Object[0]);
                     String s2 = I18n.format("selectServer.deleteButton", new Object[0]);
                     String s3 = I18n.format("gui.cancel", new Object[0]);
                     GuiYesNo guiyesno = new GuiYesNo(Reversal.atomicMenu, s, s1, s2, s3, this.serverListSelector.func_148193_k());
@@ -214,6 +213,7 @@ public class MultiPlayerGui extends AtomicGui {
                 this.serverListSelector.loadInternetServerList(this.savedServerList);
             }
 
+            AtomicMenu.switchGui(2);
             mc.displayGuiScreen(Reversal.atomicMenu);
         }
         else if (this.directConnect)
@@ -226,6 +226,7 @@ public class MultiPlayerGui extends AtomicGui {
             }
             else
             {
+                AtomicMenu.switchGui(2);
                 mc.displayGuiScreen(Reversal.atomicMenu);
             }
         }
@@ -241,6 +242,7 @@ public class MultiPlayerGui extends AtomicGui {
                 this.serverListSelector.loadInternetServerList(this.savedServerList);
             }
 
+            AtomicMenu.switchGui(2);
             mc.displayGuiScreen(Reversal.atomicMenu);
         }
         else if (this.editingServer)
@@ -257,6 +259,7 @@ public class MultiPlayerGui extends AtomicGui {
                 this.serverListSelector.loadInternetServerList(this.savedServerList);
             }
 
+            AtomicMenu.switchGui(2);
             mc.displayGuiScreen(Reversal.atomicMenu);
         }
     }
@@ -353,7 +356,7 @@ public class MultiPlayerGui extends AtomicGui {
                 }
                 else
                 {
-                    this.actionPerformed((GuiButton)this.buttonList.get(2));
+                    this.actionPerformed(this.buttonList.get(2));
                 }
             }
             else
@@ -375,14 +378,14 @@ public class MultiPlayerGui extends AtomicGui {
             FontManager.getRainbowParty(48).drawString("multiplayer", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
-        RoundedUtil.drawRound(50, 100, width - 100, height - 120, 3, new Color(30, 30, 30, 160));
-        RoundedUtil.drawRound(50, 65, width - 100, 25, 3, new Color(30, 30, 30, 160));
+        RoundedUtil.drawRound(50, 100, width - 100, height - 120, 3, new Color(20, 20, 20, 160));
+        RoundedUtil.drawRound(50, 65, width - 100, 25, 3, new Color(20, 20, 20, 160));
 
-        upperIcon.drawString("3", 55, 74, Color.WHITE.getRGB());
-        searchField.draw(68, 68, mouseX, mouseY);
+        atomic24.drawString("3", 55, 74, Color.WHITE.getRGB());
+        searchField.draw(70, 68, mouseX, mouseY);
 
-        RoundedUtil.drawRound(55,45,4,4,1.5f, new Color(250, 250, 250, 250));
-        FontManager.getRainbowParty(48).drawString("multiplayer", 75, 35, new Color(250, 250, 250, 250).getRGB());
+        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+        FontManager.getRainbowParty(48).drawString("multiplayer", 75, 35, Color.WHITE.getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.scissor(50, 100, width - 100, height - 150);

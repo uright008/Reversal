@@ -1,10 +1,10 @@
 package net.minecraft.client.renderer;
 
+import cn.stars.addons.rfp.REN;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render3DEvent;
 import cn.stars.reversal.module.impl.addons.FreeLook;
-import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.misc.Protocol;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.module.impl.client.HurtCam;
@@ -896,6 +896,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     public void renderHand(float p_renderHand_1_, int p_renderHand_2_, boolean p_renderHand_3_, boolean p_renderHand_4_, boolean p_renderHand_5_)
     {
+        if (REN.shouldCancel()) return;
         if (!this.debugView)
         {
             GlStateManager.matrixMode(5889);

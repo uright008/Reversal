@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiScreen;
 public class Transformer implements GameInstance {
     public static GuiScreen transformMainMenu() {
         if (RainyAPI.isPreInited) {
-            return new ModernMainMenu();
+            return Reversal.atomicMenu;
         } else {
             return new GuiPreInit();
         }

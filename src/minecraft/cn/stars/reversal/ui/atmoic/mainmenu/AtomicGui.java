@@ -74,5 +74,5 @@ public class AtomicGui implements GameInstance {
     public void confirmClicked(boolean result, int id) {}
 
     // Built-in
-    public void drawIcon(int posX, int posY) {}
+    public void drawIcon(int posX, int posY, int color) {}
 }

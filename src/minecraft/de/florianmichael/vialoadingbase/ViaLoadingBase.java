@@ -32,6 +32,7 @@ import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaProviders;
 import de.florianmichael.vialoadingbase.platform.ViaVersionPlatformImpl;
 import de.florianmichael.vialoadingbase.platform.viaversion.VLBViaInjector;
 import de.florianmichael.vialoadingbase.util.JLoggerToLog4j;
+import de.florianmichael.vialoadingbase.util.ProtocolVersionAnimation;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
@@ -52,6 +53,7 @@ public class ViaLoadingBase {
     public final static Platform PLATFORM_VIA_REWIND = new Platform("ViaRewind", () -> inClassPath("com.viaversion.viarewind.api.ViaRewindPlatform"), () -> new ViaRewindPlatformImpl(Via.getManager().getPlatform().getDataFolder()));
 
     public final static List<ProtocolVersion> PROTOCOLS = new ArrayList<>();
+    public final static Map<ProtocolVersion, ProtocolVersionAnimation> PROTOCOL_ANIMATION = new HashMap<>();
 
     private static ViaLoadingBase instance;
 

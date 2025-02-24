@@ -75,6 +75,16 @@ public class PostProcessing extends Module
         }
     }
 
+    public void drawElementWithBlur(Runnable runnable) {
+        if (mc.theWorld != null) drawElementWithBlur(runnable, (int) iterations.getValue(), (int) offset.getValue());
+        else drawElementWithBlur(runnable, 2, 2);
+    }
+
+    public void drawElementWithBloom(Runnable runnable) {
+        if (mc.theWorld != null) drawElementWithBloom(runnable, (int) shadowRadius.getValue(), (int) shadowOffset.getValue());
+        else drawElementWithBloom(runnable, 2, 2);
+    }
+
     public void drawElementWithBlur(Runnable runnable, int iterations, int offset) {
         stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
         stencilFramebuffer.framebufferClear();

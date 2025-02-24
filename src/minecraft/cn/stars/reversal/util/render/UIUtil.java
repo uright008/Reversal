@@ -36,7 +36,7 @@ public class UIUtil {
     public void onButtonClick(TextButton[] buttons, int mouseX, int mouseY, int mouseButton) {
         if (mouseButton == 0) {
             for (TextButton menuButton : buttons) {
-                if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), mouseX, mouseY)) {
+                if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), mouseX, mouseY) && menuButton.enabled) {
                     mc.getSoundHandler().playButtonPress();
                     menuButton.runAction();
                     break;

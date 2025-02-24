@@ -40,7 +40,7 @@ public class ServerListEntryLanDetected implements GuiListExtended.IGuiListEntry
         }
         RenderUtil.roundedRectangle(x - 2, y - 2, listWidth, slotHeight + 4, 2, new Color(20, 20, 20, (int) selectAnimation.getValue()));
 
-        GameInstance.regular20Bold.drawString(I18n.format("lanServer.title"), x + 32 + 3, y + 1, new Color(250, 250, 250, 250).getRGB());
+        GameInstance.regular20Bold.drawString(I18n.format("lanServer.title"), x + 32 + 3, y + 1, Color.WHITE.getRGB());
         GameInstance.regular16.drawString(this.field_148291_b.getServerMotd(), x + 32 + 3, y + 12, new Color(220, 220, 220, 250).getRGB());
 
         if (this.mc.gameSettings.hideServerAddress)

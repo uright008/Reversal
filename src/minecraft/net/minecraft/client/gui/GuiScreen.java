@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import net.minecraft.client.Minecraft;
@@ -67,8 +68,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     protected RenderItem itemRender;
     public int width;
     public int height;
-    protected List<GuiButton> buttonList = Lists.<GuiButton>newArrayList();
-    protected List<GuiLabel> labelList = Lists.<GuiLabel>newArrayList();
+    protected List<GuiButton> buttonList = Lists.newArrayList();
+    protected List<GuiLabel> labelList = Lists.newArrayList();
     public boolean allowUserInput;
     protected FontRenderer fontRendererObj;
     public GuiButton selectedButton;
@@ -186,7 +187,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     protected void drawCreativeTabHoveringText(String tabName, int mouseX, int mouseY)
     {
-        this.drawHoveringText(Arrays.<String>asList(new String[] {tabName}), mouseX, mouseY);
+        this.drawHoveringText(Collections.singletonList(tabName), mouseX, mouseY);
     }
 
     public void drawHoveringText(List<String> textLines, int x, int y)
@@ -277,11 +278,11 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
                 try
                 {
-                    NBTBase nbtbase = JsonToNBT.getTagFromJson(hoverevent.getValue().getUnformattedText());
+                    NBTTagCompound nbtbase = JsonToNBT.getTagFromJson(hoverevent.getValue().getUnformattedText());
 
-                    if (nbtbase instanceof NBTTagCompound)
+                    if (nbtbase != null)
                     {
-                        itemstack = ItemStack.loadItemStackFromNBT((NBTTagCompound)nbtbase);
+                        itemstack = ItemStack.loadItemStackFromNBT(nbtbase);
                     }
                 }
                 catch (NBTException var11)
@@ -304,12 +305,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 {
                     try
                     {
-                        NBTBase nbtbase1 = JsonToNBT.getTagFromJson(hoverevent.getValue().getUnformattedText());
+                        NBTTagCompound nbtbase1 = JsonToNBT.getTagFromJson(hoverevent.getValue().getUnformattedText());
 
-                        if (nbtbase1 instanceof NBTTagCompound)
+                        if (nbtbase1 != null)
                         {
                             List<String> list1 = Lists.<String>newArrayList();
-                            NBTTagCompound nbttagcompound = (NBTTagCompound)nbtbase1;
+                            NBTTagCompound nbttagcompound = nbtbase1;
                             list1.add(nbttagcompound.getString("name"));
 
                             if (nbttagcompound.hasKey("type", 8))
@@ -344,9 +345,9 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 {
                     IChatComponent ichatcomponent = statbase.getStatName();
                     IChatComponent ichatcomponent1 = new ChatComponentTranslation("stats.tooltip.type." + (statbase.isAchievement() ? "achievement" : "statistic"), new Object[0]);
-                    ichatcomponent1.getChatStyle().setItalic(Boolean.valueOf(true));
+                    ichatcomponent1.getChatStyle().setItalic(true);
                     String s1 = statbase instanceof Achievement ? ((Achievement)statbase).getDescription() : null;
-                    List<String> list = Lists.newArrayList(new String[] {ichatcomponent.getFormattedText(), ichatcomponent1.getFormattedText()});
+                    List<String> list = Lists.newArrayList(ichatcomponent.getFormattedText(), ichatcomponent1.getFormattedText());
 
                     if (s1 != null)
                     {
@@ -411,7 +412,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                             this.openWebLink(uri);
                         }
                     } catch (URISyntaxException urisyntaxexception) {
-                        LOGGER.error((String) ("Can\'t open url for " + clickevent), (Throwable) urisyntaxexception);
+                        LOGGER.error("Can't open url for " + clickevent, urisyntaxexception);
                     }
                 } else if (clickevent.getAction() == ClickEvent.Action.OPEN_FILE) {
                     URI uri1 = (new File(clickevent.getValue())).toURI();
@@ -421,7 +422,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 } else if (clickevent.getAction() == ClickEvent.Action.RUN_COMMAND) {
                     this.sendChatMessage(clickevent.getValue(), false);
                 } else {
-                    LOGGER.error("Don't know how to handle " + clickevent);
+                    LOGGER.error("Failed to handle {}", clickevent);
                 }
 
                 return true;

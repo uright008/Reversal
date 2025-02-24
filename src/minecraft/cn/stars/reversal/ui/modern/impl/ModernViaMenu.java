@@ -56,8 +56,6 @@ public class ModernViaMenu extends GuiScreen implements GuiYesNoCallback {
         eaves.drawString("REVERSAL | ViaVersion", width / 2f - 110, height / 2f - 220, new Color(220, 220, 220, 240).getRGB());
         regular.drawCenteredString("一个可以使你加入高于1.8.x版本服务器的强大工具",
                 width / 2f, height / 2f - 180, new Color(220, 220, 220, 240).getRGB());
-        regular.drawCenteredString("由EnZaXD/Flori2007驱动 / 由Stars编写GUI",
-                width / 2f, height / 2f - 165, new Color(220, 220, 220, 240).getRGB());
 
         RenderUtil.rect(width / 2f - 200, height / 2f - 150, 400, 0.5, new Color(220, 220, 220, 240));
 

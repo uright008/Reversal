@@ -8,13 +8,16 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.*;
+import cn.stars.reversal.util.render.ColorUtil;
+import cn.stars.reversal.util.render.ColorUtils;
+import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.RoundedUtil;
 import lombok.SneakyThrows;
 
 import java.awt.*;
 
 public class MainGui extends AtomicGui {
-    private final MFont upperIcon = FontManager.getAtomic(32);
+    private final MFont atomic32 = FontManager.getAtomic(32);
     private final MFont atomic48 = FontManager.getAtomic(48);
     private final MFont atomic64 = FontManager.getAtomic(64);
     private final MFont rp32 = FontManager.getRainbowParty(32);
@@ -28,8 +31,8 @@ public class MainGui extends AtomicGui {
     }
 
     @Override
-    public void drawIcon(int posX, int posY) {
-        upperIcon.drawString(icon, posX - 0.2, posY - 0.5, Color.WHITE.getRGB());
+    public void drawIcon(int posX, int posY, int color) {
+        atomic32.drawString(icon, posX - 0.2, posY - 0.5, color);
     }
 
     @Override
@@ -85,10 +88,10 @@ public class MainGui extends AtomicGui {
         RoundedUtil.drawRound(width / 2f - 24, height / 2f - 49, 48, 48, 23, new Color(100,200,255, 100));
         atomic64.drawString("2", width / 2f - 16, height / 2f - 36, new Color(250,250,250, 220).getRGB());
         rp64.drawCenteredString("Reversal", width / 2f, height / 2f + 15, Color.WHITE.getRGB());
-        regular20.drawCenteredString(Reversal.VERSION, width / 2f, height / 2f + 50, Color.WHITE.getRGB());
+        regular16.drawCenteredString(Reversal.VERSION, width / 2f, height / 2f + 50, Color.WHITE.getRGB());
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
-            atomic64.drawString("2", width / 2f - 16, height / 2f - 36, Color.WHITE.getRGB());
-            rp64.drawCenteredString("Reversal", width / 2f, height / 2f + 15, Color.WHITE.getRGB());
+            atomic64.drawString("2", width / 2f - 16, height / 2f - 36, ColorUtil.whiteAnimation.getOutput().getRGB());
+            rp64.drawCenteredString("Reversal", width / 2f, height / 2f + 15, ColorUtil.whiteAnimation.getOutput().getRGB());
         }, 2, 2);
 
         psm18.drawString("Reversal " + Reversal.VERSION, 2, height - 30, Color.WHITE.getRGB());

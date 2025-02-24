@@ -9,21 +9,6 @@ public class ReversalLogger {
     // Enhanced Logger
     private static final Logger logger = LogManager.getLogger("Reversal");
     private static final String prefix = "[Reversal] ";
-    private static final Exception exception = new Exception("Reversal Internal Exception");
-    private static final Marker marker = MarkerManager.getMarker("Reversal Internal Marker");
-    public static final String mcl = "(Minecraft) ";
-
-    public static Logger getReversalLogger() {
-        return logger;
-    }
-
-    public static Exception getReversalException() {
-        return exception;
-    }
-
-    public static Marker getReversalMarker() {
-        return marker;
-    }
 
     public static void info(String s) {
         logger.info(prefix + s);

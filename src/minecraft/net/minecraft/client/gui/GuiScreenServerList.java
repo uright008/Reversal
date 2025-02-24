@@ -85,15 +85,6 @@ public class GuiScreenServerList extends GuiScreen
     {
         this.drawDefaultBackground();
 
-        // blur
-        RiseShaders.GAUSSIAN_BLUR_SHADER.update();
-        RiseShaders.GAUSSIAN_BLUR_SHADER.run(ShaderRenderType.OVERLAY, partialTicks, NORMAL_BLUR_RUNNABLES);
-
-        // bloom
-        RiseShaders.POST_BLOOM_SHADER.update();
-        RiseShaders.POST_BLOOM_SHADER.run(ShaderRenderType.OVERLAY, partialTicks, NORMAL_POST_BLOOM_RUNNABLES);
-
-        GameInstance.clearRunnables();
 
         RoundedUtil.drawRound(width / 2f - 225, 150, 450, 300, 4, new Color(30, 30, 30, 160));
         GameInstance.NORMAL_BLUR_RUNNABLES.add(() -> RoundedUtil.drawRound(width / 2f - 225, 150, 450, 300, 4, Color.BLACK));
@@ -106,10 +97,7 @@ public class GuiScreenServerList extends GuiScreen
         GameInstance.regular24Bold.drawCenteredString("直接连接", width / 2f, 157, new Color(220, 220, 220, 240).getRGB());
         GameInstance.regular20.drawString("输入服务器IP", this.width / 2 - 100, 245, new Color(220, 220, 220, 240).getRGB());
 
-        this.field_146302_g.draw(this.width / 2 - 100, 256, mouseX, mouseY);
-
-        UI_BLOOM_RUNNABLES.forEach(Runnable::run);
-        UI_BLOOM_RUNNABLES.clear();
+        this.field_146302_g.draw(this.width / 2f - 100, 256, mouseX, mouseY);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

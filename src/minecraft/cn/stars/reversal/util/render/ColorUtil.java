@@ -3,6 +3,8 @@ package cn.stars.reversal.util.render;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.ui.theme.Theme;
+import cn.stars.reversal.util.animation.advanced.Animation;
+import cn.stars.reversal.util.animation.advanced.composed.ColorAnimation;
 import cn.stars.reversal.util.animation.simple.SimpleAnimation;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -16,6 +18,13 @@ import java.util.regex.Pattern;
 @UtilityClass
 public final class ColorUtil {
     public static Color transparent = new Color(0, 0, 0, 0);
+    public static ColorAnimation whiteAnimation = new ColorAnimation(Color.WHITE, new Color(255, 255, 255, 0), 2000);
+
+    public static void updateColorAnimation() {
+        if (whiteAnimation.isFinished()) {
+            whiteAnimation.changeDirection();
+        }
+    }
 
     public static SimpleAnimation[] animation = {
             new SimpleAnimation(0.0F), new SimpleAnimation(0.0F), new SimpleAnimation(0.0F),

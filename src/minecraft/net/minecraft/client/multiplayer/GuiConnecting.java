@@ -13,9 +13,9 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.ui.notification.NotificationType;
-import cn.stars.reversal.util.animation.rise.Animation;
-import cn.stars.reversal.util.animation.rise.Easing;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
@@ -47,7 +47,6 @@ public class GuiConnecting extends GuiScreen
     private NetworkManager networkManager;
     private boolean cancel;
     private final GuiScreen previousGuiScreen;
-    private Animation animation = new Animation(Easing.EASE_OUT_QUINT, 600);
     private TextButton cancelButton;
 
     public GuiConnecting(GuiScreen p_i1181_1_, Minecraft mcIn, ServerData p_i1181_3_)
@@ -55,7 +54,7 @@ public class GuiConnecting extends GuiScreen
         this.mc = mcIn;
         this.previousGuiScreen = p_i1181_1_;
         ServerAddress serveraddress = ServerAddress.fromString(p_i1181_3_.serverIP);
-        mcIn.loadWorld((WorldClient)null);
+        mcIn.loadWorld(null);
         mcIn.setServerData(p_i1181_3_);
         this.connect(serveraddress.getIP(), serveraddress.getPort());
     }
@@ -64,13 +63,13 @@ public class GuiConnecting extends GuiScreen
     {
         this.mc = mcIn;
         this.previousGuiScreen = p_i1182_1_;
-        mcIn.loadWorld((WorldClient)null);
+        mcIn.loadWorld(null);
         this.connect(hostName, port);
     }
 
     private void connect(final String ip, final int port)
     {
-        logger.info("Connecting to " + ip + ", " + port);
+        logger.info("Connecting to {}, {}", ip, port);
         (new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet())
         {
             public void run()
@@ -107,12 +106,12 @@ public class GuiConnecting extends GuiScreen
                         return;
                     }
 
-                    GuiConnecting.logger.error((String)"Couldn't connect to server", (Throwable)exception);
+                    GuiConnecting.logger.error("Couldn't connect to server", (Throwable)exception);
                     String s = exception.toString();
 
                     if (inetaddress != null)
                     {
-                        String s1 = inetaddress.toString() + ":" + port;
+                        String s1 = inetaddress + ":" + port;
                         s = s.replaceAll(s1, "");
                     }
 
@@ -150,7 +149,6 @@ public class GuiConnecting extends GuiScreen
         GameInstance.clearRunnables();
         Reversal.notificationManager.registerNotification("Connecting to: " + mc.getCurrentServerData().serverIP, "Server", 3000L, NotificationType.NOTIFICATION);
         this.cancelButton = new TextButton(width / 2 - 100, height / 2 + 100, 200, 20, this::action, "取消", "", true, 6, 90, 5, 20);
-        this.animation = new Animation(Easing.EASE_OUT_QUINT, 600);
     }
 
     /**
@@ -197,30 +195,18 @@ public class GuiConnecting extends GuiScreen
     {
         drawDefaultBackground();
 
-        // blur
-        RiseShaders.GAUSSIAN_BLUR_SHADER.update();
-        RiseShaders.GAUSSIAN_BLUR_SHADER.run(ShaderRenderType.OVERLAY, partialTicks, NORMAL_BLUR_RUNNABLES);
+        ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(0,0,0, 255)), 2, 2);
+        ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
+            RoundedUtil.drawRound(width / 2f - 225, 200, 450, height - 400, 3, Color.BLACK);
+            RenderUtils.drawLoadingCircle2(this.width / 2f, this.height / 2f + 50, 6, Color.WHITE);
+        }, 2, 2);
 
-        // bloom
-        RiseShaders.POST_BLOOM_SHADER.update();
-        RiseShaders.POST_BLOOM_SHADER.run(ShaderRenderType.OVERLAY, partialTicks, NORMAL_POST_BLOOM_RUNNABLES);
-
-        GameInstance.clearRunnables();
-
-        cancelButton.draw(mouseX, mouseY, partialTicks);
-
-        RoundedUtil.drawRound(width / 2f - 225, 200, 450, height - 400, 4, new Color(30, 30, 30, 160));
-        RoundedUtil.drawRound(width / 2f - 125, 10, 250, 40, 6, new Color(30, 30, 30, 160));
-
-        GameInstance.NORMAL_BLUR_RUNNABLES.add(() -> {
-            RoundedUtil.drawRound(width / 2f - 225, 200, 450, height - 400, 4, Color.BLACK);
-            RoundedUtil.drawRound(width / 2f - 125, 10, 250, 40, 6, Color.BLACK);
-        });
+        RoundedUtil.drawRound(width / 2f - 225, 200, 450, height - 400, 3, new Color(20, 20, 20, 160));
         RenderUtil.rect(width / 2f - 225, 220, 450, 0.5, new Color(220, 220, 220, 240));
         GameInstance.regular24Bold.drawCenteredString("连接服务器", width / 2f, 206, new Color(220, 220, 220, 240).getRGB());
 
         RenderUtil.image(new ResourceLocation("reversal/images/logo/curiosity.png"), width / 2f - 100,  height / 2f - 160, 200, 200);
-        RenderUtils.drawLoadingCircle2(this.width / 2, this.height / 2 + 50, 6, new Color(220, 220, 220, 220));
+        RenderUtils.drawLoadingCircle2(this.width / 2f, this.height / 2f + 50, 6, new Color(220, 220, 220, 220));
 
         String ip = "Unknown";
 
@@ -228,16 +214,12 @@ public class GuiConnecting extends GuiScreen
         if(serverData != null)
             ip = "IP: " + serverData.serverIP;
 
-        FontManager.getSpecialIcon(80).drawString("b", width / 2f - 115, 17, new Color(220, 220, 220, 240).getRGB());
-        GameInstance.regular24Bold.drawString("SERVER INFORMATION", width / 2f - 55, 18, new Color(220, 220, 220, 240).getRGB());
-        GameInstance.regular20.drawString(ip, width / 2f - 55, 34, new Color(220, 220, 220, 240).getRGB());
+        regular24Bold.drawCenteredString("正在连接至服务器...", this.width / 2f, this.height / 2f + 70, new Color(220, 220, 220, 220).getRGB());
+        psm18.drawCenteredString(ip, this.width / 2f, this.height / 2f + 85, new Color(220, 220, 220, 220).getRGB());
 
-        regular24Bold.drawCenteredString("正在连接至服务器...", this.width / 2, this.height / 2 + 70, new Color(220, 220, 220, 220).getRGB());
+        cancelButton.draw(mouseX, mouseY, partialTicks);
 
-        regular16.drawString("Open Source PVP Client By Stars.", 4, height - 30, new Color(220, 220, 220, 240).getRGB());
-        regular16.drawString("https://www.github.com/RinoRika/Reversal", 4, height - 20, new Color(220, 220, 220, 240).getRGB());
-        regular16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")), 4, height - 10, new Color(220, 220, 220, 240).getRGB());
-
+        NotificationManager.onRender2D();
         Atomic.INSTANCE.render(new ScaledResolution(mc));
 
         UI_BLOOM_RUNNABLES.forEach(Runnable::run);

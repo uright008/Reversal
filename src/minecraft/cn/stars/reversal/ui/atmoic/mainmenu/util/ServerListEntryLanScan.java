@@ -14,9 +14,9 @@ public class ServerListEntryLanScan implements GuiListExtended.IGuiListEntry
     public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected)
     {
         int i = y + slotHeight / 2 - this.mc.fontRendererObj.FONT_HEIGHT / 2 + 2;
-        GameInstance.psm18.drawString("Lan Server detecting...", 70, i,  new Color(250, 250, 250, 250).getRGB());
+        GameInstance.psm18.drawString("Lan Server detecting...", 70, i,  Color.WHITE.getRGB());
 
-        RenderUtils.drawLoadingCircle2(60, i + 3, 4, new Color(250, 250, 250, 250));
+        RenderUtils.drawLoadingCircle2(60, i + 3, 4, Color.WHITE);
     }
 
     public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_)

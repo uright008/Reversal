@@ -3,6 +3,8 @@ package net.minecraft.client.renderer.entity;
 import cn.stars.addons.optimization.entityculling.Cullable;
 import cn.stars.addons.optimization.entityculling.EntityCullingModBase;
 import cn.stars.addons.optimization.entityculling.EntityRendererInter;
+import cn.stars.addons.rfp.EntityPlayerDummy;
+import cn.stars.addons.rfp.RenderPlayerDummy;
 import com.google.common.collect.Maps;
 import java.util.Collections;
 import java.util.Map;
@@ -196,6 +198,7 @@ public class RenderManager
         this.entityRenderMap.put(EntityFishHook.class, new RenderFish(this));
         this.entityRenderMap.put(EntityHorse.class, new RenderHorse(this, new ModelHorse(), 0.75F));
         this.entityRenderMap.put(EntityLightningBolt.class, new RenderLightningBolt(this));
+        this.entityRenderMap.put(EntityPlayerDummy.class, new RenderPlayerDummy(this));
         this.playerRenderer = new RenderPlayer(this);
         this.skinMap.put("default", this.playerRenderer);
         this.skinMap.put("slim", new RenderPlayer(this, true));
@@ -203,7 +206,7 @@ public class RenderManager
 
         if (Reflector.RenderingRegistry_loadEntityRenderers.exists())
         {
-            Reflector.call(Reflector.RenderingRegistry_loadEntityRenderers, new Object[] {this, this.entityRenderMap});
+            Reflector.call(Reflector.RenderingRegistry_loadEntityRenderers, this, this.entityRenderMap);
         }
     }
 

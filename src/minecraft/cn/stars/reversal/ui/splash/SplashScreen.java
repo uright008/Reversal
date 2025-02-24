@@ -8,6 +8,7 @@ import cn.stars.reversal.ui.splash.util.Interpolations;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
+import cn.stars.reversal.util.math.StopWatch;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.video.VideoManager;
@@ -44,6 +45,7 @@ public class SplashScreen {
     private static boolean firstFrame = false;
     private static Throwable threadError;
     private static int max_texture_size = -1;
+    private static StopWatch stopWatch = new StopWatch();
 
     public static boolean crashDetected = false;
 
@@ -238,6 +240,8 @@ public class SplashScreen {
         hide();
 
         Reversal.postInitialize();
+
+        ReversalLogger.info("[Startup] Totally took " + stopWatch.getElapsedTime() + " ms for game initialization!");
 
         Display.sync(60);
         mc.updateDisplay();

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.IOException;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import net.minecraft.client.Minecraft;
@@ -32,9 +33,9 @@ public class GuiControls extends GuiScreen
     public void initGui()
     {
         this.keyBindingList = new GuiKeyBindingList(this, this.mc);
-        this.buttonList.add(new GuiButton(200, this.width / 2 - 155, this.height - 29, 150, 20, I18n.format("gui.done", new Object[0])));
-        this.buttonList.add(this.buttonReset = new GuiButton(201, this.width / 2 - 155 + 160, this.height - 29, 150, 20, I18n.format("controls.resetAll", new Object[0])));
-        this.screenTitle = I18n.format("controls.title", new Object[0]);
+        this.buttonList.add(new GuiButton(200, this.width / 2 - 155, this.height - 29, 150, 20, I18n.format("gui.done")));
+        this.buttonList.add(this.buttonReset = new GuiButton(201, this.width / 2 - 155 + 160, this.height - 29, 150, 20, I18n.format("controls.resetAll")));
+        this.screenTitle = I18n.format("controls.title");
         int i = 0;
 
         for (GameSettings.Options gamesettings$options : optionsArr)
@@ -133,13 +134,14 @@ public class GuiControls extends GuiScreen
     {
         this.drawDefaultBackground();
 
-        updatePostProcessing(true, partialTicks);
+        if (mc.theWorld == null) ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(0,0,0, 255)), 2, 2);
+        ModuleInstance.getPostProcessing().drawElementWithBloom(() -> RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, Color.BLACK));
 
-        RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, new Color(30, 30, 30, 160));
+        RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, new Color(20, 20, 20, 160));
         RenderUtil.rect(width / 2f - 225, 30, 450, 0.5, new Color(220, 220, 220, 240));
         RenderUtil.rect(width / 2f - 225, 95, 450, 0.5, new Color(220, 220, 220, 240));
-        GameInstance.NORMAL_BLUR_RUNNABLES.add(() -> RoundedUtil.drawRound(width / 2f - 225, 10, 450, height - 15, 4, Color.BLACK));
-        GameInstance.regular24Bold.drawCenteredString("控制", width / 2f, 16, new Color(220, 220, 220, 240).getRGB());
+
+        GameInstance.regular24Bold.drawCenteredString("控制", width / 2f, 16, Color.WHITE.getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.scissor(width / 2f - 225, 100, 450, height - 145);
@@ -158,8 +160,6 @@ public class GuiControls extends GuiScreen
         }
 
         this.buttonReset.enabled = !flag;
-
-        updatePostProcessing(false, partialTicks);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

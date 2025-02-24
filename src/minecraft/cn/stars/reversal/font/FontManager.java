@@ -1,5 +1,8 @@
 package cn.stars.reversal.font;
 
+import cn.stars.reversal.ui.splash.SplashScreen;
+import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
+import cn.stars.reversal.util.ReversalLogger;
 import net.minecraft.client.Minecraft;
 
 import java.util.HashMap;
@@ -215,13 +218,14 @@ public class FontManager {
 
     private static MFont get(HashMap<Integer, ModernFontRenderer> map, int size, String name, boolean fractionalMetrics, boolean AA, boolean otf, boolean international) {
         if (!map.containsKey(size)) {
+            ReversalLogger.info("Initializing Font: " + name + "(" + size + ")");
             final java.awt.Font font = FontUtil.getResource("reversal/font/" + name + (otf ? ".otf" : ".ttf"), size);
 
             if (font != null) {
                 map.put(size, new ModernFontRenderer(font, fractionalMetrics, AA, international));
             }
-
         }
         return map.get(size);
     }
+
 }

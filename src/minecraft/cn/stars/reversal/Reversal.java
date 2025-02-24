@@ -22,12 +22,14 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.clickgui.modern.MMTClickGUI;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.ui.notification.NotificationManager;
+import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
 import cn.stars.reversal.ui.theme.GuiTheme;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.render.video.VideoManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.reversal.Branch;
+import cn.stars.reversal.util.reversal.Preloader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.florianmichael.viamcp.ViaMCP;
@@ -59,7 +61,7 @@ public class Reversal {
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "alpha.05";
+    public static final String BUILD_VERSION = "alpha.07";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -161,6 +163,10 @@ public class Reversal {
 
             creativeTab = new ReversalTab();
 
+
+            // Preload module resources
+            Preloader preloader = new Preloader();
+            AsyncGLContentLoader.loadGLContentAsync(preloader::loadResources);
         }
         catch (final Exception e) {
             ReversalLogger.error("An error has occurred while loading Reversal: ", e);
@@ -235,6 +241,7 @@ public class Reversal {
             new MusicPlayer(),
             new WaveyCapes(),
             new SkinLayers3D(),
+            new RFP(),
             // Combat
             new ClickSound(),
             new NoClickDelay(),

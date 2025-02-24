@@ -1,5 +1,6 @@
 package cn.stars.reversal.font;
 
+import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.util.render.ColorUtil;
 import net.minecraft.client.Minecraft;
@@ -49,13 +50,7 @@ public class ModernFontRenderer extends MFont {
         this.font = font;
         this.fractionalMetrics = fractionalMetrics;
         this.fontHeight = (float) (font.getStringBounds(ALPHABET, new FontRenderContext(new AffineTransform(), antialiasing, fractionalMetrics)).getHeight() / 2f);
-        this.fillCharacters(this.defaultCharacters, java.awt.Font.PLAIN);
-        this.fillCharacters(this.boldCharacters, java.awt.Font.BOLD);
         this.international = international;
-        calculateColorCodes();
-    //    if (this.international) {
-    //        this.fillCharacters(this.internationalCharacters, java.awt.Font.PLAIN);
-    //    }
     }
 
     public ModernFontRenderer(final java.awt.Font font, final boolean fractionalMetrics, final boolean antialiasing) {
@@ -75,7 +70,7 @@ public class ModernFontRenderer extends MFont {
         this.fillCharacters(this.boldCharacters, java.awt.Font.BOLD);
     }
 
-    public static void calculateColorCodes() {
+    static {
         for (int i = 0; i < 32; ++i) {
             final int amplifier = (i >> 3 & 1) * 85;
             int red = (i >> 2 & 1) * 170 + amplifier;
@@ -367,7 +362,11 @@ public class ModernFontRenderer extends MFont {
             } else {
 
                 if (this.international) {
-                    if (internationalCharacters[character] == null) fillCharacters(character, java.awt.Font.PLAIN);
+                    if (internationalCharacters[character] == null)
+                        fillCharacters(character, java.awt.Font.PLAIN);
+                } else {
+                    if (defaultCharacters[character] == null)
+                        fillCharacters(defaultCharacters, java.awt.Font.PLAIN);
                 }
 
                 try {
@@ -414,6 +413,9 @@ public class ModernFontRenderer extends MFont {
             if (this.international) {
                 if (internationalCharacters[character] == null)
                     fillCharacters(character, java.awt.Font.PLAIN);
+            } else {
+                if (defaultCharacters[character] == null)
+                    fillCharacters(defaultCharacters, java.awt.Font.PLAIN);
             }
 //            if (previousCharacter != COLOR_INVOKER) {
 //                if (character == COLOR_INVOKER) {

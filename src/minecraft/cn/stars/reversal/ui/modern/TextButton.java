@@ -7,7 +7,6 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
-import lombok.Setter;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
 import java.awt.*;

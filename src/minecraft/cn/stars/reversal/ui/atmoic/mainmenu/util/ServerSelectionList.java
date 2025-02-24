@@ -2,13 +2,13 @@ package cn.stars.reversal.ui.atmoic.mainmenu.util;
 
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.MultiPlayerGui;
 import com.google.common.collect.Lists;
-
-import java.util.Collections;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.LanServerDetector;
+
+import java.util.Collections;
+import java.util.List;
 
 public class ServerSelectionList extends GuiListExtended
 {

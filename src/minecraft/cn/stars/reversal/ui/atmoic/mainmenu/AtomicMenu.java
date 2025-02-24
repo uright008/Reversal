@@ -6,12 +6,12 @@ import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.*;
-import cn.stars.reversal.ui.atmoic.mainmenu.impl.AnnouncementGui;
 import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.player.SkinUtil;
+import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.ThemeType;
 import cn.stars.reversal.util.render.ThemeUtil;
@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 public class AtomicMenu extends GuiScreen implements GameInstance {
     public static ArrayList<AtomicGui> atomicGuis = new ArrayList<>();
     public static AtomicGui currentGui;
+    public static int lastGuiIndex;
     private final MFont psm16 = FontManager.getPSM(16);
     private final MFont atomic24 = FontManager.getAtomic(24);
     private final LocalDateTime initTime;
@@ -42,6 +44,9 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     private final Animation subPosAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private boolean subMenu = false;
 
+    public static int announcementIndex = 0;
+    public static float anPosX = 60, anPosY = 80;
+
     @Override
     public void initGui() {
         currentGui.initGui();
@@ -51,6 +56,8 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
+
+        ColorUtil.updateColorAnimation();
 
         // Background Blur
         initAnimation.run(currentGui == atomicGuis.get(0) ? 0 : 255);
@@ -69,23 +76,24 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) atomicGui.hoverAnimation.run(80);
             else atomicGui.hoverAnimation.run(0);
             RenderUtil.rect(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, new Color(20,20,20, (int) atomicGui.hoverAnimation.getValue()));
-            atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8);
+            atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8, Color.WHITE.getRGB());
         }
 
         // Player & Time
-        RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 150, 5, 15, 15);
-        psm18.drawString(GameInstance.mc.session.getUsername(), width - 150 - psm18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
-        RenderUtil.rect(width - 127, 5, 1, 15, Color.WHITE);
+        RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 130, 5, 15, 15);
+        psm18.drawString(GameInstance.mc.session.getUsername(), width - 130 - psm18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
+        RenderUtil.rect(width - 107, 5, 1, 15, Color.WHITE);
+        RenderUtil.rect(width - 30, 5, 1, 15, Color.WHITE);
 
         psm18.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + " " + (LocalDateTime.now().getHour() > 12 ? "PM" : "AM"),
-                width - 120, 6, Color.WHITE.getRGB());
+                width - 100, 6, Color.WHITE.getRGB());
         Duration duration = Duration.between(initTime, LocalDateTime.now());
-        psm16.drawString("running " + String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60), width - 120, 14, Color.WHITE.getRGB());
+        psm16.drawString("running " + String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60), width - 100, 14, Color.WHITE.getRGB());
 
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
-            currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8);
-            RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 150, 5, 15, 15);
+            currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8, ColorUtil.whiteAnimation.getOutput().getRGB());
+            RenderUtil.rect(width - 130, 5, 15, 15, ColorUtil.whiteAnimation.getOutput());
         }, 2, 2);
 
         RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
@@ -137,6 +145,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         for (AtomicGui atomicGui : atomicGuis) {
             if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) {
+                lastGuiIndex = atomicGuis.indexOf(currentGui);
                 currentGui = atomicGui;
                 currentGui.initGui();
                 GameInstance.mc.getSoundHandler().playButtonPress();
@@ -184,8 +193,17 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     }
 
     @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        currentGui.mouseReleased(mouseX, mouseY, state);
+        super.mouseReleased(mouseX, mouseY, state);
+    }
+
+    @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         currentGui.keyTyped(typedChar, keyCode);
+        if (keyCode == Keyboard.KEY_ESCAPE) {
+            switchGui(lastGuiIndex);
+        }
         super.keyTyped(typedChar, keyCode);
     }
 
@@ -200,10 +218,12 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         currentGui = atomicGuis.get(0);
         currentGui.initGui();
         initTime = LocalDateTime.now();
+        lastGuiIndex = 0;
+        atomicGuis.set(8, new MiscGui());
     }
 
     public static void switchGui(int index) {
-        init();
+    //    reinit();
         currentGui = atomicGuis.get(index);
         currentGui.initGui();
         if (GameInstance.mc.currentScreen instanceof AtomicMenu) GameInstance.mc.getSoundHandler().playButtonPress();
@@ -218,6 +238,9 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         atomicGuis.add(new ReversalSettingsGui());
         atomicGuis.add(new AnnouncementGui());
         atomicGuis.add(new SponsorGui());
+        atomicGuis.add(new ViaVersionGui());
+        atomicGuis.add(new MiscGui());
     }
+
 
 }

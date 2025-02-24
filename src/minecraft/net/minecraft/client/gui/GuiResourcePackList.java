@@ -26,7 +26,7 @@ public abstract class GuiResourcePackList extends GuiListExtended
     protected void drawListHeader(int p_148129_1_, int p_148129_2_, Tessellator p_148129_3_)
     {
         String s = EnumChatFormatting.UNDERLINE + "" + EnumChatFormatting.BOLD + this.getListHeader();
-        GameInstance.regular20Bold.drawString(s, p_148129_1_ + this.width / 2 - this.mc.fontRendererObj.getStringWidth(s) / 2, Math.min(this.top + 3, p_148129_2_), new Color(220, 220, 220, 240).getRGB());
+        GameInstance.regular20Bold.drawString(s, p_148129_1_ + this.width / 2f - this.mc.fontRendererObj.getStringWidth(s) / 2f, Math.min(this.top + 3, p_148129_2_), new Color(220, 220, 220, 240).getRGB());
     }
 
     protected abstract String getListHeader();

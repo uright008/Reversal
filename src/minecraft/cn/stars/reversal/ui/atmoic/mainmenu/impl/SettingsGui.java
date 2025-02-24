@@ -2,7 +2,6 @@ package cn.stars.reversal.ui.atmoic.mainmenu.impl;
 
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -23,7 +22,6 @@ import java.awt.*;
 import java.util.ConcurrentModificationException;
 
 public class SettingsGui extends AtomicGui {
-    private final MFont upperIcon = FontManager.getAtomic(24);
     private static final GameSettings.Options[] field_146440_f = new GameSettings.Options[] {GameSettings.Options.FOV};
     private GuiButton field_175357_i;
     private GuiLockIconButton field_175356_r;
@@ -33,8 +31,8 @@ public class SettingsGui extends AtomicGui {
     }
 
     @Override
-    public void drawIcon(int posX, int posY) {
-        upperIcon.drawString(icon, posX + 1.5, posY + 1, Color.WHITE.getRGB());
+    public void drawIcon(int posX, int posY, int color) {
+        atomic24.drawString(icon, posX + 1.5, posY + 1, color);
     }
 
     @Override
@@ -238,8 +236,8 @@ public class SettingsGui extends AtomicGui {
             FontManager.getRainbowParty(48).drawString("options", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
-        RoundedUtil.drawRound(55,45,4,4,1.5f, new Color(250, 250, 250, 250));
-        FontManager.getRainbowParty(48).drawString("options", 75, 35, new Color(250, 250, 250, 250).getRGB());
+        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+        FontManager.getRainbowParty(48).drawString("options", 75, 35, Color.WHITE.getRGB());
 
         for (GuiButton guiButton : this.buttonList) {
             guiButton.drawButton(mc, mouseX, mouseY);

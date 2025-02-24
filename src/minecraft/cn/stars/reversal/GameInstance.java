@@ -2,13 +2,6 @@ package cn.stars.reversal;
 
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
-import cn.stars.reversal.module.Module;
-import cn.stars.reversal.module.impl.client.PostProcessing;
-import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.value.Value;
-import cn.stars.reversal.value.impl.BoolValue;
-import cn.stars.reversal.value.impl.ModeValue;
-import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.shader.RiseShaders;
 import cn.stars.reversal.util.shader.base.ShaderRenderType;
 import net.minecraft.client.Minecraft;
@@ -27,12 +20,14 @@ public interface GameInstance {
     MFont psm17 = FontManager.getPSM(17);
     MFont psb20 = FontManager.getPSB(20);
     MFont psm18 = FontManager.getPSM(18);
+    MFont psm24 = FontManager.getPSM(24);
     MFont regular16 = FontManager.getRegular(16);
     MFont regular18 = FontManager.getRegular(18);
     MFont regular20 = FontManager.getRegular(20);
     MFont regular20Bold = FontManager.getRegularBold(20);
     MFont regular24Bold = FontManager.getRegularBold(24);
     MFont regular32 = FontManager.getRegular(32);
+    MFont atomic24 = FontManager.getAtomic(24);
 
     List<Runnable> UI_BLOOM_RUNNABLES = new ArrayList<>();
     List<Runnable> UI_POST_BLOOM_RUNNABLES = new ArrayList<>();

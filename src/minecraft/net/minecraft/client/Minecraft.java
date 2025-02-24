@@ -10,6 +10,7 @@ import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.ui.splash.SplashScreen;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
+import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.util.math.StopWatch;
@@ -353,6 +354,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                             this.displayGuiScreen(new GuiMemoryErrorScreen());
                             System.gc();
                         }
+                        catch (ConcurrentModificationException e) {
+                            ReversalLogger.warn("[ERROR] ConcurrentModificationException thrown!", e);
+                        }
                     }
                     else
                     {
@@ -368,7 +372,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             {
                 this.addGraphicsAndWorldToCrashReport(reportedexception.getCrashReport());
                 this.freeMemory();
-                logger.fatal("存在报告的错误抛出! 游戏崩溃!", reportedexception);
+                logger.fatal("已报告的错误抛出! 游戏崩溃!", reportedexception);
                 this.displayCrashReport(reportedexception.getCrashReport());
                 break;
             }
@@ -389,7 +393,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private void startGame() throws LWJGLException, IOException {
+    private void startGame() throws LWJGLException {
         startTimer = new StopWatch();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
@@ -533,10 +537,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.renderGlobal.makeEntityOutlineShader();
 
         SplashScreen.notifyGameLoaded();
-
-        // Preload module resources
-        Preloader preloader = new Preloader();
-        AsyncGLContentLoader.loadGLContentAsync(preloader::loadResources);
     }
 
 
@@ -1727,7 +1727,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         {
             if (this.thePlayer.getHealth() <= 0.0F)
             {
-                this.displayGuiScreen((GuiScreen)null);
+                this.displayGuiScreen(null);
             }
             else if (this.thePlayer.isPlayerSleeping() && this.theWorld != null)
             {
@@ -1736,7 +1736,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
         else if (this.currentScreen != null && this.currentScreen instanceof GuiSleepMP && !this.thePlayer.isPlayerSleeping())
         {
-            this.displayGuiScreen((GuiScreen)null);
+            this.displayGuiScreen(null);
         }
 
         if (this.currentScreen != null)
@@ -1750,17 +1750,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             {
                 this.currentScreen.handleInput();
             }
+            catch (ConcurrentModificationException e) {
+                ReversalLogger.warn("[ERROR] ConcurrentModificationException thrown!");
+            }
             catch (Throwable throwable1)
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable1, "Updating screen events");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Affected screen");
-                crashreportcategory.addCrashSectionCallable("Screen name", new Callable<String>()
-                {
-                    public String call() throws Exception
-                    {
-                        return Minecraft.this.currentScreen.getClass().getCanonicalName();
-                    }
-                });
+                crashreportcategory.addCrashSectionCallable("Screen name", () -> Minecraft.this.currentScreen.getClass().getCanonicalName());
                 throw new ReportedException(crashreport);
             }
 
@@ -1770,17 +1767,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 {
                     this.currentScreen.updateScreen();
                 }
+                catch (ConcurrentModificationException e) {
+                    ReversalLogger.warn("[ERROR] ConcurrentModificationException thrown!");
+                }
                 catch (Throwable throwable)
                 {
                     CrashReport crashreport1 = CrashReport.makeCrashReport(throwable, "Ticking screen");
                     CrashReportCategory crashreportcategory1 = crashreport1.makeCategory("Affected screen");
-                    crashreportcategory1.addCrashSectionCallable("Screen name", new Callable<String>()
-                    {
-                        public String call() throws Exception
-                        {
-                            return Minecraft.this.currentScreen.getClass().getCanonicalName();
-                        }
-                    });
+                    crashreportcategory1.addCrashSectionCallable("Screen name", () -> Minecraft.this.currentScreen.getClass().getCanonicalName());
                     throw new ReportedException(crashreport1);
                 }
             }
@@ -1869,7 +1863,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 {
                     if (getSystemTime() - this.debugCrashKeyPressTime >= 6000L)
                     {
-                        throw new ReportedException(new CrashReport("Manually triggered debug crash", new Throwable()));
+                        throw new ReportedException(new CrashReport("手动触发崩溃! 请勿报告!", new Throwable()));
                     }
 
                     if (!Keyboard.isKeyDown(46) || !Keyboard.isKeyDown(61))

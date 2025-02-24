@@ -1,6 +1,5 @@
 package cn.stars.reversal.ui.modern;
 
-import com.github.skystardust.InputMethodBlocker.NativeUtils;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.music.ui.ThemeColor;
@@ -10,6 +9,7 @@ import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
+import com.github.skystardust.InputMethodBlocker.NativeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiScreen;
@@ -98,7 +98,7 @@ public class TextField {
         // Border
         RoundedUtil.drawRoundOutline(posX, posY, width, height, radius, 0.04f, backgroundColor, outlineColor);
 
-        selectedLineAnimation.run((selectedLine && focused) ? 250 : 0);
+        selectedLineAnimation.run(selectedLine ? (focused ? 250 : RenderUtil.isHovered(posX, posY, width, height, mouseX, mouseY) ? 125 : 0) : 0);
         RoundedUtil.drawRound(posX + 3, posY + height - 1, width - 6, 0.8f, 1, new Color(0,80,250,(int) selectedLineAnimation.getValue()));
 
         String visibleText = font.getStringWidth(text) > textMaxWidth - 3f - offsetX ? font.trimStringToWidth(text, textMaxWidth - 3f - offsetX, true, false) : text;

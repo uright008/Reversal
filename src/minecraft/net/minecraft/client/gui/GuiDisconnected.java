@@ -7,10 +7,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
+import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.shader.RiseShaders;
@@ -48,8 +51,8 @@ public class GuiDisconnected extends GuiScreen
         this.buttonList.clear();
         this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
         this.field_175353_i = (int) (this.multilineMessage.size() * regular16.height());
-        reconnectButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height(), 200, 20, () -> this.mc.displayGuiScreen(new GuiMultiplayer(Transformer.transformMainMenu())), "返回主菜单", "", true, 1, 75, 5, 20);
-        cancelButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height() + 25, 200, 20, () -> this.mc.displayGuiScreen(new GuiConnecting(new GuiMultiplayer(Transformer.transformMainMenu()), mc, mc.getCurrentServerData())), "重连", "", true, 1, 90, 5, 20);
+        reconnectButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height(), 200, 20, () -> this.mc.displayGuiScreen(Reversal.atomicMenu), "返回主菜单", "", true, 1, 75, 5, 20);
+        cancelButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height() + 25, 200, 20, () -> this.mc.displayGuiScreen(new GuiConnecting(Reversal.atomicMenu, mc, mc.getCurrentServerData())), "重连", "", true, 1, 90, 5, 20);
         buttons = new TextButton[]{reconnectButton, cancelButton};
     }
 
@@ -75,13 +78,6 @@ public class GuiDisconnected extends GuiScreen
         try {
             float maxLength = Math.max(regular24Bold.width(this.reason), 300);
             this.drawDefaultBackground();
-            // blur
-            RiseShaders.GAUSSIAN_BLUR_SHADER.update();
-            RiseShaders.GAUSSIAN_BLUR_SHADER.run(ShaderRenderType.OVERLAY, partialTicks, NORMAL_BLUR_RUNNABLES);
-
-            // bloom
-            RiseShaders.POST_BLOOM_SHADER.update();
-            RiseShaders.POST_BLOOM_SHADER.run(ShaderRenderType.OVERLAY, partialTicks, NORMAL_POST_BLOOM_RUNNABLES);
 
             GameInstance.clearRunnables();
 
@@ -91,15 +87,14 @@ public class GuiDisconnected extends GuiScreen
                 }
             }
 
-            RoundedUtil.drawRound(width / 2f - 125, 10, 250, 40, 6, new Color(30, 30, 30, 160));
-            RoundedUtil.drawRound(this.width / 2f - maxLength / 2 - 30, this.height / 2f - this.field_175353_i / 2f - regular16.height() * 2 - 10, maxLength + 60, 100 + 10 * multilineMessage.size(), 4, new Color(30, 30, 30, 160));
-            RenderUtil.rect(this.width / 2f - maxLength / 2 - 30, this.height / 2f - this.field_175353_i / 2f - regular16.height() * 2 + 10, maxLength + 60, 0.5, new Color(220, 220, 220, 240));
-
             float finalMaxLength = maxLength;
-            GameInstance.NORMAL_BLUR_RUNNABLES.add(() -> {
-                RoundedUtil.drawRound(this.width / 2f - finalMaxLength / 2 - 30, this.height / 2f - this.field_175353_i / 2f - regular16.height() * 2 - 10, finalMaxLength + 60, 100 + 10 * multilineMessage.size(), 4, Color.BLACK);
-                RoundedUtil.drawRound(width / 2f - 125, 10, 250, 40, 6, Color.BLACK);
-            });
+            ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(0,0,0, 255)), 2, 2);
+            ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
+                RoundedUtil.drawRound(this.width / 2f - finalMaxLength / 2 - 30, this.height / 2f - this.field_175353_i / 2f - regular16.height() * 2 - 10, finalMaxLength + 60, 100 + 10 * multilineMessage.size(), 3, Color.BLACK);
+            }, 2, 2);
+
+            RoundedUtil.drawRound(this.width / 2f - maxLength / 2 - 30, this.height / 2f - this.field_175353_i / 2f - regular16.height() * 2 - 10, maxLength + 60, 100 + 10 * multilineMessage.size(), 3, new Color(20, 20, 20, 160));
+            RenderUtil.rect(this.width / 2f - maxLength / 2 - 30, this.height / 2f - this.field_175353_i / 2f - regular16.height() * 2 + 10, maxLength + 60, 0.5, new Color(220, 220, 220, 240));
 
             for (TextButton button : buttons) {
                 button.draw(mouseX, mouseY, partialTicks);
@@ -116,21 +111,13 @@ public class GuiDisconnected extends GuiScreen
                 }
             }
 
-            String ip = "Unknown";
-
-            final ServerData serverData = mc.getCurrentServerData();
-            if(serverData != null)
-                ip = "IP: " + serverData.serverIP;
-
-            FontManager.getSpecialIcon(80).drawString("b", width / 2f - 115, 17, new Color(220, 220, 220, 240).getRGB());
-            GameInstance.regular24Bold.drawString("SERVER INFORMATION", width / 2f - 55, 18, new Color(220, 220, 220, 240).getRGB());
-            GameInstance.regular20.drawString(ip, width / 2f - 55, 34, new Color(220, 220, 220, 240).getRGB());
-
             regular16.drawString("Open Source PVP Client By Stars.", 4, height - 30, new Color(220, 220, 220, 240).getRGB());
             regular16.drawString("https://www.github.com/RinoRika/Reversal", 4, height - 20, new Color(220, 220, 220, 240).getRGB());
             regular16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")), 4, height - 10, new Color(220, 220, 220, 240).getRGB());
 
             Atomic.INSTANCE.render(new ScaledResolution(mc));
+
+            NotificationManager.onRender2D();
 
             UI_BLOOM_RUNNABLES.forEach(Runnable::run);
             UI_BLOOM_RUNNABLES.clear();

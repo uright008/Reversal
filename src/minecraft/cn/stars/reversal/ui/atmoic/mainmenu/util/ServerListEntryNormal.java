@@ -11,13 +11,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.net.UnknownHostException;
-import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadPoolExecutor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiListExtended;
@@ -31,6 +24,13 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.net.UnknownHostException;
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
 {
@@ -96,18 +96,21 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
         boolean flag = this.server.version > 47;
         boolean flag1 = this.server.version < 47;
         boolean flag2 = flag || flag1;
-        GameInstance.regular20Bold.drawString(this.server.serverName, x + 40, y + 2, new Color(250, 250, 250, 250).getRGB());
+        GameInstance.regular20Bold.drawString(this.server.serverName, x + 40, y + 2, Color.WHITE.getRGB());
         GameInstance.psr16.drawString("[" + this.server.serverIP + "]", x + 45 + GameInstance.regular20Bold.width(this.server.serverName), y + 3, new Color(120, 120, 120, 250).getRGB());
         List<String> list = mc.fontRendererObj.listFormattedStringToWidth(this.server.serverMOTD, listWidth - 32 - 2);
 
+        int iconPos = x + 60 + GameInstance.regular20Bold.width(this.server.serverName) + 5 + GameInstance.psr16.width("[" + this.server.serverIP + "]");
         for (int i = 0; i < Math.min(list.size(), 2); ++i)
         {
             GameInstance.regular16.drawString(list.get(i), x + 40, y + 14 + GameInstance.regular16.height() * i,  new Color(220, 220, 220, 250).getRGB());
+            iconPos = Math.max(iconPos, x + 60 + GameInstance.regular16.width(list.get(i)));
         }
 
         GameInstance.psm16.drawString(this.server.populationInfo, x + listWidth - GameInstance.psm16.width(this.server.populationInfo) + 10, y + 3,  new Color(220, 220, 220, 250).getRGB());
         GameInstance.psm16.drawString(this.server.gameVersion, x + listWidth - GameInstance.psm16.width(this.server.gameVersion) - 5, y + 14,  new Color(120, 120, 120, 250).getRGB());
         GameInstance.psm16.drawString(this.server.pingToServer + "ms", x + listWidth - GameInstance.psm16.width(this.server.pingToServer + "ms") - 5, y + 24,  new Color(120, 120, 120, 250).getRGB());
+        GameInstance.atomic24.drawString("A", iconPos, y + 12, new Color(250,250,250, (int)(selectAnimation.getValue() * 1.6)).getRGB());
         int k = 0;
         String s = null;
         int l;

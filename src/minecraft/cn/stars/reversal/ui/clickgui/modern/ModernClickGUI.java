@@ -11,17 +11,17 @@ import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.modern.TextField;
+import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
+import cn.stars.reversal.util.animation.rise.Animation;
+import cn.stars.reversal.util.animation.rise.Easing;
+import cn.stars.reversal.util.math.TimeUtil;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.*;
 import cn.stars.reversal.value.Value;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
-import cn.stars.reversal.util.animation.rise.Animation;
-import cn.stars.reversal.util.animation.rise.Easing;
-import cn.stars.reversal.util.math.TimeUtil;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -73,11 +73,6 @@ public class ModernClickGUI extends GuiScreen {
         RenderUtil.scaleStart(x + 260, y + 180, (float) scaleAnimation.getValue());
 
         // Background
-        if (ModuleInstance.getModule(PostProcessing.class).blur.enabled && scaleAnimation.isFinished()) {
-            MODERN_BLUR_RUNNABLES.add(() -> {
-            //    RenderUtil.roundedRectangle(x, y, 520, 320, 2, Color.BLACK);
-            });
-        }
         RoundedUtil.drawRound(x, y, 520, 360, 5, backgroundColor);
 
         // Client Name
@@ -353,10 +348,9 @@ public class ModernClickGUI extends GuiScreen {
         }
 
         float moduleX = x + 120;
-        float moduleY = y + 5;
         for (final Module m : Reversal.moduleManager.getModuleList()) {
             if ((m.getModuleInfo().category() == selectedCategory && searchField.text.isEmpty()) || getRelevantModules(searchField.text).contains(m)) {
-                if (RenderUtil.isHovered(moduleX, m.guiY, 520, 30, mouseX, mouseY)) {
+                if (RenderUtil.isHovered(moduleX, m.guiY, 390, 30, mouseX, mouseY)) {
                     if (m.guiY + psm24.height() < y || m.guiY + psm24.height() > y + 360) return;
                     if (mouseButton == 0) {
                         m.toggleModule();
@@ -522,7 +516,6 @@ public class ModernClickGUI extends GuiScreen {
     private final MFont psr18 = FontManager.getPSR(18);
     private final MFont cur26 = FontManager.getCur(26);
     private final MFont psm20 = FontManager.getPSM(20);
-    private final MFont psm24 = FontManager.getPSM(24);
     private final MFont icon16 = FontManager.getIcon(16);
     private final MFont icon20 = FontManager.getIcon(20);
 }

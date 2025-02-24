@@ -3,13 +3,11 @@ package cn.stars.reversal.ui.atmoic.mainmenu.impl;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import lombok.SneakyThrows;
@@ -36,7 +34,6 @@ import java.util.Collections;
 import java.util.Date;
 
 public class SinglePlayerGui extends AtomicGui {
-    private final MFont upperIcon = FontManager.getAtomic(24);
     private static final Logger logger = LogManager.getLogger();
     private final DateFormat field_146633_h = new SimpleDateFormat();
     private int selectedIndex;
@@ -56,8 +53,8 @@ public class SinglePlayerGui extends AtomicGui {
     }
 
     @Override
-    public void drawIcon(int posX, int posY) {
-        upperIcon.drawString(icon, posX, posY + 0.5, Color.WHITE.getRGB());
+    public void drawIcon(int posX, int posY, int color) {
+        atomic24.drawString(icon, posX, posY + 0.5, color);
     }
 
 
@@ -80,7 +77,7 @@ public class SinglePlayerGui extends AtomicGui {
     {
         super.initGui();
         this.addWorldSelectionButtons();
-        searchField = new TextField(width - 160,20, GameInstance.regular16, new Color(30,30,30,100), ColorUtil.transparent);
+        searchField = new TextField(width - 165, 20, GameInstance.regular16, new Color(30, 30, 30, 100), new Color(30,30,30,120));
         searchField.setSelectedLine(true);
 
         try
@@ -216,14 +213,14 @@ public class SinglePlayerGui extends AtomicGui {
             FontManager.getRainbowParty(48).drawString("singleplayer", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
-        RoundedUtil.drawRound(50, 100, width - 100, height - 120, 3, new Color(30, 30, 30, 160));
-        RoundedUtil.drawRound(50, 65, width - 100, 25, 3, new Color(30, 30, 30, 160));
+        RoundedUtil.drawRound(50, 100, width - 100, height - 120, 3, new Color(20, 20, 20, 160));
+        RoundedUtil.drawRound(50, 65, width - 100, 25, 3, new Color(20, 20, 20, 160));
 
-        upperIcon.drawString("3", 55, 74, Color.WHITE.getRGB());
-        searchField.draw(68, 68, mouseX, mouseY);
+        atomic24.drawString("3", 55, 74, Color.WHITE.getRGB());
+        searchField.draw(70, 68, mouseX, mouseY);
 
-        RoundedUtil.drawRound(55,45,4,4,1.5f, new Color(250, 250, 250, 250));
-        FontManager.getRainbowParty(48).drawString("singleplayer", 75, 35, new Color(250, 250, 250, 250).getRGB());
+        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+        FontManager.getRainbowParty(48).drawString("singleplayer", 75, 35, Color.WHITE.getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.scissor(50, 100, width - 100, height - 150);
@@ -251,7 +248,7 @@ public class SinglePlayerGui extends AtomicGui {
     {
         public List(Minecraft mcIn)
         {
-            super(mcIn, SinglePlayerGui.this.width, SinglePlayerGui.this.height, 105, SinglePlayerGui.this.height - 155, 36);
+            super(mcIn, SinglePlayerGui.this.width, SinglePlayerGui.this.height, 105, SinglePlayerGui.this.height - 90, 36);
         }
 
         protected int getSize()
@@ -341,10 +338,12 @@ public class SinglePlayerGui extends AtomicGui {
             }
             RenderUtil.roundedRectangle(p_180791_2_ - 2, p_180791_3_ - 2, getListWidth(), slotHeight, 2, new Color(20, 20, 20, (int) SinglePlayerGui.this.saveList.get(entryID).getSelectAnimation().getValue()));
 
-            GameInstance.regular20Bold.drawString(s, p_180791_2_ + 2, p_180791_3_ + 3, new Color(250, 250, 250, 250).getRGB());
+            GameInstance.regular20Bold.drawString(s, p_180791_2_ + 2, p_180791_3_ + 3, Color.WHITE.getRGB());
 
             GameInstance.regular16.drawString(s1, p_180791_2_ + 2, p_180791_3_ + 15, new Color(120, 120, 120, 250).getRGB());
             GameInstance.regular16.drawString(s2, p_180791_2_ + 2, p_180791_3_ + 15 + 10, new Color(120, 120, 120, 250).getRGB());
+
+            GameInstance.atomic24.drawString("A", p_180791_2_ + 20 + Math.max(Math.max(regular16.width(s1), regular16.width(s2)), regular20Bold.width(s)), p_180791_3_ + 12, new Color(250,250,250, (int)(saveList.get(entryID).getSelectAnimation().getValue() * 1.6)).getRGB());
         }
 
         @Override
