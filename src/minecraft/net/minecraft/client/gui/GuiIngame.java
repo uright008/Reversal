@@ -586,13 +586,14 @@ public class GuiIngame extends Gui {
             int l3 = MathHelper.ceiling_float_int((float) (i4 + 1) / 10.0F) - 1;
             int j4 = k1 - l3 * i2;
             if (ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) {
+                RoundedUtil.drawRound(i1, j4, 80, 7, 2, new Color(0,0,0,130));
                 healthAnimation.run(80 / f * mc.thePlayer.getHealth()); // max health may above 20
                 if (entityplayer.isPotionActive(Potion.regeneration)) {
                     RoundedUtil.drawGradientRound(i1, j4, (float) healthAnimation.getValue(), 7, 2,
-                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 1000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true),
-                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 1000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true),
-                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 2000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true),
-                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 2000, new Color(250, 20, 20, 250), new Color(80, 20, 20, 250), true));
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 1000, new Color(250, 20, 20, 250), new Color(50, 19, 19, 250), true),
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 1000, new Color(250, 20, 20, 250), new Color(50, 19, 19, 250), true),
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 2000, new Color(250, 20, 20, 250), new Color(50, 19, 19, 250), true),
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(5, 2000, new Color(250, 20, 20, 250), new Color(50, 19, 19, 250), true));
                 } else if (entityplayer.isPotionActive(Potion.poison)) {
                     RoundedUtil.drawRound(i1, j4, (float) healthAnimation.getValue(), 7, 2, new Color(40, 100, 40, 250));
                 } else if (entityplayer.isPotionActive(Potion.wither)) {
@@ -643,8 +644,13 @@ public class GuiIngame extends Gui {
                 if (ModuleInstance.getModule(Hotbar.class).modernBars.isEnabled()) {
                     this.mc.mcProfiler.endStartSection("food");
                     int j9 = j1 - 80;
+                    RoundedUtil.drawRound(j9, j4, 80, 7, 2, new Color(0,0,0,130));
                     foodAnimation.run(k * 4);
-                    RoundedUtil.drawRound(j9, j4, (float) foodAnimation.getValue(), 7, 2, new Color(220, Math.min(20 + 50 + k * 2, 255), 20, Math.min(150 + k2 * 5, 255)));
+                    if (entityplayer.isPotionActive(Potion.hunger)) {
+                        RoundedUtil.drawRound(j9, j4, (float) foodAnimation.getValue(), 7, 2, new Color(40, 100, 40, 250));
+                    } else {
+                        RoundedUtil.drawRound(j9, j4, (float) foodAnimation.getValue(), 7, 2, new Color(220, 100, 20, 255));
+                    }
                     GameInstance.regular16.drawString(k + "", j9 - GameInstance.regular16.width(k + "") + foodAnimation.getValue(), j4 + 2, new Color(250, 250, 250, Math.min(150 + k * 5, 255)).getRGB());
                 } else {
                     for (int k6 = 0; k6 < 10; ++k6) {
