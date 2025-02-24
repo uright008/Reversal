@@ -197,16 +197,16 @@ public class GuiConnecting extends GuiScreen
 
         ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(0,0,0, 255)), 2, 2);
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
-            RoundedUtil.drawRound(width / 2f - 225, 200, 450, height - 400, 3, Color.BLACK);
-            RenderUtils.drawLoadingCircle2(this.width / 2f, this.height / 2f + 50, 6, Color.WHITE);
+            RoundedUtil.drawRound(width / 2f - 220, height / 2 - 52, 441, 107, 3, Color.BLACK);
+            RenderUtils.drawLoadingCircle2(this.width / 2f, this.height / 2f + 15, 6, Color.WHITE);
         }, 2, 2);
 
-        RoundedUtil.drawRound(width / 2f - 225, 200, 450, height - 400, 3, new Color(20, 20, 20, 160));
-        RenderUtil.rect(width / 2f - 225, 220, 450, 0.5, new Color(220, 220, 220, 240));
-        GameInstance.regular24Bold.drawCenteredString("连接服务器", width / 2f, 206, new Color(220, 220, 220, 240).getRGB());
+        RoundedUtil.drawRound(width / 2f - 220, height / 2 - 52, 441, 107, 3, new Color(20, 20, 20, 160));
+        RenderUtil.rect(width / 2f - 220, height / 2 - 32, 441, 0.5, new Color(220, 220, 220, 240));
+        GameInstance.regular24Bold.drawCenteredString("连接服务器", width / 2f, height / 2f - 47, new Color(220, 220, 220, 240).getRGB());
 
-        RenderUtil.image(new ResourceLocation("reversal/images/logo/curiosity.png"), width / 2f - 100,  height / 2f - 160, 200, 200);
-        RenderUtils.drawLoadingCircle2(this.width / 2f, this.height / 2f + 50, 6, new Color(220, 220, 220, 220));
+        RenderUtil.image(new ResourceLocation("reversal/images/logo/curiosity.png"), width / 2f - 100,  height / 2f - 260, 200, 200);
+        RenderUtils.drawLoadingCircle2(this.width / 2f, this.height / 2f + 15, 6, new Color(220, 220, 220, 220));
 
         String ip = "Unknown";
 
@@ -214,8 +214,8 @@ public class GuiConnecting extends GuiScreen
         if(serverData != null)
             ip = "IP: " + serverData.serverIP;
 
-        regular24Bold.drawCenteredString("正在连接至服务器...", this.width / 2f, this.height / 2f + 70, new Color(220, 220, 220, 220).getRGB());
-        psm18.drawCenteredString(ip, this.width / 2f, this.height / 2f + 85, new Color(220, 220, 220, 220).getRGB());
+        regular24Bold.drawCenteredString(String.valueOf(height / 2 - 145), this.width / 2f, this.height / 2f - 17, new Color(220, 220, 220, 220).getRGB());
+        psm18.drawCenteredString(ip, this.width / 2f, this.height / 2f + 40, new Color(220, 220, 220, 220).getRGB());
 
         cancelButton.draw(mouseX, mouseY, partialTicks);
 
