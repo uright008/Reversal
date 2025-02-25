@@ -30,8 +30,6 @@ import cn.stars.reversal.util.render.video.VideoManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.reversal.Branch;
 import cn.stars.reversal.util.reversal.Preloader;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import de.florianmichael.viamcp.ViaMCP;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -61,7 +59,7 @@ public class Reversal {
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "alpha.07";
+    public static final String BUILD_VERSION = "alpha.08";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -241,7 +239,7 @@ public class Reversal {
             new MusicPlayer(),
             new WaveyCapes(),
             new SkinLayers3D(),
-            new RFP(),
+            new RealFirstPerson(),
             // Combat
             new ClickSound(),
             new NoClickDelay(),

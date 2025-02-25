@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 public class EntityPlayerDummy extends Entity {
-    public EntityPlayerDummy(REN this$0, World world) {
+    public EntityPlayerDummy(World world) {
         super(world);
         this.noClip = true;
         this.setSize(0.0F, 2.0F);
@@ -21,7 +21,7 @@ public class EntityPlayerDummy extends Entity {
     @Override
     public void onUpdate() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        REN.dummy.setPositionAndRotation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+        RFP.dummy.setPositionAndRotation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
     }
 
     @Override

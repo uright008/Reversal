@@ -197,8 +197,10 @@ public class MultiPlayerGui extends AtomicGui {
         AtomicMenu.switchGui(2);
     }
 
+    @Override
     public void confirmClicked(boolean result, int id)
     {
+        super.confirmClicked(result, id);
         GuiListExtended.IGuiListEntry guilistextended$iguilistentry = this.serverListSelector.func_148193_k() < 0 ? null : this.serverListSelector.getListEntry(this.serverListSelector.func_148193_k());
 
         if (this.deletingServer)

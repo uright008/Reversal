@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer;
 
-import cn.stars.addons.rfp.REN;
+import cn.stars.addons.rfp.RFP;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render3DEvent;
@@ -896,7 +896,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     public void renderHand(float p_renderHand_1_, int p_renderHand_2_, boolean p_renderHand_3_, boolean p_renderHand_4_, boolean p_renderHand_5_)
     {
-        if (REN.shouldCancel()) return;
+        if (RFP.shouldCancel()) return;
         if (!this.debugView)
         {
             GlStateManager.matrixMode(5889);

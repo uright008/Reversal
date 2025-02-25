@@ -161,7 +161,15 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Foundation. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+alpha.07", "2025/2/23", 1)
+        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+alpha.08", "2025/2/25", 1)
+                .addContent("[*] 修复部分界面无法点击")
+                .addContent("[*] 修复部分界面元素位置异常")
+                .addContent("[*] 修复设置界面点击按钮崩溃")
+                .addContent("[*] 修复AtomicMenu按ESC回到异常页面")
+                .addContent("[+] RealFirstPerson (真实第一人称)")
+                .addContent("[/] 改进Hotbar效果")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+alpha.07", "2025/2/23", 2)
                 .addContent("[+] 新增界面呼吸灯式发光效果")
                 .addContent("[+] 新增跨版本界面")
                 .addContent("[+] 新增选择的特效")
@@ -174,16 +182,6 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("[/] 修改部分图标和字体位置")
                 .addContent("[*] 修复ClickGUI可点击的位置异常")
                 .addContent("[*] 修复部分界面显示不正常")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+alpha.06", "2025/2/22", 1)
-                .addContent("[+] 默认菜单已设置为AtomicMenu")
-                .addContent("[/] 优化连接,掉线等界面的展示效果")
-                .addContent("[/] 优化文本框")
-                .addContent("[/] 优化启动速度")
-                .addContent("[/] 优化预加载过程")
-                .addContent("[/] 优化视频背景性能,减少卡顿")
-                .addContent("[+] AtomicMenu新增MiscGui")
-                .addContent("[*] 修复ClickGUI一些bug")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);

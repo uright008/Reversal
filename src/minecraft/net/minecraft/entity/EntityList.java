@@ -1,5 +1,6 @@
 package net.minecraft.entity;
 
+import cn.stars.addons.rfp.EntityPlayerDummy;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -124,16 +125,16 @@ public class EntityList
         {
             stringToClassMapping.put(entityName, entityClass);
             classToStringMapping.put(entityClass, entityName);
-            idToClassMapping.put(Integer.valueOf(id), entityClass);
-            classToIDMapping.put(entityClass, Integer.valueOf(id));
-            stringToIDMapping.put(entityName, Integer.valueOf(id));
+            idToClassMapping.put(id, entityClass);
+            classToIDMapping.put(entityClass, id);
+            stringToIDMapping.put(entityName, id);
         }
     }
 
     private static void addMapping(Class <? extends Entity > entityClass, String entityName, int entityID, int baseColor, int spotColor)
     {
         addMapping(entityClass, entityName, entityID);
-        entityEggs.put(Integer.valueOf(entityID), new EntityList.EntityEggInfo(entityID, baseColor, spotColor));
+        entityEggs.put(entityID, new EntityList.EntityEggInfo(entityID, baseColor, spotColor));
     }
 
     public static Entity createEntityByName(String entityName, World worldIn)
@@ -354,6 +355,7 @@ public class EntityList
         addMapping(EntityRabbit.class, "Rabbit", 101, 10051392, 7555121);
         addMapping(EntityVillager.class, "Villager", 120, 5651507, 12422002);
         addMapping(EntityEnderCrystal.class, "EnderCrystal", 200);
+        addMapping(EntityPlayerDummy.class, "PlayerDummy", 300);
     }
 
     public static class EntityEggInfo
