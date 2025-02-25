@@ -304,6 +304,7 @@ public class Reversal {
             new SessionInfo(),
             new TargetHud(),
             new TextGui(),
+            new ArmorHud(),
             new TestElement(),
             // Client
             new ClientSettings(),
