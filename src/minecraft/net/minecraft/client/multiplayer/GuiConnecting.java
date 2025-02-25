@@ -214,7 +214,7 @@ public class GuiConnecting extends GuiScreen
         if(serverData != null)
             ip = "IP: " + serverData.serverIP;
 
-        regular24Bold.drawCenteredString(String.valueOf(height / 2 - 145), this.width / 2f, this.height / 2f - 17, new Color(220, 220, 220, 220).getRGB());
+        regular24Bold.drawCenteredString("正在连接至服务器...", this.width / 2f, this.height / 2f - 17, new Color(220, 220, 220, 220).getRGB());
         psm18.drawCenteredString(ip, this.width / 2f, this.height / 2f + 40, new Color(220, 220, 220, 220).getRGB());
 
         cancelButton.draw(mouseX, mouseY, partialTicks);
