@@ -1,5 +1,6 @@
 package net.minecraft.client.particle;
 
+import lombok.Setter;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -11,8 +12,9 @@ import net.minecraft.world.World;
 
 public class EntityDiggingFX extends EntityFX
 {
-    private IBlockState sourceState;
-    private BlockPos sourcePos;
+    public IBlockState sourceState;
+    @Setter
+    public BlockPos sourcePos;
 
     protected EntityDiggingFX(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, IBlockState state)
     {

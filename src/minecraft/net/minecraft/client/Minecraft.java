@@ -1,5 +1,6 @@
 package net.minecraft.client;
 
+import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.rawinput.RawInput;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
@@ -203,7 +204,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private final PropertyMap twitchDetails;
     private final PropertyMap profileProperties;
     private ServerData currentServerData;
-    private TextureManager renderEngine;
+    public TextureManager renderEngine;
     private static Minecraft theMinecraft;
     public PlayerControllerMP playerController;
     private boolean fullscreen;

@@ -1,5 +1,6 @@
 package net.minecraft.client.particle;
 
+import cn.stars.addons.fbp.particle.FBPParticleDigging;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -36,11 +37,11 @@ public class EffectRenderer
 {
     private static final ResourceLocation particleTextures = new ResourceLocation("textures/particle/particles.png");
     protected World worldObj;
-    private List<EntityFX>[][] fxLayers = new List[4][];
-    private List<EntityParticleEmitter> particleEmitters = Lists.<EntityParticleEmitter>newArrayList();
+    public List<EntityFX>[][] fxLayers = new List[4][];
+    public List<EntityParticleEmitter> particleEmitters = Lists.newArrayList();
     private TextureManager renderer;
     private Random rand = new Random();
-    private Map<Integer, IParticleFactory> particleTypes = Maps.<Integer, IParticleFactory>newHashMap();
+    public Map<Integer, IParticleFactory> particleTypes = Maps.newHashMap();
 
     public EffectRenderer(World worldIn, TextureManager rendererIn)
     {
@@ -103,6 +104,7 @@ public class EffectRenderer
         this.registerParticle(EnumParticleTypes.EXPLOSION_LARGE.getParticleID(), new EntityLargeExplodeFX.Factory());
         this.registerParticle(EnumParticleTypes.FIREWORKS_SPARK.getParticleID(), new EntityFirework.Factory());
         this.registerParticle(EnumParticleTypes.MOB_APPEARANCE.getParticleID(), new MobAppearance.Factory());
+        this.registerParticle(42, new FBPParticleDigging.Factory());
     }
 
     public void registerParticle(int id, IParticleFactory particleFactory)

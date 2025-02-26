@@ -15,14 +15,14 @@ public class EntityFX extends Entity
     protected float particleTextureJitterX;
     protected float particleTextureJitterY;
     protected int particleAge;
-    protected int particleMaxAge;
-    protected float particleScale;
+    public int particleMaxAge;
+    public float particleScale;
     protected float particleGravity;
     protected float particleRed;
     protected float particleGreen;
     protected float particleBlue;
     protected float particleAlpha;
-    protected TextureAtlasSprite particleIcon;
+    public TextureAtlasSprite particleIcon;
     public static double interpPosX;
     public static double interpPosY;
     public static double interpPosZ;

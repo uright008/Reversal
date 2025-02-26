@@ -1,6 +1,7 @@
 package cn.stars.reversal;
 
 import cn.stars.addons.creativetab.ReversalTab;
+import cn.stars.addons.fbp.FBP;
 import cn.stars.reversal.command.Command;
 import cn.stars.reversal.command.CommandManager;
 import cn.stars.reversal.command.impl.*;
@@ -202,6 +203,8 @@ public class Reversal {
             VideoUtil.stop();
             VideoManager.loadBackground();
 
+            FBP.init();
+
         //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
             Display.setTitle(NAME + " " + VERSION + "+" + BUILD_VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
             //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH));
@@ -240,6 +243,7 @@ public class Reversal {
             new WaveyCapes(),
             new SkinLayers3D(),
             new RealFirstPerson(),
+            new FancyBlockParticles(),
             // Combat
             new ClickSound(),
             new NoClickDelay(),

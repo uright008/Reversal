@@ -1,9 +1,11 @@
 package net.minecraft.client.renderer;
 
+import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.rfp.RFP;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render3DEvent;
+import cn.stars.reversal.module.impl.addons.FancyBlockParticles;
 import cn.stars.reversal.module.impl.addons.FreeLook;
 import cn.stars.reversal.module.impl.misc.Protocol;
 import cn.stars.reversal.module.impl.render.Animations;
@@ -1916,17 +1918,10 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
     protected void renderRainSnow(float partialTicks)
     {
-        if (Reflector.ForgeWorldProvider_getWeatherRenderer.exists())
-        {
-            WorldProvider worldprovider = this.mc.theWorld.provider;
-            Object object = Reflector.call(worldprovider, Reflector.ForgeWorldProvider_getWeatherRenderer, new Object[0]);
-
-            if (object != null)
-            {
-                return;
-            }
+        if (ModuleInstance.getModule(FancyBlockParticles.class).enabled) {
+            FBP.fancyWeatherRenderer.render(partialTicks, mc.theWorld, mc);
+            return;
         }
-
         float f5 = this.mc.theWorld.getRainStrength(partialTicks);
 
         if (f5 > 0.0F)
@@ -2035,15 +2030,12 @@ public class EntityRenderer implements IResourceManagerReloadListener
                                 Color color = Color.WHITE;
                                 ResourceLocation texture = TEXTURE_SNOW_HEAVY;
 
-                                // Determine what texture we want to draw with
                                 if (timeTraveller.isEnabled()) {
                                     if (weather.equals("Light Snow"))
                                         texture = TEXTURE_SNOW_LIGHT;
                                     else if (weather.equals("Nether")) {
                                         texture = TEXTURE_NETHER_PARTICLES;
                                         color = new Color(220, 200, 230);
-//                                        this.fogColorRed = 0.5F;
-//                                        this.fogColorBlue = 0.5F;
                                     }
                                 }
 
