@@ -45,11 +45,8 @@ public class Preloader {
         loadResource(new ResourceLocation(jumpCircle.staticLoc + "konchal.png"));
 
         // Load TargetHud.class
-        loadResource(RenderUtil.getESPImage());
         loadResource(TargetESP.BUBBLE_TEXTURE);
         loadResource(TargetESP.SURROUNDING_TEXTURE);
-
-        Minecraft.getMinecraft().getTextureManager().resetTexture();
 
         ReversalLogger.info("Successfully loaded " + count + " resources!");
     }

@@ -118,6 +118,10 @@ public class DefaultHandler {
                     "This config was made in a different version of Reversal.", NotificationType.WARNING
             );
         }
+
+        for (Module module : Reversal.moduleManager.moduleList) {
+            module.onLoad();
+        }
     }
 
     public static void saveConfig(boolean force) {

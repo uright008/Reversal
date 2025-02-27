@@ -8,6 +8,7 @@ import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.render.GlUtils;
 import cn.stars.reversal.util.render.RenderUtil;
 import lombok.SneakyThrows;
+import net.minecraft.client.Minecraft;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.lwjgl.opengl.GL11;

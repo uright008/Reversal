@@ -161,27 +161,23 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Foundation. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+alpha.08", "2025/2/25", 1)
+        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.01", "2025/2/27", 1)
+                .addContent("[+] 新增RealFirstPerson 真实第一人称")
+                .addContent("[+] 新增FancyBlockParticles 梦幻方块粒子")
+                .addContent("[/] 优化视频播放器性能")
+                .addContent("[*] 修复Protocol崩端;增加开启限制")
+                .addContent("[/] 优化TimeTraveller")
+                .addContent("[/] 优化搜索框逻辑")
+                .addContent("[+] 新增更好的HitEffect 兼容FBP")
+                .addContent("[*] 修复shader导致的JVM Crash")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+alpha.08", "2025/2/25", 2)
                 .addContent("[*] 修复部分界面无法点击")
                 .addContent("[*] 修复部分界面元素位置异常")
                 .addContent("[*] 修复设置界面点击按钮崩溃")
                 .addContent("[*] 修复AtomicMenu按ESC回到异常页面")
                 .addContent("[+] RealFirstPerson (真实第一人称)")
                 .addContent("[/] 改进Hotbar效果")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+alpha.07", "2025/2/23", 2)
-                .addContent("[+] 新增界面呼吸灯式发光效果")
-                .addContent("[+] 新增跨版本界面")
-                .addContent("[+] 新增选择的特效")
-                .addContent("[+] 新增随机标题")
-                .addContent("[/] MotionBlur效果最大调至15")
-                .addContent("[/] 优化ClickGUI效果")
-                .addContent("[/] 优化代码")
-                .addContent("[/] 优化字体渲染器")
-                .addContent("[/] 优化输入框体验")
-                .addContent("[/] 修改部分图标和字体位置")
-                .addContent("[*] 修复ClickGUI可点击的位置异常")
-                .addContent("[*] 修复部分界面显示不正常")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);

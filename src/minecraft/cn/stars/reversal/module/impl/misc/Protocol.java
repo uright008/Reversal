@@ -1,5 +1,6 @@
 package cn.stars.reversal.module.impl.misc;
 
+import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.BlockCollideEvent;
 import cn.stars.reversal.event.impl.PacketSendEvent;
@@ -25,7 +26,7 @@ import static net.minecraft.util.EnumFacing.*;
 @ModuleInfo(name = "Protocol", chineseName = "跨版本协议", description = "Fix something when you enter specified servers",
         chineseDescription = "在你进入特定服务器时修复一些东西", category = Category.MISC)
 public class Protocol extends Module {
-    private final NoteValue note = new NoteValue("DON'T ENABLE IF YOU AREN'T CROSSING VERSION !!!!!", this);
+    private final NoteValue note = new NoteValue("未跨版本请勿开启.由该功能造成的封禁均不属于开发者问题.", this);
     private final BoolValue fix1_9_plusAttackDistance = new BoolValue("1.9+ Attack Distance", this, true);
     private final BoolValue fix1_11_plusBlockPlacement = new BoolValue("1.12+ Block Placement", this, false);
     private final BoolValue fix1_9_plusBlockCollide = new BoolValue("1.9+ Block Collide", this, false);
@@ -33,8 +34,13 @@ public class Protocol extends Module {
 
     @Override
     public void onUpdateAlways() {
+        if (RainyAPI.isViaCompatibility) {
+            Reversal.showMsg("已禁用跨版本,无法使用该功能");
+            setEnabled(false);
+            return;
+        }
         if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() == ViaLoadingBase.getInstance().getNativeVersion() && this.enabled) {
-            Reversal.showMsg("没跨版本你开集贸跨版本协议,封了又要怪我");
+            Reversal.showMsg("未进行跨版本,无法使用该功能");
             setEnabled(false);
         }
     }

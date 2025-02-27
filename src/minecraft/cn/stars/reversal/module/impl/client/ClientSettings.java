@@ -100,4 +100,16 @@ public final class ClientSettings extends Module {
             }
         }
     }
+
+    @Override
+    public void onLoad() {
+        if (rawInput.enabled) {
+            mc.mouseHelper = new RawMouseHelper();
+            ReversalLogger.info("Switched mc.mouseHelper to RawMouseHelper.");
+        }
+        else {
+            mc.mouseHelper = new MouseHelper();
+            ReversalLogger.info("Switched mc.mouseHelper to MouseHelper.");
+        }
+    }
 }

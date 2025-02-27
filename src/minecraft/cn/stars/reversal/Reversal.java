@@ -141,6 +141,10 @@ public class Reversal {
             moduleManager = new ModuleManager();
             moduleManager.registerModules(modules);
 
+            // Preload module resources
+            Preloader preloader = new Preloader();
+            AsyncGLContentLoader.loadGLContentAsync(preloader::loadResources);
+
             notificationManager = new NotificationManager();
 
             cmdManager = new CommandManager();
@@ -162,10 +166,7 @@ public class Reversal {
 
             creativeTab = new ReversalTab();
 
-
-            // Preload module resources
-            Preloader preloader = new Preloader();
-            AsyncGLContentLoader.loadGLContentAsync(preloader::loadResources);
+            Minecraft.latch.countDown();
         }
         catch (final Exception e) {
             ReversalLogger.error("An error has occurred while loading Reversal: ", e);

@@ -47,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import javax.imageio.ImageIO;
@@ -191,6 +192,7 @@ import org.lwjgl.util.glu.GLU;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
+    public static CountDownLatch latch = new CountDownLatch(1);
     public static StopWatch startTimer;
     public StopWatch timeScreen = new StopWatch();
     public long startMillisTime = System.currentTimeMillis();
@@ -394,7 +396,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private void startGame() throws LWJGLException {
+    private void startGame() throws LWJGLException, InterruptedException {
         startTimer = new StopWatch();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
@@ -404,8 +406,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         if (RainyAPI.imageScreen) ImageScreen.load();
 
-        if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0)
-        {
+        if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0) {
             this.displayWidth = this.gameSettings.overrideWidth;
             this.displayHeight = this.gameSettings.overrideHeight;
         }
@@ -437,8 +438,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.mcMusicTicker = new MusicTicker(this);
         this.fontRendererObj = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii.png"), this.renderEngine, false);
 
-        if (this.gameSettings.language != null)
-        {
+        if (this.gameSettings.language != null) {
             this.fontRendererObj.setUnicodeFlag(this.isUnicode());
             this.fontRendererObj.setBidiFlag(this.mcLanguageManager.isCurrentLanguageBidirectional());
         }
@@ -460,7 +460,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.mouseHelper = new MouseHelper();
         RawInput.startRawInputThread();
         SplashScreen.setProgress(40, "Reversal - Client Loading");
-        Reversal.start();
+        AsyncGLContentLoader.loadGLContentAsync(Reversal::start);
         SplashScreen.setProgress(60, "Minecraft - GL Startup");
         this.checkGLError("Pre startup");
         GlStateManager.enableTexture2D();
@@ -505,14 +505,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         SplashScreen.setProgress(100, "Minecraft - GUI");
         this.ingameGUI = new GuiIngame(this);
 
-        if (this.serverName != null)
-        {
+        latch.await();
+        if (this.serverName != null) {
             this.displayGuiScreen(new GuiConnecting(Transformer.transformMainMenu(), this, this.serverName, this.serverPort));
-        }
-        else
-        {
+        } else {
             this.displayGuiScreen(Transformer.transformMainMenu());
-
             Reversal.notificationManager.registerNotification(Reversal.NAME + " " + Reversal.VERSION + ", made with love by " + Reversal.AUTHOR + ".", "Reversal", NotificationType.NOTIFICATION);
         }
 
@@ -520,17 +517,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.mojangLogo = null;
         this.loadingScreen = new LoadingScreenRenderer(this);
 
-        if (this.gameSettings.fullScreen && !this.fullscreen)
-        {
+        if (this.gameSettings.fullScreen && !this.fullscreen) {
             this.toggleFullscreen();
         }
 
-        try
-        {
+        try {
             Display.setVSyncEnabled(this.gameSettings.enableVsync);
-        }
-        catch (OpenGLException var2)
-        {
+        } catch (OpenGLException var2) {
             this.gameSettings.enableVsync = false;
             this.gameSettings.saveOptions();
         }

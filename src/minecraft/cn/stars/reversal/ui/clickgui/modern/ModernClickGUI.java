@@ -474,7 +474,6 @@ public class ModernClickGUI extends GuiScreen {
     public void onGuiClosed() {
         Keyboard.enableRepeatEvents(false);
         selectedSlider = null;
-        searchField.setText("");
         super.onGuiClosed();
     }
 

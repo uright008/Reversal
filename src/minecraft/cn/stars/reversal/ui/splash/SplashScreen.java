@@ -230,6 +230,8 @@ public class SplashScreen {
         if (RainyAPI.isSplashScreenDisabled) return;
         loadingScreenRenderer.onGameLoadFinishedNotify();
 
+        while (!AsyncGLContentLoader.isAllTasksFinished()) {}
+
         waiting = true;
         synchronized (finishLock) {
             finishLock.wait();

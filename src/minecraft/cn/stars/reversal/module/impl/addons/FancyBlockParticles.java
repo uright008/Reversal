@@ -16,7 +16,7 @@ import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 
-@ModuleInfo(name = "FancyBlockParticles", chineseName = "精美方块粒子", description = "Make the particles look better", chineseDescription = "生成更好看的粒子效果", category = Category.ADDONS)
+@ModuleInfo(name = "FancyBlockParticles", chineseName = "梦幻方块粒子", description = "Make the particles look better", chineseDescription = "生成更好看的粒子效果", category = Category.ADDONS)
 public class FancyBlockParticles extends Module {
     public final NumberValue minAge = new NumberValue("Min Age", this, 10, 1, 100, 1);
     public final NumberValue maxAge = new NumberValue("Max Age", this, 55, 1, 100, 1);

@@ -165,8 +165,10 @@ public class AsyncGLContentLoader {
 
             if (!thread.tasks.isEmpty() && thread.getState() == Thread.State.WAITING) {
                 synchronized (thread.tasks) {
-                    // change the thread's state (WAITING -> RUNNING) to continue loading tasks
-                    thread.tasks.notifyAll();
+                    // 只有当任务队列非空时才唤醒
+                    if (!thread.tasks.isEmpty()) {
+                        thread.tasks.notify();
+                    }
                 }
             }
         }
@@ -175,10 +177,12 @@ public class AsyncGLContentLoader {
             return;
         }
 
-        if (least.getState() == Thread.State.WAITING)
+        // 给最少任务数的线程分配任务
+        if (least.getState() == Thread.State.WAITING) {
             synchronized (least.tasks) {
-                least.tasks.notifyAll();
+                least.tasks.notify();
             }
+        }
 
 //        System.out.println("Task given to thread => " + least.getName());
 

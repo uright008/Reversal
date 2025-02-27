@@ -36,10 +36,6 @@ public final class ModuleManager {
             moduleList = Arrays.stream(Stream.concat(Arrays.stream(moduleList), Stream.of(module))
                     .toArray(Module[]::new)).sorted(Comparator.comparing(m -> m.getModuleInfo().name())).toArray(Module[]::new);
         }
-
-        for (Module module : moduleList) {
-            module.onLoad();
-        }
         EventHandler.residentProcessor.onLoad();
     }
 
