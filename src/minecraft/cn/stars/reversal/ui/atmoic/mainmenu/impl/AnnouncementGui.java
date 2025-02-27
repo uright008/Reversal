@@ -170,6 +170,9 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("[/] 优化搜索框逻辑")
                 .addContent("[+] 新增更好的HitEffect 兼容FBP")
                 .addContent("[*] 修复shader导致的JVM Crash")
+                .addContent("[/] 多线程加载Reversal 大幅优化加载速度")
+                .addContent("[/] 优化加载界面逻辑")
+                .addContent("[*] 修复预加载资源失败问题")
                 .calcMaxWidth();
         Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+alpha.08", "2025/2/25", 2)
                 .addContent("[*] 修复部分界面无法点击")
