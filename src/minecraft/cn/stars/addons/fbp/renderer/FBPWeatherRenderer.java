@@ -284,8 +284,6 @@ public class FBPWeatherRenderer {
 
 							if (finalTemp < 0.15F || (timeTraveller.isEnabled() && (weather.equals("Snow") || weather.equals("Light Snow") || weather.equals("Nether")))) {
 								if (FBP.fancySnow && i % 2 == 0) {
-									Reversal.showMsg("Density: 2.0, randomized: ("
-											+ FBP.random.nextDouble(-0.5, 0.5) + "," + FBP.random.nextDouble(-0.5, 0.5) + "," + FBP.random.nextDouble(-0.5, 0.5) + ")");
 									mc.effectRenderer.addEffect(
 											new FBPParticleSnow(mc.theWorld, X, Y, Z, FBP.random.nextDouble(-0.5, 0.5),
 													FBP.random.nextDouble(0.25, 1) + mT * 1.5f,

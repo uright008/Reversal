@@ -58,8 +58,6 @@ public class FBP {
 
 			new Vec3(-1, 0, 0), new Vec3(1, 0, 0) };
 	public static FBP INSTANCE;
-	public static File particleBlacklistFile = null;
-	public static File floatingMaterialsFile = null;
 	public static File config = null;
 	public static int minAge, maxAge, particlesPerAxis;
 	public static double scaleMult, gravityMult, rotationMult, weatherParticleDensity;
@@ -68,7 +66,7 @@ public class FBP {
 	public static boolean infiniteDuration = false;
 	public static boolean randomRotation, cartoonMode, spawnWhileFrozen, spawnRedstoneBlockParticles, randomizedScale,
 			randomFadingSpeed, entityCollision, bounceOffWalls, lowTraction, smartBreaking, fancyRain, fancySnow,
-			fancyFlame, fancySmoke, waterPhysics, restOnFloor, frozen;
+			fancyFlame, fancySmoke, fancyAdditions, waterPhysics, restOnFloor, frozen;
 
 	public static SplittableRandom random = new SplittableRandom();
 
@@ -91,8 +89,8 @@ public class FBP {
 		POSITION_TEX_COLOR_LMAP_NORMAL.addElement(DefaultVertexFormats.TEX_2S);
 		POSITION_TEX_COLOR_LMAP_NORMAL.addElement(DefaultVertexFormats.NORMAL_3B);
 
-		blockParticleBlacklist = Collections.synchronizedList(new ArrayList<String>());
-		floatingMaterials = Collections.synchronizedList(new ArrayList<Material>());
+		blockParticleBlacklist = Collections.synchronizedList(new ArrayList<>());
+		floatingMaterials = Collections.synchronizedList(new ArrayList<>());
 	}
 
 	public static boolean isEnabled() {

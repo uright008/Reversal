@@ -40,6 +40,7 @@ public class FancyBlockParticles extends Module {
     public final BoolValue fancySnow = new BoolValue("Fancy Snow", this, true);
     public final BoolValue fancySmoke = new BoolValue("Fancy Smoke", this, true);
     public final BoolValue fancyFlame = new BoolValue("Fancy Flame", this, true);
+    public final BoolValue fancyAdditions = new BoolValue("Fancy Additions", this, false);
     public final BoolValue waterPhysics = new BoolValue("Water Physics", this, true);
     public final BoolValue restOnFloor = new BoolValue("Rest On Floor", this, true);
 
@@ -95,6 +96,7 @@ public class FancyBlockParticles extends Module {
         FBP.fancySnow = fancySnow.isEnabled();
         FBP.fancySmoke = fancySmoke.isEnabled();
         FBP.fancyFlame = fancyFlame.isEnabled();
+        FBP.fancyAdditions = fancyAdditions.isEnabled();
         FBP.waterPhysics = waterPhysics.isEnabled();
         FBP.restOnFloor = restOnFloor.isEnabled();
     }
