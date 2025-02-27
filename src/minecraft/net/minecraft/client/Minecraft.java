@@ -505,12 +505,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         SplashScreen.setProgress(100, "Minecraft - GUI");
         this.ingameGUI = new GuiIngame(this);
 
-        latch.await();
         if (this.serverName != null) {
             this.displayGuiScreen(new GuiConnecting(Transformer.transformMainMenu(), this, this.serverName, this.serverPort));
         } else {
             this.displayGuiScreen(Transformer.transformMainMenu());
-            Reversal.notificationManager.registerNotification(Reversal.NAME + " " + Reversal.VERSION + ", made with love by " + Reversal.AUTHOR + ".", "Reversal", NotificationType.NOTIFICATION);
+
         }
 
         this.renderEngine.deleteTexture(this.mojangLogo);
@@ -530,6 +529,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         this.renderGlobal.makeEntityOutlineShader();
 
+        latch.await();
+        Reversal.notificationManager.registerNotification(Reversal.NAME + " " + Reversal.VERSION + ", made with love by " + Reversal.AUTHOR + ".", "Reversal", NotificationType.NOTIFICATION);
         SplashScreen.notifyGameLoaded();
     }
 
