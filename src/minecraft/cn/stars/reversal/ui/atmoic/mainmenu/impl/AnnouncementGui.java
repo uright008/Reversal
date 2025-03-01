@@ -161,7 +161,23 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Foundation. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.01", "2025/2/27", 1)
+        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.02", "2025/3/1", 1)
+                .addContent("[+] ClickGUI新增颜色选择器")
+                .addContent("[/] 优化ClickGUI性能")
+                .addContent("[+] 主界面新增更换背景 (右上角打开副菜单)")
+                .addContent("[+] 新增血爆粒子 (需搭配FancyBlockParticles)")
+                .addContent("[+] 新增随机标题")
+                .addContent("[/] 优化启动速度")
+                .addContent("[*] 修复主界面导致的崩端")
+                .addContent("[*] 修复获取玩家皮肤导致的崩端")
+                .addContent("[*] 其他细微调整和修复")
+                .addContent("")
+                .addContent("提示:")
+                .addContent("在本次更新后,ClientSettings中的颜色预设将被重置,因为更换了新的颜色选择器")
+                .addContent("请重新设置您的主题颜色! ")
+                .addContent("暂时还没有应用所有界面自定义颜色,请等待后续更新")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.01", "2025/2/27", 2)
                 .addContent("[+] 新增RealFirstPerson 真实第一人称")
                 .addContent("[+] 新增FancyBlockParticles 梦幻方块粒子")
                 .addContent("[/] 优化视频播放器性能")
@@ -175,14 +191,6 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("[*] 修复预加载资源失败问题")
                 .addContent("[*] 修复RawInput不会加载的问题")
                 .addContent("[*] 修复部分功能初始化异常导致值异常")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+alpha.08", "2025/2/25", 2)
-                .addContent("[*] 修复部分界面无法点击")
-                .addContent("[*] 修复部分界面元素位置异常")
-                .addContent("[*] 修复设置界面点击按钮崩溃")
-                .addContent("[*] 修复AtomicMenu按ESC回到异常页面")
-                .addContent("[+] RealFirstPerson (真实第一人称)")
-                .addContent("[/] 改进Hotbar效果")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);

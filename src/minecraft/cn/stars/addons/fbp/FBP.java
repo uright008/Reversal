@@ -64,7 +64,7 @@ public class FBP {
 
 	public static boolean enabled = false;
 	public static boolean infiniteDuration = false;
-	public static boolean randomRotation, cartoonMode, spawnWhileFrozen, spawnRedstoneBlockParticles, randomizedScale,
+	public static boolean randomRotation, cartoonMode, spawnWhileFrozen, randomizedScale,
 			randomFadingSpeed, entityCollision, bounceOffWalls, lowTraction, smartBreaking, fancyRain, fancySnow,
 			fancyFlame, fancySmoke, fancyAdditions, waterPhysics, restOnFloor, frozen;
 
