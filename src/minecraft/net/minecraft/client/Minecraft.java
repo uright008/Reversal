@@ -192,7 +192,7 @@ import org.lwjgl.util.glu.GLU;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
-    public static CountDownLatch latch = new CountDownLatch(1);
+    public static CountDownLatch latch = new CountDownLatch(2);
     public static StopWatch startTimer;
     public StopWatch timeScreen = new StopWatch();
     public long startMillisTime = System.currentTimeMillis();
@@ -529,7 +529,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         this.renderGlobal.makeEntityOutlineShader();
 
-        latch.await();
+
+        if (latch.getCount() > 0) latch.await();
         Reversal.notificationManager.registerNotification(Reversal.NAME + " " + Reversal.VERSION + ", made with love by " + Reversal.AUTHOR + ".", "Reversal", NotificationType.NOTIFICATION);
         SplashScreen.notifyGameLoaded();
     }

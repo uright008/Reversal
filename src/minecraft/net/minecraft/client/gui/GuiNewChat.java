@@ -1,6 +1,8 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.module.impl.client.Chat;
+import cn.stars.reversal.util.animation.rise.Animation;
+import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.collect.Lists;
 import java.util.Iterator;
@@ -27,6 +29,7 @@ public class GuiNewChat extends Gui
     private boolean isScrolled;
     private String lastMessage = "";
     private int sameMessageAmount, line;
+    private final Animation posAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
 
     public GuiNewChat(Minecraft mcIn)
     {
@@ -58,7 +61,7 @@ public class GuiNewChat extends Gui
 
                 for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < i; ++i1)
                 {
-                    ChatLine chatline = (ChatLine)this.drawnChatLines.get(i1 + this.scrollPos);
+                    ChatLine chatline = this.drawnChatLines.get(i1 + this.scrollPos);
 
                     if (chatline != null)
                     {

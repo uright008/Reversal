@@ -173,6 +173,8 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("[/] 多线程加载Reversal 大幅优化加载速度")
                 .addContent("[/] 优化加载界面逻辑")
                 .addContent("[*] 修复预加载资源失败问题")
+                .addContent("[*] 修复RawInput不会加载的问题")
+                .addContent("[*] 修复部分功能初始化异常导致值异常")
                 .calcMaxWidth();
         Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+alpha.08", "2025/2/25", 2)
                 .addContent("[*] 修复部分界面无法点击")

@@ -1,6 +1,7 @@
 package cn.stars.reversal.ui.atmoic.mainmenu;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.impl.client.PostProcessing;
@@ -80,7 +81,11 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         }
 
         // Player & Time
-        RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 130, 5, 15, 15);
+        try {
+            RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 130, 5, 15, 15);
+        } catch (Exception e) {
+            RenderUtil.rect(width - 130, 5, 15, 15, Color.WHITE);
+        }
         psm18.drawString(GameInstance.mc.session.getUsername(), width - 130 - psm18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
         RenderUtil.rect(width - 107, 5, 1, 15, Color.WHITE);
         RenderUtil.rect(width - 30, 5, 1, 15, Color.WHITE);
@@ -135,8 +140,14 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
         psb20.drawString("Sub Menu", width - subPosAnimation.getValue() + 6, 10, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
 
-        psm18.drawString("Not implemented yet. (TwT)", width - subPosAnimation.getValue() + 8, 30, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
-        psr16.drawString("Stars will do everything you call him to do (not) =-=", width - subPosAnimation.getValue() + 8, 40, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        psm18.drawString("Change background", width - subPosAnimation.getValue() + 8, 30, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+
+        int c1 = RenderUtil.isHovered(width - subPosAnimation.getValue() + 18, 43, 15, 15, mouseX, mouseY) ? 255 : 150;
+        int c2 = RenderUtil.isHovered(width - subPosAnimation.getValue() + 63, 43, 15, 15, mouseX, mouseY) ? 255 : 150;
+
+        psm24.drawString("←", width - subPosAnimation.getValue() + 20, 45, new Color(c1,c1,c1, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        psm24.drawString("[" + RainyAPI.backgroundId + "]", width - subPosAnimation.getValue() + 40, 45, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        psm24.drawString("→", width - subPosAnimation.getValue() + 65, 45, new Color(c2,c2,c2, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
@@ -157,6 +168,16 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         } else if (subMenu && !RenderUtil.isHovered(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height, mouseX, mouseY)) {
             subMenu = false;
             GameInstance.mc.getSoundHandler().playButtonPress();
+        }
+        if (subMenu) {
+            if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 18, 43, 15, 15, mouseX, mouseY)) {
+                changeMenuBackground(true);
+                GameInstance.mc.getSoundHandler().playButtonPress();
+            }
+            if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 63, 43, 15, 15, mouseX, mouseY)) {
+                changeMenuBackground(false);
+                GameInstance.mc.getSoundHandler().playButtonPress();
+            }
         }
         currentGui.mouseClicked(mouseX, mouseY, mouseButton);
         super.mouseClicked(mouseX, mouseY, mouseButton);

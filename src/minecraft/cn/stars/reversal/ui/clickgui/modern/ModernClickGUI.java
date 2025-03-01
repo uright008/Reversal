@@ -18,13 +18,12 @@ import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.*;
 import cn.stars.reversal.value.Value;
-import cn.stars.reversal.value.impl.BoolValue;
-import cn.stars.reversal.value.impl.ModeValue;
-import cn.stars.reversal.value.impl.NoteValue;
-import cn.stars.reversal.value.impl.NumberValue;
+import cn.stars.reversal.value.impl.*;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -47,8 +46,14 @@ public class ModernClickGUI extends GuiScreen {
     private static float scrollAmount;
     Module firstModule;
     float lastModuleY;
+
     NumberValue selectedSlider;
+    ColorValue selectedColor;
+    boolean hueFlag = false;
+    boolean themeColorFlag = false;
     boolean hasEditedSliders = false;
+
+
     TimeUtil timer = new TimeUtil();
     float wheel = Mouse.getDWheel();
     private cn.stars.reversal.util.animation.advanced.Animation windowAnim;
@@ -209,6 +214,90 @@ public class ModernClickGUI extends GuiScreen {
                                 settingY += 12;
                                 m.sizeInGui += 12;
                             }
+                            if (setting instanceof ColorValue) {
+                                ColorValue colorValue = (ColorValue) setting;
+                                float fontWidth = psr18.getWidth(setting.name) + 5;
+                                if (selectedColor == setting) {
+                                    psr18.drawString(setting.name, setting.guiX, setting.yAnimation.getValue() - (colorValue.isDontShowThemeColor() ? 70 : 80), new Color(200, 200, 200, 200).getRGB());
+                                    float[] hsb = {colorValue.getHue(), colorValue.getSaturation(), colorValue.getBrightness()};
+                                    float gradientX = setting.guiX + fontWidth;
+                                    float gradientY = (float) (setting.yAnimation.getValue() - (colorValue.isDontShowThemeColor() ? 70 : 80));
+                                    float gradientWidth = 97;
+                                    float gradientHeight = 50;
+                                    Gui.drawRect2(gradientX, gradientY, gradientWidth, gradientHeight, Color.getHSBColor(hsb[0], 1, 1).getRGB());
+                                    Gui.drawGradientRectSideways2(gradientX, gradientY, gradientWidth, gradientHeight, Color.getHSBColor(hsb[0], 0, 1).getRGB(),
+                                            ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 0, 1).getRGB(), 0));
+
+                                    Gui.drawGradientRect2(gradientX, gradientY, gradientWidth, gradientHeight,
+                                            ColorUtil.applyOpacity(Color.getHSBColor(hsb[0], 1, 0).getRGB(), 0), Color.getHSBColor(hsb[0], 1, 0).getRGB());
+
+                                    float pickerY = gradientY + (gradientHeight * (1 - hsb[2]));
+                                    float pickerX = gradientX + (gradientWidth * hsb[1] - 1);
+                                    pickerY = Math.max(Math.min(gradientY + gradientHeight - 2, pickerY), gradientY);
+                                    pickerX = Math.max(Math.min(gradientX + gradientWidth - 2, pickerX), gradientX);
+
+                                    GL11.glEnable(GL11.GL_BLEND);
+                                    RenderUtil.color(-1);
+                                    mc.getTextureManager().bindTexture(new ResourceLocation("reversal/images/colorpicker2.png"));
+                                    Gui.drawModalRectWithCustomSizedTexture(pickerX, pickerY, 0, 0, 4, 4, 4, 4);
+
+
+                                    GlStateManager.color(1, 1, 1, 1);
+                                    Gui.drawRect2(gradientX + gradientWidth + 5, gradientY, 5, gradientHeight, colorValue.getColor().getRGB());
+
+                                    psr16.drawString("(" + String.format("#%02X%02X%02X", colorValue.getColor().getRed(), colorValue.getColor().getGreen(), colorValue.getColor().getBlue()) + ")",
+                                            gradientX + gradientWidth + 13, gradientY + 2, colorValue.getColor().getRGB());
+
+
+                                    // Hue bar
+                                    RenderUtil.color(-1);
+                                    mc.getTextureManager().bindTexture(new ResourceLocation("reversal/images/hue.png"));
+                                    Gui.drawModalRectWithCustomSizedTexture(gradientX + 0.5f, gradientY + gradientHeight + 4.5f, 0, 0, gradientWidth + 10, 4, gradientWidth + 10, 4);
+                                    GlStateManager.color(1, 1, 1, 1);
+
+                                    //Hue slider
+                                    Gui.drawRect2(gradientX + ((gradientWidth + 10) * hsb[0]) + 0.5, gradientY + gradientHeight + 3.5, 1, 6, -1);
+
+                                    if (!colorValue.isDontShowThemeColor()) {
+                                        psr18.drawString("Follow Theme", gradientX, gradientY + gradientHeight + 14, new Color(200, 200, 200, 200).getRGB());
+                                        RenderUtil.roundedOutlineRectangle(gradientX + psr18.width("Follow Theme") + 5, gradientY + gradientHeight + 13, 8, 8, 4, 0.5, new Color(100, 200, 255, 200));
+                                        if (colorValue.isThemeColor())
+                                            RenderUtil.roundedRectangle(gradientX + psr18.width("Follow Theme") + 6.5, gradientY + gradientHeight + 14.5, 5, 5, 2.5, new Color(100, 200, 255, 250));
+                                    }
+
+                                    if (Mouse.isButtonDown(0)) {
+                                        if (RenderUtil.isHovered(gradientX, gradientY + gradientHeight + 3, (gradientWidth + 10), 6, mouseX, mouseY)) {
+                                            hueFlag = true;
+                                        } if (RenderUtil.isHovered(gradientX, gradientY, gradientWidth, gradientHeight, mouseX, mouseY)) {
+                                            hueFlag = false;
+                                        }
+
+                                        if (RenderUtil.isHovered(gradientX, gradientY + gradientHeight + 13, 200, psr18.height(), mouseX, mouseY) && !colorValue.isDontShowThemeColor()) {
+                                            if (!themeColorFlag) colorValue.setThemeColor(!colorValue.isThemeColor());
+                                            themeColorFlag = true;
+                                        } else if (RenderUtil.isHovered(gradientX - 10, gradientY - 10, 200, gradientHeight + 24, mouseX, mouseY)) {
+                                            if (hueFlag) {
+                                                colorValue.setHue(Math.min(1, Math.max(0, (mouseX - gradientX - 0.5f) / (gradientWidth + 10))));
+                                            } else {
+                                                colorValue.setBrightness(Math.min(1, Math.max(0, 1 - ((mouseY - gradientY) / gradientHeight))));
+                                                colorValue.setSaturation(Math.min(1, Math.max(0, (mouseX - gradientX) / gradientWidth)));
+                                            }
+                                        }
+                                    } else {
+                                        themeColorFlag = false;
+                                    }
+
+                                    settingY += (colorValue.isDontShowThemeColor() ? 70 : 80);
+                                    m.sizeInGui += (colorValue.isDontShowThemeColor() ? 70 : 80);
+                                } else {
+                                    psr18.drawString(setting.name, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
+                                    RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 16, 8, 8, 2, colorValue.getColor());
+                                    psr16.drawString("(" + String.format("#%02X%02X%02X", colorValue.getColor().getRed(), colorValue.getColor().getGreen(), colorValue.getColor().getBlue()) + ")",
+                                            setting.guiX + fontWidth + 12, setting.yAnimation.getValue() - 14.5, colorValue.getColor().getRGB());
+                                    settingY += 12;
+                                    m.sizeInGui += 12;
+                                }
+                            }
                             if (setting instanceof ModeValue) {
                                 psr18.drawString(setting.name, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
                                 psr18.drawString(((ModeValue) setting).getModes().get(((ModeValue) setting).index),
@@ -361,24 +450,36 @@ public class ModernClickGUI extends GuiScreen {
                     if (m.expanded) {
                         if (!setting.isHidden()) {
                             if (setting instanceof NoteValue) {
-                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, x, 12, mouseX, mouseY)) {
+                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY)) {
                                     new ValueChangedEvent(m, setting).call();
                                 }
                             }
                             if (setting instanceof BoolValue) {
-                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, x, 12, mouseX, mouseY) && mouseButton == 0) {
+                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY) && mouseButton == 0) {
                                     ((BoolValue) setting).toggle();
                                     new ValueChangedEvent(m, setting).call();
                                 }
                             }
                             if (setting instanceof NumberValue) {
-                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, x, 12, mouseX, mouseY) && mouseButton == 0) {
+                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY) && mouseButton == 0) {
                                     selectedSlider = (NumberValue) setting;
                                     new ValueChangedEvent(m, setting).call();
                                 }
                             }
+                            if (setting instanceof ColorValue) {
+                                if (selectedColor == setting) {
+                                    if (RenderUtil.isHovered(setting.guiX, setting.guiY - 80, 380, 80, mouseX, mouseY) && mouseButton == 1) {
+                                        selectedColor = null;
+                                        return;
+                                    }
+                                }
+                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY) && mouseButton == 1) {
+                                    selectedColor = (ColorValue) setting;
+                                    new ValueChangedEvent(m, setting).call();
+                                }
+                            }
                             if (setting instanceof ModeValue) {
-                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, x, 12, mouseX, mouseY)) {
+                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY)) {
                                     if (mouseButton == 0) ((ModeValue) setting).cycle(true);
                                     if (mouseButton == 1) ((ModeValue) setting).cycle(false);
                                     new ValueChangedEvent(m, setting).call();

@@ -6,11 +6,14 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.value.Value;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.render.ThemeUtil;
+
+import java.awt.*;
 
 public class DefaultHandler {
     public static void loadConfigs() {
@@ -104,6 +107,11 @@ public class DefaultHandler {
                 if (split[0].contains("NumberValue") && setting instanceof NumberValue)
                     ((NumberValue) setting).setValue(Double.parseDouble(split[3]));
 
+                if (split[0].contains("ColorValue") && setting instanceof ColorValue) {
+                    ((ColorValue) setting).setColor(new Color(Integer.parseInt(split[3])));
+                    ((ColorValue) setting).setThemeColor(Boolean.parseBoolean(split[4]));
+                }
+
                 if (split[0].contains("ModeValue") && setting instanceof ModeValue)
                     ((ModeValue) setting).set(split[3]);
 
@@ -147,6 +155,9 @@ public class DefaultHandler {
                     }
                     if (s instanceof NumberValue) {
                         configBuilder.append("NumberValue_").append(moduleName).append("_").append(s.name).append("_").append(((NumberValue) s).value).append("\r\n");
+                    }
+                    if (s instanceof ColorValue) {
+                        configBuilder.append("ColorValue_").append(moduleName).append("_").append(s.name).append("_").append(((ColorValue) s).getColor().getRGB()).append("_").append(((ColorValue) s).isThemeColor()).append("\r\n");
                     }
                     if (s instanceof ModeValue) {
                         configBuilder.append("ModeValue_").append(moduleName).append("_").append(s.name).append("_").append(((ModeValue) s).getMode()).append("\r\n");

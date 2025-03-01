@@ -38,11 +38,6 @@ public final class EventHandler {
             NotificationManager.onRender2D();
             residentProcessor.onRender2D(event);
 
-            Reversal.CLIENT_THEME_COLOR = new Color(ClientSettings.red1, ClientSettings.green1, ClientSettings.blue1, 255).getRGB();
-            Reversal.CLIENT_THEME_COLOR_BRIGHT = new Color(Math.min(ClientSettings.red1 + 26, 255), Math.min(ClientSettings.green1 + 45, 255), Math.min(ClientSettings.blue1 + 13, 255)).hashCode();
-            Reversal.CLIENT_THEME_COLOR_2 = new Color(ClientSettings.red2, ClientSettings.green2, ClientSettings.blue2, 255).getRGB();
-            Reversal.CLIENT_THEME_COLOR_BRIGHT_2 = new Color(Math.min(ClientSettings.red2 + 26, 255), Math.min(ClientSettings.green2 + 45, 255), Math.min(ClientSettings.blue2 + 13, 255)).hashCode();
-
         } else if (e instanceof Render3DEvent) {
             final Render3DEvent event = ((Render3DEvent) e);
 

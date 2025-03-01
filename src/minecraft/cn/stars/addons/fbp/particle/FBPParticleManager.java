@@ -94,8 +94,7 @@ public class FBPParticleManager extends EffectRenderer {
 				try {
 					blockState = ((EntityDiggingFX) efx).sourceState;
 
-					if (blockState != null && !(FBP.frozen && !FBP.spawnWhileFrozen)
-							&& (FBP.spawnRedstoneBlockParticles || blockState.getBlock() != Blocks.redstone_block)) {
+					if (blockState != null && !(FBP.frozen && !FBP.spawnWhileFrozen)) {
 						efx.setDead();
 
 						if (!(blockState.getBlock() instanceof BlockLiquid)
@@ -116,8 +115,7 @@ public class FBPParticleManager extends EffectRenderer {
 				try {
 					blockState = ((EntityDiggingFX) efx).sourceState;
 
-					if (blockState != null && !(FBP.frozen && !FBP.spawnWhileFrozen)
-							&& (FBP.spawnRedstoneBlockParticles || blockState.getBlock() != Blocks.redstone_block)) {
+					if (blockState != null && !(FBP.frozen && !FBP.spawnWhileFrozen)) {
 
 						if (blockState.getBlock() instanceof BlockLiquid
 								|| FBP.INSTANCE.isBlacklisted(blockState.getBlock())) {
@@ -152,8 +150,7 @@ public class FBPParticleManager extends EffectRenderer {
 			if (particle instanceof EntityDiggingFX && !(particle instanceof FBPParticleDigging)) {
 				blockState = Block.getStateById(parameters[0]);
 
-				if (blockState != null && !(FBP.frozen && !FBP.spawnWhileFrozen)
-						&& (FBP.spawnRedstoneBlockParticles || blockState.getBlock() != Blocks.redstone_block)) {
+				if (blockState != null && !(FBP.frozen && !FBP.spawnWhileFrozen)) {
 					if (!(blockState.getBlock() instanceof BlockLiquid)
 							&& !FBP.INSTANCE.isBlacklisted(blockState.getBlock())) {
 						toSpawn = new FBPParticleDigging(mc.theWorld, xCoord, yCoord + 0.10000000149011612D, zCoord,
@@ -187,7 +184,7 @@ public class FBPParticleManager extends EffectRenderer {
 						double d1 = pos.getY() + ((k + 0.5D) / FBP.particlesPerAxis);
 						double d2 = pos.getZ() + ((l + 0.5D) / FBP.particlesPerAxis);
 
-						if (!(b instanceof BlockLiquid) && !(FBP.frozen && !FBP.spawnWhileFrozen) && (FBP.spawnRedstoneBlockParticles || b != Blocks.redstone_block) && !FBP.INSTANCE.isBlacklisted(b)) {
+						if (!(b instanceof BlockLiquid) && !(FBP.frozen && !FBP.spawnWhileFrozen) && !FBP.INSTANCE.isBlacklisted(b)) {
 							float scale = (float) FBP.random.nextDouble(0.75, 1);
 
 							FBPParticleDigging toSpawn = new FBPParticleDigging(worldObj, d0, d1, d2,
@@ -221,7 +218,7 @@ public class FBPParticleManager extends EffectRenderer {
 			if (obj == null || obj.hitVec == null)
 				obj = new MovingObjectPosition(null, new Vec3(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5));
 
-			if (FBP.smartBreaking && !(iblockstate.getBlock() instanceof BlockLiquid) && !(FBP.frozen && !FBP.spawnWhileFrozen) && (FBP.spawnRedstoneBlockParticles || iblockstate.getBlock() != Blocks.redstone_block)) {
+			if (FBP.smartBreaking && !(iblockstate.getBlock() instanceof BlockLiquid) && !(FBP.frozen && !FBP.spawnWhileFrozen)) {
 				d0 = obj.hitVec.xCoord
 						+ FBP.random.nextDouble(-0.21, 0.21) * Math.abs(axisalignedbb.maxX - axisalignedbb.minX);
 				d1 = obj.hitVec.yCoord
@@ -260,7 +257,7 @@ public class FBPParticleManager extends EffectRenderer {
 				break;
 			}
 
-			if (!(iblockstate.getBlock() instanceof BlockLiquid) && !(FBP.frozen && !FBP.spawnWhileFrozen) && (FBP.spawnRedstoneBlockParticles || iblockstate.getBlock() != Blocks.redstone_block)) {
+			if (!(iblockstate.getBlock() instanceof BlockLiquid) && !(FBP.frozen && !FBP.spawnWhileFrozen)) {
 
 				int damage = 0;
 

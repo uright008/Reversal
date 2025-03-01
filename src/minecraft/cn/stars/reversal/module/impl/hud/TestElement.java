@@ -7,6 +7,7 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.render.*;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.NumberValue;
 
@@ -18,6 +19,7 @@ import java.util.List;
         chineseDescription = "仅供测试,别开", category = Category.HUD)
 public class TestElement extends Module {
     private final NoteValue note = new NoteValue("Only for test purpose. DO NOT enable this.", this);
+    private final ColorValue colorValue = new ColorValue("Color", this);
     public TestElement() {
         setCanBeEdited(true);
         setX(100);
@@ -37,7 +39,10 @@ public class TestElement extends Module {
     public void onRender2D(Render2DEvent event) {
         int x = getX() + 2;
         int y = getY() + 2;
-        FontManager.getRegular(16).drawString("恭喜我的同学脱单.", x, y, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST).getRGB());
+        setWidth(120);
+        setHeight(50);
+        FontManager.getRegular(32).drawString("恭喜我的同学脱单.", x, y, colorValue.getColor().getRGB());
+        RenderUtil.roundedRectangle(x, y + 20, 32, 32, 4, colorValue.getColor());
     }
 
     @Override

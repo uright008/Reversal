@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.util.ResourceLocation;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -35,14 +36,20 @@ public class SkinUtil implements GameInstance {
     }
 
     public static String uuidOf(String name) {
-        if (UUID_CACHE.containsKey(name)) return UUID_CACHE.get(name);
+        try {
+            if (UUID_CACHE.containsKey(name)) return UUID_CACHE.get(name);
 
-        String data = scrape(NAME_TO_UUID + name);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject = jsonParser.parse(data).getAsJsonObject();
-        if (jsonObject == null || !jsonObject.has("id")) return null;
-        UUID_CACHE.put(name, jsonObject.get("id").getAsString());
-        return jsonObject.get("id").getAsString();
+            String data = scrape(NAME_TO_UUID + name);
+            JsonParser jsonParser = new JsonParser();
+            JsonObject jsonObject = jsonParser.parse(data).getAsJsonObject();
+
+            if (jsonObject == null || !jsonObject.has("id")) return "";
+
+            UUID_CACHE.put(name, jsonObject.get("id").getAsString());
+            return jsonObject.get("id").getAsString();
+        } catch (IllegalStateException e) {
+            return "";
+        }
     }
 
     private static String scrape(String url) {

@@ -60,7 +60,7 @@ public class Reversal {
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "beta.01";
+    public static final String BUILD_VERSION = "beta.02";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -140,6 +140,8 @@ public class Reversal {
             // Reversal Initialize
             moduleManager = new ModuleManager();
             moduleManager.registerModules(modules);
+
+            Minecraft.latch.countDown();
 
             // Preload module resources
             Preloader preloader = new Preloader();

@@ -32,7 +32,6 @@ public class FancyBlockParticles extends Module {
     public final BoolValue entityCollision = new BoolValue("Entity Collision", this, false);
     public final BoolValue randomizedScale = new BoolValue("Randomized Scale", this, true);
     public final BoolValue randomFadingSpeed = new BoolValue("Random Fading Speed", this, true);
-    public final BoolValue spawnRedstoneBlockParticles = new BoolValue("Spawn Redstone Block Particles", this, false);
     public final BoolValue infiniteDuration = new BoolValue("Infinite Duration", this, false);
     public final BoolValue spawnWhileFrozen = new BoolValue("Spawn While Frozen", this, true);
     public final BoolValue smartBreaking = new BoolValue("Smart Breaking", this, true);
@@ -88,7 +87,6 @@ public class FancyBlockParticles extends Module {
         FBP.entityCollision = entityCollision.isEnabled();
         FBP.randomizedScale = randomizedScale.isEnabled();
         FBP.randomFadingSpeed = randomFadingSpeed.isEnabled();
-        FBP.spawnRedstoneBlockParticles = spawnRedstoneBlockParticles.isEnabled();
         FBP.infiniteDuration = infiniteDuration.isEnabled();
         FBP.spawnWhileFrozen = spawnWhileFrozen.isEnabled();
         FBP.smartBreaking = smartBreaking.isEnabled();

@@ -6,6 +6,7 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.value.Value;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.ui.notification.NotificationType;
@@ -14,6 +15,7 @@ import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.render.ThemeUtil;
 import lombok.experimental.UtilityClass;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -50,6 +52,9 @@ public final class ConfigHandler {
                 }
                 if (setting instanceof NumberValue) {
                     configBuilder.append("NumberValue_").append(moduleName).append("_").append(setting.name).append("_").append(((NumberValue) setting).value).append("\r\n");
+                }
+                if (setting instanceof ColorValue) {
+                    configBuilder.append("ColorValue_").append(moduleName).append("_").append(setting.name).append("_").append(((ColorValue) setting).getColor().getRGB()).append("_").append(((ColorValue) setting).isThemeColor()).append("\r\n");
                 }
                 if (setting instanceof ModeValue) {
                     configBuilder.append("ModeValue_").append(moduleName).append("_").append(setting.name).append("_").append(((ModeValue) setting).getMode()).append("\r\n");
@@ -166,6 +171,11 @@ public final class ConfigHandler {
 
                 if (split[0].contains("NumberValue") && setting instanceof NumberValue) {
                     ((NumberValue) setting).setValue(Double.parseDouble(split[3]));
+                }
+
+                if (split[0].contains("ColorValue") && setting instanceof ColorValue) {
+                    ((ColorValue) setting).setColor(new Color(Integer.parseInt(split[3])));
+                    ((ColorValue) setting).setThemeColor(Boolean.parseBoolean(split[4]));
                 }
 
                 if (split[0].contains("ModeValue") && setting instanceof ModeValue) {
