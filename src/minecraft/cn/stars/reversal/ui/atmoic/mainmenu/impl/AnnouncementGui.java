@@ -67,13 +67,9 @@ public class AnnouncementGui extends AtomicGui {
 
             psm24.drawCenteredString("[" + announcement.id + "] - " + announcement.getDate(), width / 2f, 73, new Color(250,250,250,250).getRGB());
 
-            ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
-                RoundedUtil.drawRound(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, 3, Color.BLACK);
-            }, 2, 2);
+            ModuleInstance.getPostProcessing().drawElementWithBloom(() -> RoundedUtil.drawRound(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, 3, Color.BLACK), 2, 2);
 
-            ModuleInstance.getPostProcessing().drawElementWithBlur(() -> {
-                RoundedUtil.drawRound(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, 3, Color.BLACK);
-            }, 2, 2);
+            ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RoundedUtil.drawRound(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, 3, Color.BLACK), 2, 2);
 
             RoundedUtil.drawRound(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, 3, new Color(30,30,30, (int) hoverAnimation.getValue()));
 
@@ -161,7 +157,20 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Foundation. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.02", "2025/3/1", 1)
+        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.03", "2025/3/2", 1)
+                .addContent("[+] 实现主菜单的赞助列表")
+                .addContent("[+] 新增随机标题")
+                .addContent("[+] 新增重置标题指令 (.ct %reset%)")
+                .addContent("[/] 修改部分功能的初始值")
+                .addContent("[/] Arraylist的中文功能合并")
+                .addContent("[/] 优化字体渲染器")
+                .addContent("[*] 修复皮肤获取导致崩端的问题")
+                .addContent("[*] 修复部分按钮字体大小不正常")
+                .addContent("[*] 修复事件触发时机异常")
+                .addContent("[-] 删除 InputMethodBlocker")
+                .addContent("[-] 删除部分功能无用的设置")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.02", "2025/3/1", 2)
                 .addContent("[+] ClickGUI新增颜色选择器")
                 .addContent("[/] 优化ClickGUI性能")
                 .addContent("[+] 主界面新增更换背景 (右上角打开副菜单)")
@@ -176,21 +185,6 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("在本次更新后,ClientSettings中的颜色预设将被重置,因为更换了新的颜色选择器")
                 .addContent("请重新设置您的主题颜色! ")
                 .addContent("暂时还没有应用所有界面自定义颜色,请等待后续更新")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.01", "2025/2/27", 2)
-                .addContent("[+] 新增RealFirstPerson 真实第一人称")
-                .addContent("[+] 新增FancyBlockParticles 梦幻方块粒子")
-                .addContent("[/] 优化视频播放器性能")
-                .addContent("[*] 修复Protocol崩端;增加开启限制")
-                .addContent("[/] 优化TimeTraveller")
-                .addContent("[/] 优化搜索框逻辑")
-                .addContent("[+] 新增更好的HitEffect 兼容FBP")
-                .addContent("[*] 修复shader导致的JVM Crash")
-                .addContent("[/] 多线程加载Reversal 大幅优化加载速度")
-                .addContent("[/] 优化加载界面逻辑")
-                .addContent("[*] 修复预加载资源失败问题")
-                .addContent("[*] 修复RawInput不会加载的问题")
-                .addContent("[*] 修复部分功能初始化异常导致值异常")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);

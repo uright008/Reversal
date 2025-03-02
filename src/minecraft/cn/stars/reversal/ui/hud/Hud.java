@@ -91,9 +91,9 @@ public class Hud implements GameInstance {
 //            final String name2 = o2 instanceof Module ? ((Module) o2).getModuleInfo().name() : ((Script) o2).getName();
 
             boolean chinese = mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy");
-            final String name = chinese && ModuleInstance.getModule(Arraylist.class).chinese.isEnabled() && !((Module) o1).getModuleInfo().chineseName().isEmpty() ? ((Module) o1).getModuleInfo().chineseName() : ((Module) o1).getModuleInfo().name();
+            final String name = chinese && ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled() && !((Module) o1).getModuleInfo().chineseName().isEmpty() ? ((Module) o1).getModuleInfo().chineseName() : ((Module) o1).getModuleInfo().name();
             final String name2 = chinese
-                    && ModuleInstance.getModule(Arraylist.class).chinese.isEnabled() && !((Module) o2).getModuleInfo().chineseName().isEmpty() ? ((Module) o2).getModuleInfo().chineseName() : ((Module) o2).getModuleInfo().name();
+                    && ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled() && !((Module) o2).getModuleInfo().chineseName().isEmpty() ? ((Module) o2).getModuleInfo().chineseName() : ((Module) o2).getModuleInfo().name();
 
             switch (mode) {
                 case "Minecraft": {
@@ -135,7 +135,7 @@ public class Hud implements GameInstance {
 
             float posOnArraylist = offset + moduleCount * 10.8f * (mode.equals("Empathy") ? 1.25f : 1f);
             
-            final String name = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy")) && ModuleInstance.getModule(Arraylist.class).chinese.isEnabled() && !module.getModuleInfo().chineseName().isEmpty() ? module.getModuleInfo().chineseName() : module.getModuleInfo().name();
+            final String name = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy")) && ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled() && !module.getModuleInfo().chineseName().isEmpty() ? module.getModuleInfo().chineseName() : module.getModuleInfo().name();
 
             float finalX = 0;
             final float speed = 6;
@@ -247,8 +247,7 @@ public class Hud implements GameInstance {
 
                     if (!ModuleInstance.getModule(ClientSettings.class).thunderHack.isEnabled()) {
                         Runnable shadowRunnable = () -> {
-                            RenderUtil.rect(renderX - offsetX - 1, renderY - offsetY + 0.2, stringWidth + offsetX * 1.5 + 1, 10.3 + offsetY - 1.5,
-                                    ModuleInstance.getModule(Arraylist.class).glowShadow.enabled ? ThemeUtil.getThemeColor(mC, ThemeType.ARRAYLIST) : Color.BLACK);
+                            RenderUtil.rect(renderX - offsetX - 1, renderY - offsetY + 0.2, stringWidth + offsetX * 1.5 + 1, 10.3 + offsetY - 1.5, ThemeUtil.getThemeColor(mC, ThemeType.ARRAYLIST));
                             RenderUtil.roundedRectangle(renderX + stringWidth, renderY - offsetY, 2, 10.3 + offsetY - 0.5, 2.5, ColorUtil.liveColorBrighter(new Color(0, 255, 255), 1f));
                         };
 

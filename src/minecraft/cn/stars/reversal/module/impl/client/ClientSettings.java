@@ -2,17 +2,12 @@ package cn.stars.reversal.module.impl.client;
 
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.value.impl.*;
-import com.github.skystardust.InputMethodBlocker.NativeUtils;
 import cn.stars.addons.rawinput.RawMouseHelper;
-import cn.stars.reversal.event.impl.OpenGUIEvent;
 import cn.stars.reversal.event.impl.ValueChangedEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.util.ReversalLogger;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.gui.inventory.GuiEditSign;
 import net.minecraft.util.MouseHelper;
 
 import java.awt.*;
@@ -31,8 +26,8 @@ public final class ClientSettings extends Module {
 
     public final NoteValue note2 = new NoteValue("< SPECIFIC SETTINGS >", this);
     public final ModeValue listAnimation = new ModeValue("List Animation", this, "Reversal", "Reversal", "Slide");
-    public final BoolValue thunderHack = new BoolValue("ThunderHack", this, true);
-    public final BoolValue empathyGlow = new BoolValue("Empathy Glow", this, true);
+    public final BoolValue thunderHack = new BoolValue("ThunderHack", this, false);
+    public final BoolValue empathyGlow = new BoolValue("Empathy Glow", this, false);
 
     public final NoteValue note3 = new NoteValue("< CLIENT SETTINGS >", this);
     public final BoolValue chinese = new BoolValue("Chinese", this, false);
@@ -42,14 +37,12 @@ public final class ClientSettings extends Module {
     public final NoteValue note4 = new NoteValue("< MINECRAFT SETTINGS >", this);
     public final BoolValue loadingScreenBackground = new BoolValue("Loading Screen Background", this, false);
     public final BoolValue rawInput = new BoolValue("Raw Input", this, false);
-    public final BoolValue inputMethodBlocker = new BoolValue("Input Method Blocker", this, false);
 
     public ClientSettings() {
     }
 
     @Override
     public void onUpdateAlways() {
-
         Reversal.CLIENT_THEME_COLOR = color1.getColor().getRGB();
         Reversal.CLIENT_THEME_COLOR_BRIGHT = new Color(Math.min(color1.getColor().getRed(), 255), Math.min(color1.getColor().getGreen() + 45, 255), Math.min(color1.getColor().getBlue() + 13, 255)).hashCode();
         Reversal.CLIENT_THEME_COLOR_2 = color2.getColor().getRGB();
@@ -72,20 +65,6 @@ public final class ClientSettings extends Module {
             else {
                 mc.mouseHelper = new MouseHelper();
                 ReversalLogger.info("Switched mc.mouseHelper to MouseHelper.");
-            }
-        }
-    }
-
-    @Override
-    public void onOpenGUI(OpenGUIEvent event) {
-        if (inputMethodBlocker.enabled) {
-            final GuiScreen screen = event.getNewScreen();
-            if (screen == null || screen instanceof GuiControls || screen instanceof GuiMultiplayer || screen instanceof GuiSelectWorld) {
-                NativeUtils.inactiveInputMethod("");
-            }
-            else if (screen instanceof GuiChat || screen instanceof GuiEditSign || screen instanceof GuiCommandBlock || screen instanceof GuiCreateWorld || screen instanceof GuiScreenBook || screen instanceof GuiRenameWorld ||
-                    screen instanceof GuiScreenAddServer || screen instanceof GuiScreenServerList || screen instanceof ModernClickGUI) {
-                NativeUtils.activeInputMethod("");
             }
         }
     }

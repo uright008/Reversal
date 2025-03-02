@@ -590,36 +590,6 @@ public final class TargetHud extends Module {
         }
     }
 
-
-    @Override
-    public void onPreBlur(final PreBlurEvent event) {
-     /*  if (this.getModule(Blur.class).isEnabled()) {
-            if (target == null || !(target instanceof EntityPlayer))
-                return;
-
-            switch (mode.getMode()) {
-                case "Normal": {
-                    final int hurtime = ((EntityPlayer) target).hurtTime;
-                    if (hurtime == 0) return;
-                    final int scaleOffset = (int) (hurtime * 0.35f);
-
-                    final float nameWidth = 38;
-                    final float posX = mc.displayWidth / (float) (mc.gameSettings.guiScale * 2) - nameWidth - 45 + 80;
-                    final float posY = mc.displayHeight / (float) (mc.gameSettings.guiScale * 2) + 20 + 50;
-
-                    GlStateManager.pushMatrix();
-                    GlStateManager.translate((posX + 38 + 2 + 129 / 2f) * (1 - scale), (posY - 34 + 48 / 2f) * (1 - scale), 0);
-                    GlStateManager.scale(scale, scale, 0);
-
-                    RenderUtil.rect(posX + 38 + 6 + scaleOffset / 2f, posY - 34 + 5 + scaleOffset / 2f, 30, 30, new Color(255, 0, 0, (int) (hurtime * (255 / 10f))));
-
-                    GlStateManager.popMatrix();
-                    break;
-                }
-            }
-        } */
-    }
-
     @Override
     public void onFadingOutline(final FadingOutlineEvent event) {
         if (target == null || !(target instanceof EntityPlayer))

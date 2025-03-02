@@ -18,7 +18,7 @@ import java.util.List;
 @ModuleInfo(name = "TestElement", chineseName = "测试功能", description = "Only for test",
         chineseDescription = "仅供测试,别开", category = Category.HUD)
 public class TestElement extends Module {
-    private final NoteValue note = new NoteValue("Only for test purpose. DO NOT enable this.", this);
+    private final NoteValue note = new NoteValue("测试功能,请勿开启!", this);
     private final ColorValue colorValue = new ColorValue("Color", this);
     public TestElement() {
         setCanBeEdited(true);
@@ -26,13 +26,6 @@ public class TestElement extends Module {
         setY(100);
         setWidth(100);
         setHeight(100);
-    }
-
-
-    @Override
-    public void onShader3D(Shader3DEvent event) {
-        int x = getX() + 2;
-        int y = getY() + 2;
     }
 
     @Override

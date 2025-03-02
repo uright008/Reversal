@@ -20,7 +20,7 @@ import java.awt.*;
 
 @ModuleInfo(name = "CustomText", chineseName = "自定义文字", description = "Show a custom text on screen", chineseDescription = "在屏幕上显示自定义文字", category = Category.HUD)
 public class CustomText extends Module {
-    private final NoteValue note = new NoteValue("Use \".setText <text>\" to set text.", this);
+    private final NoteValue note = new NoteValue("用指令'.setText <文字>'来设置自定义文字!", this);
     private final NumberValue size = new NumberValue("Size", this, 16, 4, 64, 1);
     private final BoolValue bold = new BoolValue("Bold", this, false);
     private final BoolValue gradient = new BoolValue("Gradient", this, false);

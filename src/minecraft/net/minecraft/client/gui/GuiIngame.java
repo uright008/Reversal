@@ -309,6 +309,8 @@ public class GuiIngame extends Gui {
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
 
+        new PreBlurEvent().call();
+
         ModuleInstance.getModule(PostProcessing.class).blurScreen();
 
         final Render2DEvent render2DEvent = new Render2DEvent(partialTicks, scaledresolution);
@@ -318,8 +320,6 @@ public class GuiIngame extends Gui {
         GameInstance.clearRunnables();
 
         Hud.renderGameOverlay();
-
-        new PreBlurEvent().call();
     }
 
     public void renderHorseJumpBar(ScaledResolution scaledRes, int x) {

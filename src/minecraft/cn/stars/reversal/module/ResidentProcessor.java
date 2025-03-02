@@ -1,7 +1,6 @@
 package cn.stars.reversal.module;
 
 import cn.stars.reversal.RainyAPI;
-import com.github.skystardust.InputMethodBlocker.InputMethodBlocker;
 import cn.stars.addons.optimization.util.FastTrig;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.impl.client.ClientSettings;
@@ -12,7 +11,6 @@ import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.Minecraft;
 import net.optifine.cache.OptifineCustomItemCache;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryUtil;
 
 /**
@@ -26,7 +24,6 @@ public class ResidentProcessor {
 
     public void onLoad() {
         FastTrig.init();
-        InputMethodBlocker.init();
     }
 
     public void onClick(ClickEvent event) {

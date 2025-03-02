@@ -37,19 +37,19 @@ public class ArmorHud extends Module {
             //背景blur
             if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
                 MODERN_BLUR_RUNNABLES.add(() -> {
-                    RenderUtil.roundedRect(getX() - 5, getY() - 2, getWidth() + 4, getHeight(), 5, Color.BLACK);
+                    RenderUtil.roundedRectangle(getX() - 5, getY() - 2, getWidth() + 4, getHeight(), 5, Color.BLACK);
                 });
 
             }
             //背景shadow
             if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                 MODERN_BLOOM_RUNNABLES.add(() -> {
-                    RenderUtil.roundedRect(getX() - 5, getY() - 2, getWidth() + 4, getHeight(), 5, Color.BLACK);
-                    RenderUtil.roundedRect(getX() - 5, getY() - 2, getWidth() + 4, getHeight(), 5, Color.BLACK);
+                    RenderUtil.roundedRectangle(getX() - 5, getY() - 2, getWidth() + 4, getHeight(), 5, Color.BLACK);
+                    RenderUtil.roundedRectangle(getX() - 5, getY() - 2, getWidth() + 4, getHeight(), 5, Color.BLACK);
                 });
             }
             //背景最底层
-            RenderUtil.roundedRectCustom(getX() - 5, getY() - 2, getWidth() + 4, getHeight(), 5, new Color(0, 0, 0, 100), true, true, true, true);
+            RenderUtil.roundedRectangle(getX() - 5, getY() - 2, getWidth() + 4, getHeight(), 5, new Color(0, 0, 0, 100));
         }
 
         //当玩家手上没东西的时候画一个字符串

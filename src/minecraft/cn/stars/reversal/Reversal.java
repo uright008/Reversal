@@ -60,7 +60,7 @@ public class Reversal {
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "beta.02";
+    public static final String BUILD_VERSION = "beta.03";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -215,6 +215,10 @@ public class Reversal {
         } catch (final Exception e) {
             ReversalLogger.error("An error has occurred while loading Reversal: ", e);
         }
+    }
+
+    public static void setWindowTitle() {
+        Display.setTitle(NAME + " " + VERSION + "+" + BUILD_VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
     }
 
     public static boolean onSendChatMessage(final String s) {

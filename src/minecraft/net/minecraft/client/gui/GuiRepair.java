@@ -1,8 +1,5 @@
 package net.minecraft.client.gui;
 
-import com.github.skystardust.InputMethodBlocker.NativeUtils;
-import cn.stars.reversal.module.impl.client.ClientSettings;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import io.netty.buffer.Unpooled;
 import java.io.IOException;
 import java.util.List;
@@ -57,7 +54,6 @@ public class GuiRepair extends GuiContainer implements ICrafting
         super.onGuiClosed();
         Keyboard.enableRepeatEvents(false);
         this.inventorySlots.removeCraftingFromCrafters(this);
-        if (ModuleInstance.getModule(ClientSettings.class).inputMethodBlocker.enabled) NativeUtils.inactiveInputMethod("");
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
@@ -149,10 +145,6 @@ public class GuiRepair extends GuiContainer implements ICrafting
         GlStateManager.disableLighting();
         GlStateManager.disableBlend();
         this.nameField.drawTextBox(mouseX, mouseY);
-        if (ModuleInstance.getModule(ClientSettings.class).inputMethodBlocker.enabled) {
-            if (nameField.isFocused()) NativeUtils.activeInputMethod("");
-            else NativeUtils.inactiveInputMethod("");
-        }
     }
 
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)

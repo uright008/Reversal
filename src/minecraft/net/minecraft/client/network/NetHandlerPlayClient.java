@@ -1,6 +1,8 @@
 package net.minecraft.client.network;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.TeleportEvent;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.util.Transformer;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
@@ -651,7 +653,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
             this.gameController.thePlayer.prevPosY = this.gameController.thePlayer.posY;
             this.gameController.thePlayer.prevPosZ = this.gameController.thePlayer.posZ;
             this.doneLoadingTerrain = true;
-            this.gameController.displayGuiScreen((GuiScreen)null);
+            this.gameController.displayGuiScreen(null);
         }
     }
 
@@ -704,13 +706,14 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
     @Override
     public void onDisconnect(IChatComponent reason) {
-        this.gameController.loadWorld((WorldClient) null);
+        this.gameController.loadWorld(null);
 
         if (this.guiScreenServer != null) {
 
             this.gameController.displayGuiScreen(new GuiDisconnected(this.guiScreenServer, "disconnect.lost", reason));
         } else {
-            this.gameController.displayGuiScreen(new GuiDisconnected(new GuiMultiplayer(Transformer.transformMainMenu()), "disconnect.lost", reason));
+            AtomicMenu.switchGui(2);
+            this.gameController.displayGuiScreen(new GuiDisconnected(Reversal.atomicMenu, "disconnect.lost", reason));
         }
     }
 
@@ -719,7 +722,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         this.netManager.sendPacket(p_147297_1_);
     }
 
-    public void addToSendQueueWithoutEvent(final Packet p_147297_1_) {
+    public void addToSendQueueNoEvent(final Packet p_147297_1_) {
         this.netManager.sendPacketWithoutEvent(p_147297_1_);
     }
 
@@ -727,7 +730,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         this.netManager.receivePacket(p_147297_1_);
     }
 
-    public void addToReceiveQueueWithoutEvent(final Packet p_147297_1_) {
+    public void addToReceiveQueueNoEvent(final Packet p_147297_1_) {
         this.netManager.receivePacketWithoutEvent(p_147297_1_);
     }
 

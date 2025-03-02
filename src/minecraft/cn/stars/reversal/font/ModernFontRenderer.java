@@ -243,7 +243,7 @@ public class ModernFontRenderer extends MFont {
                     break;
                 } else {
                     // 换行
-                    result.append(line.substring(0, line.length() - 1)).append("\n");
+                    result.append(line, 0, line.length() - 1).append("\n");
                     line = new StringBuilder().append(c); // 重新开始新的一行
                     currentReturns++;
                 }
@@ -274,7 +274,7 @@ public class ModernFontRenderer extends MFont {
                     break;
                 } else {
                     // 换行
-                    result.append(line.substring(0, line.length() - 1)).append("\n");
+                    result.append(line, 0, line.length() - 1).append("\n");
                     line = new StringBuilder().append(c); // 重新开始新的一行
                     currentReturns++;
                 }
@@ -304,7 +304,7 @@ public class ModernFontRenderer extends MFont {
     }
 
     public int drawString(String text, double x, double y, int color, final boolean shadow) {
-        if (text == null) return 0;
+        if (text == null || text.isEmpty()) return 0;
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");
 
         if (!this.international && this.requiresInternationalFont(text)) {
@@ -347,7 +347,7 @@ public class ModernFontRenderer extends MFont {
                         l += 16;
                     }
 
-                    int i1 = this.COLOR_CODES[l];
+                    int i1 = COLOR_CODES[l];
 
                     if (Config.isCustomColors()) {
                         i1 = CustomColors.getTextColor(l, i1);
@@ -396,7 +396,7 @@ public class ModernFontRenderer extends MFont {
     }
 
     public int width(String text) {
-        if (text == null) return 0;
+        if (text == null || text.isEmpty()) return 0;
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");;
 
         if (!this.international && this.requiresInternationalFont(text)) {
@@ -440,12 +440,10 @@ public class ModernFontRenderer extends MFont {
     }
 
     private boolean requiresInternationalFont(String text) {
-        int highest = 0;
-
         for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) > highest) highest = text.charAt(i);
+            if (text.charAt(i) >= 256) return true;
         }
 
-        return highest >= 256;
+        return false;
     }
 }

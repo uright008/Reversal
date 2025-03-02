@@ -21,7 +21,7 @@ public class BASticker extends Module {
     private final ModeValue character = new ModeValue("Character", this, "Aris",
             "Aris", "Shiroko", "Azusa", "Hina Swimsuit", "Ui", "Hoshino Swimsuit", "Mika", "Ibuki");
     private final NumberValue scale = new NumberValue("Scale", this, 1, 0.1, 2, 0.1);
-    private final NoteValue note = new NoteValue("Add scale to make pictures look better, which may HIDE the screen.", this);
+    private final NoteValue note = new NoteValue("增大Scale可以使图片效果变好,但可能会挡住屏幕", this);
     ScaledResolution sr;
 
     public BASticker() {

@@ -14,8 +14,8 @@ import java.awt.*;
 @NativeObfuscation
 public class TextButton extends MenuButton {
 
-    private static MFont FONT_RENDERER = FontManager.getRegular(24);
-    private static final MFont ICON_RENDERER = FontManager.getCur(32);
+    private MFont FONT_RENDERER = FontManager.getRegular(24);
+    private final MFont ICON_RENDERER = FontManager.getCur(32);
 
     public boolean left = false;
     public String name;
@@ -38,7 +38,7 @@ public class TextButton extends MenuButton {
         this.iconX = iconX;
         this.textX = textX;
         this.textY = textY;
-        FONT_RENDERER = FontManager.getRegular(24);
+        this.FONT_RENDERER = FontManager.getRegular(24);
     }
 
     public TextButton(double x, double y, double width, double height, Runnable runnable, String name, String icon, boolean left, int iconX, int textX, int textY, int fontSize) {
@@ -49,7 +49,7 @@ public class TextButton extends MenuButton {
         this.iconX = iconX;
         this.textX = textX;
         this.textY = textY;
-        FONT_RENDERER = FontManager.getRegular(fontSize);
+        this.FONT_RENDERER = FontManager.getRegular(fontSize);
     }
 
     @Override

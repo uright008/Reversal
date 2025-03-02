@@ -1,8 +1,5 @@
 package net.minecraft.client.gui.inventory;
 
-import com.github.skystardust.InputMethodBlocker.NativeUtils;
-import cn.stars.reversal.module.impl.client.ClientSettings;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.util.Iterator;
@@ -276,7 +273,6 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         }
 
         Keyboard.enableRepeatEvents(false);
-        if (ModuleInstance.getModule(ClientSettings.class).inputMethodBlocker.enabled) NativeUtils.inactiveInputMethod("");
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException
@@ -650,10 +646,6 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         this.mc.getTextureManager().bindTexture(new ResourceLocation("textures/gui/container/creative_inventory/tab_" + creativetabs.getBackgroundImageName()));
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
         this.searchField.drawTextBox(mouseX, mouseY);
-        if (ModuleInstance.getModule(ClientSettings.class).inputMethodBlocker.enabled) {
-            if (searchField.isFocused()) NativeUtils.activeInputMethod("");
-            else NativeUtils.inactiveInputMethod("");
-        }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int i = this.guiLeft + 175;

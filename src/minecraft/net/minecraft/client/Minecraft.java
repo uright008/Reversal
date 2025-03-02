@@ -8,6 +8,7 @@ import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.impl.client.Optimization;
 import cn.stars.reversal.module.impl.misc.FakeFPS;
 import cn.stars.reversal.module.impl.render.Animations;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.ui.splash.SplashScreen;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
@@ -983,7 +984,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             guiScreenIn = new GuiGameOver();
         }
 
-        if (guiScreenIn instanceof ModernMainMenu)
+        if (guiScreenIn instanceof AtomicMenu)
         {
             this.gameSettings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().clearChatMessages();

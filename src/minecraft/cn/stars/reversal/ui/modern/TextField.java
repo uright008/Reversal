@@ -9,7 +9,6 @@ import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
-import com.github.skystardust.InputMethodBlocker.NativeUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiScreen;
@@ -68,10 +67,7 @@ public class TextField {
         if (!canLoseFocus) focused = true;
 
         if (focused) {
-            NativeUtils.activeInputMethod("");
             Keyboard.enableRepeatEvents(true);
-        } else {
-            NativeUtils.inactiveInputMethod("");
         }
 
         if (focused && textColorAnim.getDirection() == Direction.FORWARDS) {

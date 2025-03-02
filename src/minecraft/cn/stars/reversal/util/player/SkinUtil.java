@@ -53,7 +53,7 @@ public class SkinUtil implements GameInstance {
     }
 
     private static String scrape(String url) {
-        String content = "";
+        StringBuilder content = new StringBuilder();
         try {
             final HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
             connection.setRequestProperty("User-Agent", "Chrome Version 88.0.4324.150");
@@ -61,12 +61,12 @@ public class SkinUtil implements GameInstance {
             final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                content += line + System.lineSeparator();
+                content.append(line).append(System.lineSeparator());
             }
             bufferedReader.close();
-        } catch (IOException ignored) {
+        } catch (IOException | ClassCastException ignored) {
         }
-        return content;
+        return content.toString();
     }
 
     public static String name(String uuid) {
