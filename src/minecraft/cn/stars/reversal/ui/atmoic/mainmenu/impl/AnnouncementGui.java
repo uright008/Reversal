@@ -147,17 +147,26 @@ public class AnnouncementGui extends AtomicGui {
     }
 
     private void loadAnnouncements() {
-        Announcement announcement1 = new Announcement("Reversal Announcement", "2025/2/21", 0)
+        Announcement announcement1 = new Announcement("Reversal Announcement", "2025/3/2", 0)
                 .addContent("你正在使用" + Reversal.NAME + " " + Reversal.VERSION + " (Minecraft " + Reversal.MINECRAFT_VERSION + ").")
-                .addContent("本客户端由" + Reversal.AUTHOR + "制作,由Aerolite Foundation强力驱动.")
+                .addContent("本客户端由" + Reversal.AUTHOR + "制作,由Aerolite Society强力驱动.")
                 .addContent("感谢您对Reversal的支持!")
                 .addContent("")
                 .addContent("[Github] https://www.github.com/RinoRika/Reversal")
                 .addContent("[QQ] https://qm.qq.com/q/M6dDLtw3oS")
                 .addContent("")
-                .addContent("© 2025 Aerolite Foundation. 保留部分权利.")
+                .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.03", "2025/3/2", 1)
+        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.04", "2025/3/2", 1)
+                .addContent("[+] 所有功能支持自定义颜色")
+                .addContent("[/] 优化整体性能")
+                .addContent("[/] 优化加载速度")
+                .addContent("[/] 优化命令系统")
+                .addContent("[*] 修复MotionBlur问题")
+                .addContent("[*] 修复文本错误")
+                .addContent("[-] 删除SpeedGraph")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.03", "2025/3/2", 2)
                 .addContent("[+] 实现主菜单的赞助列表")
                 .addContent("[+] 新增随机标题")
                 .addContent("[+] 新增重置标题指令 (.ct %reset%)")
@@ -169,22 +178,6 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("[*] 修复事件触发时机异常")
                 .addContent("[-] 删除 InputMethodBlocker")
                 .addContent("[-] 删除部分功能无用的设置")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.02", "2025/3/1", 2)
-                .addContent("[+] ClickGUI新增颜色选择器")
-                .addContent("[/] 优化ClickGUI性能")
-                .addContent("[+] 主界面新增更换背景 (右上角打开副菜单)")
-                .addContent("[+] 新增血爆粒子 (需搭配FancyBlockParticles)")
-                .addContent("[+] 新增随机标题")
-                .addContent("[/] 优化启动速度")
-                .addContent("[*] 修复主界面导致的崩端")
-                .addContent("[*] 修复获取玩家皮肤导致的崩端")
-                .addContent("[*] 其他细微调整和修复")
-                .addContent("")
-                .addContent("提示:")
-                .addContent("在本次更新后,ClientSettings中的颜色预设将被重置,因为更换了新的颜色选择器")
-                .addContent("请重新设置您的主题颜色! ")
-                .addContent("暂时还没有应用所有界面自定义颜色,请等待后续更新")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);

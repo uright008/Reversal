@@ -7,15 +7,16 @@ import cn.stars.reversal.event.impl.WorldEvent
 import cn.stars.reversal.module.Category
 import cn.stars.reversal.module.Module
 import cn.stars.reversal.module.ModuleInfo
-import cn.stars.reversal.value.impl.BoolValue
-import cn.stars.reversal.value.impl.NumberValue
 import cn.stars.reversal.util.render.ColorUtil
+import cn.stars.reversal.value.impl.ColorValue
+import cn.stars.reversal.value.impl.NumberValue
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.entity.EntityLivingBase
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 import java.math.BigDecimal
 import java.util.*
+
 
 @ModuleInfo(
     name = "DamageParticle",
@@ -25,13 +26,9 @@ import java.util.*
     category = Category.RENDER
 )
 class DamageParticle : Module(){
+    private val colorValue = ColorValue("Color", this)
     private val aliveTicksValue = NumberValue("AliveTicks", this,20.0, 10.0, 50.0, 1.0)
     private val sizeValue = NumberValue("Size", this,3.0, 1.0, 7.0, 1.0)
-    private val colorRedValue = NumberValue("Red", this,68.0, 0.0, 255.0, 1.0)
-    private val colorGreenValue = NumberValue("Green",this, 117.0, 0.0, 255.0, 1.0)
-    private val colorBlueValue = NumberValue("Blue", this,255.0, 0.0, 255.0, 1.0)
-    private val colorAlphaValue = NumberValue("Alpha",this, 100.0, 0.0, 255.0, 1.0)
-    private val colorRainbowValue = BoolValue("Rainbow",this, false)
 
     private val healthData = mutableMapOf<Int, Float>()
     private val particles = mutableListOf<SingleParticle>()
@@ -46,7 +43,7 @@ class DamageParticle : Module(){
                     if(lastHealth == entity.health) continue
 
                     try {
-                        val prefix = if (!colorRainbowValue.isEnabled) (if (lastHealth > entity.health) {
+                        val prefix = if (!colorValue.themeColor) (if (lastHealth > entity.health) {
                             "§c❤"
                         } else {
                             "§a§l❤"
@@ -108,7 +105,7 @@ class DamageParticle : Module(){
                     particle.str,
                     (-(mc.fontRendererObj.getStringWidth(particle.str) / 2)).toFloat(),
                     (-(mc.fontRendererObj.FONT_HEIGHT - 1)).toFloat(),
-                    (if (colorRainbowValue.isEnabled) ColorUtil.getRainbow() else Color(colorRedValue.value.toInt(), colorGreenValue.value.toInt(), colorBlueValue.value.toInt(), colorAlphaValue.value.toInt()).rgb)
+                    (colorValue.color.rgb)
                 )
                 GL11.glColor4f(187.0f, 255.0f, 255.0f, 1.0f)
                 GL11.glDepthMask(true)

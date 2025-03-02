@@ -185,6 +185,7 @@ public class SplashScreen {
 
         }, "Loading Screen Thread");
 
+        splashThread.setPriority(Thread.MAX_PRIORITY);
         splashThread.setUncaughtExceptionHandler((t, e) -> threadError = e);
         splashThread.start();
         checkThreadState();

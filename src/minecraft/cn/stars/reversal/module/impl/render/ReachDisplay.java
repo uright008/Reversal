@@ -8,6 +8,7 @@ import cn.stars.reversal.event.impl.Render3DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.ThemeType;
@@ -20,6 +21,7 @@ import static java.lang.Math.sin;
 
 @ModuleInfo(name = "ReachDisplay", chineseName = "攻击距离", description = "Display your reach distance", chineseDescription = "显示你的攻击距离", category = Category.RENDER)
 public class ReachDisplay extends Module {
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue thickness = new NumberValue("Thickness", this, 2f, 0.1f, 5f, 0.1f);
     @Override
     public void onRender3D(Render3DEvent event) {
@@ -40,7 +42,7 @@ public class ReachDisplay extends Module {
         GL11.glBegin(GL11.GL_LINE_STRIP);
 
         for (int i = 0; i <= 360; i += 5) { // You can change circle accuracy (60 - accuracy)
-            RenderUtils.color(ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, i / 5f));
+            RenderUtils.color(colorValue.getColor(i / 5));
             float x = (float) (cos(i * Math.PI / 180.0) * 3);
             float y = (float) (sin(i * Math.PI / 180.0) * 3);
             GL11.glVertex2f(x, y);

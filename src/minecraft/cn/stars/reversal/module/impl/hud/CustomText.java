@@ -11,6 +11,7 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.render.ThemeType;
@@ -21,6 +22,7 @@ import java.awt.*;
 @ModuleInfo(name = "CustomText", chineseName = "自定义文字", description = "Show a custom text on screen", chineseDescription = "在屏幕上显示自定义文字", category = Category.HUD)
 public class CustomText extends Module {
     private final NoteValue note = new NoteValue("用指令'.setText <文字>'来设置自定义文字!", this);
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue size = new NumberValue("Size", this, 16, 4, 64, 1);
     private final BoolValue bold = new BoolValue("Bold", this, false);
     private final BoolValue gradient = new BoolValue("Gradient", this, false);
@@ -39,28 +41,28 @@ public class CustomText extends Module {
             if (gradient.isEnabled()) {
                 float off = 0;
                 for (int i = 0; i < Reversal.customText.length(); i++) {
-                    final Color c = ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, i);
+                    final Color c = colorValue.getColor(i);
 
                     final String character = String.valueOf(Reversal.customText.charAt(i));
                     FontManager.getRegularBold((int)size.getValue()).drawString(character, x + off, y, c.getRGB());
                     off += FontManager.getRegularBold((int)size.getValue()).width(character);
                 }
             } else {
-                final Color c = ThemeUtil.getThemeColor(ThemeType.ARRAYLIST);
+                final Color c = colorValue.getColor();
                 FontManager.getRegularBold((int)size.getValue()).drawString(Reversal.customText, x, y, c.getRGB());
             }
         } else {
             if (gradient.isEnabled()) {
                 float off = 0;
                 for (int i = 0; i < Reversal.customText.length(); i++) {
-                    final Color c = ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, i);
+                    final Color c = colorValue.getColor(i);
 
                     final String character = String.valueOf(Reversal.customText.charAt(i));
                     FontManager.getRegularBold((int)size.getValue()).drawString(character, x + off, y, c.getRGB());
                     off += FontManager.getRegular((int)size.getValue()).width(character);
                 }
             } else {
-                final Color c = ThemeUtil.getThemeColor(ThemeType.ARRAYLIST);
+                final Color c = colorValue.getColor();
                 FontManager.getRegular((int)size.getValue()).drawString(Reversal.customText, x, y, c.getRGB());
             }
         }

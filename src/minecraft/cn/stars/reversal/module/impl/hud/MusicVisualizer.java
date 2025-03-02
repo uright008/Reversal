@@ -11,6 +11,7 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
@@ -25,6 +26,7 @@ import java.awt.*;
 @ModuleInfo(name = "MusicVisualizer", chineseName = "音乐可视化", description = "Visualize the music using rects",
         chineseDescription = "用边框使音乐可视化", category = Category.HUD)
 public class MusicVisualizer extends Module {
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue bands = new NumberValue("Bands", this, 128, 16, 256, 1);
     private final NumberValue heightValue = new NumberValue("Height", this, 50, 30, 100, 1);
     private final NumberValue widthValue = new NumberValue("Width", this, 100, 50, 500, 1);
@@ -81,7 +83,7 @@ public class MusicVisualizer extends Module {
                 vertex[vertexIndex] = renderX;
                 vertex[vertexIndex + 1] = realY;
 
-                RoundedUtil.drawGradientVertical(renderX - step, (float) (realY + (renderY + heightValue.getValue()) * (sr.getScaleFactor() * 0.5f - 1)), step, Math.max(renderY + getHeight() - realY, 1) * 2, (float) rectRadius.getValue(), ThemeUtil.getThemeColor(colorIndex,ThemeType.ARRAYLIST), new Color(0,0,0,0));
+                RoundedUtil.drawGradientVertical(renderX - step, (float) (realY + (renderY + heightValue.getValue()) * (sr.getScaleFactor() * 0.5f - 1)), step, Math.max(renderY + getHeight() - realY, 1) * 2, (float) rectRadius.getValue(), colorValue.getColor(), new Color(0,0,0,0));
                 colorIndex += (int) indexOffset.getValue();
 
                 vertexIndex += 2;

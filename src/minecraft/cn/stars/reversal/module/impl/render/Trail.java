@@ -11,6 +11,7 @@ import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.player.RotationUtils;
 import cn.stars.reversal.util.render.*;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.client.renderer.GlStateManager;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
         chineseDescription = "在你走过的地方渲染足迹", category = Category.RENDER)
 public final class Trail extends Module {
     public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Minecraft", "Round", "Modern");
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final BoolValue showInFirstPerson = new BoolValue("First Person", this, true);
     private final BoolValue timeoutBool = new BoolValue("Fade", this, true);
     private final NumberValue timeout = new NumberValue("Fade Time", this, 15, 1, 150, 0.1);
@@ -511,7 +513,7 @@ public final class Trail extends Module {
     }
 
     private int getColorDashCubic() {
-        return ThemeUtil.getThemeColorInt(ThemeType.ARRAYLIST);
+        return colorValue.getColor().getRGB();
     }
 
     private int[] getTextureResolution(ResourceLocation location) {

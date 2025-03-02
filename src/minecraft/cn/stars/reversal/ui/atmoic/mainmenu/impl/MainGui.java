@@ -98,7 +98,7 @@ public class MainGui extends AtomicGui {
         psm18.drawString("Minecraft " + Reversal.MINECRAFT_VERSION, 2, height - 20, Color.WHITE.getRGB());
         psm18.drawString("OptiFine_1.8.9_HD_U_M6_pre2", 2, height - 10, Color.WHITE.getRGB());
 
-        String license = "© 2025 Aerolite Foundation. 保留部分权利.";
+        String license = "© 2025 Aerolite Society. 保留部分权利.";
         psm18.drawString(license, width - psm18.width(license) + 5, height - 10, Color.WHITE.getRGB());
     }
 }

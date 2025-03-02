@@ -12,13 +12,12 @@ import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.math.TimerUtil;
 import cn.stars.reversal.util.render.ColorUtil;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.animation.advanced.Animation;
 import cn.stars.reversal.util.animation.advanced.Direction;
 import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.ThemeType;
-import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -42,6 +41,7 @@ import java.util.ConcurrentModificationException;
 @ModuleInfo(name = "TargetESP", chineseName = "敌人标记", description = "Display a ESP when you hit targets", chineseDescription = "当你攻击目标时渲染ESP", category = Category.RENDER)
 public class TargetESP extends Module {
     public final ModeValue mode = new ModeValue("Mode", this, "Rectangle", "Rectangle", "Round", "Bubble", "Stars", "Surrounding");
+    public final ColorValue colorValue = new ColorValue("Color", this);
     public final NumberValue surroundingSpeed = new NumberValue("Surrounding Speed", this, 2.0F, 1.0F, 5.0F, 0.1F);
     EntityLivingBase attackedEntity;
     private final Animation auraESPAnim = new SmoothStepAnimation(650, 1);
@@ -158,7 +158,7 @@ public class TargetESP extends Module {
                     GlStateManager.translate(s, (c), -c);
                     GlStateManager.translate(-size / 2f, -size / 2f, 0);
                     GlStateManager.translate(size / 2f, size / 2f, 0);
-                    int color = ColorUtil.reAlpha(ThemeUtil.getThemeColorInt(i, ThemeType.ARRAYLIST), (float) alphaAnim.getOutput());
+                    int color = ColorUtil.reAlpha(colorValue.getColor(i).getRGB(), (float) alphaAnim.getOutput());
                     RenderUtil.image(SURROUNDING_TEXTURE, 0f, 0f, -size, -size, color);
                     GlStateManager.translate(-size / 2f, -size / 2f, 0);
                     GlStateManager.translate(size / 2f, size / 2f, 0);
@@ -171,7 +171,7 @@ public class TargetESP extends Module {
                     GlStateManager.translate(-s, s, -c);
                     GlStateManager.translate(-size / 2f, -size / 2f, 0);
                     GlStateManager.translate(size / 2f, size / 2f, 0);
-                    int color = ColorUtil.reAlpha(ThemeUtil.getThemeColorInt(i, ThemeType.ARRAYLIST), (float) alphaAnim.getOutput());
+                    int color = ColorUtil.reAlpha(colorValue.getColor(i).getRGB(), (float) alphaAnim.getOutput());
                     RenderUtil.image(SURROUNDING_TEXTURE, 0f, 0f, -size, -size, color);
                     GlStateManager.translate(-size / 2f, -size / 2f, 0);
                     GlStateManager.translate(size / 2f, size / 2f, 0);
@@ -184,7 +184,7 @@ public class TargetESP extends Module {
                     GlStateManager.translate(-(s), -(s), (c));
                     GlStateManager.translate(-size / 2f, -size / 2f, 0);
                     GlStateManager.translate(size / 2f, size / 2f, 0);
-                    int color = ColorUtil.reAlpha(ThemeUtil.getThemeColorInt(i, ThemeType.ARRAYLIST), (float) alphaAnim.getOutput());
+                    int color = ColorUtil.reAlpha(colorValue.getColor(i).getRGB(), (float) alphaAnim.getOutput());
                     RenderUtil.image(SURROUNDING_TEXTURE, 0f, 0f, -size, -size, color);
                     GlStateManager.translate(-size / 2f, -size / 2f, 0);
                     GlStateManager.translate(size / 2f, size / 2f, 0);
@@ -204,8 +204,8 @@ public class TargetESP extends Module {
                     attackedEntity = null;
                     return;
                 }
-                Color color = ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, 1);
-                Color color2 = ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, 2);
+                Color color = colorValue.getColor(1);
+                Color color2 = colorValue.getColor(2);
                 float dst = mc.thePlayer.getSmoothDistanceToEntity(attackedEntity);
                 Vector2f vector2f = RenderUtil.targetESPSPos(attackedEntity, event.getPartialTicks());
                 if (vector2f == null) return;
@@ -324,10 +324,10 @@ public class TargetESP extends Module {
         float III = (float) (System.currentTimeMillis() % (long) (3600 / speedRotate)) / 10.0f * (float) speedRotate;
         RenderUtil.customRotatedObject2D(-1.0f, -1.0f, 2.0f, 2.0f, -III);
         this.buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        this.buffer.pos(0.0, 0.0, 0.0).tex(0.0, 0.0).color(ColorUtil.reAlpha(ThemeUtil.getThemeColorInt(ThemeType.ARRAYLIST), alphaPC)).endVertex();
-        this.buffer.pos(0.0, r, 0.0).tex(0.0, 1.0).color(ColorUtil.reAlpha(ThemeUtil.getThemeColorInt(ThemeType.ARRAYLIST), alphaPC)).endVertex();
-        this.buffer.pos(r, r, 0.0).tex(1.0, 1.0).color(ColorUtil.reAlpha(ThemeUtil.getThemeColorInt(ThemeType.ARRAYLIST), alphaPC)).endVertex();
-        this.buffer.pos(r, 0.0, 0.0).tex(1.0, 0.0).color(ColorUtil.reAlpha(ThemeUtil.getThemeColorInt(ThemeType.ARRAYLIST), alphaPC)).endVertex();
+        this.buffer.pos(0.0, 0.0, 0.0).tex(0.0, 0.0).color(ColorUtil.reAlpha(colorValue.getColor().getRGB(), alphaPC)).endVertex();
+        this.buffer.pos(0.0, r, 0.0).tex(0.0, 1.0).color(ColorUtil.reAlpha(colorValue.getColor().getRGB(), alphaPC)).endVertex();
+        this.buffer.pos(r, r, 0.0).tex(1.0, 1.0).color(ColorUtil.reAlpha(colorValue.getColor().getRGB(), alphaPC)).endVertex();
+        this.buffer.pos(r, 0.0, 0.0).tex(1.0, 0.0).color(ColorUtil.reAlpha(colorValue.getColor().getRGB(), alphaPC)).endVertex();
         GlStateManager.blendFunc(770, 772);
         GlStateManager.translate(-r / 2.0f, -r / 2.0f, 0.0f);
         GlStateManager.shadeModel(7425);

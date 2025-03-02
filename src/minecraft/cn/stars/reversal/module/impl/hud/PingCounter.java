@@ -10,6 +10,7 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.render.*;
 
@@ -19,7 +20,7 @@ import java.awt.*;
         chineseDescription = "显示你的网络延迟", category = Category.HUD)
 public class PingCounter extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
-    private final BoolValue rainbow = new BoolValue("Rainbow", this, false);
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final BoolValue background = new BoolValue("Background", this, true);
     public PingCounter() {
         setCanBeEdited(true);
@@ -32,13 +33,13 @@ public class PingCounter extends Module {
 
     @Override
     public void onShader3D(Shader3DEvent event) {
-        Color color = rainbow.isEnabled() ? ThemeUtil.getThemeColor(ThemeType.LOGO) : new Color(250, 250, 250, 200);
+        Color color = colorValue.getColor();
 
         if (background.isEnabled()) {
             switch (mode.getMode()) {
                 case "Modern":
                     if (event.isBloom())
-                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, 4, ColorUtil.withAlpha(color, 255));
+                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, 4, color);
                     else
                         RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, 4, Color.BLACK);
                     break;
@@ -54,7 +55,7 @@ public class PingCounter extends Module {
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm.getWidth(pingString), psm.getHeight() + 3, 3f, ColorUtil.empathyGlowColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm.getHeight() - 2.5, 1f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm.getHeight() - 2.5, 1f, color);
                     break;
             }
         }
@@ -67,7 +68,7 @@ public class PingCounter extends Module {
             if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled)
                 pingString = "[" + mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID()).getResponseTime() + " ms]";
         }
-        Color color = rainbow.isEnabled() ? ThemeUtil.getThemeColor(ThemeType.LOGO) : new Color(250, 250, 250, 200);
+        Color color = colorValue.getColor();
 
         if (background.isEnabled()) {
             switch (mode.getMode()) {
@@ -88,7 +89,7 @@ public class PingCounter extends Module {
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm.getWidth(pingString), psm.getHeight() + 3, 3f, ColorUtil.empathyColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm.getHeight() - 2.5, 1f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm.getHeight() - 2.5, 1f, color);
                     break;
                 case "Minecraft":
                     RenderUtil.rect(getX() - 0.5, getY() - 0.5, mc.fontRendererObj.getStringWidth(pingString) + 4, mc.fontRendererObj.FONT_HEIGHT + 3, new Color(0,0,0,100));

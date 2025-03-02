@@ -12,6 +12,7 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.misc.EvictingList;
@@ -25,7 +26,7 @@ import java.util.List;
 @ModuleInfo(name = "Particles", chineseName = "粒子", description = "Renders colorful balls when you attack someone",
         chineseDescription = "在你攻击时生成弹射的彩色小球", category = Category.RENDER)
 public final class Particles extends Module {
-
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue amount = new NumberValue("Amount", this, 10, 1, 20, 1);
     private final BoolValue physics = new BoolValue("Physics", this, true);
     private final NumberValue aliveTime = new NumberValue("Alive Time", this, 1, 1, 10, 1);

@@ -1,6 +1,7 @@
 package cn.stars.reversal.util.render;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.module.impl.render.Particles;
 import cn.stars.reversal.module.impl.render.TargetESP;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.shader.RiseShaders;
@@ -443,7 +444,7 @@ public final class RenderUtil implements GameInstance {
                     GL11.glRotated(-mc.getRenderManager().playerViewY, 0.0D, 1.0D, 0.0D);
                     GL11.glRotated(mc.getRenderManager().playerViewX, mc.gameSettings.thirdPersonView == 2 ? -1.0D : 1.0D, 0.0D, 0.0D);
 
-                    final Color c = ThemeUtil.getThemeColor(i / 5F, ThemeType.GENERAL);
+                    final Color c = ModuleInstance.getModule(Particles.class).colorValue.getColor(i / 5);
 
                     drawFilledCircleNoGL(0, -3, 0.7, c.hashCode(), quality);
 

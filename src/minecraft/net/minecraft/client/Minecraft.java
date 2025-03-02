@@ -427,16 +427,18 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         SplashScreen.setProgress(10, "Minecraft - Display");
         this.mcLanguageManager = new LanguageManager(this.metadataSerializer_, this.gameSettings.language);
         this.mcResourceManager.registerReloadListener(this.mcLanguageManager);
-        this.refreshResources();
+        AsyncGLContentLoader.loadGLContentAsync(this::refreshResources);
         this.renderEngine = new TextureManager(this.mcResourceManager);
         this.mcResourceManager.registerReloadListener(this.renderEngine);
         SplashScreen.setProgress(20, "Minecraft - Init");
 
         this.skinManager = new SkinManager(this.renderEngine, new File(this.fileAssets, "skins"), this.sessionService);
         this.saveLoader = new AnvilSaveConverter(new File(this.mcDataDir, "saves"));
-        this.mcSoundHandler = new SoundHandler(this.mcResourceManager, this.gameSettings);
-        this.mcResourceManager.registerReloadListener(this.mcSoundHandler);
-        this.mcMusicTicker = new MusicTicker(this);
+        AsyncGLContentLoader.loadGLContentAsync(() -> {
+            this.mcSoundHandler = new SoundHandler(this.mcResourceManager, this.gameSettings);
+            this.mcResourceManager.registerReloadListener(this.mcSoundHandler);
+            this.mcMusicTicker = new MusicTicker(this);
+        });
         this.fontRendererObj = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii.png"), this.renderEngine, false);
 
         if (this.gameSettings.language != null) {
@@ -444,13 +446,15 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.fontRendererObj.setBidiFlag(this.mcLanguageManager.isCurrentLanguageBidirectional());
         }
         SplashScreen.setProgress(30, "Minecraft - Font Renderer");
-        this.standardGalacticFontRenderer = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii_sga.png"), this.renderEngine, false);
-        FoliageColorReloadListener foliageColorReloadListener = new FoliageColorReloadListener();
-        GrassColorReloadListener grassColorReloadListener = new GrassColorReloadListener();
-        this.mcResourceManager.registerReloadListener(this.fontRendererObj);
-        this.mcResourceManager.registerReloadListener(this.standardGalacticFontRenderer);
-        this.mcResourceManager.registerReloadListener(foliageColorReloadListener);
-        this.mcResourceManager.registerReloadListener(grassColorReloadListener);
+        AsyncGLContentLoader.loadGLContentAsync(() -> {
+            this.standardGalacticFontRenderer = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii_sga.png"), this.renderEngine, false);
+            FoliageColorReloadListener foliageColorReloadListener = new FoliageColorReloadListener();
+            GrassColorReloadListener grassColorReloadListener = new GrassColorReloadListener();
+            this.mcResourceManager.registerReloadListener(this.fontRendererObj);
+            this.mcResourceManager.registerReloadListener(this.standardGalacticFontRenderer);
+            this.mcResourceManager.registerReloadListener(foliageColorReloadListener);
+            this.mcResourceManager.registerReloadListener(grassColorReloadListener);
+        });
         AchievementList.openInventory.setStatStringFormatter(str -> {
             try {
                 return str.replace("%s", GameSettings.getKeyDisplayString(Minecraft.this.gameSettings.keyBindInventory.getKeyCode()));
@@ -527,11 +531,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.gameSettings.enableVsync = false;
             this.gameSettings.saveOptions();
         }
+        while (!AsyncGLContentLoader.isAllTasksFinished() || latch.getCount() > 0) latch.await();
 
         this.renderGlobal.makeEntityOutlineShader();
 
-
-        if (latch.getCount() > 0) latch.await();
         Reversal.notificationManager.registerNotification(Reversal.NAME + " " + Reversal.VERSION + ", made with love by " + Reversal.AUTHOR + ".", "Reversal", NotificationType.NOTIFICATION);
         SplashScreen.notifyGameLoaded();
     }

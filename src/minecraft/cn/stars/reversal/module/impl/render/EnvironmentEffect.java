@@ -10,6 +10,7 @@ import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.render.*;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import lombok.Getter;
@@ -30,6 +31,7 @@ import java.util.List;
 @ModuleInfo(name = "EnvironmentEffect", chineseName = "环境效果", description = "Draw modern environment effects around you", chineseDescription = "在你的身边绘制时髦的环境效果", category = Category.RENDER)
 public class EnvironmentEffect extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Firefly", "Firefly", "Stars", "Snowflake");
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue count = new NumberValue("Count", this, 30, 10, 500, 1);
     private final BoolValue darkImprint = new BoolValue("Dark Imprint", this, false);
     private final BoolValue lighting = new BoolValue("Lighting", this, false);
@@ -83,7 +85,7 @@ public class EnvironmentEffect extends Module {
     }
 
     private int getPartColor() {
-        return ThemeUtil.getThemeColorInt(ThemeType.ARRAYLIST);
+        return colorValue.getColor().getRGB();
     }
 
     private float getRandom(double min, double max) {

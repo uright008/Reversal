@@ -73,9 +73,6 @@ public final class CommandManager {
                     Reversal.notificationManager.registerNotification("Settings " + spit[1].toLowerCase() + " in " + command.toLowerCase() + " doesn't exist!", "Command", NotificationType.ERROR);
                     Reversal.showMsg("Settings " + spit[1].toLowerCase() + " in " + command.toLowerCase() + " doesn't exist!");
                     return;
-                } else {
-                    module.toggleModule();
-                    return;
                 }
             }
         }

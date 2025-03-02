@@ -77,7 +77,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) atomicGui.hoverAnimation.run(80);
             else atomicGui.hoverAnimation.run(0);
             RenderUtil.rect(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, new Color(20,20,20, (int) atomicGui.hoverAnimation.getValue()));
-            RenderUtil.roundedRectangle(60 - psm16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 27, psm16.width(atomicGui.name) + 5, psm16.height() + 2, 2, new Color(20, 20, 20, (int) atomicGui.hoverAnimation.getValue() * 3));
+            RenderUtil.roundedRectangle(60 - psm16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 27, psm16.width(atomicGui.name) + 5, psm16.height() + 2, 2, new Color(20, 20, 20, (int) atomicGui.hoverAnimation.getValue() * 2));
             psm16.drawString(atomicGui.name, 62.5 - psm16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 30, new Color(255,255,255, (int) atomicGui.hoverAnimation.getValue() * 3).getRGB());
             atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8, Color.WHITE.getRGB());
         }

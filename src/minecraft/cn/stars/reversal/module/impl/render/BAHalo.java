@@ -32,7 +32,7 @@ import java.awt.*;
 public class BAHalo extends Module {
     private final ModeValue mode = new ModeValue("Student", this, "Shiroko", "Shiroko", "Hoshino", "Reisa", "Azusa");
     private final BoolValue showInFirstPerson = new BoolValue("First Person", this, false);
-    private final BoolValue lighting = new BoolValue("Lighting", this, false);
+//    private final BoolValue lighting = new BoolValue("Lighting", this, false);
     CustomAnimation animation = new CustomAnimation(SmoothStepAnimation.class, 2000, 0.0, 0.1);
     Tessellator tessellator = Tessellator.getInstance();
     WorldRenderer worldRenderer = tessellator.getWorldRenderer();
@@ -99,9 +99,7 @@ public class BAHalo extends Module {
         GlUtils.startAntiAlias();
 
         drawBoundTexture(radius);
-        if (lighting.isEnabled()) drawLightTexture(radius);
 
-        GlUtils.stopAntiAlias();
         GlStateManager.disableBlend();
         GlStateManager.enableDepth();
         GlStateManager.enableCull();
@@ -137,7 +135,7 @@ public class BAHalo extends Module {
         GlUtils.startAntiAlias();
 
         drawBoundTexture(radius);
-        if (lighting.isEnabled()) drawLightTexture(radius);
+    //    if (lighting.isEnabled()) drawLightTexture(radius);
 
         GlUtils.stopAntiAlias();
         GlStateManager.disableBlend();

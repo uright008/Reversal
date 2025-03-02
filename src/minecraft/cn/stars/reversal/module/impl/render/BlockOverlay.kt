@@ -11,6 +11,7 @@ import cn.stars.reversal.util.render.ThemeUtil
 import cn.stars.reversal.util.wrapper.WrapperAxisAlignedBB
 import cn.stars.reversal.util.wrapper.WrapperBlockPos
 import cn.stars.reversal.util.wrapper.WrapperBufferBuilder
+import cn.stars.reversal.value.impl.ColorValue
 import net.minecraft.block.Block
 import net.minecraft.block.BlockStairs
 import net.minecraft.block.state.IBlockState
@@ -25,6 +26,7 @@ import org.lwjgl.opengl.GL11
 
 @ModuleInfo(name = "BlockOverlay", chineseName = "方块描边", description = "Render a overlay around blocks", chineseDescription = "在方块周围渲染边框", category = Category.RENDER)
 class BlockOverlay : Module() {
+    private var colorValue = ColorValue("Color", this)
     private var fill = BoolValue("Fill", this, false)
     private var outline = BoolValue("Outline", this, true)
     private var throughBlock = BoolValue("ThroughBlock", this, false)
@@ -39,7 +41,7 @@ class BlockOverlay : Module() {
     }
 
     fun drawBlock(blockpos: BlockPos, filled: Boolean, outlined: Boolean, throughBlocked: Boolean, lineWidths: Float, fillAlpha: Float = 255f) {
-        val color = ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, 0f)
+        val color = colorValue.color
         val pos = WrapperBlockPos(blockpos)
         val state = getBlockState(pos)
         val block = getBlock(pos)
@@ -146,7 +148,7 @@ class BlockOverlay : Module() {
 
     fun drawBoundingBoxOutline(boundingBox: WrapperAxisAlignedBB) {
         val tessellator = Tessellator.getInstance()
-        val bufferBuilder: WrapperBufferBuilder = WrapperBufferBuilder(tessellator)
+        val bufferBuilder = WrapperBufferBuilder(tessellator)
         bufferBuilder.begin(3, DefaultVertexFormats.POSITION)
         posBoundingBoxHalf(boundingBox, bufferBuilder)
         tessellator.draw()
@@ -182,7 +184,7 @@ class BlockOverlay : Module() {
     }
     fun drawBoundingBox(boundingBox: WrapperAxisAlignedBB) {
         val tessellator = Tessellator.getInstance()
-        val bufferBuilder: WrapperBufferBuilder = WrapperBufferBuilder(tessellator)
+        val bufferBuilder = WrapperBufferBuilder(tessellator)
         bufferBuilder.begin(7, DefaultVertexFormats.POSITION)
         posBoundingBoxSquare(boundingBox, tessellator, bufferBuilder)
         bufferBuilder.begin(7, DefaultVertexFormats.POSITION)

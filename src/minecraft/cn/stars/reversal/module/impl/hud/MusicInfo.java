@@ -15,6 +15,7 @@ import cn.stars.reversal.music.api.base.LyricLine;
 import cn.stars.reversal.music.api.player.MusicPlayer;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.render.ColorUtil;
@@ -31,6 +32,7 @@ import java.awt.*;
         chineseDescription = "显示音乐信息", category = Category.HUD)
 public class MusicInfo extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Empathy");
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final BoolValue lyrics = new BoolValue("Lyrics", this, false);
     private final NumberValue heightValue = new NumberValue("Height", this, 50, 50, 100, 1);
     private DynamicTexture coverTexture;
@@ -62,7 +64,7 @@ public class MusicInfo extends Module {
             Gui.drawNewRect(getX(), getY(), getWidth(), getHeight(), new Color(0, 0, 0, 80).getRGB());
         } else {
             RenderUtil.roundedRectangle(getX() - 2, getY(), getWidth() + 2, getHeight(), 3f, ColorUtil.empathyColor());
-            RenderUtil.roundedRectangle(getX() - 2.5, getY() + 2.5, 1.5, regular20Bold.height() - 2.5, 1f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+            RenderUtil.roundedRectangle(getX() - 2.5, getY() + 2.5, 1.5, regular20Bold.height() - 2.5, 1f, colorValue.getColor());
         }
         try {
             RenderUtil.image(coverTexture, getX(), getY(), getHeight(), getHeight());
@@ -94,7 +96,7 @@ public class MusicInfo extends Module {
             Gui.drawNewRect(getX(), getY(), getWidth(), getHeight(), Color.BLACK.getRGB());
         } else {
             RenderUtil.roundedRectangle(getX() - 2, getY(), getWidth() + 2, getHeight(), 3f, ColorUtil.empathyGlowColor());
-            RenderUtil.roundedRectangle(getX() - 2.5, getY() + 2.5, 1.5, regular20Bold.height() - 2.5, 1f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+            RenderUtil.roundedRectangle(getX() - 2.5, getY() + 2.5, 1.5, regular20Bold.height() - 2.5, 1f, colorValue.getColor());
         }
     }
 }

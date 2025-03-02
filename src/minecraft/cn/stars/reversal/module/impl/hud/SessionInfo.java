@@ -7,6 +7,7 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.math.TimeUtil;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
         chineseDescription = "显示你的游戏数据", category = Category.HUD)
 public class SessionInfo extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy");
-    private final BoolValue rainbow = new BoolValue("Rainbow", this, false);
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final TimeUtil timer = new TimeUtil();
     int second = 0;
     int minute = 0;
@@ -46,10 +47,10 @@ public class SessionInfo extends Module {
     public void onShader3D(Shader3DEvent event) {
         int x = getX() + 4;
         int y = getY() + 4;
-        Color color = rainbow.isEnabled() ? ThemeUtil.getThemeColor(ThemeType.LOGO) : new Color(250, 250, 250, 200);
+        Color color = colorValue.getColor();
 
         if (mode.getMode().equals("Modern")) {
-            if (event.isBloom()) RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, ColorUtil.withAlpha(color, 255));
+            if (event.isBloom()) RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, color);
             else RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, Color.BLACK);
         } else if (mode.getMode().equals("ThunderHack")) {
             RoundedUtil.drawGradientRound(x - 3.5f, y - 5.5f, 151, 67, 4,
@@ -61,7 +62,7 @@ public class SessionInfo extends Module {
             RenderUtil.rect(x - 2, y - 4, 148, 64, Color.BLACK);
         } else if (mode.getMode().equals("Empathy")) {
             RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyGlowColor());
-            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb.height() - 2.5, 3f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb.height() - 2.5, 3f, color);
         }
     }
 
@@ -69,7 +70,7 @@ public class SessionInfo extends Module {
     public void onRender2D(Render2DEvent event) {
         int x = getX() + 4;
         int y = getY() + 4;
-        Color color = rainbow.isEnabled() ? ThemeUtil.getThemeColor(ThemeType.LOGO) : new Color(250, 250, 250, 200);
+        Color color = colorValue.getColor();
 
         updatePlayTime();
         String playtime = hour + "h " + minute + "m " + second + "s";
@@ -93,7 +94,7 @@ public class SessionInfo extends Module {
             RenderUtil.rect(x - 2, y - 4, 148, 64, new Color(0, 0, 0, 80));
         } else if (mode.getMode().equals("Empathy")) {
             RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyColor());
-            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb.height() - 2.5, 1f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb.height() - 2.5, 1f, color);
         }
 
         // 顶部

@@ -17,8 +17,8 @@ public class ColorValue extends Value {
     private float hue = 0;
     private float saturation = 1;
     private float brightness = 1;
-    private boolean themeColor = true;
-    private boolean dontShowThemeColor;
+    public boolean themeColor = true;
+    public boolean dontShowThemeColor;
 
     public ColorValue(String name, final Module parent, final boolean dontShowThemeColor) {
         this.name = name;
@@ -46,6 +46,10 @@ public class ColorValue extends Value {
 
     public Color getColor() {
         return !dontShowThemeColor && themeColor ? ThemeUtil.getThemeColor(ThemeType.ARRAYLIST) : Color.getHSBColor(hue, saturation, brightness);
+    }
+
+    public Color getColor(int i) {
+        return !dontShowThemeColor && themeColor ? ThemeUtil.getThemeColor(i, ThemeType.ARRAYLIST) : Color.getHSBColor(hue, saturation, brightness);
     }
 
     public Color getAltColor() {

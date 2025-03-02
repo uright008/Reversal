@@ -9,6 +9,7 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.render.*;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.block.state.IBlockState;
@@ -33,6 +34,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @ModuleInfo(name = "JumpCircle", chineseName = "跳跃圆圈", description = "Draw a circle when you jump", chineseDescription = "在你跳跃时画圆圈", category = Category.RENDER)
 public class JumpCircle extends Module {
     private final ModeValue modeValue = new ModeValue("Mode", this, "Round", "Round", "Modern");
+    public final ColorValue colorValue = new ColorValue("Color", this);
     private final ModeValue modernTextureValue = new ModeValue("Modern Texture", this, "Leeches", "KonchalEbal", "CubicalPieces", "Leeches", "Circle");
     private final NumberValue maxTime = new NumberValue("Max Time", this, 3000, 2000, 8000, 25);
     private final BoolValue deepestLight = new BoolValue("Deepest Light", this, true);
@@ -174,7 +176,7 @@ public class JumpCircle extends Module {
             GL11.glBegin(GL11.GL_LINE_STRIP);
 
             for (int i = 0; i <= 360; i += 5) { // You can change circle accuracy  (60 - accuracy)
-                RenderUtils.color(ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, i / 5f));
+                RenderUtils.color(colorValue.getColor(i / 5));
                 GL11.glVertex2f(
                         (float) (Math.cos(i * Math.PI / 180.0) * circle.radius),
                         (float) (Math.sin(i * Math.PI / 180.0) * circle.radius)
@@ -292,7 +294,7 @@ public class JumpCircle extends Module {
     }
 
     private int getColor(float alphaPC) {
-        int colorize = ThemeUtil.getThemeColorInt(ThemeType.ARRAYLIST);
+        int colorize = colorValue.getColor().getRGB();
         return ColorUtil.getOverallColorFrom(colorize, new Color(255, 255, 255, (int) (255.F * alphaPC)).getRGB(), .1F);
     }
 

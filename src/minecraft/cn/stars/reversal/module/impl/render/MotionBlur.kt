@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11
 class MotionBlur : Module() {
     private var blurBufferMain: Framebuffer? = null
     private var blurBufferInto: Framebuffer? = null
-    private val multiplier = NumberValue("Multiplier", this, 2.0, 0.0, 15.0, 0.1)
+    private val multiplier = NumberValue("Multiplier", this, 4.0, 0.0, 10.0, 0.1)
 
     private fun checkFramebufferSizes(framebuffer: Framebuffer?, width: Int, height: Int): Framebuffer {
         var theFramebuffer = framebuffer

@@ -153,7 +153,7 @@ public class Hud implements GameInstance {
                 case "Minecraft": {
                     finalX = arraylistX - mc.fontRendererObj.getStringWidth(name);
 
-                    mc.fontRendererObj.drawStringWithShadow(name, renderX, renderY, ThemeUtil.getThemeColorInt(moduleCount, ThemeType.ARRAYLIST));
+                    mc.fontRendererObj.drawStringWithShadow(name, renderX, renderY, arraylist.colorValue.getColor(moduleCount).getRGB());
 
                     break;
                 }
@@ -165,17 +165,17 @@ public class Hud implements GameInstance {
                     final double stringWidth = regular16.getWidth(name);
 
                     RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, new Color(0, 0, 0, 60));
-                    RenderUtil.rect(renderX - offsetX + stringWidth + offsetX * 1.5 + 1, renderY - offsetY + 0.4, 1, 8.8 + offsetY, ThemeUtil.getThemeColor(moduleCount, ThemeType.ARRAYLIST));
+                    RenderUtil.rect(renderX - offsetX + stringWidth + offsetX * 1.5 + 1, renderY - offsetY + 0.4, 1, 8.8 + offsetY, arraylist.colorValue.getColor(moduleCount));
 
                     finalX = arraylistX - regular16.getWidth(name);
 
-                    regular16.drawString(name, renderX, renderY + 2, ThemeUtil.getThemeColorInt(moduleCount, ThemeType.ARRAYLIST));
+                    regular16.drawString(name, renderX, renderY + 2, arraylist.colorValue.getColor(moduleCount).getRGB());
 
                     final int mC = moduleCount;
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {
                             RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, Color.BLACK);
-                            RenderUtil.rect(renderX - offsetX + stringWidth + offsetX * 1.5 + 1, renderY - offsetY + 0.4, 1, 8.8 + offsetY, ThemeUtil.getThemeColor(mC, ThemeType.ARRAYLIST));
+                            RenderUtil.rect(renderX - offsetX + stringWidth + offsetX * 1.5 + 1, renderY - offsetY + 0.4, 1, 8.8 + offsetY, arraylist.colorValue.getColor(mC));
                         });
                     }
 
@@ -199,10 +199,10 @@ public class Hud implements GameInstance {
 
                     finalX = arraylistX - regular16.getWidth(name);
 
-                    regular16.drawString(name, renderX - 15, renderY + 2.2, ThemeUtil.getThemeColorInt(moduleCount, ThemeType.ARRAYLIST));
+                    regular16.drawString(name, renderX - 15, renderY + 2.2, arraylist.colorValue.getColor(moduleCount).getRGB());
 
                     RenderUtil.roundedRectangle(renderX - offsetX + nameWidth + offsetX * 1.5 + 0.5 - 13, renderY - offsetY + 0.5, 10, 9.15 + offsetY, 2f, ColorUtil.empathyColor());
-                    FontManager.getIcon(16).drawString("j", renderX - offsetX + nameWidth + offsetX * 1.5 + 0.5 - 12, renderY + 2.2, ThemeUtil.getThemeColorInt(moduleCount, ThemeType.ARRAYLIST));
+                    FontManager.getIcon(16).drawString("j", renderX - offsetX + nameWidth + offsetX * 1.5 + 0.5 - 12, renderY + 2.2, arraylist.colorValue.getColor(moduleCount).getRGB());
 
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {
@@ -234,7 +234,7 @@ public class Hud implements GameInstance {
 
                     finalX = arraylistX - gs.getWidth(name);
 
-                    gs.drawString(name, renderX, renderY + 2, ThemeUtil.getThemeColorInt(moduleCount, ThemeType.ARRAYLIST));
+                    gs.drawString(name, renderX, renderY + 2, arraylist.colorValue.getColor(moduleCount).getRGB());
                 }
                 break;
 
@@ -247,7 +247,7 @@ public class Hud implements GameInstance {
 
                     if (!ModuleInstance.getModule(ClientSettings.class).thunderHack.isEnabled()) {
                         Runnable shadowRunnable = () -> {
-                            RenderUtil.rect(renderX - offsetX - 1, renderY - offsetY + 0.2, stringWidth + offsetX * 1.5 + 1, 10.3 + offsetY - 1.5, ThemeUtil.getThemeColor(mC, ThemeType.ARRAYLIST));
+                            RenderUtil.rect(renderX - offsetX - 1, renderY - offsetY + 0.2, stringWidth + offsetX * 1.5 + 1, 10.3 + offsetY - 1.5, arraylist.colorValue.getColor(mC));
                             RenderUtil.roundedRectangle(renderX + stringWidth, renderY - offsetY, 2, 10.3 + offsetY - 0.5, 2.5, ColorUtil.liveColorBrighter(new Color(0, 255, 255), 1f));
                         };
 
@@ -266,7 +266,7 @@ public class Hud implements GameInstance {
                             MODERN_BLUR_RUNNABLES.add(blurRunnable);
                         }
 
-                        psm17.drawString(name, renderX - 1, renderY + 0.6, ThemeUtil.getThemeColorInt(mC, ThemeType.ARRAYLIST));
+                        psm17.drawString(name, renderX - 1, renderY + 0.6, arraylist.colorValue.getColor(mC).getRGB());
                     } else {
                         Runnable shadowRunnable = () -> {
                             RenderUtil.rect(renderX - offsetX - 1, renderY - offsetY + 0.2, stringWidth + offsetX * 1.5 + 1, 10.3 + offsetY - 1.5,
@@ -350,12 +350,11 @@ public class Hud implements GameInstance {
     }
     
     private static void renderClientName() {
-        TextGui textGui = (TextGui) ModuleInstance.getModule(TextGui.class);
+        TextGui textGui = ModuleInstance.getModule(TextGui.class);
         if (!textGui.isEnabled()) return;
         final String mode = ModuleInstance.getModule(ClientSettings.class).theme.getMode();
         final boolean useDefaultName = !ModuleInstance.getModule(TextGui.class).custom.isEnabled();
 
-        final float offset;
         String name = Reversal.NAME, customName = ThemeUtil.getCustomClientName();
 
         if (customName.isEmpty()) customName = "Use \".clientname <name>\" to set custom name.";
@@ -368,19 +367,18 @@ public class Hud implements GameInstance {
                     for (int i = 0; i < name.length(); i++) {
                         final String character = String.valueOf(name.charAt(i));
 
-                        mc.fontRendererObj.drawStringWithShadow(character, textGui.getX() + 1 + off, textGui.getY(), ThemeUtil.getThemeColorInt(i, ThemeType.ARRAYLIST));
+                        mc.fontRendererObj.drawStringWithShadow(character, textGui.getX() + 1 + off, textGui.getY(), textGui.colorValue.getColor(i).getRGB());
 
                         off += mc.fontRendererObj.getStringWidth(character);
                     }
 
-                    off = mc.fontRendererObj.getStringWidth(name);
                 } else {
                     textGui.setWidth((int) (20 + mc.fontRendererObj.getStringWidth(customName) * 1.5));
                     float off = 0;
 
                     for (int i = 0; i < customName.length(); i++) {
                         final String character = String.valueOf(customName.charAt(i));
-                        mc.fontRendererObj.drawStringWithShadow(character, textGui.getX() + 1 + off, textGui.getY(), ThemeUtil.getThemeColorInt(i, ThemeType.ARRAYLIST));
+                        mc.fontRendererObj.drawStringWithShadow(character, textGui.getX() + 1 + off, textGui.getY(), textGui.colorValue.getColor(i).getRGB());
 
                         off += mc.fontRendererObj.getStringWidth(character);
                     }
@@ -391,12 +389,12 @@ public class Hud implements GameInstance {
             case "Reversal": {
                 if (useDefaultName) {
                     textGui.setWidth(100);
-                    gsTitle.drawStringWithShadow("S", textGui.getX() + 7, textGui.getY() + 5, ThemeUtil.getThemeColorInt(ThemeType.ARRAYLIST));
-                    gsTitle.drawStringWithShadow("tarX [" + Reversal.VERSION + "]", textGui.getX() + 7 + gsTitle.getWidth("S"), textGui.getY() + 4.9f, new Color(230, 230, 230, 200).getRGB());
+                    gsTitle.drawStringWithShadow("R", textGui.getX() + 7, textGui.getY() + 5, textGui.colorValue.getColor().getRGB());
+                    gsTitle.drawStringWithShadow("eversal [" + Reversal.VERSION + "]", textGui.getX() + 7 + gsTitle.getWidth("R"), textGui.getY() + 4.9f, new Color(230, 230, 230, 200).getRGB());
                 } else {
                     textGui.setWidth((int) (20 + gsTitle.getWidth(customName)));
                     // FOOLISH
-                    gsTitle.drawStringWithShadow(String.valueOf(customName.charAt(0)), textGui.getX() + 7, textGui.getY() + 5, ThemeUtil.getThemeColorInt(ThemeType.ARRAYLIST));
+                    gsTitle.drawStringWithShadow(String.valueOf(customName.charAt(0)), textGui.getX() + 7, textGui.getY() + 5, textGui.colorValue.getColor().getRGB());
                     // 从字符串第二个字开始获取
                     gsTitle.drawStringWithShadow(customName.substring(1), textGui.getX() + 5 + gsTitle.getWidth(String.valueOf(customName.charAt(0))), textGui.getY() + 4.9f, new Color(230, 230, 230, 200).getRGB());
                 }
@@ -409,7 +407,7 @@ public class Hud implements GameInstance {
                 if (useDefaultName) {
                     final String clientName = "REVERSAL CLIENT";
 
-                    textGui.setWidth((int) (100 + regular18.width(extraText)));
+                    textGui.setWidth(100 + regular18.width(extraText));
                     int x = textGui.getX() + 5;
                     int y = textGui.getY();
                     float off = 0;
@@ -420,10 +418,10 @@ public class Hud implements GameInstance {
                         final String character = String.valueOf(clientName.charAt(i));
 
                         final float off1 = off;
-                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(i / 2, ThemeType.ARRAYLIST));
+                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
                         int finalI = i;
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(finalI / 2, ThemeType.ARRAYLIST));
+                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
                         });
                         off += regular20Bold.width(character);
                     }
@@ -445,7 +443,7 @@ public class Hud implements GameInstance {
                 } else {
                     final String clientName = customName;
 
-                    textGui.setWidth((int) (20 + regular20Bold.width(clientName) + regular18.width(extraText)));
+                    textGui.setWidth(20 + regular20Bold.width(clientName) + regular18.width(extraText));
                     int x = textGui.getX() + 5;
                     int y = textGui.getY();
                     float off = 0;
@@ -456,10 +454,10 @@ public class Hud implements GameInstance {
                         final String character = String.valueOf(clientName.charAt(i));
 
                         final float off1 = off;
-                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(i / 2, ThemeType.ARRAYLIST));
+                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
                         int finalI = i;
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(finalI / 2, ThemeType.ARRAYLIST));
+                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
                         });
                         off += regular20Bold.width(character);
                     }
@@ -491,16 +489,16 @@ public class Hud implements GameInstance {
                     float off = 0;
 
                     RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyColor());
-                    RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                    RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, textGui.colorValue.getColor());
 
                     for (int i = 0; i < clientName.length(); i++) {
                         final String character = String.valueOf(clientName.charAt(i));
 
                         final float off1 = off;
-                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(i / 2, ThemeType.ARRAYLIST));
+                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
                         int finalI = i;
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(finalI / 2, ThemeType.ARRAYLIST));
+                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
                         });
                         off += regular20Bold.width(character);
                     }
@@ -508,7 +506,7 @@ public class Hud implements GameInstance {
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {
                             RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyGlowColor());
-                            RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                            RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, textGui.colorValue.getColor());
                         });
                     }
 
@@ -521,22 +519,22 @@ public class Hud implements GameInstance {
                 } else {
                     final String clientName = "★ " + customName;
 
-                    textGui.setWidth((int) (20 + regular20Bold.width(clientName)));
+                    textGui.setWidth(20 + regular20Bold.width(clientName));
                     int x = textGui.getX() + 5;
                     int y = textGui.getY();
                     float off = 0;
 
                     RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyColor());
-                    RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                    RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, textGui.colorValue.getColor());
 
                     for (int i = 0; i < clientName.length(); i++) {
                         final String character = String.valueOf(clientName.charAt(i));
 
                         final float off1 = off;
                         int finalI = i;
-                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(i / 2, ThemeType.ARRAYLIST));
+                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(finalI / 2, ThemeType.ARRAYLIST));
+                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
                         });
                         off += regular20Bold.width(character);
                     }
@@ -544,7 +542,7 @@ public class Hud implements GameInstance {
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {
                             RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyGlowColor());
-                            RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                            RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, textGui.colorValue.getColor());
                         });
                     }
 
@@ -572,15 +570,15 @@ public class Hud implements GameInstance {
                     }
 
                     RoundedUtil.drawRound(x + 1, y + 1, 46 + extraWidth, 12, 4, new Color(0, 0, 0, 80));
-                    RenderUtil.roundedOutlineRectangle(x, y, 48 + extraWidth, 14, 3, 1, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                    RenderUtil.roundedOutlineRectangle(x, y, 48 + extraWidth, 14, 3, 1, textGui.colorValue.getColor());
                 //    RoundedUtil.drawRoundOutline(x, y, 35 + extraWidth, 14, 3, 0.1f, new Color(0, 0, 0, 80),
                 //            ModuleInstance.getBool("TextGui", "Rainbow").isEnabled() ? ThemeUtil.getThemeColor(ThemeType.ARRAYLIST) : new Color(250, 250, 250, 200));
                     psm18.drawString(extraText, x + 43.5, y + 4f, new Color(250, 250, 250, 200).getRGB());
 
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            psm18.drawString(extraText, x + 43.5, y + 4f, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST).getRGB());
-                            RoundedUtil.drawRound(x + 1, y + 1, 46 + extraWidth, 12, 4, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                            psm18.drawString(extraText, x + 43.5, y + 4f, textGui.colorValue.getColor().getRGB());
+                            RoundedUtil.drawRound(x + 1, y + 1, 46 + extraWidth, 12, 4, textGui.colorValue.getColor());
                         });
                     }
 
@@ -589,10 +587,10 @@ public class Hud implements GameInstance {
                         final String character = String.valueOf(name.charAt(i));
 
                         final float off1 = off;
-                        psb20.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(i, ThemeType.ARRAYLIST));
+                        psb20.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
                         int finalI = i;
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            psb20.drawString(character, x + 4 + off1, y + 3.5, ThemeUtil.getThemeColorInt(finalI, ThemeType.ARRAYLIST));
+                            psb20.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
                         });
                         off += psb20.getWidth(character);
                     }

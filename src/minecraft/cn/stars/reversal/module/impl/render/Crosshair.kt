@@ -11,6 +11,7 @@ import cn.stars.reversal.util.player.MovementUtils
 import cn.stars.reversal.util.render.RenderUtils
 import cn.stars.reversal.util.render.ThemeType
 import cn.stars.reversal.util.render.ThemeUtil
+import cn.stars.reversal.value.impl.ColorValue
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.entity.EntityLivingBase
 import org.lwjgl.opengl.GL11
@@ -19,6 +20,7 @@ import java.awt.Color
 @ModuleInfo(name = "Crosshair", chineseName = "自定义准星", description = "Customize your crosshair", chineseDescription = "自定义你的准星", category = Category.RENDER)
 class Crosshair : Module() {
     // Size, width, hitmarker
+    private val colorValue = ColorValue("Color", this)
     private val widthValue = NumberValue("Width", this,0.5, 0.2, 10.0, 0.1)
     private val sizeValue = NumberValue("Length", this,7.0, 0.2, 15.0, 0.1)
     private val gapValue = NumberValue("Gap", this,5.0, 0.2, 15.0, 0.1)
@@ -40,11 +42,10 @@ class Crosshair : Module() {
         val gap = gapValue.value.toFloat()
         val isMoving = dynamicValue.enabled && MovementUtils.isMoving()
         GL11.glPushMatrix()
-        RenderUtils.drawBorderedRect(sr.scaledWidth / 2f - width, sr.scaledHeight / 2f - gap - size - if (isMoving) 2 else 0, sr.scaledWidth / 2f + 1.0f + width, sr.scaledHeight / 2f - gap - if (isMoving) 2 else 0, 0.5f, Color(0, 0, 0).rgb, ThemeUtil.getThemeColor(
-            ThemeType.ARRAYLIST, 0f).rgb)
-        RenderUtils.drawBorderedRect(sr.scaledWidth / 2f - width, sr.scaledHeight / 2f + gap + 1 + (if (isMoving) 2 else 0) - 0.15f, sr.scaledWidth / 2f + 1.0f + width, sr.scaledHeight / 2f + 1 + gap + size + (if (isMoving) 2 else 0) - 0.15f, 0.5f, Color(0, 0, 0).rgb, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, 0f).rgb)
-        RenderUtils.drawBorderedRect(sr.scaledWidth / 2f - gap - size - (if (isMoving) 2 else 0) + 0.15f, sr.scaledHeight / 2f - width, sr.scaledWidth / 2f - gap - (if (isMoving) 2 else 0) + 0.15f, sr.scaledHeight / 2 + 1.0f + width, 0.5f, Color(0, 0, 0).rgb, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, 0f).rgb)
-        RenderUtils.drawBorderedRect(sr.scaledWidth / 2f + 1 + gap + if (isMoving) 2 else 0, sr.scaledHeight / 2f - width, sr.scaledWidth / 2f + size + gap + 1.0f + if (isMoving) 2 else 0, sr.scaledHeight / 2 + 1.0f + width, 0.5f, Color(0, 0, 0).rgb, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST, 0f).rgb)
+        RenderUtils.drawBorderedRect(sr.scaledWidth / 2f - width, sr.scaledHeight / 2f - gap - size - if (isMoving) 2 else 0, sr.scaledWidth / 2f + 1.0f + width, sr.scaledHeight / 2f - gap - if (isMoving) 2 else 0, 0.5f, Color(0, 0, 0).rgb, colorValue.color.rgb)
+        RenderUtils.drawBorderedRect(sr.scaledWidth / 2f - width, sr.scaledHeight / 2f + gap + 1 + (if (isMoving) 2 else 0) - 0.15f, sr.scaledWidth / 2f + 1.0f + width, sr.scaledHeight / 2f + 1 + gap + size + (if (isMoving) 2 else 0) - 0.15f, 0.5f, Color(0, 0, 0).rgb, colorValue.color.rgb)
+        RenderUtils.drawBorderedRect(sr.scaledWidth / 2f - gap - size - (if (isMoving) 2 else 0) + 0.15f, sr.scaledHeight / 2f - width, sr.scaledWidth / 2f - gap - (if (isMoving) 2 else 0) + 0.15f, sr.scaledHeight / 2 + 1.0f + width, 0.5f, Color(0, 0, 0).rgb, colorValue.color.rgb)
+        RenderUtils.drawBorderedRect(sr.scaledWidth / 2f + 1 + gap + if (isMoving) 2 else 0, sr.scaledHeight / 2f - width, sr.scaledWidth / 2f + size + gap + 1.0f + if (isMoving) 2 else 0, sr.scaledHeight / 2 + 1.0f + width, 0.5f, Color(0, 0, 0).rgb, colorValue.color.rgb)
         GL11.glPopMatrix()
         GlStateManager.resetColor()
         if (hitMarkerValue.enabled && target != null && target!!.hurtTime > 0) {

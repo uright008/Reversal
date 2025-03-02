@@ -107,5 +107,6 @@ public class SponsorGui extends AtomicGui {
         sponsors.add("酚酞");
         sponsors.add("西瓜");
         sponsors.add("Prodee163");
+        sponsors.add("Valor#1337");
     }
 }
