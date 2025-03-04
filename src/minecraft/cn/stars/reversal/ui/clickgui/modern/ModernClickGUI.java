@@ -422,11 +422,11 @@ public class ModernClickGUI extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         int x = width / 2 - 260 + addX;
-        int y = height / 2 - 180 + addY;
+        int y = height / 2 - 160 + addY;
 
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
 
-        if (RenderUtil.isHovered(x, y, 520, 25, mouseX, mouseY) && !searchField.focused) {
+        if (RenderUtil.isHovered(x, y - 20, 520, 25, mouseX, mouseY) && !searchField.focused) {
             isDragging = true;
             deltaX = mouseX - addX;
             deltaY = mouseY - addY;
