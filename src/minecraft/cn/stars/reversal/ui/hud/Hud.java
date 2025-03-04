@@ -396,7 +396,7 @@ public class Hud implements GameInstance {
                     // FOOLISH
                     gsTitle.drawStringWithShadow(String.valueOf(customName.charAt(0)), textGui.getX() + 7, textGui.getY() + 5, textGui.colorValue.getColor().getRGB());
                     // 从字符串第二个字开始获取
-                    gsTitle.drawStringWithShadow(customName.substring(1), textGui.getX() + 5 + gsTitle.getWidth(String.valueOf(customName.charAt(0))), textGui.getY() + 4.9f, new Color(230, 230, 230, 200).getRGB());
+                    gsTitle.drawStringWithShadow(customName.substring(1), textGui.getX() + 7 + gsTitle.getWidth(String.valueOf(customName.charAt(0))), textGui.getY() + 4.9f, new Color(230, 230, 230, 200).getRGB());
                 }
                 break;
             }
@@ -481,74 +481,76 @@ public class Hud implements GameInstance {
 
             case "Empathy": {
                 if (useDefaultName) {
-                    final String clientName = "★ REVERSAL";
+                    final String clientName = "REVERSAL";
 
                     textGui.setWidth(100);
                     int x = textGui.getX() + 5;
                     int y = textGui.getY();
                     float off = 0;
 
-                    RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyColor());
+                    RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 18, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyColor());
                     RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, textGui.colorValue.getColor());
 
+                    FontManager.getAtomic(16).drawString("2", x + 5, y + 5.5, textGui.colorValue.getColor().getRGB());
                     for (int i = 0; i < clientName.length(); i++) {
                         final String character = String.valueOf(clientName.charAt(i));
 
                         final float off1 = off;
-                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
+                        regular20Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
                         int finalI = i;
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
+                            regular20Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
                         });
                         off += regular20Bold.width(character);
                     }
 
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyGlowColor());
+                            RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 18, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyGlowColor());
                             RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, textGui.colorValue.getColor());
                         });
                     }
 
                     if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
                         MODERN_BLUR_RUNNABLES.add(() -> {
-                            RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, Color.BLACK);
+                            RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 18, regular20Bold.height() + 1.5, 3f, Color.BLACK);
                         });
                     }
 
                 } else {
-                    final String clientName = "★ " + customName;
+                    final String clientName = customName;
 
                     textGui.setWidth(20 + regular20Bold.width(clientName));
                     int x = textGui.getX() + 5;
                     int y = textGui.getY();
                     float off = 0;
 
-                    RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyColor());
+                    RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 18, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyColor());
                     RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, textGui.colorValue.getColor());
 
+                    FontManager.getAtomic(16).drawString("2", x + 5, y + 5.5, textGui.colorValue.getColor().getRGB());
                     for (int i = 0; i < clientName.length(); i++) {
                         final String character = String.valueOf(clientName.charAt(i));
 
                         final float off1 = off;
                         int finalI = i;
-                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
+                        regular20Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
+                            regular20Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
                         });
                         off += regular20Bold.width(character);
                     }
 
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyGlowColor());
+                            RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 18, regular20Bold.height() + 1.5, 3f, ColorUtil.empathyGlowColor());
                             RenderUtil.roundedRectangle(x - 0.5, y + 2.5, 1.5, regular20Bold.height() - 3.5, 1f, textGui.colorValue.getColor());
                         });
                     }
 
                     if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
                         MODERN_BLUR_RUNNABLES.add(() -> {
-                            RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 8, regular20Bold.height() + 1.5, 3f, Color.BLACK);
+                            RenderUtil.roundedRectangle(x, y, regular20Bold.width(clientName) + 18, regular20Bold.height() + 1.5, 3f, Color.BLACK);
                         });
                     }
                 }

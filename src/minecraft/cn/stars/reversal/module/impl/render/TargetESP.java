@@ -34,7 +34,6 @@ import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector2f;
 import java.awt.*;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
@@ -69,7 +68,6 @@ public class TargetESP extends Module {
             if (attackedEntity.isEntityAlive()) {
                 Vec3 to = attackedEntity.getPositionVector().addVector(0.0, attackedEntity.height / 1.6f, 0.0);
                 addBubble(to);
-                addStar(to, 3);
                 addStar(to, 3);
             }
         }
@@ -358,7 +356,7 @@ public class TargetESP extends Module {
         float viewPitch;
 
         // 新增的属性
-        double initialUpwardSpeed = 0.006;
+        double initialUpwardSpeed = 0.005;
         double fallSpeed = 0.0001;
         double horizontalSpeed = 0.01;
 

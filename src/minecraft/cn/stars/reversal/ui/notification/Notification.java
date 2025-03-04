@@ -109,36 +109,35 @@ public final class Notification implements GameInstance {
                 break;
         }
 
-        final Color c = ThemeUtil.getThemeColor(ThemeType.GENERAL);
-
         //    RenderUtil.roundedRectangle(xVisual - 1, yVisual + 6, 2, 8, 2, sideColor);
 
         Color finalSideColor = sideColor;
         String finalIconString = iconString;
 
+        int offset = 0;
+
         if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
             MODERN_BLUR_RUNNABLES.add(() -> {
-                RenderUtil.roundedRect(xVisual, yVisual - 3, sr.getScaledWidth() - xVisual, 25, 2, Color.BLACK);
+                RenderUtil.roundedRectangle(xVisual, yVisual - 3 - offset, sr.getScaledWidth() - xVisual, 25, 2, Color.BLACK);
             });
 
         }
         if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
             MODERN_BLOOM_RUNNABLES.add(() -> {
-                RenderUtil.roundedRect(xVisual, yVisual - 3, sr.getScaledWidth() - xVisual, 25, 2, Color.BLACK);
-                RenderUtil.roundedRect(xVisual, yVisual - 3, sr.getScaledWidth() - xVisual, 25, 2, Color.BLACK);
+                RenderUtil.roundedRectangle(xVisual, yVisual - 3 - offset, sr.getScaledWidth() - xVisual, 25, 2, Color.BLACK);
             });
         }
-        RenderUtil.roundedRectCustom(xVisual, yVisual - 3, sr.getScaledWidth() - xVisual, 25, 2, new Color(0, 0, 0, 100), true, false, true, false);
 
-        RenderUtil.roundedRect(xVisual + (percentageLeft * (gs.getWidth(description)) + 8), yVisual + 21, screenWidth + 1, 1, 2, sideColor);
+        RenderUtil.roundedRectangle(xVisual, yVisual - 3, sr.getScaledWidth() - xVisual, 25, 2, new Color(0, 0, 0, 100));
+
+        RenderUtil.roundedRectangle(xVisual + (percentageLeft * (gs.getWidth(description)) + 8), yVisual + 21, screenWidth + 1, 1, 2, sideColor);
         icon.drawString(finalIconString, xVisual + 4, yVisual + 1, finalSideColor.getRGB());
         psb.drawString(title, xVisual + 6 + icon.getWidth(finalIconString), yVisual + 1, new Color(255, 255, 255, 220).getRGB());
         psm.drawString(description, xVisual + 4, yVisual + 13, new Color(255, 255, 255, 220).getRGB());
 
-        Color finalSideColor1 = sideColor;
-        NORMAL_POST_BLOOM_RUNNABLES.add(() -> {
+        MODERN_BLOOM_RUNNABLES.add(() -> {
             //    RenderUtil.roundedRectCustom(xVisual, yVisual - 3, sr.getScaledWidth() - xVisual, 25, 2, new Color(0, 0, 0, 100), true, false, true, false);
-            RenderUtil.roundedRect(xVisual + (percentageLeft * (gs.getWidth(description)) + 8), yVisual + 21, screenWidth + 1, 1, 2, finalSideColor1);
+            RenderUtil.roundedRectangle(xVisual + (percentageLeft * (gs.getWidth(description)) + 8), yVisual + 21 - offset, screenWidth + 1, 1, 2, finalSideColor);
         });
     }
 

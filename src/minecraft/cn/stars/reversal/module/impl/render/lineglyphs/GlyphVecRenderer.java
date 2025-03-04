@@ -2,6 +2,7 @@ package cn.stars.reversal.module.impl.render.lineglyphs;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.module.impl.render.LineGlyphs;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.ThemeType;
 import cn.stars.reversal.util.render.ThemeUtil;
@@ -73,7 +74,7 @@ public class GlyphVecRenderer implements GameInstance {
         int index = 0;
         for (Vec3 vec3d : gliphVecGen.getPosVectors(pTicks)) {
             aPC = alphaPC * (0.25f + (float) index / (float) gliphVecGen.vecGens.size() / 1.75f);
-            tessellator.getWorldRenderer().pos(vec3d).color(ColorUtil.reAlpha(ThemeUtil.getThemeColorInt(colorIndex, ThemeType.ARRAYLIST), aPC)).endVertex();
+            tessellator.getWorldRenderer().pos(vec3d).color(ColorUtil.reAlpha(ModuleInstance.getModule(LineGlyphs.class).colorValue.getColor(colorIndex).getRGB(), aPC)).endVertex();
             colorIndex += 1;
             ++index;
         }
@@ -84,7 +85,7 @@ public class GlyphVecRenderer implements GameInstance {
         index = 0;
         for (Vec3 vec3d : gliphVecGen.getPosVectors(pTicks)) {
             aPC = alphaPC * (0.25f + (float) index / (float) gliphVecGen.vecGens.size() / 1.75f);
-            tessellator.getWorldRenderer().pos(vec3d).color(ColorUtil.reAlpha(ThemeUtil.getThemeColorInt(colorIndex, ThemeType.ARRAYLIST), aPC)).endVertex();
+            tessellator.getWorldRenderer().pos(vec3d).color(ColorUtil.reAlpha(ModuleInstance.getModule(LineGlyphs.class).colorValue.getColor(colorIndex).getRGB(), aPC)).endVertex();
             colorIndex += 1;
             ++index;
         }

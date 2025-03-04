@@ -148,6 +148,14 @@ public final class EventHandler {
                     module.toggleModule();
                 }
             }
+        } else if (e instanceof PotionEffectEvent) {
+            final PotionEffectEvent event = ((PotionEffectEvent) e);
+
+            for (final Module module : modules) {
+                if (module.isEnabled()) {
+                    module.onPotionEffect(event);
+                }
+            }
         } else if (e instanceof StrafeEvent) {
             final StrafeEvent event = ((StrafeEvent) e);
 

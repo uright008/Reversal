@@ -2,6 +2,7 @@ package cn.stars.reversal.ui.splash;
 
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.ui.splash.impl.VideoLoadingScreen;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
 import cn.stars.reversal.ui.splash.util.Interpolations;
@@ -245,6 +246,8 @@ public class SplashScreen {
         Reversal.postInitialize();
 
         ReversalLogger.info("[Startup] Totally took " + stopWatch.getElapsedTime() + " ms for game initialization!");
+        Reversal.notificationManager.registerNotification(Reversal.NAME + " initialized successfully in " + stopWatch.getElapsedTime() + " ms!", "Startup", NotificationType.NOTIFICATION);
+        stopWatch = null;
 
         Display.sync(60);
         mc.updateDisplay();

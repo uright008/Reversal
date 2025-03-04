@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 @UtilityClass
 public final class ColorUtil {
     public static Color transparent = new Color(0, 0, 0, 0);
-    public static ColorAnimation whiteAnimation = new ColorAnimation(Color.WHITE, new Color(255, 255, 255, 0), 1500);
+    public static ColorAnimation whiteAnimation = new ColorAnimation(Color.WHITE, new Color(255, 255, 255, 0), 1000);
 
     public static void updateColorAnimation() {
         if (whiteAnimation.isFinished()) {

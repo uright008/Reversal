@@ -249,4 +249,7 @@ public abstract class Module implements GameInstance {
 
     public void onValueChanged(ValueChangedEvent event) {
     }
+
+    public void onPotionEffect(PotionEffectEvent event) {
+    }
 }

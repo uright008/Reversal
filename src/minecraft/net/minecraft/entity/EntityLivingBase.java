@@ -1,6 +1,7 @@
 package net.minecraft.entity;
 
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.event.impl.PotionEffectEvent;
 import cn.stars.reversal.module.impl.misc.Protocol;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -588,21 +589,24 @@ public abstract class EntityLivingBase extends Entity
 
     protected void resetPotionEffectMetadata()
     {
-        this.dataWatcher.updateObject(8, Byte.valueOf((byte)0));
-        this.dataWatcher.updateObject(7, Integer.valueOf(0));
+        this.dataWatcher.updateObject(8, (byte) 0);
+        this.dataWatcher.updateObject(7, 0);
     }
 
     public void clearActivePotions()
     {
+        PotionEffectEvent e = new PotionEffectEvent(null);
+        e.call();
+
+        if (e.isCancelled()) return;
+
         Iterator<Integer> iterator = this.activePotionsMap.keySet().iterator();
 
-        while (iterator.hasNext())
-        {
-            Integer integer = (Integer)iterator.next();
-            PotionEffect potioneffect = (PotionEffect)this.activePotionsMap.get(integer);
+        while (iterator.hasNext()) {
+            Integer integer = iterator.next();
+            PotionEffect potioneffect = this.activePotionsMap.get(integer);
 
-            if (!this.worldObj.isRemote)
-            {
+            if (!this.worldObj.isRemote) {
                 iterator.remove();
                 this.onFinishedPotionEffect(potioneffect);
             }
@@ -631,6 +635,11 @@ public abstract class EntityLivingBase extends Entity
 
     public void addPotionEffect(PotionEffect potioneffectIn)
     {
+        PotionEffectEvent e = new PotionEffectEvent(potioneffectIn);
+        e.call();
+
+        if (e.isCancelled()) return;
+
         if (this.isPotionApplicable(potioneffectIn))
         {
             if (this.activePotionsMap.containsKey(Integer.valueOf(potioneffectIn.getPotionID())))
@@ -668,12 +677,13 @@ public abstract class EntityLivingBase extends Entity
 
     public void removePotionEffectClient(int potionId)
     {
-        this.activePotionsMap.remove(Integer.valueOf(potionId));
+        this.activePotionsMap.remove(potionId);
     }
 
     public void removePotionEffect(int potionId)
     {
-        PotionEffect potioneffect = (PotionEffect)this.activePotionsMap.remove(Integer.valueOf(potionId));
+
+        PotionEffect potioneffect = this.activePotionsMap.remove(potionId);
 
         if (potioneffect != null)
         {

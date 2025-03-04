@@ -6,6 +6,7 @@ package cn.stars.reversal.module.impl.hud;
 
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render2DEvent;
+import cn.stars.reversal.event.impl.Shader3DEvent;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
@@ -24,6 +25,7 @@ public class CustomText extends Module {
     private final NoteValue note = new NoteValue("用指令'.setText <文字>'来设置自定义文字!", this);
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue size = new NumberValue("Size", this, 16, 4, 64, 1);
+    private final BoolValue bloom = new BoolValue("Bloom", this, false);
     private final BoolValue bold = new BoolValue("Bold", this, false);
     private final BoolValue gradient = new BoolValue("Gradient", this, false);
 
@@ -35,6 +37,16 @@ public class CustomText extends Module {
 
     @Override
     public void onRender2D(Render2DEvent event) {
+        drawText();
+        setWidthAndHeight();
+    }
+
+    @Override
+    public void onShader3D(Shader3DEvent event) {
+        if (bloom.enabled && event.isBloom()) drawText();
+    }
+
+    private void drawText() {
         int x = getX() + 1;
         int y = getY() + 1;
         if (bold.isEnabled()) {
@@ -66,7 +78,6 @@ public class CustomText extends Module {
                 FontManager.getRegular((int)size.getValue()).drawString(Reversal.customText, x, y, c.getRGB());
             }
         }
-        setWidthAndHeight();
     }
 
     private void setWidthAndHeight() {

@@ -434,11 +434,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         this.skinManager = new SkinManager(this.renderEngine, new File(this.fileAssets, "skins"), this.sessionService);
         this.saveLoader = new AnvilSaveConverter(new File(this.mcDataDir, "saves"));
-        AsyncGLContentLoader.loadGLContentAsync(() -> {
-            this.mcSoundHandler = new SoundHandler(this.mcResourceManager, this.gameSettings);
-            this.mcResourceManager.registerReloadListener(this.mcSoundHandler);
-            this.mcMusicTicker = new MusicTicker(this);
-        });
+        this.mcSoundHandler = new SoundHandler(this.mcResourceManager, this.gameSettings);
+        this.mcResourceManager.registerReloadListener(this.mcSoundHandler);
+        this.mcMusicTicker = new MusicTicker(this);
         this.fontRendererObj = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii.png"), this.renderEngine, false);
 
         if (this.gameSettings.language != null) {
@@ -454,13 +452,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.mcResourceManager.registerReloadListener(this.standardGalacticFontRenderer);
             this.mcResourceManager.registerReloadListener(foliageColorReloadListener);
             this.mcResourceManager.registerReloadListener(grassColorReloadListener);
-        });
-        AchievementList.openInventory.setStatStringFormatter(str -> {
-            try {
-                return str.replace("%s", GameSettings.getKeyDisplayString(Minecraft.this.gameSettings.keyBindInventory.getKeyCode()));
-            } catch (Exception exception) {
-                return "Error: " + exception.getLocalizedMessage();
-            }
+            AchievementList.openInventory.setStatStringFormatter(str -> {
+                try {
+                    return str.replace("%s", GameSettings.getKeyDisplayString(Minecraft.this.gameSettings.keyBindInventory.getKeyCode()));
+                } catch (Exception exception) {
+                    return "Error: " + exception.getLocalizedMessage();
+                }
+            });
         });
         this.mouseHelper = new MouseHelper();
         RawInput.startRawInputThread();
@@ -535,7 +533,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         this.renderGlobal.makeEntityOutlineShader();
 
-        Reversal.notificationManager.registerNotification(Reversal.NAME + " " + Reversal.VERSION + ", made with love by " + Reversal.AUTHOR + ".", "Reversal", NotificationType.NOTIFICATION);
         SplashScreen.notifyGameLoaded();
     }
 

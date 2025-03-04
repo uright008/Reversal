@@ -60,7 +60,7 @@ public class Reversal {
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "beta.04";
+    public static final String BUILD_VERSION = "beta.05";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -212,6 +212,7 @@ public class Reversal {
             Display.setTitle(NAME + " " + VERSION + "+" + BUILD_VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
             //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH));
             //    Display.setTitle(NAME + " (" + VERSION + "/" + BRANCH.name() + "/RainyAPI/LWJGL " + Sys.getVersion() + ")");
+            ReversalLogger.info("Client finalized.");
         } catch (final Exception e) {
             ReversalLogger.error("An error has occurred while loading Reversal: ", e);
         }
@@ -244,13 +245,13 @@ public class Reversal {
 
     public static final Module[] modules = new Module[] {
             // Addons
+            new FancyBlockParticles(),
             new FreeLook(),
             new MoBends(),
             new MusicPlayer(),
-            new WaveyCapes(),
-            new SkinLayers3D(),
             new RealFirstPerson(),
-            new FancyBlockParticles(),
+            new SkinLayers3D(),
+            new WaveyCapes(),
             // Combat
             new ClickSound(),
             new NoClickDelay(),
@@ -277,7 +278,6 @@ public class Reversal {
             new BetterFont(),
             new BlockinDisplay(),
             new BlockOverlay(),
-            new Trail(),
             new ChinaHat(),
             new ClickGui(),
             new Crosshair(),
@@ -293,12 +293,14 @@ public class Reversal {
             new ReachDisplay(),
             new TargetESP(),
             new TNTTimer(),
+            new Trail(),
             new TrueSights(),
             new Particles(),
             new Wings(),
             // Hud
             new Arraylist(),
             new AtomicIsland(),
+            new ArmorHud(),
             new BASticker(),
             new BPSCounter(),
             new CPSCounter(),
@@ -309,12 +311,11 @@ public class Reversal {
             new MusicInfo(),
             new MusicVisualizer(),
             new PingCounter(),
-            new PotionEffects(),
+    //        new PotionEffects(),
             new Scoreboard(),
             new SessionInfo(),
             new TargetHud(),
             new TextGui(),
-            new ArmorHud(),
             new TestElement(),
             // Client
             new ClientSettings(),

@@ -131,7 +131,7 @@ public class Hotbar extends Module {
                 GlStateManager.popMatrix();
             }
 
-            mc.getRenderItem().renderItemOverlays(this.mc.fontRendererObj, itemstack, xPos, yPos);
+            mc.getRenderItem().renderItemOverlays(mc.fontRendererObj, itemstack, xPos, yPos);
         }
     }
 }

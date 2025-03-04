@@ -11,7 +11,6 @@ import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.modern.TextField;
-import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.math.TimeUtil;
@@ -38,9 +37,9 @@ import java.util.ArrayList;
 import static cn.stars.reversal.GameInstance.*;
 
 public class ModernClickGUI extends GuiScreen {
-    public Color backgroundColor = new Color(20,20,20,255);
+    public final Color backgroundColor = new Color(20,20,20,255);
     public Animation scaleAnimation = new Animation(Easing.EASE_IN_OUT_QUAD, 300);
-    private Animation sideAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
+    private final Animation sideAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
     ScaledResolution sr;
     Category selectedCategory = Category.COMBAT;
     private static float scrollAmount;
@@ -53,11 +52,12 @@ public class ModernClickGUI extends GuiScreen {
     boolean themeColorFlag = false;
     boolean hasEditedSliders = false;
 
-
     TimeUtil timer = new TimeUtil();
     float wheel = Mouse.getDWheel();
-    private cn.stars.reversal.util.animation.advanced.Animation windowAnim;
     private final TextField searchField = new TextField(150, 15, GameInstance.regular16, backgroundColor, new Color(100,100,100,100));
+
+    private int addX, addY, deltaX, deltaY = 0;
+    private boolean isDragging;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -71,8 +71,14 @@ public class ModernClickGUI extends GuiScreen {
         }
 
         sr = new ScaledResolution(mc);
-        int x = width / 2 - 260;
-        int y = height / 2 - 180;
+        int x = width / 2 - 260 + addX;
+        int y = height / 2 - 180 + addY;
+
+        if (isDragging) {
+            addX = mouseX - deltaX;
+            addY = mouseY - deltaY;
+            sideAnimation.finishNow();
+        }
 
     //    GlUtils.startScale(x, y, (float) scaleAnimation.getValue());
         RenderUtil.scaleStart(x + 260, y + 180, (float) scaleAnimation.getValue());
@@ -81,7 +87,8 @@ public class ModernClickGUI extends GuiScreen {
         RoundedUtil.drawRound(x, y, 520, 360, 5, backgroundColor);
 
         // Client Name
-        psm30.drawString("★ REVERSAL", x + 8, y + 12, new Color(200,200,200,250).getRGB());
+        atomic24.drawString("2", x + 8, y + 14, new Color(200,200,200,250).getRGB());
+        psm30.drawString("REVERSAL", x + 25, y + 12, new Color(200,200,200,250).getRGB());
         psr16.drawString(Reversal.VERSION, x + 82, y + 25, new Color(200,200,200,200).getRGB());
 
         // Line
@@ -116,6 +123,8 @@ public class ModernClickGUI extends GuiScreen {
                 psm20.drawString(StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(200,200,200, 200).getRGB());
             }
             renderSelectY += 25;
+
+            if (isDragging) category.alphaAnimation.finishNow();
         }
 
         // Module
@@ -309,6 +318,9 @@ public class ModernClickGUI extends GuiScreen {
                             setting.guiY = settingY;
                             setting.yAnimation.run(setting.guiY);
                         }
+                        if (isDragging) {
+                            setting.yAnimation.finishNow();
+                        }
                     }
                 }
                 if (!m.expanded) {
@@ -335,6 +347,12 @@ public class ModernClickGUI extends GuiScreen {
                 settingY = moduleY + m.sizeInGui;
                 moduleY += m.sizeInGui;
 
+                if (isDragging) {
+                    m.alphaAnimation.finishNow();
+                    m.yAnimation.finishNow();
+                    m.posAnimation.finishNow();
+                    m.sizeAnimation.finishNow();
+                }
             }
         }
 
@@ -350,7 +368,7 @@ public class ModernClickGUI extends GuiScreen {
         psr16.drawString(mc.session.getUsername(), x + 30, y + 337, new Color(200,200,200,240).getRGB());
         psr16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")), x + 30, y + 347, new Color(200,200,200,200).getRGB());
 
-        if (timer.hasReached(10)) {
+        if (timer.hasReached(20)) {
             timer.reset();
             for (final Module m : Reversal.moduleManager.getModuleList()) {
                 if (m.isEnabled()) {
@@ -403,10 +421,16 @@ public class ModernClickGUI extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        int x = width / 2 - 260;
-        int y = height / 2 - 160;
+        int x = width / 2 - 260 + addX;
+        int y = height / 2 - 180 + addY;
 
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
+
+        if (RenderUtil.isHovered(x, y, 520, 25, mouseX, mouseY) && !searchField.focused) {
+            isDragging = true;
+            deltaX = mouseX - addX;
+            deltaY = mouseY - addY;
+        }
 
         if (RenderUtil.isHovered(x + 5, y + 30, 105, 20, mouseX, mouseY)) {
             setSelectedCategory(Category.COMBAT);
@@ -563,7 +587,6 @@ public class ModernClickGUI extends GuiScreen {
     public void initGui() {
         scaleAnimation = new Animation(Easing.EASE_OUT_EXPO, 300);
         Keyboard.enableRepeatEvents(true);
-        windowAnim = new DecelerateAnimation(100, 1d);
         hasEditedSliders = false;
         sideAnimation.reset();
         scaleAnimation.run(1d);
@@ -581,6 +604,7 @@ public class ModernClickGUI extends GuiScreen {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         selectedSlider = null;
+        isDragging = false;
     }
 
     private static double round(final double value, final float places) {

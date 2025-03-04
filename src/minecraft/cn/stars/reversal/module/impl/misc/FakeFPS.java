@@ -7,5 +7,5 @@ import cn.stars.reversal.value.impl.NumberValue;
 
 @ModuleInfo(name = "FakeFPS", chineseName = "虚假帧率", description = "Spoof your client FPS", chineseDescription = "伪装你的客户端帧率", category = Category.MISC)
 public class FakeFPS extends Module {
-    public final NumberValue fps = new NumberValue("FPS", this, 100, 1, 114514, 1);
+    public final NumberValue fps = new NumberValue("FPS", this, 100, 1, 1919810, 1);
 }

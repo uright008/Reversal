@@ -66,4 +66,9 @@ public class Animation {
         this.startValue = value;
         this.finished = false;
     }
+
+    public void finishNow() {
+        this.value = this.destinationValue;
+        this.finished = true;
+    }
 }

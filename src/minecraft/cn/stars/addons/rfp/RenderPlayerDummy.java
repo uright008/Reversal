@@ -32,12 +32,9 @@ public class RenderPlayerDummy extends Render {
 
             ItemStack helmetStack = player.inventory.armorInventory[3];
             player.inventory.armorInventory[3] = null;
-            if (player.isSneaking()) {
-                playerRenderer.doRender(player, player.posX - entity.posX + x, player.posY - entity.posY + y, player.posZ - entity.posZ + z, player.rotationYaw, ticks);
-            } else {
-                double renderOffset = player.rotationPitch - (player.rotationPitch - player.rotationYaw);
-                playerRenderer.doRender(player, player.posX - entity.posX + x + (double) RFP.bodyOffset * Math.sin(Math.toRadians(renderOffset)), player.posY - entity.posY + y, player.posZ - entity.posZ + z - (double) RFP.bodyOffset * Math.cos(Math.toRadians(renderOffset)), (float) renderOffset, ticks);
-            }
+
+            double renderOffset = player.rotationPitch - (player.rotationPitch - player.rotationYaw);
+            playerRenderer.doRender(player, player.posX - entity.posX + x + (double) RFP.bodyOffset * Math.sin(Math.toRadians(renderOffset)), player.posY - entity.posY + y, player.posZ - entity.posZ + z - (double) RFP.bodyOffset * Math.cos(Math.toRadians(renderOffset)), (float) renderOffset, ticks);
 
             player.inventory.armorInventory[3] = helmetStack;
             playerModel.bipedBody.isHidden = false;

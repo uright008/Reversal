@@ -10,6 +10,7 @@ import cn.stars.reversal.util.animation.simple.AnimationUtils2;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @ModuleInfo(name = "LineGlyphs", chineseName = "线条图像", description = "Draw lines in world", chineseDescription = "在世界中绘制线条", category = Category.RENDER)
 public class LineGlyphs extends Module {
+    public final ColorValue colorValue = new ColorValue("Color", this);
     public final BoolValue SlowSpeed = new BoolValue("Slow Speed", this, false);
     public final NumberValue GlyphsCount = new NumberValue("Glyphs Count", this, 70, 0, 200, 1);
     private final List<Vec3> temp3dVecs = new ArrayList<>();

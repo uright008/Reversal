@@ -157,7 +157,18 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.04", "2025/3/2", 1)
+        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.05", "2025/3/4", 1)
+                .addContent("[+] CustomText新增Bloom效果")
+                .addContent("[*] 修复音效可能无法加载的问题")
+                .addContent("[*] 修复物品栏物品显示问题")
+                .addContent("[*] 修复Notification后处理错位")
+                .addContent("[*] 修复RealFirstPerson下蹲渲染错位")
+                .addContent("[+] ClickGUI允许拖动 (突破底层代码?)")
+                .addContent("[+] 新增随机标题")
+                .addContent("[/] 修改部分功能的数值")
+                .addContent("[/] 部分忘记加自定义颜色的功能已补全")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.04", "2025/3/2", 2)
                 .addContent("[+] 所有功能支持自定义颜色")
                 .addContent("[/] 优化整体性能")
                 .addContent("[/] 优化加载速度")
@@ -165,19 +176,6 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("[*] 修复MotionBlur问题")
                 .addContent("[*] 修复文本错误")
                 .addContent("[-] 删除SpeedGraph")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.03", "2025/3/2", 2)
-                .addContent("[+] 实现主菜单的赞助列表")
-                .addContent("[+] 新增随机标题")
-                .addContent("[+] 新增重置标题指令 (.ct %reset%)")
-                .addContent("[/] 修改部分功能的初始值")
-                .addContent("[/] Arraylist的中文功能合并")
-                .addContent("[/] 优化字体渲染器")
-                .addContent("[*] 修复皮肤获取导致崩端的问题")
-                .addContent("[*] 修复部分按钮字体大小不正常")
-                .addContent("[*] 修复事件触发时机异常")
-                .addContent("[-] 删除 InputMethodBlocker")
-                .addContent("[-] 删除部分功能无用的设置")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);
