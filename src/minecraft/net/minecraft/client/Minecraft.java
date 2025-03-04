@@ -427,7 +427,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         SplashScreen.setProgress(10, "Minecraft - Display");
         this.mcLanguageManager = new LanguageManager(this.metadataSerializer_, this.gameSettings.language);
         this.mcResourceManager.registerReloadListener(this.mcLanguageManager);
-        AsyncGLContentLoader.loadGLContentAsync(this::refreshResources);
+        this.refreshResources();
         this.renderEngine = new TextureManager(this.mcResourceManager);
         this.mcResourceManager.registerReloadListener(this.renderEngine);
         SplashScreen.setProgress(20, "Minecraft - Init");
