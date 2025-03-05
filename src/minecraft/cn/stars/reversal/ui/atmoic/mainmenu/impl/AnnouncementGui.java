@@ -157,8 +157,14 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.04", "2025/3/5", 1)
-                .addContent("[+] 所有功能支持自定义颜色")
+        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.06", "2025/3/5", 1)
+                .addContent("[+] 并入Phosphor 大幅优化性能")
+                .addContent("[+] PostProcessing新增Impact GUIs选项,允许关闭主界面的后处理效果")
+                .addContent("[+] ClientSettings新增Client Message Custom Name,允许聊天栏信息显示自定义客户端名称")
+                .addContent("[/] 优化部分命令的逻辑和提示")
+                .addContent("[/] 优化Hud性能和展示效果")
+                .addContent("[/] 优化代码逻辑")
+                .addContent("[*] 修复字体渲染器的一个潜在问题")
                 .calcMaxWidth();
         Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.05", "2025/3/4", 2)
                 .addContent("[+] CustomText新增Bloom效果")
