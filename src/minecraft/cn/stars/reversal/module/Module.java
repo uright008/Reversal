@@ -97,7 +97,7 @@ public abstract class Module implements GameInstance {
         Reversal.showCustomMsg(s);
     }
 
-    public boolean toggleModule() {
+    public void toggleModule() {
         boolean canNoti = ModuleInstance.getModule(ClientSettings.class).showNotifications.enabled && shouldCallNotification;
         enabled = !enabled;
 
@@ -118,8 +118,29 @@ public abstract class Module implements GameInstance {
         renderY = -mc.displayHeight;
 
         Reversal.moduleManager.setEdited(true);
+    }
 
-        return enabled;
+    public void toggleModule(boolean state) {
+        boolean canNoti = ModuleInstance.getModule(ClientSettings.class).showNotifications.enabled && shouldCallNotification;
+        enabled = state;
+
+        if (state) {
+            onEnable();
+            mc.getSoundHandler().playButtonPress();
+            if (canNoti) Reversal.notificationManager.registerNotification(
+                    "Enabled" + " " + getModuleInfo().name(), "Module", 2000, NotificationType.SUCCESS);
+        }
+        else {
+            onDisable();
+            mc.getSoundHandler().playButtonPress();
+            if (canNoti) Reversal.notificationManager.registerNotification(
+                    "Disabled" + " " + getModuleInfo().name(), "Module", 2000, NotificationType.ERROR);
+        }
+
+        renderX = mc.displayWidth;
+        renderY = -mc.displayHeight;
+
+        Reversal.moduleManager.setEdited(true);
     }
 
     public boolean hasSuffix() {

@@ -462,7 +462,7 @@ public class Hud implements GameInstance {
                         off += regular20Bold.width(character);
                     }
 
-                    regular18.drawString(extraText, x + 4 + off, y + 4, new Color(250, 250, 250, 200).getRGB());
+                    regular18.drawString(extraText, x + 5 + off, y + 4, new Color(250, 250, 250, 200).getRGB());
 
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {

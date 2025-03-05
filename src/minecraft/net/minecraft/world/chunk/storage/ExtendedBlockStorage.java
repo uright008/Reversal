@@ -8,12 +8,13 @@ import net.optifine.reflect.Reflector;
 
 public class ExtendedBlockStorage
 {
-    private int yBase;
+    private final int yBase;
     private int blockRefCount;
     private int tickRefCount;
     private char[] data;
     private NibbleArray blocklightArray;
     private NibbleArray skylightArray;
+    private int lightRefCount = -1;
 
     public ExtendedBlockStorage(int y, boolean storeSkylight)
     {
@@ -29,7 +30,7 @@ public class ExtendedBlockStorage
 
     public IBlockState get(int x, int y, int z)
     {
-        IBlockState iblockstate = (IBlockState)Block.BLOCK_STATE_IDS.getByValue(this.data[y << 8 | z << 4 | x]);
+        IBlockState iblockstate = Block.BLOCK_STATE_IDS.getByValue(this.data[y << 8 | z << 4 | x]);
         return iblockstate != null ? iblockstate : Blocks.air.getDefaultState();
     }
 
@@ -80,7 +81,36 @@ public class ExtendedBlockStorage
 
     public boolean isEmpty()
     {
-        return this.blockRefCount == 0;
+        if (this.blockRefCount != 0) {
+            return false;
+        }
+
+        // -1 indicates the lightRefCount needs to be re-calculated
+        if (this.lightRefCount == -1) {
+            if (this.checkLightArrayEqual(this.skylightArray, (byte) 0xFF) && this.checkLightArrayEqual(this.blocklightArray, (byte) 0x00)) {
+                this.lightRefCount = 0; // Lighting is trivial, don't send to clients
+            } else {
+                this.lightRefCount = 1; // Lighting is not trivial, send to clients
+            }
+        }
+
+        return this.lightRefCount == 0;
+    }
+
+    private boolean checkLightArrayEqual(NibbleArray storage, byte val) {
+        if (storage == null) {
+            return true;
+        }
+
+        byte[] arr = storage.getData();
+
+        for (byte b : arr) {
+            if (b != val) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public boolean getNeedsRandomTick()
@@ -93,9 +123,9 @@ public class ExtendedBlockStorage
         return this.yBase;
     }
 
-    public void setExtSkylightValue(int x, int y, int z, int value)
-    {
+    public void setExtSkylightValue(int x, int y, int z, int value) {
         this.skylightArray.set(x, y, z, value);
+        this.lightRefCount = -1;
     }
 
     public int getExtSkylightValue(int x, int y, int z)
@@ -164,14 +194,14 @@ public class ExtendedBlockStorage
         return this.skylightArray;
     }
 
-    public void setBlocklightArray(NibbleArray newBlocklightArray)
-    {
-        this.blocklightArray = newBlocklightArray;
+    public void setBlocklightArray(NibbleArray array) {
+        this.blocklightArray = array;
+        this.lightRefCount = -1;
     }
 
-    public void setSkylightArray(NibbleArray newSkylightArray)
-    {
-        this.skylightArray = newSkylightArray;
+    public void setSkylightArray(NibbleArray array) {
+        this.skylightArray = array;
+        this.lightRefCount = -1;
     }
 
     public int getBlockRefCount()

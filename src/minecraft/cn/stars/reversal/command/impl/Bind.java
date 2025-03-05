@@ -5,6 +5,7 @@ import cn.stars.reversal.command.Command;
 import cn.stars.reversal.command.api.CommandInfo;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.ui.notification.NotificationType;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import org.lwjgl.input.Keyboard;
 
 @CommandInfo(name = "Bind", description = "Binds the given module to the given key", syntax = ".bind <module> <key>", aliases = "bind")
@@ -12,17 +13,20 @@ public final class Bind extends Command {
 
     @Override
     public void onCommand(final String command, final String[] args) {
-        final Module[] modules = Reversal.moduleManager.getModuleList();
+        Module module = ModuleInstance.getModule(args[0]);
 
-        for (final Module m : modules) {
-            if (args[0].equalsIgnoreCase(m.getModuleInfo().name())) {
+        if (module != null) {
+            if (args.length > 1) {
                 args[1] = args[1].toUpperCase();
                 final int key = Keyboard.getKeyIndex(args[1]);
+                module.setKeyBind(key);
 
-                m.setKeyBind(key);
-
-                Reversal.notificationManager.registerNotification("Bound " + m.getModuleInfo().name() + " with key " + Keyboard.getKeyName(key) + ".", NotificationType.SUCCESS);
-                Reversal.showMsg("Bound " + m.getModuleInfo().name() + " with key " + Keyboard.getKeyName(key) + ".");
+                Reversal.notificationManager.registerNotification("Bound " + module.getModuleInfo().name() + " with key " + Keyboard.getKeyName(key) + ".", NotificationType.SUCCESS);
+                Reversal.showMsg("Bound " + module.getModuleInfo().name() + " with key " + Keyboard.getKeyName(key) + ".");
+                return;
+            } else {
+                Reversal.notificationManager.registerNotification("Invalid arguments. Key is required.", "Command", NotificationType.ERROR);
+                Reversal.showMsg("Invalid arguments. Key is required.");
                 return;
             }
         }

@@ -28,14 +28,14 @@ import org.apache.logging.log4j.Logger;
 public class ChunkProviderServer implements IChunkProvider
 {
     private static final Logger logger = LogManager.getLogger();
-    private Set<Long> droppedChunksSet = Collections.<Long>newSetFromMap(new ConcurrentHashMap());
-    private Chunk dummyChunk;
-    private IChunkProvider serverChunkGenerator;
-    private IChunkLoader chunkLoader;
+    private final Set<Long> droppedChunksSet = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Chunk dummyChunk;
+    private final IChunkProvider serverChunkGenerator;
+    private final IChunkLoader chunkLoader;
     public boolean chunkLoadOverride = true;
-    private LongHashMap<Chunk> id2ChunkMap = new LongHashMap();
-    private List<Chunk> loadedChunks = Lists.<Chunk>newArrayList();
-    private WorldServer worldObj;
+    public final LongHashMap<Chunk> id2ChunkMap = new LongHashMap<>();
+    private final List<Chunk> loadedChunks = Lists.newArrayList();
+    private final WorldServer worldObj;
 
     public ChunkProviderServer(WorldServer p_i1520_1_, IChunkLoader p_i1520_2_, IChunkProvider p_i1520_3_)
     {
@@ -226,26 +226,22 @@ public class ChunkProviderServer implements IChunkProvider
 
     public boolean saveChunks(boolean saveAllChunks, IProgressUpdate progressCallback)
     {
+        this.worldObj.lightingEngine.processLightUpdates();
+
         int i = 0;
         List<Chunk> list = Lists.newArrayList(this.loadedChunks);
 
-        for (int j = 0; j < ((List)list).size(); ++j)
-        {
-            Chunk chunk = (Chunk)list.get(j);
-
-            if (saveAllChunks)
-            {
+        for (Chunk chunk : list) {
+            if (saveAllChunks) {
                 this.saveChunkExtraData(chunk);
             }
 
-            if (chunk.needsSaving(saveAllChunks))
-            {
+            if (chunk.needsSaving(saveAllChunks)) {
                 this.saveChunkData(chunk);
                 chunk.setModified(false);
                 ++i;
 
-                if (i == 24 && !saveAllChunks)
-                {
+                if (i == 24 && !saveAllChunks) {
                     return false;
                 }
             }
@@ -264,21 +260,26 @@ public class ChunkProviderServer implements IChunkProvider
 
     public boolean unloadQueuedChunks()
     {
+        if (!this.worldObj.disableLevelSaving) {
+            if (!this.droppedChunksSet.isEmpty()) {
+                this.worldObj.lightingEngine.processLightUpdates();
+            }
+        }
         if (!this.worldObj.disableLevelSaving)
         {
             for (int i = 0; i < 100; ++i)
             {
                 if (!this.droppedChunksSet.isEmpty())
                 {
-                    Long olong = (Long)this.droppedChunksSet.iterator().next();
-                    Chunk chunk = (Chunk)this.id2ChunkMap.getValueByKey(olong.longValue());
+                    Long olong = this.droppedChunksSet.iterator().next();
+                    Chunk chunk = this.id2ChunkMap.getValueByKey(olong);
 
                     if (chunk != null)
                     {
                         chunk.onChunkUnload();
                         this.saveChunkData(chunk);
                         this.saveChunkExtraData(chunk);
-                        this.id2ChunkMap.remove(olong.longValue());
+                        this.id2ChunkMap.remove(olong);
                         this.loadedChunks.remove(chunk);
                     }
 

@@ -157,7 +157,10 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.05", "2025/3/4", 1)
+        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.04", "2025/3/5", 1)
+                .addContent("[+] 所有功能支持自定义颜色")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.05", "2025/3/4", 2)
                 .addContent("[+] CustomText新增Bloom效果")
                 .addContent("[*] 修复音效可能无法加载的问题")
                 .addContent("[*] 修复物品栏物品显示问题")
@@ -167,15 +170,6 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("[+] 新增随机标题")
                 .addContent("[/] 修改部分功能的数值")
                 .addContent("[/] 部分忘记加自定义颜色的功能已补全")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.04", "2025/3/2", 2)
-                .addContent("[+] 所有功能支持自定义颜色")
-                .addContent("[/] 优化整体性能")
-                .addContent("[/] 优化加载速度")
-                .addContent("[/] 优化命令系统")
-                .addContent("[*] 修复MotionBlur问题")
-                .addContent("[*] 修复文本错误")
-                .addContent("[-] 删除SpeedGraph")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);

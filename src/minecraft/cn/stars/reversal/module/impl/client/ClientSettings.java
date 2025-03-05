@@ -31,8 +31,9 @@ public final class ClientSettings extends Module {
 
     public final NoteValue note3 = new NoteValue("< CLIENT SETTINGS >", this);
     public final BoolValue chinese = new BoolValue("Chinese", this, false);
-    public final BoolValue showNotifications = new BoolValue("Show Notifications", this, false);
+    public final BoolValue showNotifications = new BoolValue("Show Notifications", this, true);
     public final BoolValue hudTextWithBracket = new BoolValue("Hud Text With Bracket", this, false);
+    public final BoolValue clientMsgCustomName = new BoolValue("Client Message Custom Name", this, false);
 
     public final NoteValue note4 = new NoteValue("< MINECRAFT SETTINGS >", this);
     public final BoolValue loadingScreenBackground = new BoolValue("Loading Screen Background", this, false);

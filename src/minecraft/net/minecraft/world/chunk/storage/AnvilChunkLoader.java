@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import cn.stars.addons.phosphor.LightingHooks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -32,8 +34,8 @@ import org.apache.logging.log4j.Logger;
 public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 {
     private static final Logger logger = LogManager.getLogger();
-    private Map<ChunkCoordIntPair, NBTTagCompound> chunksToRemove = new ConcurrentHashMap();
-    private Set<ChunkCoordIntPair> pendingAnvilChunksCoordinates = Collections.<ChunkCoordIntPair>newSetFromMap(new ConcurrentHashMap());
+    private final Map<ChunkCoordIntPair, NBTTagCompound> chunksToRemove = new ConcurrentHashMap<>();
+    private final Set<ChunkCoordIntPair> pendingAnvilChunksCoordinates = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final File chunkSaveLocation;
     private boolean field_183014_e = false;
 
@@ -98,6 +100,7 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 
     public void saveChunk(World worldIn, Chunk chunkIn) throws MinecraftException, IOException
     {
+        worldIn.lightingEngine.processLightUpdates();
         worldIn.checkSessionLock();
 
         try
@@ -323,6 +326,9 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
 
             p_75820_3_.setTag("TileTicks", nbttaglist3);
         }
+
+        LightingHooks.writeNeighborLightChecksToNBT(chunkIn, p_75820_3_);
+        p_75820_3_.setBoolean("LightPopulated", chunkIn.isLightInitialized());
     }
 
     private Chunk readChunkFromNBT(World worldIn, NBTTagCompound p_75823_2_)
@@ -448,6 +454,9 @@ public class AnvilChunkLoader implements IChunkLoader, IThreadedFileIO
                 }
             }
         }
+
+        LightingHooks.readNeighborLightChecksFromNBT(chunk, p_75823_2_);
+        chunk.setLightInitialized(p_75823_2_.getBoolean("LightPopulated"));
 
         return chunk;
     }

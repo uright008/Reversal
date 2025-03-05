@@ -27,6 +27,8 @@ import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
 import cn.stars.reversal.ui.theme.GuiTheme;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
+import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.util.render.video.VideoManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.reversal.Branch;
@@ -60,7 +62,7 @@ public class Reversal {
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "beta.05";
+    public static final String BUILD_VERSION = "beta.07";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -115,7 +117,10 @@ public class Reversal {
     // Usages
     public static void showMsg(Object msg) {
         if (Minecraft.getMinecraft().thePlayer != null) {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§7[§b§l" + NAME + "§r§7] §r" + msg));
+            if (ModuleInstance.getModule(ClientSettings.class).clientMsgCustomName.enabled)
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§7[§b§l" + ThemeUtil.getCustomClientName() + "§r§7] §r" + msg));
+            else
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§7[§b§l" + NAME + "§r§7] §r" + msg));
         }
     }
     public static void showCustomMsg(Object msg) {

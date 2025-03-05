@@ -1,6 +1,7 @@
 package net.minecraft.world;
 
 import cn.stars.addons.optimization.normal.FixedEntityLookHelper;
+import cn.stars.addons.phosphor.LightingEngine;
 import cn.stars.reversal.module.impl.client.Optimization;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.base.Predicate;
@@ -97,13 +98,14 @@ public abstract class World implements IBlockAccess
     private final Calendar theCalendar = Calendar.getInstance();
     protected Scoreboard worldScoreboard = new Scoreboard();
     public final boolean isRemote;
-    protected Set<ChunkCoordIntPair> activeChunkSet = Sets.<ChunkCoordIntPair>newHashSet();
+    public Set<ChunkCoordIntPair> activeChunkSet = Sets.<ChunkCoordIntPair>newHashSet();
     private int ambientTickCountdown;
     protected boolean spawnHostileMobs;
     protected boolean spawnPeacefulMobs;
     private boolean processingLoadedTiles;
     private final WorldBorder worldBorder;
     int[] lightUpdateBlockList;
+    public final LightingEngine lightingEngine;
 
     protected World(ISaveHandler saveHandlerIn, WorldInfo info, WorldProvider providerIn, Profiler profilerIn, boolean client)
     {
@@ -117,6 +119,7 @@ public abstract class World implements IBlockAccess
         this.provider = providerIn;
         this.isRemote = client;
         this.worldBorder = providerIn.getWorldBorder();
+        this.lightingEngine = new LightingEngine((World) this);
     }
 
     public World init()
@@ -2625,7 +2628,15 @@ public abstract class World implements IBlockAccess
 
     public boolean checkLightFor(EnumSkyBlock lightType, BlockPos pos)
     {
-        if (!this.isAreaLoaded(pos, 17, false))
+        if (!this.isAreaLoaded(pos, 16, false))
+        {
+            return false;
+        }
+
+        this.lightingEngine.scheduleLightUpdate(lightType, pos);
+
+        return true;
+        /*if (!this.isAreaLoaded(pos, 17, false))
         {
             return false;
         }
@@ -2756,7 +2767,7 @@ public abstract class World implements IBlockAccess
 
             this.theProfiler.endSection();
             return true;
-        }
+        }*/
     }
 
     public boolean tickUpdates(boolean p_72955_1_)

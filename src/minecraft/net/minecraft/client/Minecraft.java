@@ -2148,6 +2148,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 this.renderGlobal.updateClouds();
             }
 
+            this.mcProfiler.endStartSection("lighting");
+
+            this.theWorld.lightingEngine.processLightUpdates();
+
             this.mcProfiler.endStartSection("level");
 
             if (!this.isGamePaused)

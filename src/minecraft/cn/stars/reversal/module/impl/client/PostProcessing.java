@@ -21,6 +21,7 @@ public class PostProcessing extends Module
     public final BoolValue bloom = new BoolValue("Bloom", this, true);
     private final NumberValue shadowRadius = new NumberValue("Bloom Iterations", this, 2, 1, 8, 1);
     private final NumberValue shadowOffset = new NumberValue("Bloom Offset", this, 1, 1, 10, 1);
+    public final BoolValue impactGUIs = new BoolValue("Impact GUIs", this, true);
 
     private Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
 
@@ -86,6 +87,7 @@ public class PostProcessing extends Module
     }
 
     public void drawElementWithBlur(Runnable runnable, int iterations, int offset) {
+        if (!impactGUIs.enabled) return;
         stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
         stencilFramebuffer.framebufferClear();
         stencilFramebuffer.bindFramebuffer(false);
@@ -95,6 +97,7 @@ public class PostProcessing extends Module
     }
 
     public void drawElementWithBloom(Runnable runnable, int radius, int offset) {
+        if (!impactGUIs.enabled) return;
         stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
         stencilFramebuffer.framebufferClear();
         stencilFramebuffer.bindFramebuffer(false);

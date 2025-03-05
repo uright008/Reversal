@@ -16,7 +16,6 @@ public final class Config extends Command {
                 case "save": {
                     if (args[1].isEmpty()) {
                         Reversal.showMsg("Invalid config name.");
-                        Reversal.showMsg(".config save <name>");
                         Reversal.notificationManager.registerNotification("Invalid config name.", "Command", NotificationType.ERROR);
                         return;
                     }
@@ -27,7 +26,6 @@ public final class Config extends Command {
                 case "create": {
                     if (args[1].isEmpty()) {
                         Reversal.showMsg("Invalid config name.");
-                        Reversal.showMsg(".config create <name>");
                         Reversal.notificationManager.registerNotification("Invalid config name.", "Command", NotificationType.ERROR);
                         return;
                     }

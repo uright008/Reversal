@@ -40,22 +40,21 @@ public class ModernClickGUI extends GuiScreen {
     public final Color backgroundColor = new Color(20,20,20,255);
     public Animation scaleAnimation = new Animation(Easing.EASE_IN_OUT_QUAD, 300);
     private final Animation sideAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
-    ScaledResolution sr;
-    Category selectedCategory = Category.COMBAT;
+    private Category selectedCategory = Category.COMBAT;
     private static float scrollAmount;
-    Module firstModule;
-    float lastModuleY;
 
-    NumberValue selectedSlider;
-    ColorValue selectedColor;
-    boolean hueFlag = false;
-    boolean themeColorFlag = false;
-    boolean hasEditedSliders = false;
+    // Values
+    private NumberValue selectedSlider;
+    private ColorValue selectedColor;
+    private boolean hueFlag = false;
+    private boolean themeColorFlag = false;
+    private boolean hasEditedSliders = false;
 
-    TimeUtil timer = new TimeUtil();
-    float wheel = Mouse.getDWheel();
+    private final TimeUtil timer = new TimeUtil();
+    private float wheel = Mouse.getDWheel();
     private final TextField searchField = new TextField(150, 15, GameInstance.regular16, backgroundColor, new Color(100,100,100,100));
 
+    // Drag
     private int addX, addY, deltaX, deltaY = 0;
     private boolean isDragging;
 
@@ -70,7 +69,6 @@ public class ModernClickGUI extends GuiScreen {
             scaleAnimation.run(1);
         }
 
-        sr = new ScaledResolution(mc);
         int x = width / 2 - 260 + addX;
         int y = height / 2 - 180 + addY;
 
@@ -128,8 +126,9 @@ public class ModernClickGUI extends GuiScreen {
         }
 
         // Module
-        firstModule = null;
-        lastModuleY = 0;
+        Module firstModule = null;
+        float lastModuleY = 0;
+
         GlStateManager.pushMatrix();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         float moduleX = x + 120;

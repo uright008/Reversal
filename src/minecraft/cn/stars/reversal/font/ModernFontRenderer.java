@@ -26,11 +26,9 @@ import java.util.Locale;
 public class ModernFontRenderer extends MFont {
 
     private static final String ALPHABET = "ABCDEFGHOKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private static final String COLOR_CODE_CHARACTERS = "0123456789abcdefklmnor";
     private static final Color TRANSPARENT_COLOR = new Color(255, 255, 255, 0);
     private static final float SCALE = 0.5f;
     private static final float SCALE_INVERSE = 1 / SCALE;
-    private static final char COLOR_INVOKER = '\247';
     private static final int[] COLOR_CODES = new int[32];
     private static final int LATIN_MAX_AMOUNT = 256;
     private static final int INTERNATIONAL_MAX_AMOUNT = 65535;
@@ -51,23 +49,6 @@ public class ModernFontRenderer extends MFont {
         this.fractionalMetrics = fractionalMetrics;
         this.fontHeight = (float) (font.getStringBounds(ALPHABET, new FontRenderContext(new AffineTransform(), antialiasing, fractionalMetrics)).getHeight() / 2f);
         this.international = international;
-    }
-
-    public ModernFontRenderer(final java.awt.Font font, final boolean fractionalMetrics, final boolean antialiasing) {
-        this.antialiasing = antialiasing;
-        this.font = font;
-        this.fractionalMetrics = fractionalMetrics;
-        this.fontHeight = (float) (font.getStringBounds(ALPHABET, new FontRenderContext(new AffineTransform(), antialiasing, fractionalMetrics)).getHeight() / 2);
-        this.fillCharacters(this.defaultCharacters, java.awt.Font.PLAIN);
-        this.fillCharacters(this.boldCharacters, java.awt.Font.BOLD);
-    }
-
-    public ModernFontRenderer(final java.awt.Font font, final boolean fractionalMetrics) {
-        this.font = font;
-        this.fractionalMetrics = fractionalMetrics;
-        this.fontHeight = (float) (font.getStringBounds(ALPHABET, new FontRenderContext(new AffineTransform(), true, fractionalMetrics)).getHeight() / 2);
-        this.fillCharacters(this.defaultCharacters, java.awt.Font.PLAIN);
-        this.fillCharacters(this.boldCharacters, java.awt.Font.BOLD);
     }
 
     static {
@@ -227,7 +208,7 @@ public class ModernFontRenderer extends MFont {
 
     public String autoReturn(String text, float returnWidth, int maxReturns) {
         if (text == null || returnWidth <= 0 || maxReturns < -1) {
-            throw new IllegalArgumentException("Invalid arguments");
+            return "";
         }
 
         text = trimStringToWidth(text, returnWidth * maxReturns - getWidth(" ..."), false, true);
@@ -258,7 +239,7 @@ public class ModernFontRenderer extends MFont {
 
     public int autoReturnCount(String text, float returnWidth, int maxReturns) {
         if (text == null || returnWidth <= 0 || maxReturns < -1) {
-            throw new IllegalArgumentException("Invalid arguments");
+            return 0;
         }
 
         text = trimStringToWidth(text, returnWidth * maxReturns - getWidth(" ..."), false, true);
@@ -291,7 +272,7 @@ public class ModernFontRenderer extends MFont {
     }
 
     public float drawCenteredString(final String text, final double x, final double y, final int color) {
-        return drawString(text, x - width(text) / 2f, y, color, false); // whoever bitshifted this instead of diving by 2 is a fucking nerd and virgin
+        return drawString(text, x - width(text) / 2f, y, color, false);
     }
 
     public float drawRightString(String text, double x, double y, int color) {
@@ -330,7 +311,7 @@ public class ModernFontRenderer extends MFont {
         final double startX = x;
 
         final int length = text.length();
-        ColorUtil.glColor(shadow ? 50 : color);
+        ColorUtil.glColor(color);
 
         for (int i = 0; i < length; ++i) {
             final char character = text.charAt(i);
@@ -400,7 +381,7 @@ public class ModernFontRenderer extends MFont {
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");;
 
         if (!this.international && this.requiresInternationalFont(text)) {
-            return FontManager.getRegular(this.font.getSize()).width(text);
+            return FontManager.getRegular(this.font.getSize() - 1).width(text);
         }
 
         final FontCharacter[] characterSet = this.international ? internationalCharacters : defaultCharacters;
