@@ -1,11 +1,10 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2024 Starlight, All rights reserved.
+ * Copyright 2025Aerolite Society, All rights reserved.
  */
 package cn.stars.reversal;
 
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
-import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.reversal.IRCInstance;
@@ -21,9 +20,6 @@ import org.lwjgl.glfw.GLFWDropCallback;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryUtil;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.dnd.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;

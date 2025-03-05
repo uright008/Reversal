@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2024 Starlight, All rights reserved.
+ * Copyright 2025Aerolite Society, All rights reserved.
  */
 package cn.stars.reversal.music.api.base;
 
