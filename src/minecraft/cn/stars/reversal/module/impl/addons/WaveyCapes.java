@@ -7,8 +7,8 @@ import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 
-@ModuleInfo(name = "WaveyCapes", chineseName = "飘扬披风", description = "Make your cape waving look better",
-        chineseDescription = "使你的披风飘动更真实", category = Category.ADDONS)
+@ModuleInfo(name = "WaveyCapes", localizedName = "飘扬披风", description = "Make your cape waving look better",
+        localizedDescription = "使你的披风飘动更真实", category = Category.ADDONS)
 public class WaveyCapes extends Module {
     public static int abc = 1;
     private final BoolValue wind = new BoolValue("Wind", this, true);

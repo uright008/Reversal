@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 
-@ModuleInfo(name = "Hotbar", chineseName = "物品栏", description = "Change game hotbar", chineseDescription = "改变物品栏", category = Category.CLIENT)
+@ModuleInfo(name = "Hotbar", localizedName = "物品栏", description = "Change game hotbar", localizedDescription = "改变物品栏", category = Category.CLIENT)
 public class Hotbar extends Module {
     public final ModeValue mode = new ModeValue("Mode", this, "Vanilla", "Vanilla", "Modern");
     public final BoolValue modernBars = new BoolValue("Modern Bars", this, false);

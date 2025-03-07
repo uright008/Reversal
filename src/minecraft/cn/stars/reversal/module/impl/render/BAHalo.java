@@ -28,7 +28,7 @@ import java.awt.*;
 /**
  * SKID?!
  */
-@ModuleInfo(name = "BAHalo",  chineseName = "蔚蓝档案光环", description = "Blue archive halos", chineseDescription = "蔚蓝档案角色的光环", category = Category.RENDER)
+@ModuleInfo(name = "BAHalo",  localizedName = "蔚蓝档案光环", description = "Blue archive halos", localizedDescription = "蔚蓝档案角色的光环", category = Category.RENDER)
 public class BAHalo extends Module {
     private final ModeValue mode = new ModeValue("Student", this, "Shiroko", "Shiroko", "Hoshino", "Reisa", "Azusa");
     private final BoolValue showInFirstPerson = new BoolValue("First Person", this, false);

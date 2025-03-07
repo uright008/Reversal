@@ -1,11 +1,9 @@
 package cn.stars.reversal.module.impl.hud;
 
-import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.value.impl.BoolValue;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -20,8 +18,8 @@ import java.util.List;
 
 import static net.minecraft.client.gui.Gui.drawRect;
 
-@ModuleInfo(name = "Scoreboard", chineseName = "记分板", description = "Show the scoreboard",
-        chineseDescription = "显示计分板", category = Category.HUD)
+@ModuleInfo(name = "Scoreboard", localizedName = "记分板", description = "Show the scoreboard",
+        localizedDescription = "显示计分板", category = Category.HUD)
 public class Scoreboard extends Module {
     public final BoolValue background = new BoolValue("Background", this, true);
     public final BoolValue rounded = new BoolValue("Rounded", this, false);

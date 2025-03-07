@@ -10,7 +10,7 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 
-@ModuleInfo(name = "MusicPlayer", chineseName = "音乐播放器", description = "Play netease musics", chineseDescription = "播放网易云歌曲", category = Category.ADDONS)
+@ModuleInfo(name = "MusicPlayer", localizedName = "音乐播放器", description = "Play netease musics", localizedDescription = "播放网易云歌曲", category = Category.ADDONS)
 public class MusicPlayer extends Module {
     @Override
     protected void onEnable() {

@@ -5,18 +5,14 @@
 package cn.stars.reversal.module.impl.hud;
 
 import cn.stars.reversal.event.impl.Render2DEvent;
-import cn.stars.reversal.event.impl.UpdateEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.util.render.ThemeType;
-import cn.stars.reversal.util.render.ThemeUtil;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.potion.PotionEffect;
 
 import java.util.ArrayList;
 // TODO: complete this.
-@ModuleInfo(name = "PotionEffects", chineseName = "效果显示", description = "Display your potion effects on the screen", chineseDescription = "在屏幕上显示药水效果", category = Category.HUD)
+@ModuleInfo(name = "PotionEffects", localizedName = "效果显示", description = "Display your potion effects on the screen", localizedDescription = "在屏幕上显示药水效果", category = Category.HUD)
 public class PotionEffects extends Module {
     private final ArrayList<PotionData> potions = new ArrayList<>();
     public PotionEffects() {

@@ -24,11 +24,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@ModuleInfo(name = "EnvironmentEffect", chineseName = "环境效果", description = "Draw modern environment effects around you", chineseDescription = "在你的身边绘制时髦的环境效果", category = Category.RENDER)
+@ModuleInfo(name = "EnvironmentEffect", localizedName = "环境效果", description = "Draw modern environment effects around you", localizedDescription = "在你的身边绘制时髦的环境效果", category = Category.RENDER)
 public class EnvironmentEffect extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Firefly", "Firefly", "Stars", "Snowflake");
     public final ColorValue colorValue = new ColorValue("Color", this);

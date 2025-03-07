@@ -7,8 +7,8 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.render.WingUtils;
 import cn.stars.reversal.value.impl.BoolValue;
 
-@ModuleInfo(name = "Wings", chineseName = "翅膀", description = "Render a wing on your back",
-        chineseDescription = "在你的背上渲染一个翅膀", category = Category.RENDER)
+@ModuleInfo(name = "Wings", localizedName = "翅膀", description = "Render a wing on your back",
+        localizedDescription = "在你的背上渲染一个翅膀", category = Category.RENDER)
 public class Wings extends Module {
     private final BoolValue showInFirstPerson = new BoolValue("First Person", this, false);
     WingUtils wingUtils = new WingUtils();

@@ -13,7 +13,7 @@ import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.misc.SoundUtil;
 import org.apache.commons.lang3.RandomUtils;
 
-@ModuleInfo(name = "ClickSound", chineseName = "点击声音", description = "Play sound when you click", chineseDescription = "当你点击时播放声音", category = Category.COMBAT)
+@ModuleInfo(name = "ClickSound", localizedName = "点击声音", description = "Play sound when you click", localizedDescription = "当你点击时播放声音", category = Category.COMBAT)
 public class ClickSound extends Module {
     private final ModeValue type = new ModeValue("Type", this, "Normal", "Normal", "Jitter", "Double");
     private final NumberValue volume = new NumberValue("Volume", this, 0.5, 0.1, 2, 0.1);

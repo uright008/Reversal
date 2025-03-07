@@ -17,8 +17,8 @@ import net.minecraft.client.Minecraft;
 
 import java.awt.*;
 
-@ModuleInfo(name = "FPSCounter", chineseName = "帧率显示", description = "Show your fps on screen",
-        chineseDescription = "显示你的帧率", category = Category.HUD)
+@ModuleInfo(name = "FPSCounter", localizedName = "帧率显示", description = "Show your fps on screen",
+        localizedDescription = "显示你的帧率", category = Category.HUD)
 public class FPSCounter extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
     public final ColorValue colorValue = new ColorValue("Color", this);

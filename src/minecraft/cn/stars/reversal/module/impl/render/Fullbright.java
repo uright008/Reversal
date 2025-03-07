@@ -8,8 +8,8 @@ import cn.stars.reversal.value.impl.ModeValue;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
-@ModuleInfo(name = "Fullbright", chineseName = "夜视", description = "Gives your game full brightness",
-        chineseDescription = "夜视效果", category = Category.RENDER)
+@ModuleInfo(name = "Fullbright", localizedName = "夜视", description = "Gives your game full brightness",
+        localizedDescription = "夜视效果", category = Category.RENDER)
 public final class Fullbright extends Module {
 
     private final ModeValue mode = new ModeValue("Mode", this, "Gamma", "Gamma", "NightVision");

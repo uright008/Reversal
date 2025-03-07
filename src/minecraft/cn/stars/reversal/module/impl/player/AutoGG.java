@@ -11,7 +11,7 @@ import cn.stars.reversal.util.MiscUtil;
 import cn.stars.reversal.util.math.TimeUtil;
 import net.minecraft.network.play.server.S02PacketChat;
 
-@ModuleInfo(name = "AutoGG", chineseName = "自动GG", description = "Auto send gg when game end", chineseDescription = "在游戏结束时自动发送gg", category = Category.PLAYER)
+@ModuleInfo(name = "AutoGG", localizedName = "自动GG", description = "Auto send gg when game end", localizedDescription = "在游戏结束时自动发送gg", category = Category.PLAYER)
 public class AutoGG extends Module {
     String[] winMessage = new String[] {"Winner", "第一名", "1st", "胜利"};
     String[] exceptMessage = new String[] {"任务", "初尝"};

@@ -11,8 +11,8 @@ import cn.stars.reversal.util.math.TimeUtil;
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 
-@ModuleInfo(name = "TimeTraveller", chineseName = "时间穿越", description = "Travel the time to your own",
-        chineseDescription = "穿越至你设置的时间或天气", category = Category.WORLD)
+@ModuleInfo(name = "TimeTraveller", localizedName = "时间穿越", description = "Travel the time to your own",
+        localizedDescription = "穿越至你设置的时间或天气", category = Category.WORLD)
 public class TimeTraveller extends Module {
     private final NumberValue time = new NumberValue("Time", this, 0, 0, 22999, 1);
     private final NumberValue timeSpeed = new NumberValue("Time Speed", this, 0, 0, 20, 0.1);

@@ -1,11 +1,13 @@
 package net.optifine.gui;
 
+import lombok.Getter;
 import net.minecraft.client.gui.GuiOptionButton;
 import net.minecraft.client.settings.GameSettings;
 
+@Getter
 public class GuiOptionButtonOF extends GuiOptionButton implements IOptionControl
 {
-    private GameSettings.Options option = null;
+    private final GameSettings.Options option;
 
     public GuiOptionButtonOF(int id, int x, int y, GameSettings.Options option, String text)
     {
@@ -13,8 +15,4 @@ public class GuiOptionButtonOF extends GuiOptionButton implements IOptionControl
         this.option = option;
     }
 
-    public GameSettings.Options getOption()
-    {
-        return this.option;
-    }
 }

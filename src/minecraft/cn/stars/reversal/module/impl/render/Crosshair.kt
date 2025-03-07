@@ -9,15 +9,13 @@ import cn.stars.reversal.value.impl.BoolValue
 import cn.stars.reversal.value.impl.NumberValue
 import cn.stars.reversal.util.player.MovementUtils
 import cn.stars.reversal.util.render.RenderUtils
-import cn.stars.reversal.util.render.ThemeType
-import cn.stars.reversal.util.render.ThemeUtil
 import cn.stars.reversal.value.impl.ColorValue
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.entity.EntityLivingBase
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 
-@ModuleInfo(name = "Crosshair", chineseName = "自定义准星", description = "Customize your crosshair", chineseDescription = "自定义你的准星", category = Category.RENDER)
+@ModuleInfo(name = "Crosshair", localizedName = "自定义准星", description = "Customize your crosshair", localizedDescription = "自定义你的准星", category = Category.RENDER)
 class Crosshair : Module() {
     // Size, width, hitmarker
     private val colorValue = ColorValue("Color", this)

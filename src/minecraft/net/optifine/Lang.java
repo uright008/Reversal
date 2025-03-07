@@ -1,5 +1,7 @@
 package net.optifine;
 
+import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class Lang
     public static void resourcesReloaded()
     {
         Map map = I18n.getLocaleProperties();
-        List<String> list = new ArrayList();
+        List<String> list = new ArrayList<>();
         String s = "optifine/lang/";
         String s1 = "en_US";
         String s2 = ".lang";
@@ -35,13 +37,20 @@ public class Lang
             list.add(s + Config.getGameSettings().language + s2);
         }
 
-        String[] astring = (String[])((String[])list.toArray(new String[list.size()]));
+        switch (ModuleInstance.getModule(ClientSettings.class).language.getMode()) {
+            case "English":
+                list.add("reversal/lang/en_US.lang");
+                break;
+            case "Chinese":
+                list.add("reversal/lang/zh_CN.lang");
+                break;
+        }
+
+        String[] astring = list.toArray(new String[0]);
         loadResources(Config.getDefaultResourcePack(), astring, map);
         IResourcePack[] airesourcepack = Config.getResourcePacks();
 
-        for (int i = 0; i < airesourcepack.length; ++i)
-        {
-            IResourcePack iresourcepack = airesourcepack[i];
+        for (IResourcePack iresourcepack : airesourcepack) {
             loadResources(iresourcepack, astring, map);
         }
     }
@@ -50,17 +59,13 @@ public class Lang
     {
         try
         {
-            for (int i = 0; i < files.length; ++i)
-            {
-                String s = files[i];
+            for (String s : files) {
                 ResourceLocation resourcelocation = new ResourceLocation(s);
 
-                if (rp.resourceExists(resourcelocation))
-                {
+                if (rp.resourceExists(resourcelocation)) {
                     InputStream inputstream = rp.getInputStream(resourcelocation);
 
-                    if (inputstream != null)
-                    {
+                    if (inputstream != null) {
                         loadLocaleData(inputstream, localeProperties);
                     }
                 }
@@ -74,16 +79,16 @@ public class Lang
 
     public static void loadLocaleData(InputStream is, Map localeProperties) throws IOException
     {
-        Iterator iterator = IOUtils.readLines(is, Charsets.UTF_8).iterator();
+        Iterator<String> iterator = IOUtils.readLines(is, Charsets.UTF_8).iterator();
         is.close();
 
         while (iterator.hasNext())
         {
-            String s = (String)iterator.next();
+            String s = iterator.next();
 
             if (!s.isEmpty() && s.charAt(0) != 35)
             {
-                String[] astring = (String[])((String[])Iterables.toArray(splitter.split(s), String.class));
+                String[] astring = Iterables.toArray(splitter.split(s), String.class);
 
                 if (astring != null && astring.length == 2)
                 {
@@ -95,39 +100,44 @@ public class Lang
         }
     }
 
+    public static String format(String key, Object... params)
+    {
+        return I18n.format(key, params);
+    }
+
     public static String get(String key)
     {
-        return I18n.format(key, new Object[0]);
+        return I18n.format(key);
     }
 
     public static String get(String key, String def)
     {
-        String s = I18n.format(key, new Object[0]);
+        String s = I18n.format(key);
         return s != null && !s.equals(key) ? s : def;
     }
 
     public static String getOn()
     {
-        return I18n.format("options.on", new Object[0]);
+        return I18n.format("options.on");
     }
 
     public static String getOff()
     {
-        return I18n.format("options.off", new Object[0]);
+        return I18n.format("options.off");
     }
 
     public static String getFast()
     {
-        return I18n.format("options.graphics.fast", new Object[0]);
+        return I18n.format("options.graphics.fast");
     }
 
     public static String getFancy()
     {
-        return I18n.format("options.graphics.fancy", new Object[0]);
+        return I18n.format("options.graphics.fancy");
     }
 
     public static String getDefault()
     {
-        return I18n.format("generator.default", new Object[0]);
+        return I18n.format("generator.default");
     }
 }

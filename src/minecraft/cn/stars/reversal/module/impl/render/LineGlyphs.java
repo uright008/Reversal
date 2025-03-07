@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ModuleInfo(name = "LineGlyphs", chineseName = "线条图像", description = "Draw lines in world", chineseDescription = "在世界中绘制线条", category = Category.RENDER)
+@ModuleInfo(name = "LineGlyphs", localizedName = "线条图像", description = "Draw lines in world", localizedDescription = "在世界中绘制线条", category = Category.RENDER)
 public class LineGlyphs extends Module {
     public final ColorValue colorValue = new ColorValue("Color", this);
     public final BoolValue SlowSpeed = new BoolValue("Slow Speed", this, false);

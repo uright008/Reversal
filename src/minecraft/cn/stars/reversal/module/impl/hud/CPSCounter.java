@@ -1,9 +1,7 @@
 package cn.stars.reversal.module.impl.hud;
 
-import cn.stars.reversal.event.impl.ClickEvent;
 import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.event.impl.Shader3DEvent;
-import cn.stars.reversal.event.impl.TickEvent;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
@@ -20,8 +18,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@ModuleInfo(name = "CPSCounter", chineseName = "点击速度显示", description = "Show your CPS on screen",
-        chineseDescription = "显示你的点击速度", category = Category.HUD)
+@ModuleInfo(name = "CPSCounter", localizedName = "点击速度显示", description = "Show your CPS on screen",
+        localizedDescription = "显示你的点击速度", category = Category.HUD)
 public class CPSCounter extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
     public final ColorValue colorValue = new ColorValue("Color", this);

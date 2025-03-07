@@ -8,7 +8,7 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.wrapper.WrapperFreeLook
 import org.lwjgl.input.Keyboard
 
-@ModuleInfo(name = "FreeLook", chineseName = "自由视角", description = "Move around freely", chineseDescription = "自由地移动你的视角", category = Category.ADDONS)
+@ModuleInfo(name = "FreeLook", localizedName = "自由视角", description = "Move around freely", localizedDescription = "自由地移动你的视角", category = Category.ADDONS)
 class FreeLook : Module() {
 
     init {

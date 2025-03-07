@@ -17,8 +17,8 @@ import net.minecraft.network.play.server.S2CPacketSpawnGlobalEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 
-@ModuleInfo(name = "HitEffect", chineseName = "攻击粒子", description = "Renders particle effect when you attack someone",
-        chineseDescription = "当你攻击时生成粒子效果", category = Category.RENDER)
+@ModuleInfo(name = "HitEffect", localizedName = "攻击粒子", description = "Renders particle effect when you attack someone",
+        localizedDescription = "当你攻击时生成粒子效果", category = Category.RENDER)
 public final class HitEffect extends Module {
 
     private final ModeValue mode = new ModeValue("Mode", this, "Blood", "None", "Blood", "Lightning", "Flame", "Explosion",

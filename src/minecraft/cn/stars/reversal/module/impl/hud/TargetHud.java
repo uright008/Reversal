@@ -37,8 +37,8 @@ import java.util.Objects;
 import static cn.stars.reversal.util.render.RenderUtil.renderPlayerModelTexture;
 import static cn.stars.reversal.util.render.RenderUtil.renderSteveModelTexture;
 
-@ModuleInfo(name = "TargetHud", chineseName = "敌人信息", description = "Renders a Gui with your targets information",
-        chineseDescription = "显示你攻击敌人的信息", category = Category.HUD)
+@ModuleInfo(name = "TargetHud", localizedName = "敌人信息", description = "Renders a Gui with your targets information",
+        localizedDescription = "显示你攻击敌人的信息", category = Category.HUD)
 public final class TargetHud extends Module {
 
     public static Entity target;

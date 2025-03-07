@@ -201,8 +201,8 @@ public class MMTClickGUI extends GuiScreen {
                         regular20.drawCenteredString("无设置。", x + 390, y + 160, new Color(114, 120, 126, 255).getRGB());
                         settingY = 0;
                     } else {
-                        FontManager.getRegularBold(20).drawCenteredString(m.getModuleInfo().chineseName().isEmpty() ? m.getModuleInfo().name() : m.getModuleInfo().chineseName(), x + 390, y + 32, new Color(60, 60, 60, 255).getRGB());
-                        FontManager.getRegular(16).drawCenteredString(m.getModuleInfo().chineseDescription().isEmpty() ? m.getModuleInfo().description() : m.getModuleInfo().chineseDescription(),
+                        FontManager.getRegularBold(20).drawCenteredString(m.getModuleInfo().localizedName().isEmpty() ? m.getModuleInfo().name() : m.getModuleInfo().localizedName(), x + 390, y + 32, new Color(60, 60, 60, 255).getRGB());
+                        FontManager.getRegular(16).drawCenteredString(m.getModuleInfo().localizedDescription().isEmpty() ? m.getModuleInfo().description() : m.getModuleInfo().localizedDescription(),
                                 x + 390, y + 43, new Color(114, 120, 126, 255).getRGB());
                         RenderUtil.roundedOutlineRectangle(x + 267, y + 52, 245, settingY - y - 56, 3, 1, new Color(171,189,193,255));
                     }
@@ -232,8 +232,8 @@ public class MMTClickGUI extends GuiScreen {
 
                     RenderUtil.roundedRectangle(m.guiX + 8, m.guiY + 12, 6, 6, 3, m.isEnabled() ? new Color(50, 255, 50, 220) : new Color(160, 160, 160, 200));
 
-                    FontManager.getRegularBold(20).drawString((m.getModuleInfo().chineseName().isEmpty() ? m.getModuleInfo().name() : m.getModuleInfo().chineseName()) + (isSpecialModule(m) ? "*" : ""), m.guiX + 20, m.guiY + 8, new Color(60, 60, 60, 255).getRGB());
-                    FontManager.getRegular(16).drawString(m.getModuleInfo().chineseDescription().isEmpty() ? m.getModuleInfo().description() : m.getModuleInfo().chineseDescription(),
+                    FontManager.getRegularBold(20).drawString((m.getModuleInfo().localizedName().isEmpty() ? m.getModuleInfo().name() : m.getModuleInfo().localizedName()) + (isSpecialModule(m) ? "*" : ""), m.guiX + 20, m.guiY + 8, new Color(60, 60, 60, 255).getRGB());
+                    FontManager.getRegular(16).drawString(m.getModuleInfo().localizedDescription().isEmpty() ? m.getModuleInfo().description() : m.getModuleInfo().localizedDescription(),
                             m.guiX + 20, m.guiY + 20 + (canUseChinese(m) ? 1 : 0), new Color(114, 120, 126, 255).getRGB());
 
                     GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -492,7 +492,7 @@ public class MMTClickGUI extends GuiScreen {
 
     public boolean canUseChinese(Module module) {
         if (ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled()) {
-            return !module.getModuleInfo().chineseDescription().isEmpty() && !module.getModuleInfo().chineseName().isEmpty();
+            return !module.getModuleInfo().localizedDescription().isEmpty() && !module.getModuleInfo().localizedName().isEmpty();
         }
         return false;
     }

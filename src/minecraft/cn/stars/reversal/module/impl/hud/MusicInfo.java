@@ -11,7 +11,6 @@ import cn.stars.reversal.event.impl.Shader3DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.music.api.base.LyricLine;
 import cn.stars.reversal.music.api.player.MusicPlayer;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.value.impl.BoolValue;
@@ -20,16 +19,14 @@ import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.ThemeType;
-import cn.stars.reversal.util.render.ThemeUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 
-@ModuleInfo(name = "MusicInfo", chineseName = "音乐信息", description = "Display the music info",
-        chineseDescription = "显示音乐信息", category = Category.HUD)
+@ModuleInfo(name = "MusicInfo", localizedName = "音乐信息", description = "Display the music info",
+        localizedDescription = "显示音乐信息", category = Category.HUD)
 public class MusicInfo extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Empathy");
     public final ColorValue colorValue = new ColorValue("Color", this);

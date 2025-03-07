@@ -24,7 +24,6 @@ import net.minecraft.util.*;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -33,8 +32,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@ModuleInfo(name = "Trail", chineseName = "足迹", description = "Shows a trail on your feet",
-        chineseDescription = "在你走过的地方渲染足迹", category = Category.RENDER)
+@ModuleInfo(name = "Trail", localizedName = "足迹", description = "Shows a trail on your feet",
+        localizedDescription = "在你走过的地方渲染足迹", category = Category.RENDER)
 public final class Trail extends Module {
     public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Minecraft", "Round", "Modern");
     public final ColorValue colorValue = new ColorValue("Color", this);

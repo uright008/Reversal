@@ -1,16 +1,12 @@
 package cn.stars.reversal.module.impl.render;
 
-import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
-import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.math.TimeUtil;
-import cn.stars.reversal.util.math.TimerUtil;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
@@ -20,7 +16,6 @@ import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -37,7 +32,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
-@ModuleInfo(name = "TargetESP", chineseName = "敌人标记", description = "Display a ESP when you hit targets", chineseDescription = "当你攻击目标时渲染ESP", category = Category.RENDER)
+@ModuleInfo(name = "TargetESP", localizedName = "敌人标记", description = "Display a ESP when you hit targets", localizedDescription = "当你攻击目标时渲染ESP", category = Category.RENDER)
 public class TargetESP extends Module {
     public final ModeValue mode = new ModeValue("Mode", this, "Rectangle", "Rectangle", "Round", "Bubble", "Stars", "Surrounding");
     public final ColorValue colorValue = new ColorValue("Color", this);

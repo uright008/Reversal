@@ -17,8 +17,8 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.util.ArrayList;
 
-@ModuleInfo(name = "ArmorHud", chineseName = "装备显示", description = "Show your armors",
-        chineseDescription = "显示你的装备", category = Category.HUD)
+@ModuleInfo(name = "ArmorHud", localizedName = "装备显示", description = "Show your armors",
+        localizedDescription = "显示你的装备", category = Category.HUD)
 public class ArmorHud extends Module {
     //armor的背景开关
     public final BoolValue border = new BoolValue("Border", this, true);

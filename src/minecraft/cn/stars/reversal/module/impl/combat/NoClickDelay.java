@@ -5,8 +5,8 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 
-@ModuleInfo(name = "NoClickDelay", chineseName = "移除点击延迟", description = "Remove the delay of clicking",
-        chineseDescription = "移除特殊情况下出现的鼠标点击延迟", category = Category.COMBAT)
+@ModuleInfo(name = "NoClickDelay", localizedName = "移除点击延迟", description = "Remove the delay of clicking",
+        localizedDescription = "移除特殊情况下出现的鼠标点击延迟", category = Category.COMBAT)
 public class NoClickDelay extends Module {
 
     @Override

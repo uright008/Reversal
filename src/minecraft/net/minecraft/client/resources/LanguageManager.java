@@ -19,13 +19,13 @@ public class LanguageManager implements IResourceManagerReloadListener
     private final IMetadataSerializer theMetadataSerializer;
     private String currentLanguage;
     protected static final Locale currentLocale = new Locale();
-    private Map<String, Language> languageMap = Maps.<String, Language>newHashMap();
+    private final Map<String, Language> languageMap = Maps.newHashMap();
 
     public LanguageManager(IMetadataSerializer theMetadataSerializerIn, String currentLanguageIn)
     {
         this.theMetadataSerializer = theMetadataSerializerIn;
         this.currentLanguage = currentLanguageIn;
-        I18n.setLocale(currentLocale);
+        I18n.setLocale();
     }
 
     public void parseLanguageMetadata(List<IResourcePack> resourcesPacks)
@@ -36,7 +36,7 @@ public class LanguageManager implements IResourceManagerReloadListener
         {
             try
             {
-                LanguageMetadataSection languagemetadatasection = (LanguageMetadataSection)iresourcepack.getPackMetadata(this.theMetadataSerializer, "language");
+                LanguageMetadataSection languagemetadatasection = iresourcepack.getPackMetadata(this.theMetadataSerializer, "language");
 
                 if (languagemetadatasection != null)
                 {
@@ -49,13 +49,9 @@ public class LanguageManager implements IResourceManagerReloadListener
                     }
                 }
             }
-            catch (RuntimeException runtimeexception)
+            catch (RuntimeException | IOException runtimeexception)
             {
-                logger.warn("Unable to parse metadata section of resourcepack: " + iresourcepack.getPackName(), (Throwable)runtimeexception);
-            }
-            catch (IOException ioexception)
-            {
-                logger.warn("Unable to parse metadata section of resourcepack: " + iresourcepack.getPackName(), (Throwable)ioexception);
+                logger.warn("Unable to parse metadata section of resourcepack: {}", iresourcepack.getPackName(), (Throwable) runtimeexception);
             }
         }
     }

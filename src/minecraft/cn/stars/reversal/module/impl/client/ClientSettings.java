@@ -9,11 +9,12 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.ReversalLogger;
 import net.minecraft.util.MouseHelper;
+import net.optifine.Lang;
 
 import java.awt.*;
 
-@ModuleInfo(name = "ClientSettings", chineseName = "主界面设置", description = "Some settings to change your hud.",
-        chineseDescription = "客户端的整体视觉效果设置", category = Category.CLIENT)
+@ModuleInfo(name = "ClientSettings", localizedName = "主界面设置", description = "Some settings to change your hud.",
+        localizedDescription = "客户端的整体视觉效果设置", category = Category.CLIENT)
 public final class ClientSettings extends Module {
     public final NoteValue note1 = new NoteValue("< COLOR SETTINGS >", this);
     public final ModeValue theme = new ModeValue("Theme", this, "Simple",
@@ -30,6 +31,7 @@ public final class ClientSettings extends Module {
     public final BoolValue empathyGlow = new BoolValue("Empathy Glow", this, false);
 
     public final NoteValue note3 = new NoteValue("< CLIENT SETTINGS >", this);
+    public final ModeValue language = new ModeValue("Language", this, "English", "English", "Chinese");
     public final BoolValue chinese = new BoolValue("Chinese", this, false);
     public final BoolValue showNotifications = new BoolValue("Show Notifications", this, true);
     public final BoolValue hudTextWithBracket = new BoolValue("Hud Text With Bracket", this, false);
@@ -67,6 +69,9 @@ public final class ClientSettings extends Module {
                 mc.mouseHelper = new MouseHelper();
                 ReversalLogger.info("Switched mc.mouseHelper to MouseHelper.");
             }
+        }
+        if (event.setting == language) {
+            Lang.resourcesReloaded();
         }
     }
 

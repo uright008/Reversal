@@ -16,15 +16,14 @@ import net.minecraft.block.BlockLadder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 
 import static net.minecraft.util.EnumFacing.*;
 
-@ModuleInfo(name = "Protocol", chineseName = "跨版本协议", description = "Fix something when you enter specified servers",
-        chineseDescription = "在你进入特定服务器时修复一些东西", category = Category.MISC)
+@ModuleInfo(name = "Protocol", localizedName = "跨版本协议", description = "Fix something when you enter specified servers",
+        localizedDescription = "在你进入特定服务器时修复一些东西", category = Category.MISC)
 public class Protocol extends Module {
     private final NoteValue note = new NoteValue("未跨版本请勿开启.由该功能造成的封禁均不属于开发者问题.", this);
     private final BoolValue fix1_9_plusAttackDistance = new BoolValue("1.9+ Attack Distance", this, true);

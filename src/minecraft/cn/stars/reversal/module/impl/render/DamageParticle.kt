@@ -7,22 +7,20 @@ import cn.stars.reversal.event.impl.WorldEvent
 import cn.stars.reversal.module.Category
 import cn.stars.reversal.module.Module
 import cn.stars.reversal.module.ModuleInfo
-import cn.stars.reversal.util.render.ColorUtil
 import cn.stars.reversal.value.impl.ColorValue
 import cn.stars.reversal.value.impl.NumberValue
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.entity.EntityLivingBase
 import org.lwjgl.opengl.GL11
-import java.awt.Color
 import java.math.BigDecimal
 import java.util.*
 
 
 @ModuleInfo(
     name = "DamageParticle",
-    chineseName = "伤害粒子",
+    localizedName = "伤害粒子",
     description = "Show a particle of your damage when you hit.",
-    chineseDescription = "当你攻击时生成显示攻击伤害的粒子",
+    localizedDescription = "当你攻击时生成显示攻击伤害的粒子",
     category = Category.RENDER
 )
 class DamageParticle : Module(){

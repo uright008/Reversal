@@ -5,8 +5,8 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.NumberValue;
 
-@ModuleInfo(name = "SkinLayers3D", chineseName = "3D皮肤层", description = "Extend your skin with extra layers",
-        chineseDescription = "3D渲染你的皮肤层", category = Category.ADDONS)
+@ModuleInfo(name = "SkinLayers3D", localizedName = "3D皮肤层", description = "Extend your skin with extra layers",
+        localizedDescription = "3D渲染你的皮肤层", category = Category.ADDONS)
 public class SkinLayers3D extends Module {
     public final NumberValue baseVoxelSize = new NumberValue("Voxel Size", this, 1.15, 1.01, 1.4, 0.01);
     public final NumberValue bodyVoxelSize = new NumberValue("Torso Voxel Width", this, 1.05, 1.01, 1.4, 0.01);

@@ -11,15 +11,13 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.render.RenderUtils;
-import cn.stars.reversal.util.render.ThemeType;
-import cn.stars.reversal.util.render.ThemeUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-@ModuleInfo(name = "ReachDisplay", chineseName = "攻击距离", description = "Display your reach distance", chineseDescription = "显示你的攻击距离", category = Category.RENDER)
+@ModuleInfo(name = "ReachDisplay", localizedName = "攻击距离", description = "Display your reach distance", localizedDescription = "显示你的攻击距离", category = Category.RENDER)
 public class ReachDisplay extends Module {
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue thickness = new NumberValue("Thickness", this, 2f, 0.1f, 5f, 0.1f);

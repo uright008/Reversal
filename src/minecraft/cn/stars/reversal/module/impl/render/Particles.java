@@ -23,8 +23,8 @@ import net.minecraft.util.Vec3;
 
 import java.util.List;
 
-@ModuleInfo(name = "Particles", chineseName = "粒子", description = "Renders colorful balls when you attack someone",
-        chineseDescription = "在你攻击时生成弹射的彩色小球", category = Category.RENDER)
+@ModuleInfo(name = "Particles", localizedName = "粒子", description = "Renders colorful balls when you attack someone",
+        localizedDescription = "在你攻击时生成弹射的彩色小球", category = Category.RENDER)
 public final class Particles extends Module {
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue amount = new NumberValue("Amount", this, 10, 1, 20, 1);

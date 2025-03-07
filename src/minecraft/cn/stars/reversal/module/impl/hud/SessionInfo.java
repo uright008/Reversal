@@ -6,7 +6,6 @@ import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.math.MathUtil;
@@ -18,8 +17,8 @@ import net.minecraft.entity.EntityLivingBase;
 import java.awt.*;
 import java.util.ArrayList;
 
-@ModuleInfo(name = "SessionInfo", chineseName = "游戏数据", description = "Show your game stats",
-        chineseDescription = "显示你的游戏数据", category = Category.HUD)
+@ModuleInfo(name = "SessionInfo", localizedName = "游戏数据", description = "Show your game stats",
+        localizedDescription = "显示你的游戏数据", category = Category.HUD)
 public class SessionInfo extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy");
     public final ColorValue colorValue = new ColorValue("Color", this);

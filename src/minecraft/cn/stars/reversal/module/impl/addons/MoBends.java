@@ -22,12 +22,11 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.compatibility.util.vector.ReadableVector3f;
 import org.lwjgl.compatibility.util.vector.Vector3f;
 
 
-@ModuleInfo(name = "MoBends", chineseName = "更多动作", description = "Show more animations on entity",
-        chineseDescription = "在玩家和部分生物上渲染更真实的动作", category = Category.ADDONS)
+@ModuleInfo(name = "MoBends", localizedName = "更多动作", description = "Show more animations on entity",
+        localizedDescription = "在玩家和部分生物上渲染更真实的动作", category = Category.ADDONS)
 public class MoBends extends Module {
     public static boolean loaded = false;
     public static float ticks;

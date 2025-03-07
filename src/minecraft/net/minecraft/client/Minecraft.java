@@ -177,6 +177,7 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
+import net.optifine.Lang;
 import net.optifine.cache.OptifineCustomItemCache;
 import net.optifine.cache.OptifineRegexCache;
 import org.apache.commons.io.IOUtils;
@@ -822,6 +823,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         this.mcLanguageManager.onResourceManagerReload(mcResourceManager);
         this.mcLanguageManager.parseLanguageMetadata(list);
+        Lang.resourcesReloaded();
     }
 
     private ByteBuffer readImageToBuffer(InputStream imageStream) throws IOException

@@ -8,6 +8,6 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 
-@ModuleInfo(name = "BetterFont", chineseName = "更好的字体", description = "Cover the game font with custom font", chineseDescription = "使用客户端字体覆盖原版字体", category = Category.RENDER)
+@ModuleInfo(name = "BetterFont", localizedName = "更好的字体", description = "Cover the game font with custom font", localizedDescription = "使用客户端字体覆盖原版字体", category = Category.RENDER)
 public class BetterFont extends Module {
 }

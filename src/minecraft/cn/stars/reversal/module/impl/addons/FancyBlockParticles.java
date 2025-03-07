@@ -1,10 +1,6 @@
 package cn.stars.reversal.module.impl.addons;
 
 import cn.stars.addons.fbp.FBP;
-import cn.stars.addons.fbp.particle.FBPParticleDigging;
-import cn.stars.addons.fbp.particle.FBPParticleManager;
-import cn.stars.addons.fbp.renderer.FBPWeatherRenderer;
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.TickEvent;
 import cn.stars.reversal.event.impl.ValueChangedEvent;
 import cn.stars.reversal.event.impl.WorldEvent;
@@ -13,10 +9,8 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EffectRenderer;
 
-@ModuleInfo(name = "FancyBlockParticles", chineseName = "梦幻方块粒子", description = "Make the particles look better", chineseDescription = "生成更好看的粒子效果", category = Category.ADDONS)
+@ModuleInfo(name = "FancyBlockParticles", localizedName = "梦幻方块粒子", description = "Make the particles look better", localizedDescription = "生成更好看的粒子效果", category = Category.ADDONS)
 public class FancyBlockParticles extends Module {
     public final NumberValue minAge = new NumberValue("Min Age", this, 10, 1, 100, 1);
     public final NumberValue maxAge = new NumberValue("Max Age", this, 55, 1, 100, 1);

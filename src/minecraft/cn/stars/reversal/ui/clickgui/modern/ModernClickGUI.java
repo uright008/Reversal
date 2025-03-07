@@ -20,7 +20,6 @@ import cn.stars.reversal.value.Value;
 import cn.stars.reversal.value.impl.*;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
@@ -150,8 +149,8 @@ public class ModernClickGUI extends GuiScreen {
                     RenderUtil.scissor(moduleX, y, 400, 360);
                 }
                 if (canUseChinese(m)) {
-                    regular24Bold.drawString(m.getModuleInfo().chineseName(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
-                    regular16.drawString(m.getModuleInfo().chineseDescription(),
+                    regular24Bold.drawString(m.getModuleInfo().localizedName(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                    regular16.drawString(m.getModuleInfo().localizedDescription(),
                             m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 21, new Color(160, 160, 160, 160).getRGB());
                 } else {
                     psm24.drawString(m.getModuleInfo().name(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
@@ -615,7 +614,7 @@ public class ModernClickGUI extends GuiScreen {
 
     public boolean canUseChinese(Module module) {
         if (ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled()) {
-            return !module.getModuleInfo().chineseDescription().isEmpty() && !module.getModuleInfo().chineseName().isEmpty();
+            return !module.getModuleInfo().localizedDescription().isEmpty() && !module.getModuleInfo().localizedName().isEmpty();
         }
         return false;
     }

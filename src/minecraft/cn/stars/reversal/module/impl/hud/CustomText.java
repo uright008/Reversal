@@ -15,12 +15,10 @@ import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import cn.stars.reversal.util.render.ThemeType;
-import cn.stars.reversal.util.render.ThemeUtil;
 
 import java.awt.*;
 
-@ModuleInfo(name = "CustomText", chineseName = "自定义文字", description = "Show a custom text on screen", chineseDescription = "在屏幕上显示自定义文字", category = Category.HUD)
+@ModuleInfo(name = "CustomText", localizedName = "自定义文字", description = "Show a custom text on screen", localizedDescription = "在屏幕上显示自定义文字", category = Category.HUD)
 public class CustomText extends Module {
     private final NoteValue note = new NoteValue("用指令'.setText <文字>'来设置自定义文字!", this);
     public final ColorValue colorValue = new ColorValue("Color", this);
