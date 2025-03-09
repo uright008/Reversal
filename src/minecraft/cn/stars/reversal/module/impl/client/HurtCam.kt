@@ -11,7 +11,7 @@ import net.minecraft.client.gui.ScaledResolution
 import java.awt.Color
 
 
-@ModuleInfo(name = "HurtCam", localizedName = "受伤抖动", description = "Modify the shake when you get hurt", localizedDescription = "修改你受伤时的抖动效果", category = Category.CLIENT)
+@ModuleInfo(name = "HurtCam", localizedName = "module.HurtCam.name", description = "Modify the shake when you get hurt", localizedDescription = "module.HurtCam.desc", category = Category.CLIENT)
 class HurtCam : Module() {
     val mode = ModeValue("Mode", this, "Vanilla", "Cancel", "Vanilla", "FPS")
     private val fpsTimeValue = NumberValue("FPS Time", this, 1000.0, 0.0, 1500.0, 1.0)

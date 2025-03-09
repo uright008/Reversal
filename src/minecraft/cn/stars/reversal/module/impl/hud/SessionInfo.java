@@ -17,8 +17,8 @@ import net.minecraft.entity.EntityLivingBase;
 import java.awt.*;
 import java.util.ArrayList;
 
-@ModuleInfo(name = "SessionInfo", localizedName = "游戏数据", description = "Show your game stats",
-        localizedDescription = "显示你的游戏数据", category = Category.HUD)
+@ModuleInfo(name = "SessionInfo", localizedName = "module.SessionInfo.name", description = "Show your game stats",
+        localizedDescription = "module.SessionInfo.desc", category = Category.HUD)
 public class SessionInfo extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy");
     public final ColorValue colorValue = new ColorValue("Color", this);

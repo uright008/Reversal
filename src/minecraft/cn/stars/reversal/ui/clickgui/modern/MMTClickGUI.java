@@ -491,7 +491,7 @@ public class MMTClickGUI extends GuiScreen {
     }
 
     public boolean canUseChinese(Module module) {
-        if (ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled()) {
+        if (ModuleInstance.getModule(ClientSettings.class).localization.isEnabled()) {
             return !module.getModuleInfo().localizedDescription().isEmpty() && !module.getModuleInfo().localizedName().isEmpty();
         }
         return false;

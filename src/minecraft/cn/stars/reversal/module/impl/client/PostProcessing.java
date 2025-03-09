@@ -12,7 +12,7 @@ import cn.stars.reversal.util.render.blur.KawaseBloom;
 import cn.stars.reversal.util.render.blur.KawaseBlur;
 import net.minecraft.client.shader.Framebuffer;
 
-@ModuleInfo(name = "PostProcessing", localizedName = "后处理", description = "Add blur and bloom effects", localizedDescription = "增加模糊和阴影的后处理效果", category = Category.CLIENT)
+@ModuleInfo(name = "PostProcessing", localizedName = "module.PostProcessing.name", description = "Add blur and bloom effects", localizedDescription = "module.PostProcessing.desc", category = Category.CLIENT)
 public class PostProcessing extends Module
 {
     public final BoolValue blur = new BoolValue("Blur", this, true);

@@ -20,16 +20,10 @@ public class ColorValue extends Value {
     public boolean themeColor = true;
     public boolean dontShowThemeColor;
 
-    public ColorValue(String name, final Module parent, final boolean dontShowThemeColor) {
-        this.name = name;
-        this.dontShowThemeColor = dontShowThemeColor;
-        parent.settings.add(this);
-        parent.settingsMap.put(name.toLowerCase(), this);
-        this.setColor(new Color(20,250,255));
-    }
 
     public ColorValue(String name, final Module parent) {
         this.name = name;
+        this.localizedName = name;
         this.dontShowThemeColor = false;
         parent.settings.add(this);
         parent.settingsMap.put(name.toLowerCase(), this);
@@ -38,6 +32,16 @@ public class ColorValue extends Value {
 
     public ColorValue(final String name, final Module parent, Color defaultColor, final boolean dontShowThemeColor) {
         this.name = name;
+        this.localizedName = name;
+        this.dontShowThemeColor = dontShowThemeColor;
+        parent.settings.add(this);
+        parent.settingsMap.put(name.toLowerCase(), this);
+        this.setColor(defaultColor);
+    }
+
+    public ColorValue(final String name, final String localizedName, final Module parent, Color defaultColor, final boolean dontShowThemeColor) {
+        this.name = name;
+        this.localizedName = localizedName;
         this.dontShowThemeColor = dontShowThemeColor;
         parent.settings.add(this);
         parent.settingsMap.put(name.toLowerCase(), this);

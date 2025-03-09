@@ -32,8 +32,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-@ModuleInfo(name = "Trail", localizedName = "足迹", description = "Shows a trail on your feet",
-        localizedDescription = "在你走过的地方渲染足迹", category = Category.RENDER)
+@ModuleInfo(name = "Trail", localizedName = "module.Trail.name", description = "Shows a trail on your feet",
+        localizedDescription = "module.Trail.desc", category = Category.RENDER)
 public final class Trail extends Module {
     public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Minecraft", "Round", "Modern");
     public final ColorValue colorValue = new ColorValue("Color", this);

@@ -15,8 +15,8 @@ import net.minecraft.util.ResourceLocation;
 
 import static org.lwjgl.opengl.GL11.*;
 
-@ModuleInfo(name = "BASticker", localizedName = "蔚蓝档案贴纸", description = "ARIS doesn't have a b",
-        localizedDescription = "哎,等等,爱丽丝怎么没有b~", category = Category.HUD)
+@ModuleInfo(name = "BASticker", localizedName = "module.BASticker.name", description = "ARIS doesn't have a b",
+        localizedDescription = "module.BASticker.desc", category = Category.HUD)
 public class BASticker extends Module {
     private final ModeValue character = new ModeValue("Character", this, "Aris",
             "Aris", "Shiroko", "Azusa", "Hina Swimsuit", "Ui", "Hoshino Swimsuit", "Mika", "Ibuki");

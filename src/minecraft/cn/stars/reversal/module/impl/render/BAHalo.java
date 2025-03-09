@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.module.impl.render;
 
@@ -28,7 +28,7 @@ import java.awt.*;
 /**
  * SKID?!
  */
-@ModuleInfo(name = "BAHalo",  localizedName = "蔚蓝档案光环", description = "Blue archive halos", localizedDescription = "蔚蓝档案角色的光环", category = Category.RENDER)
+@ModuleInfo(name = "BAHalo",  localizedName = "module.BAHalo.name", description = "Blue archive halos", localizedDescription = "module.BAHalo.desc", category = Category.RENDER)
 public class BAHalo extends Module {
     private final ModeValue mode = new ModeValue("Student", this, "Shiroko", "Shiroko", "Hoshino", "Reisa", "Azusa");
     private final BoolValue showInFirstPerson = new BoolValue("First Person", this, false);
@@ -151,15 +151,6 @@ public class BAHalo extends Module {
         worldRenderer.pos(0, radius, 0).tex(0, 1).endVertex();
         worldRenderer.pos(radius, radius, 0).tex(1, 1).endVertex();
         worldRenderer.pos(radius, 0, 0).tex(1, 0).endVertex();
-        tessellator.draw();
-    }
-
-    private void drawLightTexture(float radius) {
-        worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-        worldRenderer.pos(radius * -0.02, radius * -0.02, 0).tex(0, 0).color(ColorUtil.swapAlpha(Color.WHITE.getRGB(), 20 + (float)(animation.getOutput() * 2000))).endVertex();
-        worldRenderer.pos(radius * -0.02, radius * 1.02, 0).tex(0, 1).color(ColorUtil.swapAlpha(Color.WHITE.getRGB(), 20 + (float) (animation.getOutput() * 2000))).endVertex();
-        worldRenderer.pos(radius * 1.02, radius * 1.02, 0).tex(1, 1).color(ColorUtil.swapAlpha(Color.WHITE.getRGB(), 20 + (float) (animation.getOutput() * 2000))).endVertex();
-        worldRenderer.pos(radius * 1.02, radius * -0.02, 0).tex(1, 0).color(ColorUtil.swapAlpha(Color.WHITE.getRGB(), 20 + (float) (animation.getOutput() * 2000))).endVertex();
         tessellator.draw();
     }
 

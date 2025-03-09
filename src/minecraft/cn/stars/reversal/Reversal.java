@@ -48,8 +48,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Copyright (c) 2025 Reversal, All rights reserved.
- * A Hack-Visual PVP Client by Stars.
+ * Copyright (c) 2025 Aerolite Society, Some rights reserved.
+ * A Hack-visual PVP Client.
  */
 @NativeObfuscation
 @StringEncryption
@@ -305,7 +305,7 @@ public class Reversal {
             // Hud
             new Arraylist(),
             new AtomicIsland(),
-            new ArmorHud(),
+            new ArmorHUD(),
             new BASticker(),
             new BPSCounter(),
             new CPSCounter(),
@@ -319,7 +319,7 @@ public class Reversal {
     //        new PotionEffects(),
             new Scoreboard(),
             new SessionInfo(),
-            new TargetHud(),
+            new TargetHUD(),
             new TextGui(),
             new TestElement(),
             // Client
@@ -329,7 +329,6 @@ public class Reversal {
             new HurtCam(),
             new Hotbar(),
             new NameTag(),
-            new Optimization(),
             new IRC(),
     };
 

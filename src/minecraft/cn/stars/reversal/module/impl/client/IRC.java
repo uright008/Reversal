@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.module.impl.client;
 
@@ -12,7 +12,7 @@ import cn.stars.reversal.util.reversal.IRCInstance;
 import cn.stars.reversal.util.reversal.UserHandshakeThread;
 import cn.stars.reversal.value.impl.BoolValue;
 
-@ModuleInfo(name = "IRC", localizedName = "聊天频道", description = "Private Reversal chat channel", localizedDescription = "仅Reversal用户可见的聊天频道", category = Category.CLIENT)
+@ModuleInfo(name = "IRC", localizedName = "module.IRC.name", description = "Private Reversal chat channel", localizedDescription = "module.IRC.desc", category = Category.CLIENT)
 public class IRC extends Module {
     public final BoolValue markOnlineUsers = new BoolValue("Mark Online Users", this, true);
     public final BoolValue allowDisable = new BoolValue("Allow Disable", this, false);

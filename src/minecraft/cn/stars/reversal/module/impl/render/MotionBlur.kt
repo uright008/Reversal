@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.GL11
 
-@ModuleInfo(name = "MotionBlur", localizedName = "动态模糊", description = "Render blur on your view", localizedDescription = "在你的视角上渲染动态模糊", category = Category.RENDER)
+@ModuleInfo(name = "MotionBlur", localizedName = "module.MotionBlur.name", description = "Render blur on your view", localizedDescription = "module.MotionBlur.desc", category = Category.RENDER)
 class MotionBlur : Module() {
     private var blurBufferMain: Framebuffer? = null
     private var blurBufferInto: Framebuffer? = null

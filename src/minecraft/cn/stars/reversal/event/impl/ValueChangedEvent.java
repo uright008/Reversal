@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.event.impl;
 

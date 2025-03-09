@@ -15,7 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-@ModuleInfo(name = "AtomicIsland", localizedName = "原子岛", description = "Display an island-like bar", localizedDescription = "显示一个像岛屿的条子", category = Category.HUD)
+@ModuleInfo(name = "AtomicIsland", localizedName = "module.AtomicIsland.name", description = "Display an island-like bar", localizedDescription = "module.AtomicIsland.desc", category = Category.HUD)
 public class AtomicIsland extends Module {
     public final NoteValue note1 = new NoteValue("< SETTINGS >", this);
     public final NumberValue yOffset = new NumberValue("Y Offset", this, 0.0, -50.0, 50.0, 0.1);

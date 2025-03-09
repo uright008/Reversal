@@ -5,7 +5,7 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
-import cn.stars.reversal.module.impl.hud.TargetHud;
+import cn.stars.reversal.module.impl.hud.TargetHUD;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.shader.round.RoundedUtils;
@@ -51,7 +51,7 @@ public class GuiChat extends GuiScreen
 
     public void initGui()
     {
-        TargetHud.target = mc.thePlayer;
+        TargetHUD.target = mc.thePlayer;
         Keyboard.enableRepeatEvents(true);
         this.sentHistoryCursor = this.mc.ingameGUI.getChatGUI().getSentMessages().size();
         this.inputField = new GuiTextField(0, this.fontRendererObj, 4, this.height - 12, this.width - 4, 12);
@@ -71,7 +71,7 @@ public class GuiChat extends GuiScreen
 
     public void onGuiClosed()
     {
-        TargetHud.target = null;
+        TargetHUD.target = null;
         for(Module m : Reversal.moduleManager.moduleList){
             m.setDragging(false);
         }

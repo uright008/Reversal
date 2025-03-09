@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.Session;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -83,11 +84,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         }
 
         // Player & Time
-        try {
-            RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 130, 5, 15, 15);
-        } catch (Exception e) {
-            RenderUtil.rect(width - 130, 5, 15, 15, Color.WHITE);
-        }
+        this.drawPlayerImage();
         psm18.drawString(GameInstance.mc.session.getUsername(), width - 130 - psm18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
         RenderUtil.rect(width - 107, 5, 1, 15, Color.WHITE);
         RenderUtil.rect(width - 30, 5, 1, 15, Color.WHITE);
@@ -100,7 +97,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
             currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8, ColorUtil.whiteAnimation.getOutput().getRGB());
-            RenderUtil.rect(width - 130, 5, 15, 15, ColorUtil.whiteAnimation.getOutput());
+            this.drawPlayerImage();
         }, 2, 2);
 
         RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
@@ -183,6 +180,18 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         }
         currentGui.mouseClicked(mouseX, mouseY, mouseButton);
         super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    private void drawPlayerImage() {
+        if (GameInstance.mc.session.getSessionType() == Session.Type.MOJANG) {
+            try {
+                RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 130, 5, 15, 15);
+            } catch (Exception e) {
+                RenderUtil.rect(width - 130, 5, 15, 15, Color.WHITE);
+            }
+        } else {
+            RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf("Steve"), 15), width - 130, 5, 15, 15);
+        }
     }
 
     @Override

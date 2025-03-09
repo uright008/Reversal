@@ -13,7 +13,7 @@ import net.minecraft.util.Vec3;
 
 import java.util.ArrayList;
 
-@ModuleInfo(name = "BlockinDisplay", localizedName = "Blockin显示", description = "Display the block you need to place when blockin", localizedDescription = "在blockin时显示你需要放置的方块", category = Category.RENDER)
+@ModuleInfo(name = "BlockinDisplay", localizedName = "module.BlockinDisplay.name", description = "Display the block you need to place when blockin", localizedDescription = "module.BlockinDisplay.desc", category = Category.RENDER)
 public class BlockinDisplay extends Module {
     public final BoolValue fill = new BoolValue("Fill", this, true);
     public final NumberValue count = new NumberValue("Trigger Block Count", this, 3, 2, 6, 1);

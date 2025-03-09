@@ -1022,31 +1022,22 @@ public abstract class World implements IBlockAccess
 
     public boolean spawnEntityInWorld(Entity entityIn)
     {
-        if (entityIn instanceof EntityLiving)
-        {
+        if (entityIn instanceof EntityLiving) {
             EntityLiving living = (EntityLiving) entityIn;
-            if (ModuleInstance.getModule(Optimization.class).ai_lookAI.enabled || ModuleInstance.getModule(Optimization.class).ai_lookIdle.enabled)
-            {
-                Iterator<EntityAITasks.EntityAITaskEntry> it = living.tasks.taskEntries.iterator();
-                while (it.hasNext())
-                {
-                    EntityAITasks.EntityAITaskEntry obj = it.next();
-                    if (obj != null)
-                    {
-                        if (ModuleInstance.getModule(Optimization.class).ai_lookAI.enabled && obj.action instanceof EntityAIWatchClosest)
-                        {
-                            it.remove();
-                        }
-                        else if (ModuleInstance.getModule(Optimization.class).ai_lookIdle.enabled && obj.action instanceof EntityAILookIdle)
-                        {
-                            it.remove();
-                        }
+            Iterator<EntityAITasks.EntityAITaskEntry> it = living.tasks.taskEntries.iterator();
+            while (it.hasNext()) {
+                EntityAITasks.EntityAITaskEntry obj = it.next();
+                if (obj != null) {
+                    if (obj.action instanceof EntityAIWatchClosest) {
+                        it.remove();
+                    } else if (obj.action instanceof EntityAILookIdle) {
+                        it.remove();
                     }
                 }
             }
 
             //Only replace vanilla look helper to avoid overlapping mods
-            if (ModuleInstance.getModule(Optimization.class).ai_lookHelper.enabled && (living.getLookHelper() == null || living.getLookHelper().getClass() == EntityLookHelper.class))
+            if (living.getLookHelper() == null || living.getLookHelper().getClass() == EntityLookHelper.class)
             {
                 EntityLookHelper oldHelper = living.lookHelper;
                 living.lookHelper = new FixedEntityLookHelper(living);

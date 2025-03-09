@@ -14,11 +14,11 @@ public class EntityCullingMod extends EntityCullingModBase {
     }
 
     public void doClientTick() {
-        if (ModuleInstance.getModule(Optimization.class).entityCulling.enabled) this.clientTick();
+        this.clientTick();
     }
 
     public void doWorldTick() {
-        if (ModuleInstance.getModule(Optimization.class).entityCulling.enabled) this.worldTick();
+        this.worldTick();
     }
 
 }

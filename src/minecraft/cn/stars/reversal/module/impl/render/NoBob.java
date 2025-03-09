@@ -5,8 +5,8 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 
-@ModuleInfo(name = "NoBob", localizedName = "移除摇晃", description = "Disable the walking bob effect",
-        localizedDescription = "关闭走路时手臂的摇晃动画", category = Category.RENDER)
+@ModuleInfo(name = "NoBob", localizedName = "module.NoBob.name", description = "Disable the walking bob effect",
+        localizedDescription = "module.NoBob.desc", category = Category.RENDER)
 public class NoBob extends Module {
     @Override
     public void onPreMotion(PreMotionEvent event) {

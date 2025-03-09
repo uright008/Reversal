@@ -161,7 +161,7 @@ public class LoadingScreenRenderer implements IProgressUpdate
                 if (flag)
                 {
                     
-                    if (RainyAPI.backgroundId == 9 && ModuleInstance.getModule(ClientSettings.class).loadingScreenBackground.enabled) {
+                    if (RainyAPI.backgroundId == 9 && ModuleInstance.getModule(ClientSettings.class).loadingScreenBg.enabled) {
                         VideoUtil.render(0,0,scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
                     }
                     else {

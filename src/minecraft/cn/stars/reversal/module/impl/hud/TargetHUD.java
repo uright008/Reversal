@@ -37,9 +37,9 @@ import java.util.Objects;
 import static cn.stars.reversal.util.render.RenderUtil.renderPlayerModelTexture;
 import static cn.stars.reversal.util.render.RenderUtil.renderSteveModelTexture;
 
-@ModuleInfo(name = "TargetHud", localizedName = "敌人信息", description = "Renders a Gui with your targets information",
-        localizedDescription = "显示你攻击敌人的信息", category = Category.HUD)
-public final class TargetHud extends Module {
+@ModuleInfo(name = "TargetHUD", localizedName = "module.TargetHUD.name", description = "Renders a hud with your targets information",
+        localizedDescription = "module.TargetHUD.desc", category = Category.HUD)
+public final class TargetHUD extends Module {
 
     public static Entity target;
     private final TimeUtil timer = new TimeUtil();
@@ -56,7 +56,7 @@ public final class TargetHud extends Module {
     private boolean sentParticles;
     private double scale = 1;
 
-    public TargetHud() {
+    public TargetHUD() {
         setCanBeEdited(true);
         setX(300);
         setY(300);

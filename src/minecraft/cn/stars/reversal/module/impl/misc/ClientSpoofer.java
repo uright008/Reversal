@@ -12,8 +12,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 
-@ModuleInfo(name = "ClientSpoofer", localizedName = "客户端欺骗", description = "Makes servers think you're on other clients",
-        localizedDescription = "让服务器认为你在使用别的端", category = Category.MISC)
+@ModuleInfo(name = "ClientSpoofer", localizedName = "module.ClientSpoofer.name", description = "Makes servers think you're on other clients",
+        localizedDescription = "module.ClientSpoofer.desc", category = Category.MISC)
 public final class ClientSpoofer extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Forge", "Forge", "Lunar", "LabyMod", "PvP Lounge", "CheatBreaker", "Geyser");
 

@@ -18,8 +18,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@ModuleInfo(name = "CPSCounter", localizedName = "点击速度显示", description = "Show your CPS on screen",
-        localizedDescription = "显示你的点击速度", category = Category.HUD)
+@ModuleInfo(name = "CPSCounter", localizedName = "module.CPSCounter.name", description = "Show your CPS on screen",
+        localizedDescription = "module.CPSCounter.name", category = Category.HUD)
 public class CPSCounter extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
     public final ColorValue colorValue = new ColorValue("Color", this);

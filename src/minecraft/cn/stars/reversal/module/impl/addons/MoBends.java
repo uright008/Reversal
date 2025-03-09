@@ -16,6 +16,7 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySpider;
@@ -25,8 +26,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.compatibility.util.vector.Vector3f;
 
 
-@ModuleInfo(name = "MoBends", localizedName = "更多动作", description = "Show more animations on entity",
-        localizedDescription = "在玩家和部分生物上渲染更真实的动作", category = Category.ADDONS)
+@ModuleInfo(name = "MoBends", localizedName = "module.MoBends.name", description = "Show more animations on entity",
+        localizedDescription = "module.MoBends.desc", category = Category.ADDONS)
 public class MoBends extends Module {
     public static boolean loaded = false;
     public static float ticks;
@@ -35,9 +36,9 @@ public class MoBends extends Module {
 
     @Override
     public void onUpdateAlways() {
-        if (ModuleInstance.getModule(WaveyCapes.class).isEnabled() && this.isEnabled()) {
-            Reversal.showMsg("WaveyCapes and SkinLayers3D are not supported by MoBends.");
-            ModuleInstance.getModule(WaveyCapes.class).toggleModule();
+        if ((ModuleInstance.getModule(WaveyCapes.class).isEnabled() || ModuleInstance.getModule(RealFirstPerson.class).isEnabled()) && this.isEnabled()) {
+            Reversal.showMsg(I18n.format("module.MoBends.msg"));
+            this.setEnabled(false);
         }
     }
 

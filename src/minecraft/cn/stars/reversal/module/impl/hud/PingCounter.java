@@ -16,8 +16,8 @@ import cn.stars.reversal.util.render.*;
 
 import java.awt.*;
 
-@ModuleInfo(name = "PingCounter", localizedName = "延迟显示", description = "Show your ping on screen",
-        localizedDescription = "显示你的网络延迟", category = Category.HUD)
+@ModuleInfo(name = "PingCounter", localizedName = "module.PingCounter.name", description = "Show your ping on screen",
+        localizedDescription = "module.PingCounter.desc", category = Category.HUD)
 public class PingCounter extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
     public final ColorValue colorValue = new ColorValue("Color", this);

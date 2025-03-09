@@ -22,7 +22,7 @@ import net.minecraft.util.BlockPos
 import net.minecraft.util.MovingObjectPosition
 import org.lwjgl.opengl.GL11
 
-@ModuleInfo(name = "BlockOverlay", localizedName = "方块描边", description = "Render a overlay around blocks", localizedDescription = "在方块周围渲染边框", category = Category.RENDER)
+@ModuleInfo(name = "BlockOverlay", localizedName = "module.BlockOverlay.name", description = "Render a overlay around blocks", localizedDescription = "module.BlockOverlay.desc", category = Category.RENDER)
 class BlockOverlay : Module() {
     private var colorValue = ColorValue("Color", this)
     private var fill = BoolValue("Fill", this, false)

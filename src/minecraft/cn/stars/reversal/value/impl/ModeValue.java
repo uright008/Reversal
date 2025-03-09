@@ -17,6 +17,16 @@ public final class ModeValue extends Value {
 
     public ModeValue(final String name, final Module parent, final String defaultMode, final String... modes) {
         this.name = name;
+        this.localizedName = name;
+        parent.settings.add(this);
+        parent.settingsMap.put(name.toLowerCase(), this);
+        this.modes = Arrays.asList(modes);
+        index = this.modes.indexOf(defaultMode);
+    }
+
+    public ModeValue(final String name, final String localizedName, final Module parent, final String defaultMode, final String... modes) {
+        this.name = name;
+        this.localizedName = localizedName;
         parent.settings.add(this);
         parent.settingsMap.put(name.toLowerCase(), this);
         this.modes = Arrays.asList(modes);

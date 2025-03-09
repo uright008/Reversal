@@ -109,7 +109,7 @@ public class Locale
 
     private String translateKeyPrivate(String translateKey)
     {
-        String s = (String)this.properties.get(translateKey);
+        String s = this.properties.get(translateKey);
         return s == null ? translateKey : s;
     }
 
@@ -123,7 +123,7 @@ public class Locale
         }
         catch (IllegalFormatException var5)
         {
-            return "Format error: " + s;
+            return s;
         }
     }
 }

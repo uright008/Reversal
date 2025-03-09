@@ -16,6 +16,7 @@ import cn.stars.reversal.util.render.*;
 import cn.stars.reversal.value.impl.ModeValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.resources.I18n;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -90,10 +91,9 @@ public class Hud implements GameInstance {
 //            final String name = o1 instanceof Module ? ((Module) o1).getModuleInfo().name() : ((Script) o1).getName();
 //            final String name2 = o2 instanceof Module ? ((Module) o2).getModuleInfo().name() : ((Script) o2).getName();
 
-            boolean chinese = mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy");
-            final String name = chinese && ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled() && !((Module) o1).getModuleInfo().localizedName().isEmpty() ? ((Module) o1).getModuleInfo().localizedName() : ((Module) o1).getModuleInfo().name();
-            final String name2 = chinese
-                    && ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled() && !((Module) o2).getModuleInfo().localizedName().isEmpty() ? ((Module) o2).getModuleInfo().localizedName() : ((Module) o2).getModuleInfo().name();
+            boolean canLocalize = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy")) && ModuleInstance.getModule(ClientSettings.class).localization.isEnabled();
+            final String name = canLocalize ? I18n.format(((Module) o1).getModuleInfo().localizedName()) : ((Module) o1).getModuleInfo().name();
+            final String name2 = canLocalize ? I18n.format(((Module) o2).getModuleInfo().localizedName()) : ((Module) o2).getModuleInfo().name();
 
             switch (mode) {
                 case "Minecraft": {
@@ -135,7 +135,7 @@ public class Hud implements GameInstance {
 
             float posOnArraylist = offset + moduleCount * 10.8f * (mode.equals("Empathy") ? 1.25f : 1f);
             
-            final String name = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy")) && ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled() && !module.getModuleInfo().localizedName().isEmpty() ? module.getModuleInfo().localizedName() : module.getModuleInfo().name();
+            final String name = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy")) && ModuleInstance.getModule(ClientSettings.class).localization.enabled ? I18n.format(module.getModuleInfo().localizedName()) : module.getModuleInfo().name();
 
             float finalX = 0;
             final float speed = 6;
@@ -412,31 +412,31 @@ public class Hud implements GameInstance {
                     int y = textGui.getY();
                     float off = 0;
 
-                    RenderUtil.rect(x, y, regular20Bold.width(clientName) + regular18.width(extraText) + 6, regular20Bold.height() + 1.5, new Color(0, 0, 0, 80));
+                    RenderUtil.rect(x, y, psb20.width(clientName) + regular18.width(extraText) + 7, regular20Bold.height() + 1.5, new Color(0, 0, 0, 80));
 
                     for (int i = 0; i < clientName.length(); i++) {
                         final String character = String.valueOf(clientName.charAt(i));
 
                         final float off1 = off;
-                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
+                        psb20.drawString(character, x + 4 + off1, y + 4, textGui.colorValue.getColor(i).getRGB());
                         int finalI = i;
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
+                            psb20.drawString(character, x + 4 + off1, y + 4, textGui.colorValue.getColor(finalI).getRGB());
                         });
-                        off += regular20Bold.width(character);
+                        off += psb20.width(character);
                     }
                     
-                    regular18.drawString(extraText, x + 4 + regular20Bold.width(clientName), y + 4,  new Color(250, 250, 250, 200).getRGB());
+                    regular18.drawString(extraText, x + 3.5 + psb20.width(clientName), y + 5,  new Color(250, 250, 250, 200).getRGB());
 
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            RenderUtil.rect(x, y, regular20Bold.width(clientName) + regular18.width(extraText) + 6, regular20Bold.height() + 1.5, Color.BLACK);
+                            RenderUtil.rect(x, y, psb20.width(clientName) + regular18.width(extraText) + 7, regular20Bold.height() + 1.5, Color.BLACK);
                         });
                     }
 
                     if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
                         MODERN_BLUR_RUNNABLES.add(() -> {
-                            RenderUtil.rect(x, y, regular20Bold.width(clientName) + regular18.width(extraText) + 6, regular20Bold.height() + 1.5, Color.BLACK);
+                            RenderUtil.rect(x, y, psb20.width(clientName) + regular18.width(extraText) + 7, regular20Bold.height() + 1.5, Color.BLACK);
                         });
                     }
 
@@ -454,15 +454,15 @@ public class Hud implements GameInstance {
                         final String character = String.valueOf(clientName.charAt(i));
 
                         final float off1 = off;
-                        regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
+                        regular20Bold.drawString(character, x + 4 + off1, y + 4, textGui.colorValue.getColor(i).getRGB());
                         int finalI = i;
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            regular20Bold.drawString(character, x + 4 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
+                            regular20Bold.drawString(character, x + 4 + off1, y + 4, textGui.colorValue.getColor(finalI).getRGB());
                         });
                         off += regular20Bold.width(character);
                     }
 
-                    regular18.drawString(extraText, x + 5 + off, y + 4, new Color(250, 250, 250, 200).getRGB());
+                    regular18.drawString(extraText, x + 4.5 + off, y + 5, new Color(250, 250, 250, 200).getRGB());
 
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {

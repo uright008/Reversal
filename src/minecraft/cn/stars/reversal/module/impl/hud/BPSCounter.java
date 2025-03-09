@@ -17,8 +17,8 @@ import cn.stars.reversal.util.render.*;
 
 import java.awt.*;
 
-@ModuleInfo(name = "BPSCounter", localizedName = "速度显示", description = "Show your BPS on screen",
-        localizedDescription = "显示你的移动速度", category = Category.HUD)
+@ModuleInfo(name = "BPSCounter", localizedName = "module.BPSCounter.name", description = "Show your BPS on screen",
+        localizedDescription = "module.BPSCounter.desc", category = Category.HUD)
 public class BPSCounter extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
     public final ColorValue colorValue = new ColorValue("Color", this);

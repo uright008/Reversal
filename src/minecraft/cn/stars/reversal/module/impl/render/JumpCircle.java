@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-@ModuleInfo(name = "JumpCircle", localizedName = "跳跃圆圈", description = "Draw a circle when you jump", localizedDescription = "在你跳跃时画圆圈", category = Category.RENDER)
+@ModuleInfo(name = "JumpCircle", localizedName = "module.JumpCircle.name", description = "Draw a circle when you jump", localizedDescription = "module.JumpCircle.desc", category = Category.RENDER)
 public class JumpCircle extends Module {
     private final ModeValue modeValue = new ModeValue("Mode", this, "Round", "Round", "Modern");
     public final ColorValue colorValue = new ColorValue("Color", this);

@@ -13,8 +13,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-@ModuleInfo(name = "ChinaHat", localizedName = "中国帽", description = "Gives you a chinese hat",
-        localizedDescription = "在你的头顶渲染一顶帽子", category = Category.RENDER)
+@ModuleInfo(name = "ChinaHat", localizedName = "module.ChinaHat.name", description = "Gives you a chinese hat",
+        localizedDescription = "module.ChinaHat.desc", category = Category.RENDER)
 public class ChinaHat extends Module {
 
     private final ModeValue  quality = new ModeValue("Quality", this, "Normal", "Special", "Umbrella", "Very Low", "Low", "Normal", "High", "Very High", "Smooth");

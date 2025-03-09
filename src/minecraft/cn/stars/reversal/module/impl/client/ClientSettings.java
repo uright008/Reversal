@@ -13,33 +13,33 @@ import net.optifine.Lang;
 
 import java.awt.*;
 
-@ModuleInfo(name = "ClientSettings", localizedName = "主界面设置", description = "Some settings to change your hud.",
-        localizedDescription = "客户端的整体视觉效果设置", category = Category.CLIENT)
+@ModuleInfo(name = "ClientSettings", localizedName = "module.ClientSettings.name", description = "Some settings to change your hud.",
+        localizedDescription = "module.ClientSettings.desc", category = Category.CLIENT)
 public final class ClientSettings extends Module {
-    public final NoteValue note1 = new NoteValue("< COLOR SETTINGS >", this);
-    public final ModeValue theme = new ModeValue("Theme", this, "Simple",
+    public final NoteValue note1 = new NoteValue("< COLOR SETTINGS >", "value.ClientSettings.note1", this);
+    public final ModeValue theme = new ModeValue("Theme", "value.ClientSettings.theme", this, "Simple",
             "Minecraft", "Reversal", "Modern", "Simple", "Empathy");
-    public final ModeValue colorType = new ModeValue("Color Type", this, "Rainbow", "Rainbow", "Double", "Fade", "Static");
-    public final ColorValue color1 = new ColorValue("Color 1", this, true);
-    public final ColorValue color2 = new ColorValue("Color 2", this, true);
-    public final NumberValue indexTimes = new NumberValue("Index Times", this, 1, 1, 10, 0.1);
-    public final NumberValue indexSpeed = new NumberValue("Index Speed", this, 1, 1, 5, 0.1);
+    public final ModeValue colorType = new ModeValue("Color Type", "value.ClientSettings.colorType", this, "Rainbow", "Rainbow", "Double", "Fade", "Static");
+    public final ColorValue color1 = new ColorValue("Color 1", "value.ClientSettings.color1", this, new Color(20,250,255), true);
+    public final ColorValue color2 = new ColorValue("Color 2", "value.ClientSettings.color2", this, new Color(20,250,255), true);
+    public final NumberValue indexTimes = new NumberValue("Index Times",  "value.ClientSettings.indexTimes",this, 1, 1, 10, 0.1);
+    public final NumberValue indexSpeed = new NumberValue("Index Speed", "value.ClientSettings.indexSpeed",this, 1, 1, 5, 0.1);
 
-    public final NoteValue note2 = new NoteValue("< SPECIFIC SETTINGS >", this);
-    public final ModeValue listAnimation = new ModeValue("List Animation", this, "Reversal", "Reversal", "Slide");
-    public final BoolValue thunderHack = new BoolValue("ThunderHack", this, false);
-    public final BoolValue empathyGlow = new BoolValue("Empathy Glow", this, false);
+    public final NoteValue note2 = new NoteValue("< SPECIFIC SETTINGS >", "value.ClientSettings.note2", this);
+    public final ModeValue listAnimation = new ModeValue("List Animation", "value.ClientSettings.listAnimation", this, "Reversal", "Reversal", "Slide");
+    public final BoolValue thunderHack = new BoolValue("Thunder Hack", "value.ClientSettings.thunderHack", this, false);
+    public final BoolValue empathyGlow = new BoolValue("Empathy Glow", "value.ClientSettings.empathyGlow", this, false);
 
-    public final NoteValue note3 = new NoteValue("< CLIENT SETTINGS >", this);
-    public final ModeValue language = new ModeValue("Language", this, "English", "English", "Chinese");
-    public final BoolValue chinese = new BoolValue("Chinese", this, false);
-    public final BoolValue showNotifications = new BoolValue("Show Notifications", this, true);
-    public final BoolValue hudTextWithBracket = new BoolValue("Hud Text With Bracket", this, false);
-    public final BoolValue clientMsgCustomName = new BoolValue("Client Message Custom Name", this, false);
+    public final NoteValue note3 = new NoteValue("< CLIENT SETTINGS >", "value.ClientSettings.note3", this);
+    public final BoolValue localization = new BoolValue("Localization", "value.ClientSettings.localization", this, true);
+    public final ModeValue language = new ModeValue("Language", "value.ClientSettings.language", this, "English", "English", "Chinese");
+    public final BoolValue showNotifications = new BoolValue("Show Notifications", "value.ClientSettings.showNotifications", this, true);
+    public final BoolValue hudTextWithBracket = new BoolValue("Hud Text With Bracket", "value.ClientSettings.hudTextWithBracket", this, false);
+    public final BoolValue clientMsgCustomName = new BoolValue("Client Message Custom Name", "value.ClientSettings.clientMsgCustomName", this, false);
 
-    public final NoteValue note4 = new NoteValue("< MINECRAFT SETTINGS >", this);
-    public final BoolValue loadingScreenBackground = new BoolValue("Loading Screen Background", this, false);
-    public final BoolValue rawInput = new BoolValue("Raw Input", this, false);
+    public final NoteValue note4 = new NoteValue("< MINECRAFT SETTINGS >", "value.ClientSettings.note4", this);
+    public final BoolValue loadingScreenBg = new BoolValue("Loading Screen Background", "value.ClientSettings.loadingScreenBg", this, false);
+    public final BoolValue rawInput = new BoolValue("Raw Input", "value.ClientSettings.rawInput", this, false);
 
     public ClientSettings() {
     }
@@ -53,6 +53,7 @@ public final class ClientSettings extends Module {
 
         thunderHack.hidden = !theme.getMode().equals("Modern");
         empathyGlow.hidden = !theme.getMode().equals("Empathy");
+        language.hidden = !localization.enabled;
 
         if (this.enabled) this.enabled = false;
     }

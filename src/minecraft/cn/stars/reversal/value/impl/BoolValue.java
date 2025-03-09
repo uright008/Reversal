@@ -13,6 +13,15 @@ public class BoolValue extends Value {
 
     public BoolValue(final String name, final Module parent, final boolean enabled) {
         this.name = name;
+        this.localizedName = name;
+        parent.settings.add(this);
+        parent.settingsMap.put(name.toLowerCase(), this);
+        this.enabled = enabled;
+    }
+
+    public BoolValue(final String name, final String localizedName, final Module parent, final boolean enabled) {
+        this.name = name;
+        this.localizedName = localizedName;
         parent.settings.add(this);
         parent.settingsMap.put(name.toLowerCase(), this);
         this.enabled = enabled;

@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Random;
 import java.util.Vector;
 
-@ModuleInfo(name = "AppleSkin", localizedName = "苹果皮", description = "Show hunger details", localizedDescription = "展示详细的饥饿信息", category = Category.RENDER)
+@ModuleInfo(name = "AppleSkin", localizedName = "module.AppleSkin.name", description = "Show hunger details", localizedDescription = "module.AppleSkin.desc", category = Category.RENDER)
 public class AppleSkin extends Module {
 
     public Vector<IntPoint> foodBarOffsets = new Vector<>();

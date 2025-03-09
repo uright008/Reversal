@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.module.impl.render;
 
@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-@ModuleInfo(name = "ReachDisplay", localizedName = "攻击距离", description = "Display your reach distance", localizedDescription = "显示你的攻击距离", category = Category.RENDER)
+@ModuleInfo(name = "ReachDisplay", localizedName = "module.ReachDisplay.name", description = "Display your reach distance", localizedDescription = "module.ReachDisplay.desc", category = Category.RENDER)
 public class ReachDisplay extends Module {
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue thickness = new NumberValue("Thickness", this, 2f, 0.1f, 5f, 0.1f);

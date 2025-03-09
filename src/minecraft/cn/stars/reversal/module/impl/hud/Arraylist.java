@@ -7,8 +7,8 @@ import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
 import net.minecraft.client.gui.ScaledResolution;
 
-@ModuleInfo(name = "Arraylist", localizedName = "功能列表", description = "Show the modules you enabled",
-        localizedDescription = "显示你开启的功能", category = Category.HUD)
+@ModuleInfo(name = "Arraylist", localizedName = "module.Arraylist.name", description = "Show the modules you enabled",
+        localizedDescription = "module.Arraylist.desc", category = Category.HUD)
 public class Arraylist extends Module {
     public final ColorValue colorValue = new ColorValue("Color", this);
     public final BoolValue noRenderModules = new BoolValue("No Render Modules", this, false);

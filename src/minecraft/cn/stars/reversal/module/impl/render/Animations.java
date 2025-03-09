@@ -9,8 +9,8 @@ import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 
-@ModuleInfo(name = "Animations", localizedName = "动画", description = "Display special swing animations.",
-        localizedDescription = "修改你的挥手动画", category = Category.RENDER)
+@ModuleInfo(name = "Animations", localizedName = "module.Animations.name", description = "Display special swing animations.",
+        localizedDescription = "module.Animations.desc", category = Category.RENDER)
 public class Animations extends Module {
     public final NumberValue itemX = new NumberValue("Item X", this, 0.0, -1, 1, 0.1);
     public final NumberValue itemY = new NumberValue("Item Y", this, 0.0, -1, 1, 0.1);

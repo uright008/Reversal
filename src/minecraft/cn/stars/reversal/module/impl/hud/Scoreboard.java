@@ -18,8 +18,8 @@ import java.util.List;
 
 import static net.minecraft.client.gui.Gui.drawRect;
 
-@ModuleInfo(name = "Scoreboard", localizedName = "记分板", description = "Show the scoreboard",
-        localizedDescription = "显示计分板", category = Category.HUD)
+@ModuleInfo(name = "Scoreboard", localizedName = "module.Scoreboard.name", description = "Show the scoreboard",
+        localizedDescription = "module.Scoreboard.desc", category = Category.HUD)
 public class Scoreboard extends Module {
     public final BoolValue background = new BoolValue("Background", this, true);
     public final BoolValue rounded = new BoolValue("Rounded", this, false);

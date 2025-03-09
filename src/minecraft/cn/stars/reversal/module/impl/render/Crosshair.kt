@@ -15,7 +15,7 @@ import net.minecraft.entity.EntityLivingBase
 import org.lwjgl.opengl.GL11
 import java.awt.Color
 
-@ModuleInfo(name = "Crosshair", localizedName = "自定义准星", description = "Customize your crosshair", localizedDescription = "自定义你的准星", category = Category.RENDER)
+@ModuleInfo(name = "Crosshair", localizedName = "module.Crosshair.name", description = "Customize your crosshair", localizedDescription = "module.Crosshair.desc", category = Category.RENDER)
 class Crosshair : Module() {
     // Size, width, hitmarker
     private val colorValue = ColorValue("Color", this)

@@ -6,6 +6,7 @@ import cn.stars.reversal.command.api.CommandInfo;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Keyboard;
 
 @CommandInfo(name = "Bind", description = "Binds the given module to the given key", syntax = ".bind <module> <key>", aliases = "bind")
@@ -21,14 +22,13 @@ public final class Bind extends Command {
                 final int key = Keyboard.getKeyIndex(args[1]);
                 module.setKeyBind(key);
 
-                Reversal.notificationManager.registerNotification("Bound " + module.getModuleInfo().name() + " with key " + Keyboard.getKeyName(key) + ".", NotificationType.SUCCESS);
-                Reversal.showMsg("Bound " + module.getModuleInfo().name() + " with key " + Keyboard.getKeyName(key) + ".");
-                return;
+                Reversal.notificationManager.registerNotification(I18n.format("command.Bind.success", module.getModuleInfo().name(), Keyboard.getKeyName(key)), I18n.format("command.title"), NotificationType.SUCCESS);
+                Reversal.showMsg(I18n.format("command.Bind.success", module.getModuleInfo().name(), Keyboard.getKeyName(key)));
             } else {
-                Reversal.notificationManager.registerNotification("Invalid arguments. Key is required.", "Command", NotificationType.ERROR);
-                Reversal.showMsg("Invalid arguments. Key is required.");
-                return;
+                Reversal.notificationManager.registerNotification(I18n.format("command.Bind.invalidArgs"), "Command", NotificationType.ERROR);
+                Reversal.showMsg(I18n.format("command.Bind.invalidArgs"));
             }
+            return;
         }
 
 //        for (final Script script : Rise.INSTANCE.getScriptManager().getScripts()) {
@@ -43,7 +43,7 @@ public final class Bind extends Command {
 //            }
 //        }
 
-        Reversal.notificationManager.registerNotification("Invalid module.", "Command", NotificationType.ERROR);
-        Reversal.showMsg("Invalid module.");
+        Reversal.notificationManager.registerNotification(I18n.format("command.message.moduleNonExist", args[0]), "Command", NotificationType.ERROR);
+        Reversal.showMsg(I18n.format("command.message.moduleNonExist", args[0]));
     }
 }

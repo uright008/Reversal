@@ -22,10 +22,10 @@ import net.minecraft.util.BlockPos;
 
 import static net.minecraft.util.EnumFacing.*;
 
-@ModuleInfo(name = "Protocol", localizedName = "跨版本协议", description = "Fix something when you enter specified servers",
-        localizedDescription = "在你进入特定服务器时修复一些东西", category = Category.MISC)
+@ModuleInfo(name = "Protocol", localizedName = "module.Protocol.name", description = "Fix something when you enter specified servers",
+        localizedDescription = "module.Protocol.desc", category = Category.MISC)
 public class Protocol extends Module {
-    private final NoteValue note = new NoteValue("未跨版本请勿开启.由该功能造成的封禁均不属于开发者问题.", this);
+    private final NoteValue note = new NoteValue("未跨版本请勿开启.由该功能造成的封禁,开发者一概不负责.", this);
     private final BoolValue fix1_9_plusAttackDistance = new BoolValue("1.9+ Attack Distance", this, true);
     private final BoolValue fix1_11_plusBlockPlacement = new BoolValue("1.12+ Block Placement", this, false);
     private final BoolValue fix1_9_plusBlockCollide = new BoolValue("1.9+ Block Collide", this, false);

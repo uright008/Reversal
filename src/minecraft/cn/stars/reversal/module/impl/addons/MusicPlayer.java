@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.module.impl.addons;
 
@@ -9,13 +9,14 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import net.minecraft.client.resources.I18n;
 
-@ModuleInfo(name = "MusicPlayer", localizedName = "音乐播放器", description = "Play netease musics", localizedDescription = "播放网易云歌曲", category = Category.ADDONS)
+@ModuleInfo(name = "MusicPlayer", localizedName = "module.MusicPlayer.name", description = "Play netease musics", localizedDescription = "module.MusicPlayer.desc", category = Category.ADDONS)
 public class MusicPlayer extends Module {
     @Override
     protected void onEnable() {
         if (RainyAPI.hasJavaFX) mc.displayGuiScreen(Reversal.musicManager.screen);
-        else Reversal.showMsg("未在你使用的Java版本上找到有效的JavaFX,无法使用MusicPlayer! 请安装后重试。");
-        toggleModule();
+        else Reversal.showMsg(I18n.format("module.MusicPlayer.msg"));
+        this.setEnabled(false);
     }
 }

@@ -6,6 +6,7 @@ import cn.stars.reversal.command.api.CommandInfo;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import net.minecraft.client.resources.I18n;
 
 @CommandInfo(name = "Toggle", description = "Toggle module", syntax = ".toggle <module> (<on/off>)", aliases = {"toggle", "t"})
 public class Toggle extends Command {
@@ -16,30 +17,18 @@ public class Toggle extends Command {
         if (args.length == 1) {
             if (module != null) {
                 module.toggleModule();
-                Reversal.showMsg("Module toggled successfully.");
+                Reversal.showMsg(I18n.format("command.Toggle.success", module.getModuleInfo().name(), module.isEnabled()));
                 return;
             }
         } else if (args.length == 2) {
-            if (args[1].equalsIgnoreCase("on")) {
-                if (module != null) {
-                    module.toggleModule(true);
-                    Reversal.showMsg("Module set to enabled successfully.");
-                    return;
-                }
-            } else if (args[1].equalsIgnoreCase("off")) {
-                if (module != null) {
-                    module.toggleModule(false);
-                    Reversal.showMsg("Module set to disabled successfully.");
-                    return;
-                }
-            } else {
-                Reversal.showMsg("Invalid state. 'on' or 'off' is required.");
-                Reversal.notificationManager.registerNotification("Invalid state. 'on' or 'off' is required.", "Command", NotificationType.ERROR);
+            if (module != null) {
+                module.toggleModule(Boolean.parseBoolean(args[1]));
+                Reversal.showMsg(I18n.format("command.Toggle.success", module.getModuleInfo().name(), module.isEnabled()));
                 return;
             }
         }
 
-        Reversal.notificationManager.registerNotification("Invalid module.", "Command", NotificationType.ERROR);
-        Reversal.showMsg("Invalid module.");
+        Reversal.notificationManager.registerNotification(I18n.format("command.message.moduleNonExist", args[0]), I18n.format("command.title"), NotificationType.ERROR);
+        Reversal.showMsg(I18n.format("command.message.moduleNonExist", args[0]));
     }
 }

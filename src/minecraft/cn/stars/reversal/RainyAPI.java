@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal;
 
@@ -65,7 +65,8 @@ public class RainyAPI {
     public static final String[] wittyTitle = new String[]
             {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "Tough. Complex. Incomprehensible.", "时间永远是最难跨过的分界线", "自己选择的路终究由你自己跨过",
             "渴望陪伴,又渴望孤独", "Heaven will not have mercy on the hateful.", "可惜我不是你,没能成为你这样的有成之人", "坐拥千万怀抱,不满生活一毛", "昨夜西风凋碧树,独上高楼,望尽天涯路", "明天和死亡哪个会先到来?",
-            "虚伪才是绝对的真实", "为了一个人,你会付出自己的一切吗?", "你希望有一个人,为你付出他的一切吗?", "Metamorphosis.", "寂寞的人唱伤心的歌~", "No everlasting love.", "我们就如平行宇宙,近在眼前却又永不相遇"};
+            "虚伪才是绝对的真实", "为了一个人,你会付出自己的一切吗?", "你希望有一个人,为你付出他的一切吗?", "Metamorphosis.", "寂寞的人唱伤心的歌~", "No everlasting love.", "我们就如平行宇宙,近在眼前却又永不相遇",
+            "混乱不应成为常态,错误不应理所当然", "希望本是无所谓有,无所谓无的"};
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];
@@ -73,7 +74,7 @@ public class RainyAPI {
 
     /**
      * LWJGL3: 初始化GLFW
-     * 获取窗口GL Context, 允许使用GLFW操作, 防止杂鱼无法得到上下文导致JVM崩溃
+     * 获取窗口GL Context, 允许使用GLFW操作, 防止无法得到上下文导致JVM崩溃
      * @author Stars
      */
     public static void setupGLFW() {

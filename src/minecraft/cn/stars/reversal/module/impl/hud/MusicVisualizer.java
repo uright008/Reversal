@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.module.impl.hud;
 
@@ -20,9 +20,9 @@ import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-
-@ModuleInfo(name = "MusicVisualizer", localizedName = "音乐可视化", description = "Visualize the music using rects",
-        localizedDescription = "用边框使音乐可视化", category = Category.HUD)
+// TODO: Impl more modes
+@ModuleInfo(name = "MusicVisualizer", localizedName = "module.MusicVisualizer.name", description = "Visualize the music using rects",
+        localizedDescription = "module.MusicVisualizer.desc", category = Category.HUD)
 public class MusicVisualizer extends Module {
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue bands = new NumberValue("Bands", this, 128, 16, 256, 1);

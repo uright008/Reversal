@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.module.impl.render;
 
@@ -8,6 +8,6 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 
-@ModuleInfo(name = "BetterFont", localizedName = "更好的字体", description = "Cover the game font with custom font", localizedDescription = "使用客户端字体覆盖原版字体", category = Category.RENDER)
+@ModuleInfo(name = "BetterFont", localizedName = "module.BetterFont.name", description = "Cover the game font with custom font", localizedDescription = "module.BetterFont.desc", category = Category.RENDER)
 public class BetterFont extends Module {
 }

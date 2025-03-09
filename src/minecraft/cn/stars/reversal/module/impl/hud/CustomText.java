@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.module.impl.hud;
 
@@ -18,9 +18,9 @@ import cn.stars.reversal.value.impl.NumberValue;
 
 import java.awt.*;
 
-@ModuleInfo(name = "CustomText", localizedName = "自定义文字", description = "Show a custom text on screen", localizedDescription = "在屏幕上显示自定义文字", category = Category.HUD)
+@ModuleInfo(name = "CustomText", localizedName = "module.CustomText.name", description = "Show a custom text on screen", localizedDescription = "module.CustomText.desc", category = Category.HUD)
 public class CustomText extends Module {
-    private final NoteValue note = new NoteValue("用指令'.setText <文字>'来设置自定义文字!", this);
+    private final NoteValue note = new NoteValue("使用指令 '.setText <文字>' 来设置自定义文字!", this);
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue size = new NumberValue("Size", this, 16, 4, 64, 1);
     private final BoolValue bloom = new BoolValue("Bloom", this, false);

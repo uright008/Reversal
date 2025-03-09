@@ -13,8 +13,8 @@ import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import org.lwjgl.input.Keyboard;
 
-@ModuleInfo(name = "ClickGui", localizedName = "点击界面", description = "Opens a Gui where you can toggle modules and change their settings",
-        localizedDescription = "显示一个可以让你管理功能的界面", category = Category.RENDER, defaultKey = Keyboard.KEY_RSHIFT)
+@ModuleInfo(name = "ClickGui", localizedName = "module.ClickGui.name", description = "Opens a Gui where you can toggle modules and change their settings",
+        localizedDescription = "module.ClickGui.desc", category = Category.RENDER, defaultKey = Keyboard.KEY_RSHIFT)
 public final class ClickGui extends Module {
 
     private final ModeValue mode = new ModeValue("Mode", this, "Modern", "Modern");

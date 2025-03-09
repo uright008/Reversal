@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.module.impl.hud;
 
@@ -12,7 +12,7 @@ import net.minecraft.potion.PotionEffect;
 
 import java.util.ArrayList;
 // TODO: complete this.
-@ModuleInfo(name = "PotionEffects", localizedName = "效果显示", description = "Display your potion effects on the screen", localizedDescription = "在屏幕上显示药水效果", category = Category.HUD)
+@ModuleInfo(name = "PotionEffects", localizedName = "module.PotionEffects.name", description = "Display your potion effects on the screen", localizedDescription = "module.PotionEffects.desc", category = Category.HUD)
 public class PotionEffects extends Module {
     private final ArrayList<PotionData> potions = new ArrayList<>();
     public PotionEffects() {

@@ -16,14 +16,14 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
-
-@ModuleInfo(name = "ArmorHud", localizedName = "装备显示", description = "Show your armors",
-        localizedDescription = "显示你的装备", category = Category.HUD)
-public class ArmorHud extends Module {
+// TODO: Impl styles
+@ModuleInfo(name = "ArmorHUD", localizedName = "module.ArmorHUD.name", description = "Show your armors",
+        localizedDescription = "module.ArmorHUD.desc", category = Category.HUD)
+public class ArmorHUD extends Module {
     //armor的背景开关
     public final BoolValue border = new BoolValue("Border", this, true);
 
-    public ArmorHud() {
+    public ArmorHUD() {
         setCanBeEdited(true);
         setWidth(80);
         setHeight(20);
@@ -64,9 +64,9 @@ public class ArmorHud extends Module {
         var stuff = new ArrayList<ItemStack>();
         var split = 0;
         for (int index = 3; index >= 0; --index) {
-            var armer = mc.thePlayer.inventory.armorInventory[index];
-            if (armer == null) continue;
-            stuff.add(armer);
+            var armor = mc.thePlayer.inventory.armorInventory[index];
+            if (armor == null) continue;
+            stuff.add(armor);
         }
         if (mc.thePlayer.getCurrentEquippedItem() != null) {
             stuff.add(mc.thePlayer.getCurrentEquippedItem());

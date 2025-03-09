@@ -10,7 +10,7 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.NumberValue;
 
-@ModuleInfo(name = "FancyBlockParticles", localizedName = "梦幻方块粒子", description = "Make the particles look better", localizedDescription = "生成更好看的粒子效果", category = Category.ADDONS)
+@ModuleInfo(name = "FancyBlockParticles", localizedName = "module.FancyBlockParticles.name", description = "Make the particles look better", localizedDescription = "module.FancyBlockParticles.desc", category = Category.ADDONS)
 public class FancyBlockParticles extends Module {
     public final NumberValue minAge = new NumberValue("Min Age", this, 10, 1, 100, 1);
     public final NumberValue maxAge = new NumberValue("Max Age", this, 55, 1, 100, 1);

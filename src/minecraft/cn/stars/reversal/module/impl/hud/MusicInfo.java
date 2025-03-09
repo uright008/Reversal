@@ -1,6 +1,6 @@
 /*
  * Reversal Client - A PVP Client with hack visual.
- * Copyright 2025Aerolite Society, All rights reserved.
+ * Copyright 2025 Aerolite Society, Some rights reserved.
  */
 package cn.stars.reversal.module.impl.hud;
 
@@ -24,9 +24,9 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-
-@ModuleInfo(name = "MusicInfo", localizedName = "音乐信息", description = "Display the music info",
-        localizedDescription = "显示音乐信息", category = Category.HUD)
+// TODO: Impl more modes
+@ModuleInfo(name = "MusicInfo", localizedName = "module.MusicInfo.name", description = "Display the music info",
+        localizedDescription = "module.MusicInfo.desc", category = Category.HUD)
 public class MusicInfo extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Empathy");
     public final ColorValue colorValue = new ColorValue("Color", this);

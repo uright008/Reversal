@@ -8,6 +8,7 @@ import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.misc.ClassUtil;
+import net.minecraft.client.resources.I18n;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -18,8 +19,8 @@ public final class CommandManager {
     public static Command[] commandList = new Command[0];
 
     public void callCommand(final String input) {
-        final String[] spit = input.split(" ");
-        final String command = spit[0];
+        final String[] split = input.split(" ");
+        final String command = split[0];
         final String args = input.substring(command.length()).trim();
 
         for (final Command c : commandList) {
@@ -28,13 +29,9 @@ public final class CommandManager {
                     try {
                         c.onCommand(args, args.split(" "));
                     } catch (final Exception e) {
-                        e.printStackTrace();
-                        Reversal.notificationManager.registerNotification(
-                                "Invalid command usage \"" + c.getCommandInfo().syntax() + "\"."
-                                , "Command", NotificationType.ERROR);
-                        Reversal.showMsg("Invalid command usage \"" + c.getCommandInfo().syntax() + "\".");
+                        Reversal.notificationManager.registerNotification(I18n.format("command.message.invalid", input), I18n.format("command.title"), NotificationType.ERROR);
+                        Reversal.showMsg(I18n.format("command.message.invalid", input));
                     }
-
                     return;
                 }
             }
@@ -42,43 +39,44 @@ public final class CommandManager {
 
         for (final Module module : Reversal.moduleManager.getModuleList()) {
             if (module.getModuleInfo().name().equalsIgnoreCase(command)) {
-                if (spit.length > 1) {
+                if (split.length > 1) {
 
-                    if (module.getSettingAlternative(spit[1]) != null) {
-                        final Value setting = module.getSettingAlternative(spit[1]);
+                    if (module.getSettingAlternative(split[1]) != null) {
+                        final Value value = module.getSettingAlternative(split[1]);
 
                         try {
                             try {
-                                if (setting instanceof BoolValue) {
-                                    ((BoolValue) setting).setEnabled(Boolean.parseBoolean(spit[2]));
-                                } else if (setting instanceof NumberValue) {
-                                    ((NumberValue) setting).setValue(Double.parseDouble(spit[2]));
-                                } else if (setting instanceof ModeValue) {
-                                    ((ModeValue) setting).set(spit[2]);
+                                if (value instanceof BoolValue) {
+                                    ((BoolValue) value).setEnabled(Boolean.parseBoolean(split[2]));
+                                } else if (value instanceof NumberValue) {
+                                    ((NumberValue) value).setValue(Double.parseDouble(split[2]));
+                                } else if (value instanceof ModeValue) {
+                                    ((ModeValue) value).set(split[2]);
                                 }
 
                             } catch (final NumberFormatException ignored) {
-                                Reversal.notificationManager.registerNotification("Settings name error. Dont type space!", "Command", NotificationType.ERROR);
-                                Reversal.showMsg("Settings name error. Dont type space!");
+                                Reversal.notificationManager.registerNotification(I18n.format("command.message.valueError", split[1]), I18n.format("command.title"), NotificationType.ERROR);
+                                Reversal.showMsg(I18n.format("command.message.valueError", split[1]));
                                 return;
                             }
                         } catch (final ArrayIndexOutOfBoundsException ignored) {
-                            Reversal.notificationManager.registerNotification("Settings name error. Dont type space!", "Command", NotificationType.ERROR);
-                            Reversal.showMsg("Settings name error. Dont type space!");
+                            Reversal.notificationManager.registerNotification(I18n.format("command.message.valueError", split[1]), I18n.format("command.title"), NotificationType.ERROR);
+                            Reversal.showMsg(I18n.format("command.message.valueError", split[1]));
                         }
 
                         return;
                     }
 
-                    Reversal.notificationManager.registerNotification("Settings " + spit[1].toLowerCase() + " in " + command.toLowerCase() + " doesn't exist!", "Command", NotificationType.ERROR);
-                    Reversal.showMsg("Settings " + spit[1].toLowerCase() + " in " + command.toLowerCase() + " doesn't exist!");
+                    Reversal.notificationManager.registerNotification(I18n.format("command.message.valueNonExist", split[1].toLowerCase(), command.toLowerCase()),
+                            I18n.format("command.title"), NotificationType.ERROR);
+                    Reversal.showMsg(I18n.format("command.message.valueNonExist", split[1].toLowerCase(), command.toLowerCase()));
                     return;
                 }
             }
         }
 
-        Reversal.notificationManager.registerNotification("Module or command " + command.toLowerCase() + " doesn't exist.", "Command", NotificationType.ERROR);
-        Reversal.showMsg("Module or command " + command.toLowerCase() + " doesn't exist.");
+        Reversal.notificationManager.registerNotification(I18n.format("command.message.moduleOrCommandNonExist", command.toLowerCase()), I18n.format("command.title"), NotificationType.ERROR);
+        Reversal.showMsg(I18n.format("command.message.moduleOrCommandNonExist", command.toLowerCase()));
     }
 
     public void registerCommands() {

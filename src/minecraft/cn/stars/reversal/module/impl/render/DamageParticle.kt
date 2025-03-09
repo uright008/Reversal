@@ -16,13 +16,7 @@ import java.math.BigDecimal
 import java.util.*
 
 
-@ModuleInfo(
-    name = "DamageParticle",
-    localizedName = "伤害粒子",
-    description = "Show a particle of your damage when you hit.",
-    localizedDescription = "当你攻击时生成显示攻击伤害的粒子",
-    category = Category.RENDER
-)
+@ModuleInfo(name = "DamageParticle", localizedName = "module.DamageParticle.name", description = "Show a particle of your damage when you hit.", localizedDescription = "module.DamageParticle.desc", category = Category.RENDER)
 class DamageParticle : Module(){
     private val colorValue = ColorValue("Color", this)
     private val aliveTicksValue = NumberValue("AliveTicks", this,20.0, 10.0, 50.0, 1.0)

@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public abstract class Value {
     public String name;
+    public String localizedName;
     public boolean hidden;
 
     public float guiX;

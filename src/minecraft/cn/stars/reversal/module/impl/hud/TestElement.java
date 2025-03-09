@@ -7,6 +7,7 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.NoteValue;
+import net.minecraft.client.resources.I18n;
 import net.optifine.Lang;
 
 @ModuleInfo(name = "TestElement", localizedName = "module.TestElement.name", description = "Only for test",
@@ -28,7 +29,7 @@ public class TestElement extends Module {
         int y = getY() + 2;
         setWidth(120);
         setHeight(50);
-        FontManager.getRegular(32).drawString(Lang.format("reversal.test"), x, y, colorValue.getColor().getRGB());
+        FontManager.getRegular(32).drawString(I18n.format("reversal.test"), x, y, colorValue.getColor().getRGB());
     //    RenderUtil.roundedRectangle(x, y + 20, 32, 32, 4, colorValue.getColor());
     }
 

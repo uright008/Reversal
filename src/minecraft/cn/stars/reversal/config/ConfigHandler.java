@@ -14,6 +14,7 @@ import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.render.ThemeUtil;
 import lombok.experimental.UtilityClass;
+import net.minecraft.client.resources.I18n;
 
 import java.awt.*;
 import java.io.File;
@@ -79,7 +80,8 @@ public final class ConfigHandler {
     public void load(final String name) {
         final String config = FileUtil.loadFile("Config" + s + name + ".txt");
         if (config == null) {
-            Reversal.notificationManager.registerNotification("Config does not exist.");
+            Reversal.showMsg(I18n.format("command.Config.invalidConfig", name));
+            Reversal.notificationManager.registerNotification(I18n.format("command.Config.invalidConfig", name));
             return;
         }
 
@@ -280,7 +282,8 @@ public final class ConfigHandler {
 
     public void delete(final String name) {
         if (FileUtil.exists("Config\\" + name + ".txt")) {
-            Reversal.notificationManager.registerNotification("Config does not exist.");
+            Reversal.showMsg(I18n.format("command.Config.invalidConfig", name));
+            Reversal.notificationManager.registerNotification(I18n.format("command.Config.invalidConfig", name));
             return;
         }
 

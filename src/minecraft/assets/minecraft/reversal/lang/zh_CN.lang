@@ -1,3 +1,198 @@
+# Reversal Client Language File
+# zh-CN
 reversal.test=测试字符
-module.TestElement.name=测试功能
-module.TestElement.desc=只用于测试.
+# Messages
+command.title=指令
+command.message.invalid=未知指令用法: '%s'.
+command.message.valueError=为 '%s' 提供的参数错误.请检查参数.
+command.message.valueNonExist=值 '%s' 在 '%s' 中不存在.请不要打空格!
+command.message.moduleOrCommandNonExist=功能或指令 '%s' 不存在.
+command.message.moduleNonExist=功能 '%s' 不存在.
+
+command.Bind.success=成功将功能 '%s' 绑定至按键 '%s'.
+command.Bind.invalidArgs=未知参数.需要绑定的按键.
+command.Chat.notConnected=你还未连接至IRC!
+command.ClientName.success=成功设置客户端名称: '%s'.
+command.ClientTitle.success=成功设置客户端标题: '%s'.
+command.Config.emptyName=配置名为空.
+command.Config.invalidConfig=未知配置: '%s'.
+command.Help.1=所有可用的指令:
+command.Name.success=成功设置玩家名称: '%s'.
+command.SetText.success=成功设置自定义文本: '%s'.
+command.Toggle.success=成功将功能 '%s' 状态切换至 '%b'.
+
+module.FreeLook.tip=绑定自由视角至一个按键即可使用!
+module.MoBends.msg=飘扬皮肤和真实第一人称与更多动作冲突.
+module.MusicPlayer.msg=未在运行游戏的Java版本上找到JavaFX.音乐播放器已禁用.
+
+# Addons
+module.FancyBlockParticles.name=梦幻方块粒子
+module.FancyBlockParticles.desc=为方块和天气添加梦幻粒子效果.
+module.FreeLook.name=自由视角
+module.FreeLook.desc=自由地观看四周.
+module.MoBends.name=更多动作
+module.MoBends.desc=为玩家和生物添加真实的动作.
+module.MusicPlayer.name=音乐播放器
+module.MusicPlayer.desc=游戏内网易云音乐播放器.
+module.RealFirstPerson.name=真实第一人称
+module.RealFirstPerson.desc=真实的第一人称视角.
+module.SkinLayers3D.name=3D皮肤层
+module.SkinLayers3D.desc=使皮肤层变3D.
+module.WaveyCapes.name=飘扬披风
+module.WaveyCapes.desc=让披风在风中摇摆~
+
+# Client
+module.Chat.name=聊天栏
+module.Chat.desc=聊天栏相关功能.
+
+module.ClientSettings.name=客户端设置
+module.ClientSettings.desc=控制游戏的整体设置.
+value.ClientSettings.note1=< 颜色设置 >
+value.ClientSettings.theme=主题
+value.ClientSettings.colorType=颜色类型
+value.ClientSettings.color1=颜色1
+value.ClientSettings.color2=颜色2
+value.ClientSettings.indexTimes=变化次数
+value.ClientSettings.indexSpeed=变化速度
+value.ClientSettings.note2=< 特定设置 >
+value.ClientSettings.listAnimation=功能列表动画
+value.ClientSettings.thunderHack=Thunder Hack
+value.ClientSettings.empathyGlow=Empathy 发光
+value.ClientSettings.note3=< 客户端设置 >
+value.ClientSettings.localization=本地化
+value.ClientSettings.language=语言
+value.ClientSettings.showNotifications=展示通知
+value.ClientSettings.hudTextWithBracket=主界面文本附加中括号
+value.ClientSettings.clientMsgCustomName=客户端消息使用自定义名称
+value.ClientSettings.note4=< 我的世界设置 >
+value.ClientSettings.loadingScreenBg=加载界面替换背景
+value.ClientSettings.rawInput=原始输入
+
+module.Hotbar.name=快捷栏
+module.Hotbar.desc=快捷栏相关功能.
+module.HurtCam.name=受伤视角
+module.HurtCam.desc=受伤视角相关功能.
+module.IRC.name=聊天频道
+module.IRC.desc=Reversal的聊天频道.
+module.NameTag.name=名称标签
+module.NameTag.desc=名称标签相关功能.
+module.PostProcessing.name=后处理
+module.PostProcessing.desc=增加模糊和发光效果.
+
+# Combat
+module.ClickSound.name=Click Sound
+module.ClickSound.desc=Play a recorded sound when clicking.
+module.NoClickDelay.name=No Click Delay
+module.NoClickDelay.desc=Remove the vanilla click delay.
+
+# Hud
+module.ArmorHUD.name=Armor HUD
+module.ArmorHUD.desc=Display armor stats and durability.
+module.Arraylist.name=Arraylist
+module.Arraylist.desc=Display a list of enabled modules.
+module.AtomicIsland.name=Atomic Island
+module.AtomicIsland.desc=Display an island-like bar with rich information.
+module.BASticker.name=BA Sticker
+module.BASticker.desc=Display blue archive characters on screen.
+module.BPSCounter.name=BPS Counter
+module.BPSCounter.desc=Display block per second counter.
+module.CPSCounter.name=CPS Counter
+module.CPSCounter.desc=Display click per second counter.
+module.CustomText.name=Custom Text
+module.CustomText.desc=Display custom text on screen.
+module.FPSCounter.name=FPS Counter
+module.FPSCounter.desc=Display frame per second counter.
+module.HUD.name=HUD
+module.HUD.desc=Display hud components.
+module.Keystrokes.name=Keystrokes
+module.Keystrokes.desc=Display your key actions.
+module.MusicInfo.name=Music Info
+module.MusicInfo.desc=Display music information.
+module.MusicVisualizer.name=Music Visualizer
+module.MusicVisualizer.desc=Display dynamic rects based on music rhythm.
+module.PingCounter.name=Ping Counter.
+module.PingCounter.desc=Display ping counter.
+#module.PotionEffects.name=Potion Effects
+#module.PotionEffects.desc=Display potion effects.
+module.Scoreboard.name=Scoreboard
+module.Scoreboard.desc=Display custom scoreboard.
+module.SessionInfo.name=Session Info.
+module.SessionInfo.desc=Display session information.
+module.TargetHUD.name=Target HUD
+module.TargetHUD.desc=Display the enemy's information.
+module.TestElement.name=Test Element
+module.TestElement.desc=Only for testing.
+module.TextGui.name=Text Gui
+module.TextGui.desc=Display client watermark.
+
+# Movement
+module.Sprint.name=Sprint
+module.Sprint.desc=Automatically sprint.
+
+# Player
+module.AutoGG.name=Auto GG
+module.AutoGG.desc=Automatically say GG after a game.
+module.Dinnerbone.name=Dinnerbone
+module.Dinnerbone.desc=Upside down player.
+module.HealthWarn.name=Health Warn
+module.HealthWarn.desc=Warn when health is low.
+module.SmallPlayer.name=Small Player
+module.SmallPlayer.desc=Make player like a child.
+module.SmoothSneak.name=Smooth Sneak
+module.SmoothSneak.desc=High version Minecraft sneak animation.
+
+# Render
+module.Animations.name=Animations
+module.Animations.desc=Item, hand and camera animations.
+module.AppleSkin.name=Apple Skin
+module.AppleSkin.desc=Display food saturation.
+module.BAHalo.name=BA Halo
+module.BAHalo.desc=Display blue archive halo.
+module.BetterFont.name=Better Font
+module.BetterFont.desc=Replace vanilla font with ttf font.
+module.BlockinDisplay.name=Blockin Display
+module.BlockinDisplay.desc=Display the blocks you need to place when blockin.
+module.BlockOverlay.name=Block Overlay
+module.BlockOverlay.desc=Draw outline for blocks.
+module.ChinaHat.name=China Hat
+module.ChinaHat.desc=Display a hat on player's head.
+module.ClickGui.name=Click GUI
+module.ClickGui.desc=GUI to manage modules.
+module.Crosshair.name=Crosshair
+module.Crosshair.desc=Change crosshair to custom styles.
+module.DamageParticle.name=Damage Particle
+module.DamageParticle.desc=Display damage amount.
+module.EnvironmentEffect.name=Environment Effect
+module.EnvironmentEffect.desc=Draw modern effects around you.
+module.Fullbright.name=Fullbright
+module.Fullbright.desc=Light up the world.
+module.HitEffect.name=Hit Effect
+module.HitEffect.desc=Render some custom particles when hitting.
+module.ItemPhysics.name=Item Physics
+module.ItemPhysics.desc=Make items move like in real life.
+module.JumpCircle.name=Jump Circle
+module.JumpCircle.desc=Display a circle when jumping.
+module.LineGlyphs.name=Line Glyphs
+module.LineGlyphs.desc=Draw lines in the world.
+module.MotionBlur.name=Motion Blur
+module.MotionBlur.desc=Add motion blur effect.
+module.NoBob.name=No Bob
+module.NoBob.desc=Remove the bobbing effect.
+module.Particles.name=Particles
+module.Particles.desc=Draw some little balls when hitting.
+module.ReachDisplay.name=Reach Display
+module.ReachDisplay.desc=Display the reach of the player.
+module.TargetESP.name=Target ESP
+module.TargetESP.desc=Draw a mark on your current enemy.
+module.TNTTimer.name=TNT Timer
+module.TNTTimer.desc=Display the time of TNT explosion.
+module.Trail.name=Trail
+module.Trail.desc=Display a trail behind you.
+module.TrueSights.name=True Sights
+module.TrueSights.desc=Render things which you can't see like barriers.
+module.Wings.name=Wings
+module.Wings.desc=Display wings on your back.
+
+# World
+module.TimeTraveller.name=Time Traveller
+module.TimeTraveller.desc=Control the time and weather of the world.

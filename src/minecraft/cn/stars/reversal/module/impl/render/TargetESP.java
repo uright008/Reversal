@@ -32,7 +32,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
-@ModuleInfo(name = "TargetESP", localizedName = "敌人标记", description = "Display a ESP when you hit targets", localizedDescription = "当你攻击目标时渲染ESP", category = Category.RENDER)
+@ModuleInfo(name = "TargetESP", localizedName = "module.TargetESP.name", description = "Display a ESP when you hit targets", localizedDescription = "module.TargetESP.desc", category = Category.RENDER)
 public class TargetESP extends Module {
     public final ModeValue mode = new ModeValue("Mode", this, "Rectangle", "Rectangle", "Round", "Bubble", "Stars", "Surrounding");
     public final ColorValue colorValue = new ColorValue("Color", this);

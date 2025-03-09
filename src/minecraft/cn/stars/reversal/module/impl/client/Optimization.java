@@ -6,11 +6,8 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.value.impl.BoolValue;
 
-@ModuleInfo(name = "Optimization", localizedName = "优化", description = "Optimize client performance", localizedDescription = "优化客户端性能", category = Category.CLIENT)
+@ModuleInfo(name = "Optimization", localizedName = "module.Optimization.name", description = "Optimize client performance", localizedDescription = "module.Optimization.desc", category = Category.CLIENT)
 public class Optimization extends Module {
-    public final BoolValue ai_lookAI = new BoolValue("AI Improvements - Look AI", this, true);
-    public final BoolValue ai_lookIdle = new BoolValue("AI Improvements - Look Idle", this, true);
-    public final BoolValue ai_lookHelper = new BoolValue("AI Improvements - Look Helper", this, true);
     public final BoolValue entityCulling = new BoolValue("Entity Culling", this, true);
 
     public static EntityCullingMod entityCullingMod;

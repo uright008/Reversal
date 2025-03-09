@@ -21,6 +21,7 @@ import cn.stars.reversal.value.impl.*;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Keyboard;
@@ -148,13 +149,19 @@ public class ModernClickGUI extends GuiScreen {
                 } else {
                     RenderUtil.scissor(moduleX, y, 400, 360);
                 }
-                if (canUseChinese(m)) {
-                    regular24Bold.drawString(m.getModuleInfo().localizedName(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
-                    regular16.drawString(m.getModuleInfo().localizedDescription(),
-                            m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 21, new Color(160, 160, 160, 160).getRGB());
+                if (ModuleInstance.getModule(ClientSettings.class).localization.enabled) {
+                    if (ModuleInstance.getModule(ClientSettings.class).language.getMode().equals("Chinese")) {
+                        regular24Bold.drawString(I18n.format(m.getModuleInfo().localizedName()), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 5.5, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                        regular16.drawString(I18n.format(m.getModuleInfo().localizedDescription()),
+                                m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 21, new Color(160, 160, 160, 160).getRGB());
+                    } else {
+                        psm24.drawString(I18n.format(m.getModuleInfo().localizedName()), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                        psm16.drawString(I18n.format(m.getModuleInfo().localizedDescription()),
+                                m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 20, new Color(160, 160, 160, 160).getRGB());
+                    }
                 } else {
-                    psm24.drawString(m.getModuleInfo().name(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6 + (canUseChinese(m) ? 1 : 0), m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
-                    psr16.drawString(m.getModuleInfo().description(),
+                    psm24.drawString(m.getModuleInfo().name(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                    psm16.drawString(m.getModuleInfo().description(),
                             m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 20, new Color(160, 160, 160, 160).getRGB());
                 }
                 if (m.expanded || (!m.sizeAnimation.isFinished() && m.yAnimation.isFinished())) {
@@ -162,26 +169,28 @@ public class ModernClickGUI extends GuiScreen {
                     settingY += m.sizeInGui;
                     if (m != firstModule) settingY += 15; // IDK why
                     else settingY -= 5;
-
+                    
+                    
                     for (final Value setting : m.getSettings()) {
                         if (!setting.isHidden()) {
+                            String settingName = ModuleInstance.getModule(ClientSettings.class).localization.enabled ? I18n.format(setting.localizedName) : setting.name;
                             if (setting instanceof NoteValue) {
-                                psr18.drawString(setting.name, setting.guiX, setting.yAnimation.getValue() - 15, new Color(150, 150, 150, 150).getRGB());
+                                psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(150, 150, 150, 150).getRGB());
                                 settingY += 12;
                                 m.sizeInGui += 12;
                             }
                             if (setting instanceof BoolValue) {
-                                psr18.drawString(setting.name, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
-                                RenderUtil.roundedOutlineRectangle(setting.guiX + 5 + psr18.width(setting.name), setting.yAnimation.getValue() - 15.5, 8, 8, 4, 0.5, new Color(100, 200, 255, 200));
+                                psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
+                                RenderUtil.roundedOutlineRectangle(setting.guiX + 5 + psr18.width(settingName), setting.yAnimation.getValue() - 15.5, 8, 8, 4, 0.5, new Color(100, 200, 255, 200));
                                 if (((BoolValue) setting).isEnabled())
-                                    RenderUtil.roundedRectangle(setting.guiX + 6.5 + psr18.width(setting.name), setting.yAnimation.getValue() - 14, 5, 5, 2.5, new Color(100, 200, 255, 250));
+                                    RenderUtil.roundedRectangle(setting.guiX + 6.5 + psr18.width(settingName), setting.yAnimation.getValue() - 14, 5, 5, 2.5, new Color(100, 200, 255, 250));
                                 settingY += 12;
                                 m.sizeInGui += 12;
                             }
                             if (setting instanceof NumberValue) {
-                                psr18.drawString(setting.name, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
+                                psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
                                 NumberValue settingValue = (NumberValue) setting;
-                                float fontWidth = psr18.getWidth(setting.name) + 5;
+                                float fontWidth = psr18.getWidth(settingName) + 5;
                                 if (selectedSlider == setting) {
 
                                     final double percent = (mouseX - (setting.guiX + fontWidth)) / (double) (100);
@@ -216,6 +225,7 @@ public class ModernClickGUI extends GuiScreen {
                                 }
 
                                 RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 13, 100, 2, 1, new Color(200, 200, 200, 200));
+                                RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 13, settingValue.renderPercentage * 100, 2, 1, new Color(100, 200, 255, 250));
                                 RenderUtil.roundedRectangle(setting.guiX + fontWidth + settingValue.renderPercentage * 100, setting.yAnimation.getValue() - 14.5, 5, 5, 2.5, new Color(100, 200, 255, 250));
                                 psr18.drawString(value, setting.guiX + fontWidth + 109, setting.yAnimation.getValue() - 15, new Color(240, 240, 240, 240).getRGB());
                                 settingY += 12;
@@ -223,9 +233,9 @@ public class ModernClickGUI extends GuiScreen {
                             }
                             if (setting instanceof ColorValue) {
                                 ColorValue colorValue = (ColorValue) setting;
-                                float fontWidth = psr18.getWidth(setting.name) + 5;
+                                float fontWidth = psr18.getWidth(settingName) + 5;
                                 if (selectedColor == setting) {
-                                    psr18.drawString(setting.name, setting.guiX, setting.yAnimation.getValue() - (colorValue.isDontShowThemeColor() ? 70 : 80), new Color(200, 200, 200, 200).getRGB());
+                                    psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - (colorValue.isDontShowThemeColor() ? 70 : 80), new Color(200, 200, 200, 200).getRGB());
                                     float[] hsb = {colorValue.getHue(), colorValue.getSaturation(), colorValue.getBrightness()};
                                     float gradientX = setting.guiX + fontWidth;
                                     float gradientY = (float) (setting.yAnimation.getValue() - (colorValue.isDontShowThemeColor() ? 70 : 80));
@@ -297,7 +307,7 @@ public class ModernClickGUI extends GuiScreen {
                                     settingY += (colorValue.isDontShowThemeColor() ? 70 : 80);
                                     m.sizeInGui += (colorValue.isDontShowThemeColor() ? 70 : 80);
                                 } else {
-                                    psr18.drawString(setting.name, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
+                                    psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
                                     RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 16, 8, 8, 2, colorValue.getColor());
                                     psr16.drawString("(" + String.format("#%02X%02X%02X", colorValue.getColor().getRed(), colorValue.getColor().getGreen(), colorValue.getColor().getBlue()) + ")",
                                             setting.guiX + fontWidth + 12, setting.yAnimation.getValue() - 14.5, colorValue.getColor().getRGB());
@@ -306,9 +316,9 @@ public class ModernClickGUI extends GuiScreen {
                                 }
                             }
                             if (setting instanceof ModeValue) {
-                                psr18.drawString(setting.name, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
+                                psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
                                 psr18.drawString(((ModeValue) setting).getModes().get(((ModeValue) setting).index),
-                                        setting.guiX + 5 + psr18.width(setting.name), setting.yAnimation.getValue() - 15, new Color(240, 240, 240, 240).getRGB());
+                                        setting.guiX + 5 + psr18.width(settingName), setting.yAnimation.getValue() - 15, new Color(240, 240, 240, 240).getRGB());
                                 settingY += 12;
                                 m.sizeInGui += 12;
                             }
@@ -613,7 +623,7 @@ public class ModernClickGUI extends GuiScreen {
     }
 
     public boolean canUseChinese(Module module) {
-        if (ModuleInstance.getModule(ClientSettings.class).chinese.isEnabled()) {
+        if (ModuleInstance.getModule(ClientSettings.class).localization.isEnabled()) {
             return !module.getModuleInfo().localizedDescription().isEmpty() && !module.getModuleInfo().localizedName().isEmpty();
         }
         return false;

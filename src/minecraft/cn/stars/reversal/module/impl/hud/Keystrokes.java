@@ -7,8 +7,8 @@ import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 
-@ModuleInfo(name = "Keystrokes", localizedName = "按键显示", description = "Show the WASD operation on screen.",
-        localizedDescription = "显示你的按键操作", category = Category.HUD)
+@ModuleInfo(name = "Keystrokes", localizedName = "module.Keystrokes.name", description = "Show the WASD operation on screen.",
+        localizedDescription = "module.Keystrokes.desc", category = Category.HUD)
 public class Keystrokes extends Module {
     public final ModeValue modeValue = new ModeValue("Mode", this, "Modern", "Modern", "Minecraft");
     public final ColorValue colorValue = new ColorValue("Key Down Color", this);
