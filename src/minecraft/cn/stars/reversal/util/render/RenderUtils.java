@@ -184,6 +184,12 @@ public class RenderUtils {
         drawCircle(x, y, radius, rot - 180, rot, color.getRGB());
     }
 
+    public static void drawLoadingCircle3(float x, float y, float radius, Color color) {
+        int rot = (int) ((System.nanoTime() / 10000000) % 360);
+        drawCircle(x, y, radius, rot - 180, rot - 90, 2.5f, color.getRGB());
+        drawCircle(x, y, radius, rot - 360, rot - 270, 2.5f, color.getRGB());
+    }
+
     public static float smoothAnimation(float ani, float finalState, float speed, float scale) {
         return AnimationUtils.getAnimationState(ani, finalState, Math.max(10.0F, Math.abs(ani - finalState) * speed) * scale);
     }
@@ -193,13 +199,17 @@ public class RenderUtils {
     }
 
     public static void drawCircle(float x, float y, float radius, int start, int end, int color) {
+        drawCircle(x, y, radius, start, end, 2f, color);
+    }
+
+    public static void drawCircle(float x, float y, float radius, int start, int end, float thickness, int color) {
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
         glColor(color);
 
         glEnable(GL_LINE_SMOOTH);
-        glLineWidth(2F);
+        glLineWidth(thickness);
         glBegin(GL_LINE_STRIP);
         for (float i = end; i >= start; i -= (360 / 90.0f))
             glVertex2f((float) (x + (cos(i * PI / 180) * (radius * 1.001F))), (float) (y + (sin(i * PI / 180) * (radius * 1.001F))));

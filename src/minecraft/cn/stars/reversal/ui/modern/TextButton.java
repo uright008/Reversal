@@ -60,15 +60,6 @@ public class TextButton extends MenuButton {
         final double value = getY();
         final Color fontColor = enabled ? ColorUtil.withAlpha(new Color(250, 250, 250, 250), (int) this.getCuriosityFontAnimation().getValue()) : new Color(200, 200, 200, 100);
 
-        Runnable i = () -> RenderUtil.roundedRectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight(), 4, Color.BLACK);
-
-        if (!(mc.currentScreen instanceof AtomicMenu)) {
-            ModuleInstance.getModule(PostProcessing.class).drawElementWithBlur(i, 2, 2);
-            ModuleInstance.getModule(PostProcessing.class).drawElementWithBloom(i, 2, 2);
-        } else {
-            TEMP_TEXT_BUTTON_RUNNABLES.add(i);
-        }
-
         // Renders the button text
         UI_BLOOM_RUNNABLES.add(() -> {
             RenderUtil.roundedRectangle(this.getX(), value, this.getWidth(), this.getHeight(), 4,

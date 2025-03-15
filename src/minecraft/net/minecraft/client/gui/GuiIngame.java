@@ -3,11 +3,10 @@ package net.minecraft.client.gui;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.event.impl.PreBlurEvent;
 import cn.stars.reversal.event.impl.Render2DEvent;
+import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.module.impl.client.Hotbar;
-import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.AppleSkin;
 import cn.stars.reversal.module.impl.render.Crosshair;
-import cn.stars.reversal.ui.hud.Hud;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
@@ -242,21 +241,28 @@ public class GuiIngame extends Gui {
             i2 = MathHelper.clamp_int(i2, 0, 255);
 
             if (i2 > 8) {
-                GlStateManager.pushMatrix();
-                GlStateManager.translate((float) (i / 2), (float) (j / 2), 0.0F);
-                GlStateManager.enableBlend();
-                GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-                GlStateManager.pushMatrix();
-                GlStateManager.scale(4.0F, 4.0F, 4.0F);
                 int j2 = i2 << 24 & -16777216;
-                this.getFontRenderer().drawString(this.displayedTitle, (float) (-this.getFontRenderer().getStringWidth(this.displayedTitle) / 2), -10.0F, 16777215 | j2, true);
-                GlStateManager.popMatrix();
-                GlStateManager.pushMatrix();
-                GlStateManager.scale(2.0F, 2.0F, 2.0F);
-                this.getFontRenderer().drawString(this.displayedSubTitle, (float) (-this.getFontRenderer().getStringWidth(this.displayedSubTitle) / 2), 5.0F, 16777215 | j2, true);
-                GlStateManager.popMatrix();
-                GlStateManager.disableBlend();
-                GlStateManager.popMatrix();
+                if (ModuleInstance.getInterface().modernFont_T_S.enabled) {
+                    GlStateManager.pushMatrix();
+                    FontManager.getRegularBold(64).drawString(this.displayedTitle,  i / 2f - FontManager.getRegularBold(64).width(this.displayedTitle) / 2f, j / 2f - 30.0F + ModuleInstance.getInterface().yOffset.getFloat(), 16777215 | j2);
+                    FontManager.getRegular(32).drawString(this.displayedSubTitle, i / 2f - FontManager.getRegular(32).width(this.displayedSubTitle) / 2f, j / 2f + 10.0F + ModuleInstance.getInterface().yOffset.getFloat(), 16777215 | j2);
+                    GlStateManager.popMatrix();
+                } else {
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate((float) (i / 2), (float) (j / 2), 0.0F);
+                    GlStateManager.enableBlend();
+                    GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.scale(4.0F, 4.0F, 4.0F);
+                    this.getFontRenderer().drawString(this.displayedTitle, (float) (-this.getFontRenderer().getStringWidth(this.displayedTitle) / 2), -10.0F + ModuleInstance.getInterface().yOffset.getFloat() / 4, 16777215 | j2, true);
+                    GlStateManager.popMatrix();
+                    GlStateManager.pushMatrix();
+                    GlStateManager.scale(2.0F, 2.0F, 2.0F);
+                    this.getFontRenderer().drawString(this.displayedSubTitle, (float) (-this.getFontRenderer().getStringWidth(this.displayedSubTitle) / 2), 5.0F + ModuleInstance.getInterface().yOffset.getFloat() / 2, 16777215 | j2, true);
+                    GlStateManager.popMatrix();
+                    GlStateManager.disableBlend();
+                    GlStateManager.popMatrix();
+                }
             }
 
             this.mc.mcProfiler.endSection();
@@ -309,15 +315,15 @@ public class GuiIngame extends Gui {
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
 
-        ModuleInstance.getModule(PostProcessing.class).blurScreen();
+        ModuleInstance.getPostProcessing().blurScreen();
 
         final Render2DEvent render2DEvent = new Render2DEvent(partialTicks, scaledresolution);
         render2DEvent.call();
 
+        ModuleInstance.getPostProcessing().blurScreenPost();
+
         GameInstance.render2DRunnables(partialTicks, true);
         GameInstance.clearRunnables();
-
-        Hud.renderGameOverlay();
 
         new PreBlurEvent().call();
     }

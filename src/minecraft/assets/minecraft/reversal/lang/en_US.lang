@@ -25,6 +25,18 @@ module.FreeLook.msg=Bind FreeLook to a key to use!
 module.MoBends.msg=WaveyCapes and RealFirstPerson are not supported by MoBends.
 module.MusicPlayer.msg=JavaFX is not found on your current java version. Music Player is disabled.
 
+# Categories
+category.title=CATEGORIES
+category.ADDONS.name=Addons
+category.CLIENT.name=Client
+category.COMBAT.name=Combat
+category.HUD.name=HUD
+category.MISC.name=Misc
+category.MOVEMENT.name=Movement
+category.PLAYER.name=Player
+category.RENDER.name=Render
+category.WORLD.name=World
+
 # Addons
 module.FancyBlockParticles.name=Fancy Block Particles
 module.FancyBlockParticles.desc=Add fancy particle effects to blocks and weather.
@@ -47,24 +59,24 @@ module.Chat.desc=Chat-related features.
 
 module.ClientSettings.name=Client Settings
 module.ClientSettings.desc=Settings which controls the whole game.
-value.ClientSettings.note1=< COLOR SETTINGS >
+value.ClientSettings.note1=< Color Settings >
 value.ClientSettings.theme=Theme
 value.ClientSettings.colorType=Color Type
 value.ClientSettings.color1=Color 1
 value.ClientSettings.color2=Color 2
 value.ClientSettings.indexTimes=Index Times
 value.ClientSettings.indexSpeed=Index Speed
-value.ClientSettings.note2=< SPECIFIC SETTINGS >
+value.ClientSettings.note2=< Specific Settings >
 value.ClientSettings.listAnimation=List Animation
-value.ClientSettings.thunderHack=Thunder Hack
 value.ClientSettings.empathyGlow=Empathy Glow
-value.ClientSettings.note3=< CLIENT SETTINGS >
+value.ClientSettings.note3=< Client Settings >
 value.ClientSettings.localization=Localization
 value.ClientSettings.language=Language
 value.ClientSettings.showNotifications=Show Notifications
 value.ClientSettings.hudTextWithBracket=Hud Text With Bracket
 value.ClientSettings.clientMsgCustomName=Client Message Custom Name
-value.ClientSettings.note4=< MINECRAFT SETTINGS >
+value.ClientSettings.modernUISound=Modern UI Sound
+value.ClientSettings.note4=< Minecraft Settings >
 value.ClientSettings.loadingScreenBg=Loading Screen Background
 value.ClientSettings.rawInput=Raw Input
 
@@ -111,13 +123,13 @@ module.MusicInfo.name=Music Info
 module.MusicInfo.desc=Display music information.
 module.MusicVisualizer.name=Music Visualizer
 module.MusicVisualizer.desc=Display dynamic rects based on music rhythm.
-module.PingCounter.name=Ping Counter.
+module.PingCounter.name=Ping Counter
 module.PingCounter.desc=Display ping counter.
 #module.PotionEffects.name=Potion Effects
 #module.PotionEffects.desc=Display potion effects.
 module.Scoreboard.name=Scoreboard
 module.Scoreboard.desc=Display custom scoreboard.
-module.SessionInfo.name=Session Info.
+module.SessionInfo.name=Session Info
 module.SessionInfo.desc=Display session information.
 module.TargetHUD.name=Target HUD
 module.TargetHUD.desc=Display the enemy's information.
@@ -125,6 +137,18 @@ module.TestElement.name=Test Element
 module.TestElement.desc=Only for testing.
 module.TextGui.name=Text Gui
 module.TextGui.desc=Display client watermark.
+
+# Misc
+module.ClientSpoofer.name=Client Spoofer
+module.ClientSpoofer.desc=Send a fake brand when entering server.
+module.CustomName.name=Custom Name
+module.CustomName.desc=Change your player name to a fake value.
+module.FakeFPS.name=Fake FPS
+module.FakeFPS.desc=Edit your fps to a fake value.
+module.NoAchievements.name=No Achievements
+module.NoAchievements.desc=Remove achievement tips.
+module.Protocol.name=Protocol
+module.Protocol.desc=Via version fixes.
 
 # Movement
 module.Sprint.name=Sprint

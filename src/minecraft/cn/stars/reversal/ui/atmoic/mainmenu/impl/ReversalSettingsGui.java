@@ -10,6 +10,7 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -37,12 +38,14 @@ public class ReversalSettingsGui extends AtomicGui {
             RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, Color.BLACK);
 
             RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
             FontManager.getRainbowParty(48).drawString("reversal settings", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, new Color(20, 20, 20, 160));
 
         RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
         FontManager.getRainbowParty(48).drawString("reversal settings", 75, 35, Color.WHITE.getRGB());
 
         // Shader

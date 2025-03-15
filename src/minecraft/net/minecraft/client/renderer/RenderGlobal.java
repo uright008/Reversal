@@ -618,11 +618,6 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
     {
         int i = 0;
 
-        if (Reflector.MinecraftForgeClient_getRenderPass.exists())
-        {
-            i = Reflector.callInt(Reflector.MinecraftForgeClient_getRenderPass, new Object[0]);
-        }
-
         if (this.renderEntitiesStartupCounter > 0)
         {
             if (i > 0)
@@ -1628,18 +1623,6 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
     public void renderSky(float partialTicks, int pass)
     {
-        if (Reflector.ForgeWorldProvider_getSkyRenderer.exists())
-        {
-            WorldProvider worldprovider = this.mc.theWorld.provider;
-            Object object = Reflector.call(worldprovider, Reflector.ForgeWorldProvider_getSkyRenderer, new Object[0]);
-
-            if (object != null)
-            {
-                Reflector.callVoid(object, Reflector.IRenderHandler_render, new Object[] {Float.valueOf(partialTicks), this.theWorld, this.mc});
-                return;
-            }
-        }
-
         if (this.mc.theWorld.provider.getDimensionId() == 1)
         {
             this.renderSkyEnd();
@@ -1974,18 +1957,6 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
     {
         if (!Config.isCloudsOff())
         {
-            if (Reflector.ForgeWorldProvider_getCloudRenderer.exists())
-            {
-                WorldProvider worldprovider = this.mc.theWorld.provider;
-                Object object = Reflector.call(worldprovider, Reflector.ForgeWorldProvider_getCloudRenderer, new Object[0]);
-
-                if (object != null)
-                {
-                    Reflector.callVoid(object, Reflector.IRenderHandler_render, new Object[] {Float.valueOf(partialTicks), this.theWorld, this.mc});
-                    return;
-                }
-            }
-
             if (this.mc.theWorld.provider.isSurfaceWorld())
             {
                 if (Config.isShaders())

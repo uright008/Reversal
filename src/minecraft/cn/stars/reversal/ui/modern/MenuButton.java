@@ -29,7 +29,7 @@ public class MenuButton extends MenuComponent {
     public void draw(int mouseX, int mouseY, float partialTicks) {
         isHovering = RenderUtil.isHovered(this.getX(), this.getY(), this.getWidth(), this.getHeight(), mouseX, mouseY) && enabled;
         this.curiosityAnimation.run(isHovering ? 250 : 200);
-        this.curiosityBorderAnimation.run(isHovering ? 200 : 0);
+        this.curiosityBorderAnimation.run(isHovering ? 200 : 20);
         this.curiosityFontAnimation.run(isHovering ? 250 : 180);
     }
 

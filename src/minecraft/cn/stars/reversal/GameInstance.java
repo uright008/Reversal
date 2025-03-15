@@ -24,6 +24,7 @@ public interface GameInstance {
     MFont regular16 = FontManager.getRegular(16);
     MFont regular18 = FontManager.getRegular(18);
     MFont regular20 = FontManager.getRegular(20);
+    MFont regular16Bold = FontManager.getRegularBold(16);
     MFont regular20Bold = FontManager.getRegularBold(20);
     MFont regular24Bold = FontManager.getRegularBold(24);
     MFont regular32 = FontManager.getRegular(32);
@@ -41,6 +42,8 @@ public interface GameInstance {
 
     List<Runnable> MODERN_BLUR_RUNNABLES = new ArrayList<>();
     List<Runnable> MODERN_BLOOM_RUNNABLES = new ArrayList<>();
+
+    List<Runnable> MODERN_POST_BLOOM_RUNNABLES = new ArrayList<>();
 
     List<Runnable> TEMP_TEXT_BUTTON_RUNNABLES = new ArrayList<>();
 

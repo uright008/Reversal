@@ -5,6 +5,7 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundCategory;
@@ -233,10 +234,12 @@ public class SettingsGui extends AtomicGui {
     {
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
             FontManager.getRainbowParty(48).drawString("options", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
         FontManager.getRainbowParty(48).drawString("options", 75, 35, Color.WHITE.getRGB());
 
         for (GuiButton guiButton : this.buttonList) {

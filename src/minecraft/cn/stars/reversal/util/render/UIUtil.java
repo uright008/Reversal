@@ -37,7 +37,7 @@ public class UIUtil {
         if (mouseButton == 0) {
             for (TextButton menuButton : buttons) {
                 if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), mouseX, mouseY) && menuButton.enabled) {
-                    mc.getSoundHandler().playButtonPress();
+                    mc.getSoundHandler().playUISound("click");
                     menuButton.runAction();
                     break;
                 }

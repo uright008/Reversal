@@ -2039,5 +2039,11 @@
     "sounds": [
       "reversal/click/dbc"
     ]
+  },
+  "reversal.ui.click": {
+    "category": "master",
+    "sounds": [
+      "reversal/ui/click"
+    ]
   }
 }

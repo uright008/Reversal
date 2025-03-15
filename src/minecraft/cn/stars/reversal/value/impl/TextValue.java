@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+// TODO: Impl this in ClickGUI. Maybe a text field to input text or using command to set text.
 public class TextValue extends Value {
 
     public String text;
@@ -16,9 +17,5 @@ public class TextValue extends Value {
         parent.settings.add(this);
         parent.settingsMap.put(name.toLowerCase(), this);
         this.text = text;
-    }
-
-    public String readText() {
-        return text;
     }
 }

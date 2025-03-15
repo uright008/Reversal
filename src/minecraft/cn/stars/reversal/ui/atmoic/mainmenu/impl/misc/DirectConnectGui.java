@@ -16,15 +16,13 @@ import java.awt.*;
 
 public class DirectConnectGui extends MiscGui {
     private final ServerData field_146301_f;
-    public int guiIndex;
     private TextField field_146302_g;
     private TextButton selectButton, cancelButton;
     private TextButton[] buttons;
 
-    public DirectConnectGui(ServerData p_i1031_2_, int guiIndex)
+    public DirectConnectGui(ServerData p_i1031_2_)
     {
         this.field_146301_f = p_i1031_2_;
-        this.guiIndex = guiIndex;
     }
 
     public void initGui()

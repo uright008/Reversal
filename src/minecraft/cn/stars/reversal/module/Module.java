@@ -48,7 +48,7 @@ public abstract class Module implements GameInstance {
     public float descOpacityInGui = 1;
     public boolean hidden = false;
     public int x, y, draggingX, draggingY;
-    public int width, height, additionalWidth, additionalHeight;
+    public float width, height, additionalWidth, additionalHeight;
     public boolean dragging, hide, canBeEdited;
     public SimpleAnimation buttonAnimation = new SimpleAnimation(0.0F);
     public SimpleAnimation buttonOpacityAnimation = new SimpleAnimation(0.0F);

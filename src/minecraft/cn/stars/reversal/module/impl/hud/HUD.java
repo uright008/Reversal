@@ -1,8 +1,10 @@
 package cn.stars.reversal.module.impl.hud;
 
+import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.ui.hud.Hud;
 import cn.stars.reversal.value.impl.BoolValue;
 
 @ModuleInfo(name = "HUD", localizedName = "module.HUD.name", description = "Show a hud on your screen",
@@ -13,5 +15,10 @@ public class HUD extends Module {
         setWidth(0);
         setHeight(0);
         setCanBeEdited(false);
+    }
+
+    @Override
+    public void onRender2D(Render2DEvent event) {
+        Hud.renderHud();
     }
 }

@@ -218,8 +218,6 @@ public class CrashReport
         StringBuilder stringbuilder = new StringBuilder();
         stringbuilder.append("---- Minecraft 崩溃报告 ----\n");
         stringbuilder.append("如果你不是开发者，请将这份文件发送给本客户端的开发者，以协助解决相关问题。请勿发送启动器崩溃截图等无用信息。\n");
-        Reflector.call(Reflector.BlamingTransformer_onCrash, new Object[] {stringbuilder});
-        Reflector.call(Reflector.CoreModManager_onCrash, new Object[] {stringbuilder});
         stringbuilder.append("// ");
         stringbuilder.append(getWittyComment());
         stringbuilder.append("\n\n");

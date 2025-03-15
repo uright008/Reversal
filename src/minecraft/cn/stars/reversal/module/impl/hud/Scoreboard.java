@@ -46,7 +46,7 @@ public class Scoreboard extends Module {
             scoreCollection = filteredScores;
         }
 
-        int maxStringWidth = fontWidth(scoreObjective.getDisplayName());
+        float maxStringWidth = fontWidth(scoreObjective.getDisplayName());
 
         for (Score score : scoreCollection)
         {
@@ -55,15 +55,12 @@ public class Scoreboard extends Module {
             maxStringWidth = Math.max(maxStringWidth, fontWidth(playerScoreString));
         }
 
-        if (modernFont.enabled) maxStringWidth /= 1.8f;
-
         float scoreboardHeight = scoreCollection.size() * fontHeight();
         float scoreboardStartY = getY() + scoreboardHeight + 8;
-        int scoreboardStartX = getX() - getWidth() + 5;
+        float scoreboardStartX = getX() - getWidth() + 5;
         int horizontalMargin = 3;
         int currentLineIndex = 0;
-        int finalMaxStringWidth = maxStringWidth;
-        int extraWidth = modernFont.enabled ? 8 : 0;
+        float finalMaxStringWidth = maxStringWidth;
 
         if (background.enabled) {
             if (rounded.enabled) {
@@ -97,7 +94,7 @@ public class Scoreboard extends Module {
 
             NORMAL_RENDER_RUNNABLES.add(() -> {
                 drawString(playerNameString, scoreboardStartX, currentLineY, Color.WHITE.getRGB());
-                drawString(playerScoreValueString, scoreboardEndX - fontWidth(playerScoreValueString) + extraWidth, currentLineY, new Color(255,80,80, 255).getRGB());
+                drawString(playerScoreValueString, scoreboardEndX - fontWidth(playerScoreValueString), currentLineY, new Color(255,80,80, 255).getRGB());
             });
 
 
@@ -105,7 +102,7 @@ public class Scoreboard extends Module {
             {
                 String objectiveDisplayName = scoreObjective.getDisplayName();
                 NORMAL_RENDER_RUNNABLES.add(() -> {
-                    drawString(objectiveDisplayName, scoreboardStartX + finalMaxStringWidth / 2f - fontWidth(objectiveDisplayName) / 2f + extraWidth, currentLineY - fontHeight() + (modernFont.enabled ? 2 : 0), Color.WHITE.getRGB());
+                    drawString(objectiveDisplayName, scoreboardStartX + finalMaxStringWidth / 2f - fontWidth(objectiveDisplayName) / 2f, currentLineY - fontHeight() + (modernFont.enabled ? 2 : 0), Color.WHITE.getRGB());
                 });
             }
 
@@ -127,7 +124,7 @@ public class Scoreboard extends Module {
         else return mc.fontRendererObj.drawString(string, (int) x, (int) y, color);
     }
     
-    public int fontWidth(String string) {
+    public float fontWidth(String string) {
         if (modernFont.enabled) return psm18.width(string);
         else return mc.fontRendererObj.getStringWidth(string);
     }

@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -38,6 +39,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     private final MFont psm16 = FontManager.getPSM(16);
     private final MFont atomic24 = FontManager.getAtomic(24);
     private final LocalDateTime initTime;
+    private ResourceLocation headImage = null;
 
     private final Animation upperSelectionAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
     private final Animation initAnimation = new Animation(Easing.LINEAR, 200);
@@ -111,11 +113,11 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
         Atomic.INSTANCE.render(new ScaledResolution(GameInstance.mc));
 
-        TEMP_TEXT_BUTTON_RUNNABLES.forEach(i -> {
+    /*    TEMP_TEXT_BUTTON_RUNNABLES.forEach(i -> {
             ModuleInstance.getModule(PostProcessing.class).drawElementWithBlur(i, 2,2);
             ModuleInstance.getModule(PostProcessing.class).drawElementWithBloom(i, 2, 2);
         });
-        TEMP_TEXT_BUTTON_RUNNABLES.clear();
+        TEMP_TEXT_BUTTON_RUNNABLES.clear(); */
 
         UI_BLOOM_RUNNABLES.forEach(Runnable::run);
         UI_BLOOM_RUNNABLES.clear();
@@ -158,24 +160,24 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
                 lastGuiIndex = atomicGuis.indexOf(currentGui);
                 currentGui = atomicGui;
                 currentGui.initGui();
-                GameInstance.mc.getSoundHandler().playButtonPress();
+                GameInstance.mc.getSoundHandler().playUISound("click");
             }
         }
         if (RenderUtil.isHovered(width - 25, 0, 25, 25, mouseX, mouseY)) {
             subMenu = !subMenu;
-            GameInstance.mc.getSoundHandler().playButtonPress();
+            GameInstance.mc.getSoundHandler().playUISound("click");
         } else if (subMenu && !RenderUtil.isHovered(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height, mouseX, mouseY)) {
             subMenu = false;
-            GameInstance.mc.getSoundHandler().playButtonPress();
+            GameInstance.mc.getSoundHandler().playUISound("click");
         }
         if (subMenu) {
             if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 18, 43, 15, 15, mouseX, mouseY)) {
                 changeMenuBackground(true);
-                GameInstance.mc.getSoundHandler().playButtonPress();
+                GameInstance.mc.getSoundHandler().playUISound("click");
             }
             if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 63, 43, 15, 15, mouseX, mouseY)) {
                 changeMenuBackground(false);
-                GameInstance.mc.getSoundHandler().playButtonPress();
+                GameInstance.mc.getSoundHandler().playUISound("click");
             }
         }
         currentGui.mouseClicked(mouseX, mouseY, mouseButton);
@@ -183,14 +185,10 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     }
 
     private void drawPlayerImage() {
-        if (GameInstance.mc.session.getSessionType() == Session.Type.MOJANG) {
-            try {
-                RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15), width - 130, 5, 15, 15);
-            } catch (Exception e) {
-                RenderUtil.rect(width - 130, 5, 15, 15, Color.WHITE);
-            }
-        } else {
-            RenderUtil.image(SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf("Steve"), 15), width - 130, 5, 15, 15);
+        try {
+            RenderUtil.image(headImage, width - 130, 5, 15, 15);
+        } catch (Exception e) {
+            RenderUtil.rect(width - 130, 5, 15, 15, Color.WHITE);
         }
     }
 
@@ -252,13 +250,19 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         initTime = LocalDateTime.now();
         lastGuiIndex = 0;
         atomicGuis.set(8, new MiscGui());
+
+        try {
+            headImage = SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15);
+        } catch (Exception e) {
+            headImage = SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf("Steve"), 15);
+        }
     }
 
     public static void switchGui(int index) {
     //    reinit();
         currentGui = atomicGuis.get(index);
         currentGui.initGui();
-        if (GameInstance.mc.currentScreen instanceof AtomicMenu) GameInstance.mc.getSoundHandler().playButtonPress();
+        if (GameInstance.mc.currentScreen instanceof AtomicMenu) GameInstance.mc.getSoundHandler().playUISound("click");
     }
 
     private static void init() {

@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 public class MusicManager {
     public MusicPlayerScreen screen;
 
-    public void initGUI() {
+    public synchronized void initGUI() {
         if (!RainyAPI.hasJavaFX) return;
         screen = new MusicPlayerScreen();
 

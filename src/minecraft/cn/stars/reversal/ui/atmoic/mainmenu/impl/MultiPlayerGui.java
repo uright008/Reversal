@@ -5,6 +5,7 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.AddServerGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.DirectConnectGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerListEntryLanScan;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerListEntryNormal;
@@ -13,6 +14,7 @@ import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -102,13 +104,14 @@ public class MultiPlayerGui extends AtomicGui {
 
         directButton = new TextButton(this.width / 2.0 - 50, this.height - 70, 100, 20, () -> {
             this.directConnect = true;
-            AtomicMenu.atomicGuis.set(8, new DirectConnectGui(this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false), 2));
+            AtomicMenu.atomicGuis.set(8, new DirectConnectGui(this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
             AtomicMenu.switchGui(8);
         }, "直接连接", "", true, 1, 30, 5, 20);
 
         addButton = new TextButton(this.width / 2.0 + 4 + 50, this.height - 70, 100, 20, () -> {
             this.addingServer = true;
-            mc.displayGuiScreen(new GuiScreenAddServer(Reversal.atomicMenu, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
+            AtomicMenu.atomicGuis.set(8, new AddServerGui(this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
+            AtomicMenu.switchGui(8);
         }, "添加服务器", "", true, 1, 25, 5, 20);
 
         editButton = new TextButton(this.width / 2.0 - 154, this.height - 45, 70, 20, () -> {
@@ -377,6 +380,7 @@ public class MultiPlayerGui extends AtomicGui {
             RoundedUtil.drawRound(50, 65, width - 100, 25, 3, Color.BLACK);
 
             RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
             FontManager.getRainbowParty(48).drawString("multiplayer", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
@@ -387,6 +391,7 @@ public class MultiPlayerGui extends AtomicGui {
         searchField.draw(70, 68, mouseX, mouseY);
 
         RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
         FontManager.getRainbowParty(48).drawString("multiplayer", 75, 35, Color.WHITE.getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
@@ -471,7 +476,7 @@ public class MultiPlayerGui extends AtomicGui {
         if (mouseButton == 0) {
             for (TextButton menuButton : this.buttons) {
                 if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), mouseX, mouseY)) {
-                    mc.getSoundHandler().playButtonPress();
+                    mc.getSoundHandler().playUISound("click");
                     menuButton.runAction();
                     break;
                 }

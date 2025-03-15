@@ -72,6 +72,8 @@ public class ModernClickGUI extends GuiScreen {
         int x = width / 2 - 260 + addX;
         int y = height / 2 - 180 + addY;
 
+        boolean localization = ModuleInstance.getClientSettings().localization.enabled;
+
         if (isDragging) {
             addX = mouseX - deltaX;
             addY = mouseY - deltaY;
@@ -101,14 +103,14 @@ public class ModernClickGUI extends GuiScreen {
         }
 
         // Category
-        psm16.drawString("CATEGORIES", x + 3, y + 40, new Color(200,200,200,200).getRGB());
+        psm16.drawString(localization ? I18n.format("category.title") : "CATEGORIES", x + 3, y + 40, new Color(200,200,200,200).getRGB());
         int renderSelectY = y + 50;
         for (final Category category : Category.values()) {
             if (category == selectedCategory) {
                 sideAnimation.run(renderSelectY);
                 RoundedUtil.drawRound(x + 5, (float) sideAnimation.getValue() + 1, 100, 18, 5, ColorUtil.withAlpha(ThemeUtil.getThemeColor(ThemeType.FLAT_COLOR), 100));
                 cur26.drawString(getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(200,200,200, 240).getRGB());
-                psm20.drawString(StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(240,240,240, 240).getRGB());
+                regular20.drawString(localization ? I18n.format("category." + category.name() + ".name") : StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(240,240,240, 240).getRGB());
             } else {
                 if (RenderUtil.isHovered(x + 5, renderSelectY, 100, 20, mouseX, mouseY)) {
                     category.alphaAnimation.run(80);
@@ -118,7 +120,7 @@ public class ModernClickGUI extends GuiScreen {
                 }
                 RoundedUtil.drawRound(x + 5, renderSelectY + 1, 100, 18, 5, new Color(50,50,50,(int)category.alphaAnimation.getValue()));
                 cur26.drawString(getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(160, 160, 160, 200).getRGB());
-                psm20.drawString(StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(200,200,200, 200).getRGB());
+                regular20.drawString(localization ? I18n.format("category." + category.name() + ".name") : StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(200,200,200, 200).getRGB());
             }
             renderSelectY += 25;
 
@@ -149,7 +151,7 @@ public class ModernClickGUI extends GuiScreen {
                 } else {
                     RenderUtil.scissor(moduleX, y, 400, 360);
                 }
-                if (ModuleInstance.getModule(ClientSettings.class).localization.enabled) {
+                if (localization) {
                     if (ModuleInstance.getModule(ClientSettings.class).language.getMode().equals("Chinese")) {
                         regular24Bold.drawString(I18n.format(m.getModuleInfo().localizedName()), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 5.5, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                         regular16.drawString(I18n.format(m.getModuleInfo().localizedDescription()),
@@ -173,7 +175,7 @@ public class ModernClickGUI extends GuiScreen {
                     
                     for (final Value setting : m.getSettings()) {
                         if (!setting.isHidden()) {
-                            String settingName = ModuleInstance.getModule(ClientSettings.class).localization.enabled ? I18n.format(setting.localizedName) : setting.name;
+                            String settingName = localization ? I18n.format(setting.localizedName) : setting.name;
                             if (setting instanceof NoteValue) {
                                 psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(150, 150, 150, 150).getRGB());
                                 settingY += 12;
@@ -366,7 +368,7 @@ public class ModernClickGUI extends GuiScreen {
 
         RenderUtil.scissor(x, y, 520, 360);
         RenderUtil.rect(x + 120, y - 1, 398, 30, backgroundColor);
-        String titleText = searchField.text.isEmpty() ? StringUtils.capitalize(selectedCategory.name().toLowerCase()) : "\"" + psm20.trimStringToWidth(searchField.text, 160, false,true) + "\"";
+        String titleText = searchField.text.isEmpty() ? localization ? I18n.format("category." + selectedCategory.name() + ".name") : StringUtils.capitalize(selectedCategory.name().toLowerCase()) : "\"" + psm20.trimStringToWidth(searchField.text, 160, false,true) + "\"";
         psm20.drawString(titleText, x + 125, y + 10, new Color(200,200,200,240).getRGB());
         icon16.drawString("i", x + 126 + psm24.width(titleText), y + 13, new Color(200,200,200,240).getRGB());
         RenderUtil.rectangle(x + 116, y + 25, 404, 0.8, new Color(100,100,100,100));
@@ -622,22 +624,22 @@ public class ModernClickGUI extends GuiScreen {
         return Math.round(value * precision) / precision;
     }
 
-    public boolean canUseChinese(Module module) {
-        if (ModuleInstance.getModule(ClientSettings.class).localization.isEnabled()) {
-            return !module.getModuleInfo().localizedDescription().isEmpty() && !module.getModuleInfo().localizedName().isEmpty();
-        }
-        return false;
-    }
-
     public ArrayList<Module> getRelevantModules(final String search) {
         final ArrayList<Module> relevantModules = new ArrayList<>();
 
         if (search.isEmpty()) return relevantModules;
 
         for (final Module module : Reversal.moduleManager.moduleList) {
-            if (module.getModuleInfo().name().toLowerCase().replaceAll(" ", "")
-                    .contains(search.toLowerCase().replaceAll(" ", ""))) {
-                relevantModules.add(module);
+            if (ModuleInstance.getModule(ClientSettings.class).localization.enabled) {
+                if (I18n.format(module.getModuleInfo().localizedName()).toLowerCase().replaceAll(" ", "")
+                        .contains(search.toLowerCase().replaceAll(" ", ""))) {
+                    relevantModules.add(module);
+                }
+            } else {
+                if (module.getModuleInfo().name().toLowerCase().replaceAll(" ", "")
+                        .contains(search.toLowerCase().replaceAll(" ", ""))) {
+                    relevantModules.add(module);
+                }
             }
         }
 

@@ -14,6 +14,7 @@ import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -49,12 +50,14 @@ public class AnnouncementGui extends AtomicGui {
             RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, Color.BLACK);
 
             RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
             FontManager.getRainbowParty(48).drawString("announcement", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, new Color(20, 20, 20, 160));
 
         RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
         FontManager.getRainbowParty(48).drawString("announcement", 75, 35, Color.WHITE.getRGB());
 
         for (TextButton button : buttons) {
@@ -100,8 +103,8 @@ public class AnnouncementGui extends AtomicGui {
         super.initGui();
         this.exitButton = new TextButton(width / 2f - 60, height - 60, 120, 35, () -> AtomicMenu.switchGui(0),
                 "返回主菜单", "g", true, 12, 38, 11);
-        this.previousButton = new TextButton(width / 2f - 100, 68, 20, 20, () -> updateAnnouncementIndex(announcementIndex - 1), "←", "", true, 0, 4, 5);
-        this.nextButton = new TextButton(width / 2f + 80, 68, 20, 20, () -> updateAnnouncementIndex(announcementIndex + 1), "→", "", true, 0, 4, 5);
+        this.previousButton = new TextButton(width / 2f - 100, 68, 20, 20, () -> updateAnnouncementIndex(announcementIndex - 1), "←", "", true, 0, 4, 4);
+        this.nextButton = new TextButton(width / 2f + 80, 68, 20, 20, () -> updateAnnouncementIndex(announcementIndex + 1), "→", "", true, 0, 4, 4);
         buttons = new TextButton[]{exitButton, previousButton, nextButton};
 
         loadAnnouncements();
@@ -157,7 +160,26 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.06", "2025/3/5", 1)
+        Announcement announcement4 = new Announcement("Reversal 2.0.0+beta.08", "2025/3/15", 3)
+                .addContent("由于时间紧没写更新日志")
+                .addContent("请自行查看更新内容")
+                .calcMaxWidth();
+        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.07", "2025/3/11", 1)
+                .addContent("[+] 完全重写语言系统 支持中英双语 仍在完善")
+                .addContent("[+] 新增随机标题")
+                .addContent("[+] 新增高级UI音效")
+                .addContent("[/] 修改粗体字体为MiSans (原来的太粗了)")
+                .addContent("[/] 修改部分功能的名称")
+                .addContent("[/] 优化部分指令的用法")
+                .addContent("[/] 优化原版语言系统")
+                .addContent("[/] 优化语言加载速度(秒加载)")
+                .addContent("[/] 优化HUD调用方式,调整部分位置")
+                .addContent("[/] 优化主界面")
+                .addContent("[/] 优化性能")
+                .addContent("[*] 修复主界面头像获取导致严重卡顿")
+                .addContent("[*] 修复指令一些bug")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.06", "2025/3/5", 2)
                 .addContent("[+] 并入Phosphor 大幅优化性能")
                 .addContent("[+] PostProcessing新增Impact GUIs选项,允许关闭主界面的后处理效果")
                 .addContent("[+] ClientSettings新增Client Message Custom Name,允许聊天栏信息显示自定义客户端名称")
@@ -166,19 +188,9 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("[/] 优化代码逻辑")
                 .addContent("[*] 修复字体渲染器的一个潜在问题")
                 .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.05", "2025/3/4", 2)
-                .addContent("[+] CustomText新增Bloom效果")
-                .addContent("[*] 修复音效可能无法加载的问题")
-                .addContent("[*] 修复物品栏物品显示问题")
-                .addContent("[*] 修复Notification后处理错位")
-                .addContent("[*] 修复RealFirstPerson下蹲渲染错位")
-                .addContent("[+] ClickGUI允许拖动 (突破底层代码?)")
-                .addContent("[+] 新增随机标题")
-                .addContent("[/] 修改部分功能的数值")
-                .addContent("[/] 部分忘记加自定义颜色的功能已补全")
-                .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);
+        announcements.add(announcement4);
         announcements.add(announcement2);
         announcements.add(announcement3);
 

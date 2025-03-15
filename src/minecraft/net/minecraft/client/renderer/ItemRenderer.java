@@ -30,7 +30,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import net.optifine.DynamicLights;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
 
@@ -44,7 +43,6 @@ public class ItemRenderer
     private float prevEquippedProgress;
     private final RenderManager renderManager;
     private final RenderItem itemRenderer;
-    private int equippedItemSlot = -1;
 
     public ItemRenderer(Minecraft mcIn)
     {
@@ -333,13 +331,13 @@ public class ItemRenderer
         {
             boolean anythingBlock = ModuleInstance.getModule(Animations.class).anythingBlock.enabled;
             float f = 1.0F - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);
-            AbstractClientPlayer abstractclientplayer = this.mc.thePlayer;
-            float f1 = abstractclientplayer.getSwingProgress(partialTicks);
-            float f2 = abstractclientplayer.prevRotationPitch + (abstractclientplayer.rotationPitch - abstractclientplayer.prevRotationPitch) * partialTicks;
-            float f3 = abstractclientplayer.prevRotationYaw + (abstractclientplayer.rotationYaw - abstractclientplayer.prevRotationYaw) * partialTicks;
+            EntityPlayerSP entityPlayer = this.mc.thePlayer;
+            float f1 = entityPlayer.getSwingProgress(partialTicks);
+            float f2 = entityPlayer.prevRotationPitch + (entityPlayer.rotationPitch - entityPlayer.prevRotationPitch) * partialTicks;
+            float f3 = entityPlayer.prevRotationYaw + (entityPlayer.rotationYaw - entityPlayer.prevRotationYaw) * partialTicks;
             this.rotateArroundXAndY(f2, f3);
-            this.setLightMapFromPlayer(abstractclientplayer);
-            this.rotateWithPlayerRotations((EntityPlayerSP)abstractclientplayer, partialTicks);
+            this.setLightMapFromPlayer(entityPlayer);
+            this.rotateWithPlayerRotations(entityPlayer, partialTicks);
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
 
@@ -354,9 +352,9 @@ public class ItemRenderer
             {
                 if (this.itemToRender.getItem() instanceof ItemMap)
                 {
-                    this.renderItemMap(abstractclientplayer, f2, f, f1);
+                    this.renderItemMap(entityPlayer, f2, f, f1);
                 }
-                else if (abstractclientplayer.getItemInUseCount() > 0 || (mc.gameSettings.keyBindUseItem.isKeyDown() && anythingBlock))
+                else if (entityPlayer.getItemInUseCount() > 0 || (mc.gameSettings.keyBindUseItem.isKeyDown() && anythingBlock))
                 {
                     GlStateManager.translate(ModuleInstance.getModule(Animations.class).itemX.getFloat(), ModuleInstance.getModule(Animations.class).itemY.getFloat(), ModuleInstance.getModule(Animations.class).itemZ.getFloat());
                     boolean m = ModuleInstance.getModule(Animations.class).isEnabled();
@@ -369,14 +367,14 @@ public class ItemRenderer
                             break;
 
                         case EAT:
-                            this.performDrinking(abstractclientplayer, partialTicks);
+                            this.performDrinking(entityPlayer, partialTicks);
                             if (m && ModuleInstance.getModule(Animations.class).foodSwing.isEnabled())
                                 this.transformFirstPersonItem(f, f1);
                             //    this.transformFirstPersonFood(f, f1);
                             break;
 
                         case DRINK:
-                            this.performDrinking(abstractclientplayer, partialTicks);
+                            this.performDrinking(entityPlayer, partialTicks);
                             if (m && ModuleInstance.getModule(Animations.class).drinkSwing.isEnabled())
                                 this.transformFirstPersonItem(f, f1);
                             else
@@ -447,7 +445,7 @@ public class ItemRenderer
                                 this.transformFirstPersonItem(f, f1);
                             else
                                 this.transformFirstPersonItem(f, 0.0F);
-                            this.doBowTransformations(partialTicks, abstractclientplayer);
+                            this.doBowTransformations(partialTicks, entityPlayer);
                     }
                     float blockY = ModuleInstance.getModule(Animations.class).blockY.getFloat();
                     GlStateManager.translate(-blockY, blockY, blockY);
@@ -460,11 +458,11 @@ public class ItemRenderer
                     this.transformFirstPersonItem(f, f1);
                     GlStateManager.scale(ModuleInstance.getModule(Animations.class).itemScale.getFloat(), ModuleInstance.getModule(Animations.class).itemScale.getFloat(), ModuleInstance.getModule(Animations.class).itemScale.getFloat());
                 }
-                this.renderItem(abstractclientplayer, this.itemToRender, ItemCameraTransforms.TransformType.FIRST_PERSON);
+                this.renderItem(entityPlayer, this.itemToRender, ItemCameraTransforms.TransformType.FIRST_PERSON);
             }
-            else if (!abstractclientplayer.isInvisible())
+            else if (!entityPlayer.isInvisible())
             {
-                this.renderPlayerArm(abstractclientplayer, f, f1);
+                this.renderPlayerArm(entityPlayer, f, f1);
             }
 
             GlStateManager.popMatrix();
@@ -480,12 +478,11 @@ public class ItemRenderer
         if (this.mc.thePlayer.isEntityInsideOpaqueBlock())
         {
             IBlockState iblockstate = this.mc.theWorld.getBlockState(new BlockPos(this.mc.thePlayer));
-            BlockPos blockpos = new BlockPos(this.mc.thePlayer);
             EntityPlayer entityplayer = this.mc.thePlayer;
 
             for (int i = 0; i < 8; ++i)
             {
-                double d0 = entityplayer.posX + (double)(((float)((i >> 0) % 2) - 0.5F) * entityplayer.width * 0.8F);
+                double d0 = entityplayer.posX + (double)(((float)((i) % 2) - 0.5F) * entityplayer.width * 0.8F);
                 double d1 = entityplayer.posY + (double)(((float)((i >> 1) % 2) - 0.5F) * 0.1F);
                 double d2 = entityplayer.posZ + (double)(((float)((i >> 2) % 2) - 0.5F) * entityplayer.width * 0.8F);
                 BlockPos blockpos1 = new BlockPos(d0, d1 + (double)entityplayer.getEyeHeight(), d2);
@@ -494,29 +491,23 @@ public class ItemRenderer
                 if (iblockstate1.getBlock().isVisuallyOpaque())
                 {
                     iblockstate = iblockstate1;
-                    blockpos = blockpos1;
                 }
             }
 
             if (iblockstate.getBlock().getRenderType() != -1)
             {
-                Object object = Reflector.getFieldValue(Reflector.RenderBlockOverlayEvent_OverlayType_BLOCK);
-
-                if (!Reflector.callBoolean(Reflector.ForgeEventFactory_renderBlockOverlay, new Object[] {this.mc.thePlayer, Float.valueOf(partialTicks), object, iblockstate, blockpos}))
-                {
-                    this.renderBlockInHand(partialTicks, this.mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(iblockstate));
-                }
+                this.renderBlockInHand(partialTicks, this.mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(iblockstate));
             }
         }
 
         if (!this.mc.thePlayer.isSpectator())
         {
-            if (this.mc.thePlayer.isInsideOfMaterial(Material.water) && !Reflector.callBoolean(Reflector.ForgeEventFactory_renderWaterOverlay, new Object[] {this.mc.thePlayer, Float.valueOf(partialTicks)}))
+            if (this.mc.thePlayer.isInsideOfMaterial(Material.water))
             {
                 this.renderWaterOverlayTexture(partialTicks);
             }
 
-            if (this.mc.thePlayer.isBurning() && !Reflector.callBoolean(Reflector.ForgeEventFactory_renderFireOverlay, new Object[] {this.mc.thePlayer, Float.valueOf(partialTicks)}))
+            if (this.mc.thePlayer.isBurning())
             {
                 this.renderFireInFirstPerson(partialTicks);
             }
@@ -530,14 +521,8 @@ public class ItemRenderer
         this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        float f = 0.1F;
         GlStateManager.color(0.1F, 0.1F, 0.1F, 0.5F);
         GlStateManager.pushMatrix();
-        float f1 = -1.0F;
-        float f2 = 1.0F;
-        float f3 = -1.0F;
-        float f4 = 1.0F;
-        float f5 = -0.5F;
         float f6 = atlas.getMinU();
         float f7 = atlas.getMaxU();
         float f8 = atlas.getMinV();
@@ -564,12 +549,6 @@ public class ItemRenderer
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             GlStateManager.pushMatrix();
-            float f1 = 4.0F;
-            float f2 = -1.0F;
-            float f3 = 1.0F;
-            float f4 = -1.0F;
-            float f5 = 1.0F;
-            float f6 = -0.5F;
             float f7 = -this.mc.thePlayer.rotationYaw / 64.0F;
             float f8 = this.mc.thePlayer.rotationPitch / 64.0F;
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -638,29 +617,10 @@ public class ItemRenderer
         {
             if (!this.itemToRender.getIsItemStackEqual(itemstack))
             {
-                if (Reflector.ForgeItem_shouldCauseReequipAnimation.exists())
-                {
-                    boolean flag1 = Reflector.callBoolean(this.itemToRender.getItem(), Reflector.ForgeItem_shouldCauseReequipAnimation, new Object[] {this.itemToRender, itemstack, Boolean.valueOf(this.equippedItemSlot != entityplayer.inventory.currentItem)});
-
-                    if (!flag1)
-                    {
-                        this.itemToRender = itemstack;
-                        this.equippedItemSlot = entityplayer.inventory.currentItem;
-                        return;
-                    }
-                }
-
                 flag = true;
             }
         }
-        else if (this.itemToRender == null && itemstack == null)
-        {
-            flag = false;
-        }
-        else
-        {
-            flag = true;
-        }
+        else flag = this.itemToRender != null || itemstack != null;
 
         float f2 = 0.4F;
         float f = flag ? 0.0F : 1.0F;
@@ -670,7 +630,6 @@ public class ItemRenderer
         if (this.equippedProgress < 0.1F)
         {
             this.itemToRender = itemstack;
-            this.equippedItemSlot = entityplayer.inventory.currentItem;
 
             if (Config.isShaders())
             {

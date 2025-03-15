@@ -21,6 +21,7 @@ public class PostProcessing extends Module
     public final BoolValue bloom = new BoolValue("Bloom", this, true);
     private final NumberValue shadowRadius = new NumberValue("Bloom Iterations", this, 2, 1, 8, 1);
     private final NumberValue shadowOffset = new NumberValue("Bloom Offset", this, 1, 1, 10, 1);
+    public final BoolValue postBloom = new BoolValue("Post Bloom", this, false);
     public final BoolValue impactGUIs = new BoolValue("Impact GUIs", this, true);
 
     private Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
@@ -39,6 +40,9 @@ public class PostProcessing extends Module
         }
         if (!bloom.enabled) {
             MODERN_BLOOM_RUNNABLES.clear();
+        }
+        if (!postBloom.enabled) {
+            MODERN_POST_BLOOM_RUNNABLES.clear();
         }
     }
 
@@ -69,6 +73,23 @@ public class PostProcessing extends Module
             Shader3DEvent event = new Shader3DEvent(true);
             event.call();
             doBloom();
+
+            stencilFramebuffer.unbindFramebuffer();
+
+            KawaseBloom.renderBlur(stencilFramebuffer.framebufferTexture, (int) shadowRadius.getValue(), (int) shadowOffset.getValue());
+        }
+    }
+
+    public void blurScreenPost() {
+        if (!ModuleInstance.canDrawHUD()) return;
+        if (postBloom.isEnabled()) {
+            stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
+            stencilFramebuffer.framebufferClear();
+            stencilFramebuffer.bindFramebuffer(false);
+
+            Shader3DEvent event = new Shader3DEvent(true);
+            event.call();
+            doBloomPost();
 
             stencilFramebuffer.unbindFramebuffer();
 
@@ -116,8 +137,14 @@ public class PostProcessing extends Module
         MODERN_BLOOM_RUNNABLES.clear();
     }
 
+    public void doBloomPost() {
+        MODERN_POST_BLOOM_RUNNABLES.forEach(Runnable::run);
+        MODERN_POST_BLOOM_RUNNABLES.clear();
+    }
+
     public void clear() {
         MODERN_BLUR_RUNNABLES.clear();
         MODERN_BLOOM_RUNNABLES.clear();
+        MODERN_POST_BLOOM_RUNNABLES.clear();
     }
 }

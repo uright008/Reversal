@@ -17,13 +17,13 @@ import net.minecraft.item.ItemStack;
 
 @ModuleInfo(name = "AtomicIsland", localizedName = "module.AtomicIsland.name", description = "Display an island-like bar", localizedDescription = "module.AtomicIsland.desc", category = Category.HUD)
 public class AtomicIsland extends Module {
-    public final NoteValue note1 = new NoteValue("< SETTINGS >", this);
+    public final NoteValue note1 = new NoteValue("< Settings >", this);
     public final NumberValue yOffset = new NumberValue("Y Offset", this, 0.0, -50.0, 50.0, 0.1);
     public final BoolValue percentBar = new BoolValue("Percent Bar", this, false);
     public final BoolValue allowRepeat = new BoolValue("Allow Repeat", this, false);
     public final ModeValue musicLyricsMode = new ModeValue("Music Lyrics Mode", this, "Origin", "Origin", "Translated", "Both");
     public final BoolValue runningLight = new BoolValue("Running Light", this, false);
-    public final NoteValue note2 = new NoteValue("< FEATURES >", this);
+    public final NoteValue note2 = new NoteValue("< Features >", this);
     public final BoolValue enemyInfo = new BoolValue("Enemy Info", this, true);
     public final BoolValue blockInfo = new BoolValue("Block Info", this, true);
 

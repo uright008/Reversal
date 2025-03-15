@@ -11,11 +11,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class Transformer implements GameInstance {
     public static GuiScreen transformMainMenu() {
-        if (RainyAPI.isPreInited) {
-            return Reversal.atomicMenu;
-        } else {
-            return new GuiPreInit();
-        }
+        return Reversal.atomicMenu;
     }
 
     public static String constructString(String string) {

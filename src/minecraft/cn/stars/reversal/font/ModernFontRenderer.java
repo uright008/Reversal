@@ -1,8 +1,8 @@
 package cn.stars.reversal.font;
 
-import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.util.render.ColorUtil;
+import cn.stars.reversal.util.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.src.Config;
@@ -286,7 +286,7 @@ public class ModernFontRenderer extends MFont {
 
     public int drawString(String text, double x, double y, int color, final boolean shadow) {
         if (text == null || text.isEmpty()) return 0;
-        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");
+        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text);
 
         if (!this.international && this.requiresInternationalFont(text)) {
             return FontManager.getRegular(this.font.getSize() - 1).drawString(text, x, y + 1, color);
@@ -311,12 +311,12 @@ public class ModernFontRenderer extends MFont {
         final double startX = x;
 
         final int length = text.length();
-        ColorUtil.glColor(color);
+        RenderUtil.color(ColorUtil.hexColor(color));
 
         for (int i = 0; i < length; ++i) {
             final char character = text.charAt(i);
 
-            if ((character == 167) && i + 1 < text.length()) {
+            if (character == 167 && i + 1 < text.length()) {
                 int l = "0123456789abcdefklmnor".indexOf(text.toLowerCase(Locale.ENGLISH).charAt(i + 1));
 
                 if (l < 16) {
@@ -336,7 +336,11 @@ public class ModernFontRenderer extends MFont {
 
                     GlStateManager.color((float) (i1 >> 16) / 255.0F, (float) (i1 >> 8 & 255) / 255.0F, (float) (i1 & 255) / 255.0F, 1f);
                 } else if (l == 21) {
-                    GlStateManager.color((float) (color >> 16) / 255.0F, (float) (color >> 8 & 255) / 255.0F, (float) (color & 255) / 255.0F, 1f);
+                    int i1 = COLOR_CODES[15];
+                    if (Config.isCustomColors()) {
+                        i1 = CustomColors.getTextColor(l, i1);
+                    }
+                    GlStateManager.color((float) (i1 >> 16) / 255.0F, (float) (i1 >> 8 & 255) / 255.0F, (float) (i1 & 255) / 255.0F, 1f);
                 }
 
                 ++i;
@@ -376,7 +380,7 @@ public class ModernFontRenderer extends MFont {
         return (int) (x - givenX);
     }
 
-    public int width(String text) {
+    public float width(String text) {
         if (text == null || text.isEmpty()) return 0;
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");;
 
@@ -410,10 +414,12 @@ public class ModernFontRenderer extends MFont {
 //                    width += characterSet[character].getWidth() - MARGIN_WIDTH * 2;
 //                }
 //            }
-            width += characterSet[character].getWidth() - MARGIN_WIDTH * 2f;
+            if (!(character == '§' && text.length() > i + 1) && !(i > 0 && text.charAt(i - 1) == '§')) {
+                width += characterSet[character].getWidth() - MARGIN_WIDTH * 2f;
+            }
         }
 
-        return (int) width / 2;
+        return width / 2;
     }
 
     public float height() {

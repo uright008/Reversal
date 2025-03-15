@@ -10,6 +10,7 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -43,12 +44,14 @@ public class SponsorGui extends AtomicGui {
             RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, Color.BLACK);
 
             RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
             FontManager.getRainbowParty(48).drawString("sponsor", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, new Color(20, 20, 20, 160));
 
         RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
         FontManager.getRainbowParty(48).drawString("sponsor", 75, 35, Color.WHITE.getRGB());
 
         regular18.drawString("以下是为Reversal客户端开发者提供过赞助的人员名单", 60, 80, new Color(220,220,220,220).getRGB());
@@ -63,7 +66,7 @@ public class SponsorGui extends AtomicGui {
         if (showSponsor) {
             RenderUtil.image(new ResourceLocation("reversal/images/sponsor.png"), width - 250, 100, 200, 200);
         }
-        regular18.drawString("特别鸣谢: ZedWAre, Bzdhyp, Crazy1101010, ChuKai.", 60, height - 40, new Color(220,220,220,220).getRGB());
+        regular18.drawString("特别鸣谢: ZedWAre, Bzdhyp, Crazy1101010, ChuKai, BingSiNiao.", 60, height - 40, new Color(220,220,220,220).getRGB());
         regular18.drawString("※ 如果你赞助过但不在列表里,请联系Stars留下你的网名!", 60, height - 30, new Color(220,220,220,220).getRGB());
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
@@ -84,7 +87,7 @@ public class SponsorGui extends AtomicGui {
 
         buttons = new TextButton[]{exitButton, showSponsorButton};
 
-        addSponsors();
+        this.addSponsors();
     }
 
     @Override

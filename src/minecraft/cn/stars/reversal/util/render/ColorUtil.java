@@ -3,14 +3,12 @@ package cn.stars.reversal.util.render;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.ui.theme.Theme;
-import cn.stars.reversal.util.animation.advanced.Animation;
 import cn.stars.reversal.util.animation.advanced.composed.ColorAnimation;
 import cn.stars.reversal.util.animation.simple.SimpleAnimation;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.ibm.icu.text.NumberFormat;
 import lombok.experimental.UtilityClass;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.regex.Pattern;
@@ -36,12 +34,12 @@ public final class ColorUtil {
             new SimpleAnimation(0.0F), new SimpleAnimation(0.0F), new SimpleAnimation(0.0F)
     };
 
-    public static void glColor(final int hex) {
+    public Color hexColor(final int hex) {
         final float a = (hex >> 24 & 0xFF) / 255.0F;
         final float r = (hex >> 16 & 0xFF) / 255.0F;
         final float g = (hex >> 8 & 0xFF) / 255.0F;
         final float b = (hex & 0xFF) / 255.0F;
-        GL11.glColor4f(r, g, b, a);
+        return new Color(r, g ,b, a);
     }
 
     public static int hexColor(int red, int green, int blue, int alpha) {

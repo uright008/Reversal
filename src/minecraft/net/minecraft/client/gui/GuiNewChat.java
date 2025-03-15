@@ -1,10 +1,13 @@
 package net.minecraft.client.gui;
 
-import cn.stars.reversal.module.impl.client.Chat;
+import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RenderUtil;
 import com.google.common.collect.Lists;
+
+import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,7 +32,6 @@ public class GuiNewChat extends Gui
     private boolean isScrolled;
     private String lastMessage = "";
     private int sameMessageAmount, line;
-    private final Animation posAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
 
     public GuiNewChat(Minecraft mcIn)
     {
@@ -45,6 +47,7 @@ public class GuiNewChat extends Gui
             int j = 0;
             int k = this.drawnChatLines.size();
             float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
+            boolean modernFont = ModuleInstance.getInterface().modernFont_Chat.enabled;
 
             if (k > 0)
             {
@@ -54,7 +57,7 @@ public class GuiNewChat extends Gui
                 }
 
                 float f1 = this.getChatScale();
-                int l = MathHelper.ceiling_float_int((float)this.getChatWidth() / f1);
+                int l = MathHelper.ceiling_float_int((float) this.getChatWidth() / f1);
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(2.0F, 20.0F, 0.0F);
                 GlStateManager.scale(f1, f1, 1.0F);
@@ -88,13 +91,19 @@ public class GuiNewChat extends Gui
                             {
                                 int i2 = 0;
                                 int j2 = -i1 * 9;
-                                if (ModuleInstance.getModule(Chat.class).chatBackground.enabled)
+                                if (ModuleInstance.getInterface().chatBackground.enabled) {
                                     drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
+                                }
                                 String s = chatline.getChatComponent().getFormattedText();
-                                GlStateManager.enableBlend();
-                                this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
-                                GlStateManager.disableAlpha();
-                                GlStateManager.disableBlend();
+                                if (modernFont) {
+                                    GameInstance.regular16.drawString(s, (float) i2, (float) (j2 - 7), 16777215 + (l1 << 24));
+                                }
+                                else {
+                                    GlStateManager.enableBlend();
+                                    this.mc.fontRendererObj.drawStringWithShadow(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24));
+                                    GlStateManager.disableAlpha();
+                                    GlStateManager.disableBlend();
+                                }
                             }
                         }
                     }
@@ -102,12 +111,12 @@ public class GuiNewChat extends Gui
 
                 if (flag)
                 {
-                    int k2 = this.mc.fontRendererObj.FONT_HEIGHT;
+                    float k2 = modernFont ? GameInstance.regular16.height() : this.mc.fontRendererObj.FONT_HEIGHT;
                     GlStateManager.translate(-3.0F, 0.0F, 0.0F);
-                    int l2 = k * k2 + k;
-                    int i3 = j * k2 + j;
-                    int j3 = this.scrollPos * i3 / k;
-                    int k1 = i3 * i3 / l2;
+                    float l2 = k * k2 + k;
+                    float i3 = j * k2 + j;
+                    float j3 = this.scrollPos * i3 / k;
+                    float k1 = i3 * i3 / l2;
 
                     if (l2 != i3)
                     {
@@ -131,7 +140,7 @@ public class GuiNewChat extends Gui
     }
 
     public void printChatMessage(IChatComponent component) {
-        if (ModuleInstance.getModule(Chat.class).combineRepeatedMsg.enabled) {
+        if (ModuleInstance.getInterface().combineDuplicatedMsg.enabled) {
 
             if (component.getUnformattedText().equals(lastMessage)) {
                 mc.ingameGUI.getChatGUI().deleteChatLine(line);
@@ -254,25 +263,27 @@ public class GuiNewChat extends Gui
             int k = mouseY / i - 27;
             j = MathHelper.floor_float((float)j / f);
             k = MathHelper.floor_float((float)k / f);
+            boolean modernFont = ModuleInstance.getInterface().modernFont_Chat.enabled;
+            float height = modernFont ? GameInstance.regular16.height() : this.mc.fontRendererObj.FONT_HEIGHT;
 
             if (j >= 0 && k >= 0)
             {
                 int l = Math.min(this.getLineCount(), this.drawnChatLines.size());
 
-                if (j <= MathHelper.floor_float((float)this.getChatWidth() / this.getChatScale()) && k < this.mc.fontRendererObj.FONT_HEIGHT * l + l)
+                if (j <= MathHelper.floor_float((float)this.getChatWidth() / this.getChatScale()) && k < height * l + l)
                 {
-                    int i1 = k / this.mc.fontRendererObj.FONT_HEIGHT + this.scrollPos;
+                    float i1 = k / height + this.scrollPos;
 
                     if (i1 >= 0 && i1 < this.drawnChatLines.size())
                     {
-                        ChatLine chatline = (ChatLine)this.drawnChatLines.get(i1);
-                        int j1 = 0;
+                        ChatLine chatline = this.drawnChatLines.get((int) i1);
+                        float j1 = 0;
 
                         for (IChatComponent ichatcomponent : chatline.getChatComponent())
                         {
                             if (ichatcomponent instanceof ChatComponentText)
                             {
-                                j1 += this.mc.fontRendererObj.getStringWidth(GuiUtilRenderComponents.func_178909_a(((ChatComponentText)ichatcomponent).getChatComponentText_TextValue(), false));
+                                j1 += modernFont ? GameInstance.regular16.width(GuiUtilRenderComponents.func_178909_a(((ChatComponentText)ichatcomponent).getChatComponentText_TextValue(), false)) : this.mc.fontRendererObj.getStringWidth(GuiUtilRenderComponents.func_178909_a(((ChatComponentText)ichatcomponent).getChatComponentText_TextValue(), false));
 
                                 if (j1 > j)
                                 {
@@ -282,12 +293,8 @@ public class GuiNewChat extends Gui
                         }
                     }
 
-                    return null;
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
             else
             {

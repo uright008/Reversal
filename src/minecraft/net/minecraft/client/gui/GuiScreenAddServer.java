@@ -45,10 +45,12 @@ public class GuiScreenAddServer extends GuiScreen
         cancelButton = new TextButton(this.width / 2 - 100, this.height / 4 + 120 + 68, 200, 20, () -> {
             this.parentScreen.confirmClicked(false, 0);
         }, "取消", "", true, 1, 90, 5, 20);
-        this.serverNameField = new TextField(200, 20, GameInstance.regular16, ThemeColor.bgColor, ThemeColor.outlineColor);
+        this.serverNameField = new TextField(200, 20, GameInstance.regular16, new Color(30, 30, 30, 100), new Color(30,30,30,120));
+        this.serverNameField.setSelectedLine(true);
         this.serverNameField.setFocused(true);
         this.serverNameField.setText(this.serverData.serverName);
-        this.serverIPField = new TextField(200, 20, GameInstance.regular16, ThemeColor.bgColor, ThemeColor.outlineColor);
+        this.serverIPField = new TextField(200, 20, GameInstance.regular16, new Color(30, 30, 30, 100), new Color(30,30,30,120));
+        this.serverIPField.setSelectedLine(true);
         this.serverIPField.setText(this.serverData.serverIP);
         buttons = new TextButton[] {addButton, cancelButton};
     }
@@ -110,11 +112,11 @@ public class GuiScreenAddServer extends GuiScreen
         }
 
         GameInstance.regular24Bold.drawCenteredString("添加服务器", width / 2f, 157, new Color(220, 220, 220, 240).getRGB());
-        GameInstance.regular20.drawString("输入服务器名称", this.width / 2 - 100, 193, new Color(220, 220, 220, 240).getRGB());
-        GameInstance.regular20.drawString("输入服务器IP", this.width / 2 - 100, 234, new Color(220, 220, 220, 240).getRGB());
+        GameInstance.regular20.drawString("输入服务器名称", this.width / 2f - 100, 193, new Color(220, 220, 220, 240).getRGB());
+        GameInstance.regular20.drawString("输入服务器IP", this.width / 2f - 100, 234, new Color(220, 220, 220, 240).getRGB());
 
-        this.serverNameField.draw(this.width / 2 - 100, 206, mouseX, mouseY);
-        this.serverIPField.draw(this.width / 2 - 100, 246, mouseX, mouseY);
+        this.serverNameField.draw(this.width / 2f - 100, 206, mouseX, mouseY);
+        this.serverIPField.draw(this.width / 2f - 100, 246, mouseX, mouseY);
 
         UI_BLOOM_RUNNABLES.forEach(Runnable::run);
         UI_BLOOM_RUNNABLES.clear();

@@ -105,7 +105,7 @@ public class TextField {
         posAnimation.run(textX + offsetX + font.getStringWidth(visibleText.substring(0, (int) cursorOffset)) + 1.2f);
 
         // Text
-        font.drawString(visibleText, textX + 1f, textY, textColorAnim.getOutput().getRGB());
+        font.drawString(visibleText, textX + 1.5f, textY - 1f, textColorAnim.getOutput().getRGB());
 
         // Cursor
         if (focused) {
@@ -273,6 +273,11 @@ public class TextField {
             }
         }
         return null;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+        this.cursorPosition = text.length();
     }
 }
 

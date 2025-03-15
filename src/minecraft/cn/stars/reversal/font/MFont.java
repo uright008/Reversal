@@ -7,7 +7,7 @@ public abstract class MFont {
 
     public abstract int drawStringWithShadow(final String text, final double x, final double y, final int color);
 
-    public abstract int width(String text);
+    public abstract float width(String text);
 
     public float getWidth(String text) { return width(text); }
 

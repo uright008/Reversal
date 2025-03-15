@@ -8,6 +8,7 @@ import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import de.florianmichael.vialoadingbase.ViaLoadingBase;
@@ -43,7 +44,7 @@ public class ViaVersionGui extends AtomicGui {
         if (mouseButton == 0) {
             for (TextButton menuButton : this.buttons) {
                 if (RenderUtil.isHovered(menuButton.getX(), menuButton.getY(), menuButton.getWidth(), menuButton.getHeight(), mouseX, mouseY)) {
-                    mc.getSoundHandler().playButtonPress();
+                    mc.getSoundHandler().playUISound("click");
                     menuButton.runAction();
                     break;
                 }
@@ -121,6 +122,7 @@ public class ViaVersionGui extends AtomicGui {
             RoundedUtil.drawRound(50, 65, width - 100, 25, 3, Color.BLACK);
 
             RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
             FontManager.getRainbowParty(48).drawString("via version", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
@@ -131,6 +133,7 @@ public class ViaVersionGui extends AtomicGui {
         searchField.draw(70, 68, mouseX, mouseY);
 
         RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
+        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
         FontManager.getRainbowParty(48).drawString("via version", 75, 35, Color.WHITE.getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);

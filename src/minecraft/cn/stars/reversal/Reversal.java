@@ -62,7 +62,7 @@ public class Reversal {
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "beta.07";
+    public static final String BUILD_VERSION = "beta.08";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -118,9 +118,9 @@ public class Reversal {
     public static void showMsg(Object msg) {
         if (Minecraft.getMinecraft().thePlayer != null) {
             if (ModuleInstance.getModule(ClientSettings.class).clientMsgCustomName.enabled)
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§7[§b§l" + ThemeUtil.getCustomClientName() + "§r§7] §r" + msg));
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§7[§b§l" + ThemeUtil.getCustomClientName() + "§r§7] §f" + msg));
             else
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§7[§b§l" + NAME + "§r§7] §r" + msg));
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§7[§b§l" + NAME + "§r§7] §f" + msg));
         }
     }
     public static void showCustomMsg(Object msg) {
@@ -211,6 +211,8 @@ public class Reversal {
             VideoUtil.stop();
             VideoManager.loadBackground();
 
+            // Init it here because it causes crashes if it's initialized before the client is fully loaded.
+            // Who knows why?
             FBP.init();
 
         //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
@@ -325,13 +327,14 @@ public class Reversal {
             // Client
             new ClientSettings(),
             new PostProcessing(),
-            new cn.stars.reversal.module.impl.client.Chat(),
             new HurtCam(),
             new Hotbar(),
             new NameTag(),
+            new Interface(),
             new IRC(),
     };
 
+    // TODO: why int??? change it later
     public static int CLIENT_THEME_COLOR = new Color(159, 24, 242).hashCode();
     public static int CLIENT_THEME_COLOR_2 = new Color(159, 24, 242).hashCode();
     public static int CLIENT_THEME_COLOR_BRIGHT = new Color(185, 69, 255).hashCode();
