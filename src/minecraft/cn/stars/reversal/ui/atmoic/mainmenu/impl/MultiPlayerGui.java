@@ -120,7 +120,8 @@ public class MultiPlayerGui extends AtomicGui {
                 ServerData serverdata = ((ServerListEntryNormal)guilistextended$iguilistentry).getServerData();
                 this.selectedServer = new ServerData(serverdata.serverName, serverdata.serverIP, false);
                 this.selectedServer.copyFrom(serverdata);
-                mc.displayGuiScreen(new GuiScreenAddServer(Reversal.atomicMenu, this.selectedServer));
+                AtomicMenu.atomicGuis.set(8, new AddServerGui(this.selectedServer));
+                AtomicMenu.switchGui(8);
             }
         }, "编辑", "", true, 1, 25, 5, 20);
 
@@ -134,7 +135,7 @@ public class MultiPlayerGui extends AtomicGui {
                     String s1 = "'" + s4 + "' " + I18n.format("selectServer.deleteWarning", new Object[0]);
                     String s2 = I18n.format("selectServer.deleteButton", new Object[0]);
                     String s3 = I18n.format("gui.cancel", new Object[0]);
-                    GuiYesNo guiyesno = new GuiYesNo(Reversal.atomicMenu, s, s1, s2, s3, this.serverListSelector.func_148193_k());
+                    GuiYesNo guiyesno = new GuiYesNo(Reversal.atomicMenu, s, s1, s2, s3, this.serverListSelector.getSelectedIndex());
                     mc.displayGuiScreen(guiyesno);
                 }
             }
@@ -150,7 +151,7 @@ public class MultiPlayerGui extends AtomicGui {
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
 
-        this.selectServer(this.serverListSelector.func_148193_k());
+        this.selectServer(this.serverListSelector.getSelectedIndex());
         buttons = new TextButton[] {selectButton, directButton, addButton, editButton, deleteButton, refreshButton, cancelButton, reverseButton};
     }
 
@@ -170,7 +171,7 @@ public class MultiPlayerGui extends AtomicGui {
     public void updateScreen()
     {
         super.updateScreen();
-        guilistextended$iguilistentry = this.serverListSelector.func_148193_k() < 0 ? null : this.serverListSelector.getListEntry(this.serverListSelector.func_148193_k());
+        guilistextended$iguilistentry = this.serverListSelector.getSelectedIndex() < 0 ? null : this.serverListSelector.getListEntry(this.serverListSelector.getSelectedIndex());
         if (this.lanServerList.getWasUpdated())
         {
             List<LanServerDetector.LanServer> list = this.lanServerList.getLanServers();
@@ -204,7 +205,7 @@ public class MultiPlayerGui extends AtomicGui {
     public void confirmClicked(boolean result, int id)
     {
         super.confirmClicked(result, id);
-        GuiListExtended.IGuiListEntry guilistextended$iguilistentry = this.serverListSelector.func_148193_k() < 0 ? null : this.serverListSelector.getListEntry(this.serverListSelector.func_148193_k());
+        GuiListExtended.IGuiListEntry guilistextended$iguilistentry = this.serverListSelector.getSelectedIndex() < 0 ? null : this.serverListSelector.getListEntry(this.serverListSelector.getSelectedIndex());
 
         if (this.deletingServer)
         {
@@ -212,7 +213,7 @@ public class MultiPlayerGui extends AtomicGui {
 
             if (result && guilistextended$iguilistentry instanceof ServerListEntryNormal)
             {
-                this.savedServerList.removeServerData(this.serverListSelector.func_148193_k());
+                this.savedServerList.removeServerData(this.serverListSelector.getSelectedIndex());
                 this.savedServerList.saveServerList();
                 this.serverListSelector.setSelectedSlotIndex(-1);
                 this.serverListSelector.loadInternetServerList(this.savedServerList);
@@ -272,7 +273,7 @@ public class MultiPlayerGui extends AtomicGui {
     @Override
     public void keyTyped(char typedChar, int keyCode)
     {
-        int i = this.serverListSelector.func_148193_k();
+        int i = this.serverListSelector.getSelectedIndex();
         GuiListExtended.IGuiListEntry guilistextended$iguilistentry = i < 0 ? null : this.serverListSelector.getListEntry(i);
         searchField.keyTyped(typedChar, keyCode);
         this.serverListSelector.loadInternetServerList(this.savedServerList);
@@ -292,19 +293,19 @@ public class MultiPlayerGui extends AtomicGui {
                         if (i > 0 && guilistextended$iguilistentry instanceof ServerListEntryNormal)
                         {
                             this.savedServerList.swapServers(i, i - 1);
-                            this.selectServer(this.serverListSelector.func_148193_k() - 1);
+                            this.selectServer(this.serverListSelector.getSelectedIndex() - 1);
                             this.serverListSelector.scrollBy(-this.serverListSelector.getSlotHeight());
                             this.serverListSelector.loadInternetServerList(this.savedServerList);
                         }
                     }
                     else if (i > 0)
                     {
-                        this.selectServer(this.serverListSelector.func_148193_k() - 1);
+                        this.selectServer(this.serverListSelector.getSelectedIndex() - 1);
                         this.serverListSelector.scrollBy(-this.serverListSelector.getSlotHeight());
 
-                        if (this.serverListSelector.getListEntry(this.serverListSelector.func_148193_k()) instanceof ServerListEntryLanScan)
+                        if (this.serverListSelector.getListEntry(this.serverListSelector.getSelectedIndex()) instanceof ServerListEntryLanScan)
                         {
-                            if (this.serverListSelector.func_148193_k() > 0)
+                            if (this.serverListSelector.getSelectedIndex() > 0)
                             {
                                 this.selectServer(this.serverListSelector.getSize() - 1);
                                 this.serverListSelector.scrollBy(-this.serverListSelector.getSlotHeight());
@@ -334,12 +335,12 @@ public class MultiPlayerGui extends AtomicGui {
                     }
                     else if (i < this.serverListSelector.getSize())
                     {
-                        this.selectServer(this.serverListSelector.func_148193_k() + 1);
+                        this.selectServer(this.serverListSelector.getSelectedIndex() + 1);
                         this.serverListSelector.scrollBy(this.serverListSelector.getSlotHeight());
 
-                        if (this.serverListSelector.getListEntry(this.serverListSelector.func_148193_k()) instanceof ServerListEntryLanScan)
+                        if (this.serverListSelector.getListEntry(this.serverListSelector.getSelectedIndex()) instanceof ServerListEntryLanScan)
                         {
-                            if (this.serverListSelector.func_148193_k() < this.serverListSelector.getSize() - 1)
+                            if (this.serverListSelector.getSelectedIndex() < this.serverListSelector.getSize() - 1)
                             {
                                 this.selectServer(this.serverListSelector.getSize() + 1);
                                 this.serverListSelector.scrollBy(this.serverListSelector.getSlotHeight());
@@ -358,10 +359,6 @@ public class MultiPlayerGui extends AtomicGui {
                 else if (keyCode != 28 && keyCode != 156)
                 {
                     super.keyTyped(typedChar, keyCode);
-                }
-                else
-                {
-                    this.actionPerformed(this.buttonList.get(2));
                 }
             }
             else
@@ -422,7 +419,7 @@ public class MultiPlayerGui extends AtomicGui {
 
     public void connectToSelected()
     {
-        GuiListExtended.IGuiListEntry guilistextended$iguilistentry = this.serverListSelector.func_148193_k() < 0 ? null : this.serverListSelector.getListEntry(this.serverListSelector.func_148193_k());
+        GuiListExtended.IGuiListEntry guilistextended$iguilistentry = this.serverListSelector.getSelectedIndex() < 0 ? null : this.serverListSelector.getListEntry(this.serverListSelector.getSelectedIndex());
 
         if (guilistextended$iguilistentry instanceof ServerListEntryNormal)
         {
@@ -512,7 +509,7 @@ public class MultiPlayerGui extends AtomicGui {
         int i = p_175391_3_ ? 0 : p_175391_2_ - 1;
         this.savedServerList.swapServers(p_175391_2_, i);
 
-        if (this.serverListSelector.func_148193_k() == p_175391_2_)
+        if (this.serverListSelector.getSelectedIndex() == p_175391_2_)
         {
             this.selectServer(i);
         }
@@ -525,7 +522,7 @@ public class MultiPlayerGui extends AtomicGui {
         int i = p_175393_3_ ? this.savedServerList.countServers() - 1 : p_175393_2_ + 1;
         this.savedServerList.swapServers(p_175393_2_, i);
 
-        if (this.serverListSelector.func_148193_k() == p_175393_2_)
+        if (this.serverListSelector.getSelectedIndex() == p_175393_2_)
         {
             this.selectServer(i);
         }

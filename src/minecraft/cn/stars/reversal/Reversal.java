@@ -61,8 +61,8 @@ public class Reversal {
     public static final String VERSION = "v2.0.0";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
-    public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "beta.08";
+    public static final Branch BRANCH = Branch.PRE_RELEASE;
+    public static final String BUILD_VERSION = "Release Candidate 2";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -92,10 +92,8 @@ public class Reversal {
             RainyAPI.loadAPI(true);
 
             // ViaMCP init
-            if (!RainyAPI.isViaCompatibility) {
-                ViaMCP.create();
-                ViaMCP.INSTANCE.initAsyncSlider();
-            }
+            ViaMCP.create();
+            ViaMCP.INSTANCE.initAsyncSlider();
 
             initialize();
 
@@ -168,7 +166,7 @@ public class Reversal {
 
             guiTheme = new GuiTheme();
             modernClickGUI = new ModernClickGUI();
-            mmtClickGUI = new MMTClickGUI();
+        //    mmtClickGUI = new MMTClickGUI();
             atomicMenu = new AtomicMenu();
 
             creativeTab = new ReversalTab();
@@ -245,6 +243,7 @@ public class Reversal {
             new Config(),
             new Help(),
             new Name(),
+            new Online(),
             new Say(),
             new SetText(),
             new Toggle()

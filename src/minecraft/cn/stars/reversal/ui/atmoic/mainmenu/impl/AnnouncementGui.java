@@ -18,6 +18,7 @@ import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -160,37 +161,45 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement4 = new Announcement("Reversal 2.0.0+beta.08", "2025/3/15", 3)
-                .addContent("由于时间紧没写更新日志")
-                .addContent("请自行查看更新内容")
-                .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Update Log - Reversal 2.0.0+beta.07", "2025/3/11", 1)
-                .addContent("[+] 完全重写语言系统 支持中英双语 仍在完善")
-                .addContent("[+] 新增随机标题")
-                .addContent("[+] 新增高级UI音效")
-                .addContent("[/] 修改粗体字体为MiSans (原来的太粗了)")
-                .addContent("[/] 修改部分功能的名称")
-                .addContent("[/] 优化部分指令的用法")
-                .addContent("[/] 优化原版语言系统")
-                .addContent("[/] 优化语言加载速度(秒加载)")
-                .addContent("[/] 优化HUD调用方式,调整部分位置")
-                .addContent("[/] 优化主界面")
+        Announcement announcement2 = new Announcement("Reversal 2.0.0+Release Candidate 2", "2025/3/22", 1)
+                .addContent("[*] 修复打开ClickGUI崩溃")
+                .addContent("[*] 修复打开音乐播放器崩溃")
+                .addContent("[*] 修复Optifine导致的未知崩溃")
+                .addContent("[*] 修复主界面设置界面拉条异常")
+                .addContent("[*] 修复部分主界面的字在某些分辨率下会超出屏幕")
+                .addContent("[*] 修复跨版本修复在聊天栏刷屏")
+                .addContent("[-] 删除DisableViaMCP选项")
+                .addContent("[-] 删除MainMenuDate选项")
                 .addContent("[/] 优化性能")
-                .addContent("[*] 修复主界面头像获取导致严重卡顿")
-                .addContent("[*] 修复指令一些bug")
                 .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Update Log - Reversal 2.0.0+beta.06", "2025/3/5", 2)
-                .addContent("[+] 并入Phosphor 大幅优化性能")
-                .addContent("[+] PostProcessing新增Impact GUIs选项,允许关闭主界面的后处理效果")
-                .addContent("[+] ClientSettings新增Client Message Custom Name,允许聊天栏信息显示自定义客户端名称")
-                .addContent("[/] 优化部分命令的逻辑和提示")
-                .addContent("[/] 优化Hud性能和展示效果")
-                .addContent("[/] 优化代码逻辑")
-                .addContent("[*] 修复字体渲染器的一个潜在问题")
+        Announcement announcement3 = new Announcement("Reversal 2.0.0+Release Candidate", "2025/3/21", 2)
+                .addContent("[*] 修复编辑服务器界面 IP地址为空")
+                .addContent("[*] 修复Chunk.hasEntities错误;删除reflect获取")
+                .addContent("[*] 修复IRC发送消息,接收消息,重连导致的崩溃")
+                .addContent("[*] 修复掉线界面导致的崩溃")
+                .addContent("[*] 修复死亡界面按钮消失")
+                .addContent("[*] 修复聊天栏高级字体导致的崩溃")
+                .addContent("[*] 修复HUD的字体位置不正确")
+                .addContent("[*] 修复部分字体出现裂缝;位置不正确")
+                .addContent("[*] 修复音乐播放器部分情况下无法改变音乐")
+                .addContent("[*] 修复Shader3DEvent可能被错误触发")
+                .addContent("[*] 修复视频背景可能导致的崩溃")
+                .addContent("[*] 修复聊天栏Component无法触发")
+                .addContent("[*] 修复主界面动画异常")
+                .addContent("[*] 修复材质包载入异常")
+                .addContent("[*] 修复ClickGui的字位置异常")
+                .addContent("[*] 修复我的伤口")
+                .addContent("[+] 新增随机标题")
+                .addContent("[+] 音乐播放器新增单曲播放,随机播放 (展开MusicPlayer功能)")
+                .addContent("[+] 新增ClickGui自定义颜色,新增后处理")
+                .addContent("[+] 新增新的崩溃处理机制")
+                .addContent("[+] 新增online指令,查看IRC在线的玩家")
+                .addContent("[+] 新增F3按键指令的一些提示")
+                .addContent("[+] 新增HopeEngine 完全重写原版启动&退出过程")
+                .addContent("[/] 优化启动速度")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);
-        announcements.add(announcement4);
         announcements.add(announcement2);
         announcements.add(announcement3);
 

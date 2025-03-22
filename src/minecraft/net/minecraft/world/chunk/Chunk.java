@@ -57,7 +57,7 @@ public class Chunk
     private boolean isLightPopulated;
     private boolean field_150815_m;
     private boolean isModified;
-    private boolean hasEntities;
+    public boolean hasEntities;
     private long lastSaveTime;
     private int heightMapMinimum;
     private long inhabitedTime;

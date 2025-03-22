@@ -20,6 +20,7 @@ command.Help.1=所有可用的指令:
 command.Name.success=成功设置玩家名称: '%s'.
 command.SetText.success=成功设置自定义文本: '%s'.
 command.Toggle.success=成功将功能 '%s' 状态切换至 '%b'.
+command.Online.current=当前IRC在线的用户 (%s):
 
 module.FreeLook.tip=绑定自由视角至一个按键即可使用!
 module.MoBends.msg=飘扬皮肤和真实第一人称与更多动作冲突.
@@ -44,8 +45,11 @@ module.FreeLook.name=自由视角
 module.FreeLook.desc=自由地观看四周.
 module.MoBends.name=更多动作
 module.MoBends.desc=为玩家和生物添加真实的动作.
+
 module.MusicPlayer.name=音乐播放器
 module.MusicPlayer.desc=游戏内网易云音乐播放器.
+value.MusicPlayer.playMode=播放模式
+
 module.RealFirstPerson.name=真实第一人称
 module.RealFirstPerson.desc=真实的第一人称视角.
 module.SkinLayers3D.name=3D皮肤层
@@ -54,9 +58,6 @@ module.WaveyCapes.name=飘扬披风
 module.WaveyCapes.desc=让披风在风中摇摆~
 
 # Client
-module.Chat.name=聊天栏
-module.Chat.desc=聊天栏相关功能.
-
 module.ClientSettings.name=客户端设置
 module.ClientSettings.desc=控制游戏的整体设置.
 value.ClientSettings.note1=< 颜色设置 >
@@ -84,6 +85,17 @@ module.Hotbar.name=快捷栏
 module.Hotbar.desc=快捷栏相关功能.
 module.HurtCam.name=受伤视角
 module.HurtCam.desc=受伤视角相关功能.
+
+module.Interface.name=界面设置
+module.Interface.desc=我的世界界面相关功能.
+value.Interface.note1=< 标题和副标题 >
+value.Interface.modernFont_T_S=高级字体
+value.Interface.yOffset=Y调整
+value.Interface.note2=< 聊天 >
+value.Interface.modernFont_Chat=高级字体
+value.Interface.chatBackground=背景
+value.Interface.combineDuplicatedMsg=合并重复的消息
+
 module.IRC.name=聊天频道
 module.IRC.desc=Reversal的聊天频道.
 module.NameTag.name=名称标签

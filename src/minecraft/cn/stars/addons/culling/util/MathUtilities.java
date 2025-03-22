@@ -1,4 +1,6 @@
-package com.logisticscraft.occlusionculling.util;
+package cn.stars.addons.culling.util;
+
+import net.minecraft.util.MathHelper;
 
 /**
  * Contains MathHelper methods
@@ -9,8 +11,7 @@ public final class MathUtilities {
     }
 
     public static int floor(double d) {
-        int i = (int) d;
-        return d < (double) i ? i - 1 : i;
+        return MathHelper.floor_double(d);
     }
 
     public static int fastFloor(double d) {
@@ -18,8 +19,7 @@ public final class MathUtilities {
     }
 
     public static int ceil(double d) {
-        int i = (int) d;
-        return d > (double) i ? i + 1 : i;
+        return MathHelper.ceiling_double_int(d);
     }
 
 }

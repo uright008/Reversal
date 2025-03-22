@@ -1,4 +1,4 @@
-package com.logisticscraft.occlusionculling.util;
+package cn.stars.addons.culling.util;
 
 public class Vec3d {
 

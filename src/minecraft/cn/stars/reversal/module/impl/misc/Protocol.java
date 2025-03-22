@@ -33,11 +33,6 @@ public class Protocol extends Module {
 
     @Override
     public void onUpdateAlways() {
-        if (RainyAPI.isViaCompatibility) {
-            Reversal.showMsg("已禁用跨版本,无法使用该功能");
-            setEnabled(false);
-            return;
-        }
         if (ViaLoadingBase.getInstance().getTargetVersion().getVersion() == ViaLoadingBase.getInstance().getNativeVersion() && this.enabled) {
             Reversal.showMsg("未进行跨版本,无法使用该功能");
             setEnabled(false);

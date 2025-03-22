@@ -13,7 +13,7 @@ public class FastTrig
 
     private static final float[] atan2 = new float[ATAN2_COUNT];
 
-    public static void init() {
+    static  {
         for (int i = 0; i < ATAN2_DIM; i++)
         {
             for (int j = 0; j < ATAN2_DIM; j++)

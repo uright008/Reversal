@@ -105,6 +105,8 @@ public class MusicPlayerScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (windowAnim.finished(Direction.BACKWARDS)) mc.displayGuiScreen(null);
 
+        if (currentGUI == null) currentGUI = categoryButtons.get(0).getGui();
+
         // Drag
         if (dragging) {
             x += mouseX - dragX;

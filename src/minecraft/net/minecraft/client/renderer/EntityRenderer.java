@@ -11,7 +11,10 @@ import cn.stars.reversal.module.impl.misc.Protocol;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.module.impl.client.HurtCam;
 import cn.stars.reversal.module.impl.world.TimeTraveller;
+import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.blur.KawaseBloom;
 import cn.stars.reversal.util.render.particle.ParticleManager;
 import cn.stars.reversal.util.wrapper.WrapperFreeLook;
 import com.google.common.base.Predicates;
@@ -47,6 +50,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.client.shader.ShaderLinkHelper;
 import net.minecraft.crash.CrashReport;
@@ -451,10 +455,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                     if (d3 < d2 || d2 == 0.0D) {
                         boolean flag1 = false;
-
-                        if (Reflector.ForgeEntity_canRiderInteract.exists()) {
-                            flag1 = Reflector.callBoolean(entity1, Reflector.ForgeEntity_canRiderInteract, new Object[0]);
-                        }
 
                         if (!flag1 && entity1 == entity.ridingEntity) {
                             if (d2 == 0.0D) {
@@ -1333,7 +1333,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                     if (this.mc.playerController.getCurrentGameType() == WorldSettings.GameType.SPECTATOR)
                     {
-                        flag = ReflectorForge.blockHasTileEntity(iblockstate) && this.mc.theWorld.getTileEntity(blockpos) instanceof IInventory;
+                        flag = block.hasTileEntity() && this.mc.theWorld.getTileEntity(blockpos) instanceof IInventory;
                     }
                     else
                     {

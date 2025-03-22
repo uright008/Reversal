@@ -150,7 +150,7 @@ public class CustomColors
         public int getColor(IBlockState blockState, IBlockAccess blockAccess, BlockPos blockPos)
         {
             BiomeGenBase biomegenbase = CustomColors.getColorBiome(blockAccess, blockPos);
-            return CustomColors.waterColors != null ? CustomColors.waterColors.getColor(biomegenbase, blockPos) : (Reflector.ForgeBiome_getWaterColorMultiplier.exists() ? Reflector.callInt(biomegenbase, Reflector.ForgeBiome_getWaterColorMultiplier, new Object[0]) : biomegenbase.waterColorMultiplier);
+            return CustomColors.waterColors != null ? CustomColors.waterColors.getColor(biomegenbase, blockPos) : biomegenbase.waterColorMultiplier;
         }
         public boolean isColorConstant()
         {
@@ -586,17 +586,14 @@ public class CustomColors
 
         if (aint != null && aint.length > 0)
         {
-            for (int i = 0; i < aint.length; ++i)
-            {
-                int j = aint[i];
-
-                if (j < 0)
-                {
+            for (int j : aint) {
+                if (j < 0) {
                     warn("Invalid block ID: " + j);
-                }
-                else
-                {
-                    addToList(cm, blockList, j);
+                } else {
+                    try {
+                        addToList(cm, blockList, j);
+                    } catch (ArrayIndexOutOfBoundsException ignored) {
+                    }
                 }
             }
         }

@@ -1,6 +1,6 @@
-package com.logisticscraft.occlusionculling;
+package cn.stars.addons.culling;
 
-import com.logisticscraft.occlusionculling.util.Vec3d;
+import cn.stars.addons.culling.util.Vec3d;
 
 public interface DataProvider {
 

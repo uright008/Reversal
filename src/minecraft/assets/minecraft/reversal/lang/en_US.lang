@@ -20,6 +20,7 @@ command.Help.1=All available commands:
 command.Name.success=Successfully set the name: '%s'.
 command.SetText.success=Successfully set the custom text: '%s'.
 command.Toggle.success=Successfully toggled module '%s' to '%b'.
+command.Online.current=Current IRC online users (%s):
 
 module.FreeLook.msg=Bind FreeLook to a key to use!
 module.MoBends.msg=WaveyCapes and RealFirstPerson are not supported by MoBends.
@@ -44,8 +45,11 @@ module.FreeLook.name=Free Look
 module.FreeLook.desc=Look around freely.
 module.MoBends.name=Mo Bends
 module.MoBends.desc=Adds realistic animations to players and mobs.
+
 module.MusicPlayer.name=Music Player
 module.MusicPlayer.desc=In-game Netease Music Player.
+value.MusicPlayer.playMode=Play Mode
+
 module.RealFirstPerson.name=Real First Person
 module.RealFirstPerson.desc=Realistic first person view.
 module.SkinLayers3D.name=3D Skin Layers
@@ -54,9 +58,6 @@ module.WaveyCapes.name=Wavey Capes
 module.WaveyCapes.desc=Make capes wave in the wind.
 
 # Client
-module.Chat.name=Chat
-module.Chat.desc=Chat-related features.
-
 module.ClientSettings.name=Client Settings
 module.ClientSettings.desc=Settings which controls the whole game.
 value.ClientSettings.note1=< Color Settings >
@@ -80,11 +81,21 @@ value.ClientSettings.note4=< Minecraft Settings >
 value.ClientSettings.loadingScreenBg=Loading Screen Background
 value.ClientSettings.rawInput=Raw Input
 
-
 module.Hotbar.name=Hotbar
 module.Hotbar.desc=Hotbar-related features.
 module.HurtCam.name=Hurt Camera
 module.HurtCam.desc=Hurt Camera-related features.
+
+module.Interface.name=Interface
+module.Interface.desc=Minecraft interface-related features.
+value.Interface.note1=< Title and Subtitle >
+value.Interface.modernFont_T_S=Modern Font
+value.Interface.yOffset=Y Offset
+value.Interface.note2=< Chat >
+value.Interface.modernFont_Chat=Modern Font
+value.Interface.chatBackground=Background
+value.Interface.combineDuplicatedMsg=Combine Duplicated Messages
+
 module.IRC.name=IRC
 module.IRC.desc=Reversal IRC which allows communication between users.
 module.NameTag.name=Name Tag

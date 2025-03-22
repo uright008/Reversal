@@ -53,6 +53,7 @@ public class AddServerGui extends MiscGui {
         this.serverNameField.setText(this.serverData.serverName);
         this.serverIPField = new TextField(200, 20, GameInstance.regular16, new Color(30, 30, 30, 100), new Color(30,30,30,120));
         this.serverIPField.setSelectedLine(true);
+        this.serverIPField.setText(this.serverData.serverIP);
         buttons = new TextButton[] {addButton, cancelButton};
     }
 

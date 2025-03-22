@@ -2,9 +2,6 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
-import cn.stars.reversal.ui.modern.TextButton;
-import cn.stars.reversal.ui.gui.GuiReversalSettings;
-import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.audio.SoundEventAccessorComposite;
@@ -24,7 +21,6 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
     private GuiButton field_175357_i;
     private GuiLockIconButton field_175356_r;
     protected String field_146442_a = "Options";
-    TextButton reversalSettings;
 
     public GuiOptions(GuiScreen p_i1046_1_, GameSettings p_i1046_2_)
     {
@@ -41,8 +37,6 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
     public void initGui()
     {
         super.initGui();
-        reversalSettings = new TextButton(10, 10, 120, 35, () -> mc.displayGuiScreen(new GuiReversalSettings(this)),
-                "Reversal设置", "e", true, 12, 30, 11);
         int i = 0;
         this.field_146442_a = I18n.format("options.title");
 
@@ -144,7 +138,6 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
                 }
             }
         }
-        if (mc.theWorld == null) UIUtil.onButtonClick(new TextButton[] {reversalSettings}, mouseX, mouseY, mouseButton);
     }
 
     protected void actionPerformed(GuiButton button) throws IOException
@@ -233,14 +226,7 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-
-        if (mc.theWorld == null) {
-            updatePostProcessing(true, partialTicks);
-            reversalSettings.draw(mouseX, mouseY, partialTicks);
-        }
-
         this.drawCenteredString(this.fontRendererObj, this.field_146442_a, this.width / 2, 15, 16777215);
-        updatePostProcessing(false, partialTicks);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

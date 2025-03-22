@@ -16,15 +16,15 @@ import net.minecraft.client.shader.Framebuffer;
 public class PostProcessing extends Module
 {
     public final BoolValue blur = new BoolValue("Blur", this, true);
-    private final NumberValue iterations = new NumberValue("Blur Iterations", this, 2, 1, 8, 1);
-    private final NumberValue offset = new NumberValue("Blur Offset", this, 2, 1, 10, 1);
+    public final NumberValue iterations = new NumberValue("Blur Iterations", this, 2, 1, 8, 1);
+    public final NumberValue offset = new NumberValue("Blur Offset", this, 2, 1, 10, 1);
     public final BoolValue bloom = new BoolValue("Bloom", this, true);
-    private final NumberValue shadowRadius = new NumberValue("Bloom Iterations", this, 2, 1, 8, 1);
-    private final NumberValue shadowOffset = new NumberValue("Bloom Offset", this, 1, 1, 10, 1);
+    public final NumberValue shadowRadius = new NumberValue("Bloom Iterations", this, 2, 1, 8, 1);
+    public final NumberValue shadowOffset = new NumberValue("Bloom Offset", this, 1, 1, 10, 1);
     public final BoolValue postBloom = new BoolValue("Post Bloom", this, false);
     public final BoolValue impactGUIs = new BoolValue("Impact GUIs", this, true);
 
-    private Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
+    public Framebuffer stencilFramebuffer = new Framebuffer(1, 1, false);
 
     public PostProcessing() {
         setWidth(0);
@@ -87,8 +87,6 @@ public class PostProcessing extends Module
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);
 
-            Shader3DEvent event = new Shader3DEvent(true);
-            event.call();
             doBloomPost();
 
             stencilFramebuffer.unbindFramebuffer();
@@ -98,16 +96,19 @@ public class PostProcessing extends Module
     }
 
     public void drawElementWithBlur(Runnable runnable) {
+        if (runnable == null) return;
         if (mc.theWorld != null) drawElementWithBlur(runnable, (int) iterations.getValue(), (int) offset.getValue());
         else drawElementWithBlur(runnable, 2, 2);
     }
 
     public void drawElementWithBloom(Runnable runnable) {
+        if (runnable == null) return;
         if (mc.theWorld != null) drawElementWithBloom(runnable, (int) shadowRadius.getValue(), (int) shadowOffset.getValue());
         else drawElementWithBloom(runnable, 2, 2);
     }
 
     public void drawElementWithBlur(Runnable runnable, int iterations, int offset) {
+        if (runnable == null) return;
         if (!impactGUIs.enabled) return;
         stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
         stencilFramebuffer.framebufferClear();
@@ -118,6 +119,7 @@ public class PostProcessing extends Module
     }
 
     public void drawElementWithBloom(Runnable runnable, int radius, int offset) {
+        if (runnable == null) return;
         if (!impactGUIs.enabled) return;
         stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
         stencilFramebuffer.framebufferClear();

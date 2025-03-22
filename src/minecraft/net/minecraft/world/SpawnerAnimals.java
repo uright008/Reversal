@@ -270,10 +270,8 @@ public final class SpawnerAnimals
             else
             {
                 BlockPos blockpos = pos.down();
-                IBlockState iblockstate = worldIn.getBlockState(blockpos);
-                boolean flag = Reflector.ForgeBlock_canCreatureSpawn.exists() ? Reflector.callBoolean(iblockstate.getBlock(), Reflector.ForgeBlock_canCreatureSpawn, new Object[] {worldIn, blockpos, spawnPlacementTypeIn}): World.doesBlockHaveSolidTopSurface(worldIn, blockpos);
 
-                if (!flag)
+                if (!World.doesBlockHaveSolidTopSurface(worldIn, blockpos))
                 {
                     return false;
                 }

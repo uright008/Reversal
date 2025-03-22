@@ -112,17 +112,12 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         regular32.drawString("Reversal", this.width - 280, 14, new Color(220, 220, 220, 240).getRGB());
         regular32.drawString("Announcements™", this.width - 250, 31, new Color(220, 220, 220, 240).getRGB());
         regular16.drawString(Reversal.VERSION + " " + Branch.getBranchName(Reversal.BRANCH), this.width - 290, 400, new Color(220, 220, 220, 240).getRGB());
-        RenderUtil.image(new ResourceLocation("reversal/images/1.png"), this.width - 280, 70, 240, 160);
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
         // MainMenu
         RenderUtil.rect(0, 0, 230, height, new Color(0, 0, 0, 50));
         RenderUtil.rect(230, 0, 0.5, height, new Color(220, 220, 220, 240));
-        if (RainyAPI.mainMenuDate) {
-            FontManager.getRainbowParty(96).drawCenteredString(LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH), width / 2f, 20, new Color(250,250,250,250).getRGB());
-            FontManager.getRainbowParty(48).drawCenteredString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")), width / 2f, 72, new Color(250,250,250,250).getRGB());
-        }
         FontManager.getRegular(56).drawCenteredString(Reversal.NAME.toUpperCase(), 100, height / 6f + 18, new Color(250,250,250,250).getRGB());
         FontManager.getRegular(32).drawCenteredString(Reversal.VERSION, 170, height / 6f + 42, new Color(220,220,220,150).getRGB());
 

@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import cn.stars.reversal.util.ReversalLogger;
-import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
-import com.logisticscraft.occlusionculling.util.Vec3d;
+import cn.stars.addons.culling.OcclusionCullingInstance;
+import cn.stars.addons.culling.util.Vec3d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;

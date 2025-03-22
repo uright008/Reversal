@@ -41,7 +41,8 @@ public class ModernFontRenderer extends MFont {
     private final FontCharacter[] defaultCharacters = new FontCharacter[LATIN_MAX_AMOUNT];
     private final FontCharacter[] internationalCharacters = new FontCharacter[INTERNATIONAL_MAX_AMOUNT];
     private final FontCharacter[] boldCharacters = new FontCharacter[LATIN_MAX_AMOUNT];
-    private boolean antialiasing = true, international = false;
+    private final boolean antialiasing;
+    private final boolean international;
 
     public ModernFontRenderer(java.awt.Font font, boolean fractionalMetrics, boolean antialiasing, boolean international) {
         this.antialiasing = antialiasing;
@@ -380,7 +381,49 @@ public class ModernFontRenderer extends MFont {
         return (int) (x - givenX);
     }
 
-    public float width(String text) {
+    public int width(String text) {
+        if (text == null || text.isEmpty()) return 0;
+        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");;
+
+        if (!this.international && this.requiresInternationalFont(text)) {
+            return FontManager.getRegular(this.font.getSize() - 1).width(text);
+        }
+
+        final FontCharacter[] characterSet = this.international ? internationalCharacters : defaultCharacters;
+        final int length = text.length();
+        float width = 0;
+
+        for (int i = 0; i < length; ++i) {
+            final char character = text.charAt(i);
+
+            if (this.international) {
+                if (internationalCharacters[character] == null)
+                    fillCharacters(character, java.awt.Font.PLAIN);
+            } else {
+                if (defaultCharacters[character] == null)
+                    fillCharacters(defaultCharacters, java.awt.Font.PLAIN);
+            }
+//            if (previousCharacter != COLOR_INVOKER) {
+//                if (character == COLOR_INVOKER) {
+//                    final int index = COLOR_CODE_CHARACTERS.indexOf(text.toLowerCase().charAt(i + 1));
+//                    if (index < 16 || index == 21) {
+//                        characterSet = defaultCharacters;
+//                    } else if (index == 17) {
+//                        characterSet = boldCharacters;
+//                    }
+//                } else if (characterSet.length > character) {
+//                    width += characterSet[character].getWidth() - MARGIN_WIDTH * 2;
+//                }
+//            }
+            if (!(character == '§' && text.length() > i + 1) && !(i > 0 && text.charAt(i - 1) == '§')) {
+                width += characterSet[character].getWidth() - MARGIN_WIDTH * 2f;
+            }
+        }
+
+        return (int) (width / 2);
+    }
+
+    public float getWidth(String text) {
         if (text == null || text.isEmpty()) return 0;
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");;
 

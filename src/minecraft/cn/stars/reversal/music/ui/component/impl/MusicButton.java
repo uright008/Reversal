@@ -2,6 +2,7 @@ package cn.stars.reversal.music.ui.component.impl;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.music.api.player.MusicPlayer;
 import cn.stars.reversal.music.thread.ChangeMusicThread;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.music.ui.component.Button;
@@ -46,7 +47,7 @@ public class MusicButton extends Button implements GameInstance {
         if (texture == null) {
             try {
                 texture = new DynamicTexture(ImageIO.read(music.getCoverImage()));
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         try {
@@ -56,7 +57,7 @@ public class MusicButton extends Button implements GameInstance {
 
             regular16.drawString(regular16.trimStringToWidth(music.getName(), 124f, false, true), textX + 30f, textY + 2f, music.isFree() ? Color.WHITE.getRGB() : ThemeColor.redColor.getRGB());
             regular16.drawString(regular16.trimStringToWidth(music.getArtist(), 124f, false, true), textX + 30f, textY + 11f, ThemeColor.greyColor.getRGB());
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 
@@ -74,12 +75,13 @@ public class MusicButton extends Button implements GameInstance {
         regular16.drawString(timeFormatted, textX + 280f, textY + 7f, ThemeColor.greyColor.getRGB());
     }
 
-    private TimerUtil clickTimer = new TimerUtil();
+    private final TimerUtil clickTimer = new TimerUtil();
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
         if (hovering && button == 0) {
-            if (!clickTimer.hasTimeElapsed(1500)) {
+            if (!clickTimer.hasTimeElapsed(1000)) {
+                MusicPlayer.randomPlayedIndex.clear();
                 Reversal.threadPoolExecutor.submit(new ChangeMusicThread(music, playList));
             }
             clickTimer.reset();

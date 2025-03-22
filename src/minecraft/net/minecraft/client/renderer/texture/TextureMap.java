@@ -140,7 +140,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
 
     public void loadTextureAtlas(IResourceManager resourceManager)
     {
-        Config.dbg("Multitexture: " + Config.isMultiTexture());
+        Config.dbg("MultiTexture: " + Config.isMultiTexture());
 
         if (Config.isMultiTexture())
         {
@@ -158,7 +158,6 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
         this.mapUploadedSprites.clear();
         this.listAnimatedSprites.clear();
         int i = Integer.MAX_VALUE;
-        Reflector.callVoid(Reflector.ForgeHooksClient_onTextureStitchedPre, new Object[] {this});
         int j = this.getMinSpriteSize();
         this.iconGridSize = j;
         int k = 1 << this.mipmapLevels;
@@ -174,7 +173,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
 
                 if (!this.skipFirst)
                 {
-                    TextureAtlasSprite textureatlassprite3 = (TextureAtlasSprite)entry.getValue();
+                    TextureAtlasSprite textureatlassprite3 = entry.getValue();
                     ResourceLocation resourcelocation1 = new ResourceLocation(textureatlassprite3.getIconName());
                     ResourceLocation resourcelocation2 = this.completeResourceLocation(resourcelocation1, 0);
                     textureatlassprite3.updateIndexInMap(this.counterIndexInMap);
@@ -228,28 +227,15 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                             }
                         }
 
-                        TextureMetadataSection texturemetadatasection = (TextureMetadataSection)iresource.getMetadata("texture");
+                        TextureMetadataSection texturemetadatasection = iresource.getMetadata("texture");
 
                         if (texturemetadatasection != null)
                         {
-                            List<Integer> list1 = texturemetadatasection.getListMipmaps();
-
-                            if (!list1.isEmpty())
-                            {
-                                int k1 = abufferedimage[0].getWidth();
-                                int l1 = abufferedimage[0].getHeight();
-
-                                if (MathHelper.roundUpToPowerOfTwo(k1) != k1 || MathHelper.roundUpToPowerOfTwo(l1) != l1)
-                                {
-                                    throw new RuntimeException("Unable to load extra miplevels, source-texture is not power of two");
-                                }
-                            }
-
-                            Iterator iterator1 = list1.iterator();
+                            Iterator iterator1 = getIterator(texturemetadatasection, abufferedimage);
 
                             while (iterator1.hasNext())
                             {
-                                int j4 = ((Integer)iterator1.next()).intValue();
+                                int j4 = (Integer) iterator1.next();
 
                                 if (j4 > 0 && j4 < abufferedimage.length - 1 && abufferedimage[j4] == null)
                                 {
@@ -261,25 +247,23 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                                     }
                                     catch (IOException ioexception)
                                     {
-                                        logger.error("Unable to load miplevel {} from: {}", new Object[] {Integer.valueOf(j4), resourcelocation, ioexception});
+                                        logger.error("Unable to load miplevel {} from: {}", j4, resourcelocation, ioexception);
                                     }
                                 }
                             }
                         }
 
-                        AnimationMetadataSection animationmetadatasection = (AnimationMetadataSection)iresource.getMetadata("animation");
+                        AnimationMetadataSection animationmetadatasection = iresource.getMetadata("animation");
                         textureatlassprite3.loadSprite(abufferedimage, animationmetadatasection);
                     }
                     catch (RuntimeException runtimeexception)
                     {
-                        logger.error((String)("Unable to parse metadata from " + resourcelocation2), (Throwable)runtimeexception);
-                        ReflectorForge.FMLClientHandler_trackBrokenTexture(resourcelocation2, runtimeexception.getMessage());
+                        logger.error((String)("Unable to parse metadata from " + resourcelocation2), runtimeexception);
                         continue;
                     }
                     catch (IOException ioexception1)
                     {
-                        logger.error("Using missing texture, unable to load " + resourcelocation2 + ", " + ioexception1.getClass().getName());
-                        ReflectorForge.FMLClientHandler_trackMissingTexture(resourcelocation2);
+                        logger.error("Using missing texture, unable to load {}, {}", resourcelocation2, ioexception1.getClass().getName());
                         continue;
                     }
 
@@ -375,7 +359,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                 throw stitcherexception;
             }
 
-            logger.info("Created: {}x{} {}-atlas", new Object[] {Integer.valueOf(stitcher.getCurrentWidth()), Integer.valueOf(stitcher.getCurrentHeight()), this.basePath});
+            logger.info("Created: {}x{} {}-atlas", stitcher.getCurrentWidth(), stitcher.getCurrentHeight(), this.basePath);
 
             if (Config.isShaders())
             {
@@ -487,6 +471,24 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
 
             return;
         }
+    }
+
+    private static Iterator getIterator(TextureMetadataSection texturemetadatasection, BufferedImage[] abufferedimage) {
+        List<Integer> list1 = texturemetadatasection.getListMipmaps();
+
+        if (!list1.isEmpty())
+        {
+            int k1 = abufferedimage[0].getWidth();
+            int l1 = abufferedimage[0].getHeight();
+
+            if (MathHelper.roundUpToPowerOfTwo(k1) != k1 || MathHelper.roundUpToPowerOfTwo(l1) != l1)
+            {
+                throw new RuntimeException("Unable to load extra miplevels, source-texture is not power of two");
+            }
+        }
+
+        Iterator iterator1 = list1.iterator();
+        return iterator1;
     }
 
     public ResourceLocation completeResourceLocation(ResourceLocation p_completeResourceLocation_1_)

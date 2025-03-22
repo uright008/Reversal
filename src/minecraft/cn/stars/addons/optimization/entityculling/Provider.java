@@ -1,6 +1,6 @@
 package cn.stars.addons.optimization.entityculling;
 
-import com.logisticscraft.occlusionculling.DataProvider;
+import cn.stars.addons.culling.DataProvider;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;

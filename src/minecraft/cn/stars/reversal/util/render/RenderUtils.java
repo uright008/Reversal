@@ -25,29 +25,6 @@ import static org.lwjgl.opengl.GL11.*;
 public class RenderUtils {
     private final static Minecraft mc = Minecraft.getMinecraft();
     public static int deltaTime;
-    public static void drawImage(ResourceLocation image, int x, int y, int width, int height) {
-        GlStateManager.disableDepth();
-        GlStateManager.enableBlend();
-        GlStateManager.depthMask(false);
-        OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.getTextureManager().bindTexture(image);
-        Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
-        GlStateManager.depthMask(true);
-        GlStateManager.disableBlend();
-        GlStateManager.enableDepth();
-    }
-
-    public static void drawShadow(float x, float y, float width, float height) {
-        drawTexturedRect(x - 9, y - 9, 9, 9, "paneltopleft");
-        drawTexturedRect(x - 9, y + height, 9, 9, "panelbottomleft");
-        drawTexturedRect(x + width, y + height, 9, 9, "panelbottomright");
-        drawTexturedRect(x + width, y - 9, 9, 9, "paneltopright");
-        drawTexturedRect(x - 9, y, 9, height, "panelleft");
-        drawTexturedRect(x + width, y, 9, height, "panelright");
-        drawTexturedRect(x, y - 9, width, 9, "paneltop");
-        drawTexturedRect(x, y + height, width, 9, "panelbottom");
-    }
 
     public static void color(Color color) {
         GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
@@ -190,14 +167,6 @@ public class RenderUtils {
         drawCircle(x, y, radius, rot - 360, rot - 270, 2.5f, color.getRGB());
     }
 
-    public static float smoothAnimation(float ani, float finalState, float speed, float scale) {
-        return AnimationUtils.getAnimationState(ani, finalState, Math.max(10.0F, Math.abs(ani - finalState) * speed) * scale);
-    }
-
-    public static float smoothAnimation(float ani, float finalState, float speed) {
-        return AnimationUtils.getAnimationState(ani, finalState, Math.max(10.0F, Math.abs(ani - finalState) * speed));
-    }
-
     public static void drawCircle(float x, float y, float radius, int start, int end, int color) {
         drawCircle(x, y, radius, start, end, 2f, color);
     }
@@ -218,44 +187,6 @@ public class RenderUtils {
 
         GlStateManager.enableTexture2D();
         disableBlend();
-    }
-    public static void drawArc(float x1, float y1, double r, int color, int startPoint, double arc, int linewidth) {
-        GlStateManager.disableTexture2D();
-        r *= 2.0D;
-        x1 *= 2;
-        y1 *= 2;
-        float f = (color >> 24 & 0xFF) / 255.0F;
-        float f1 = (color >> 16 & 0xFF) / 255.0F;
-        float f2 = (color >> 8 & 0xFF) / 255.0F;
-        float f3 = (color & 0xFF) / 255.0F;
-        GL11.glDisable(2929);
-        GL11.glEnable(3042);
-        GL11.glDisable(3553);
-        GL11.glBlendFunc(770, 771);
-        GL11.glDepthMask(true);
-        GL11.glEnable(2848);
-        GL11.glHint(3154, 4354);
-        GL11.glHint(3155, 4354);
-        GL11.glScalef(0.5F, 0.5F, 0.5F);
-        GL11.glLineWidth(linewidth);
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glColor4f(f1, f2, f3, f);
-        GL11.glBegin(GL11.GL_LINE_STRIP);
-        for (int i = startPoint; i <= arc; i += 1) {
-            double x = Math.sin(i * Math.PI / 180.0D) * r;
-            double y = Math.cos(i * Math.PI / 180.0D) * r;
-            GL11.glVertex2d(x1 + x, y1 + y);
-        }
-        GL11.glEnd();
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        GL11.glScalef(2.0F, 2.0F, 2.0F);
-        GL11.glEnable(3553);
-        GL11.glDisable(3042);
-        GL11.glEnable(2929);
-        GL11.glDisable(2848);
-        GL11.glHint(3154, 4352);
-        GL11.glHint(3155, 4352);
-        GlStateManager.enableTexture2D();
     }
 
     public static boolean isHovering(int mouseX, int mouseY, float xLeft, float yUp, float xRight, float yBottom) {

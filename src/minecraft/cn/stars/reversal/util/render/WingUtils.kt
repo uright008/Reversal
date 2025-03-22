@@ -18,7 +18,7 @@ class WingUtils : ModelBase() {
     init {
         this.mc = Minecraft.getMinecraft()
         this.location = ResourceLocation("reversal/images/wings.png")
-        this.playerUsesFullHeight = false //Loader.isModLoaded("animations");
+        this.playerUsesFullHeight = false
 
         // Set texture offsets.
         setTextureOffset("wing.bone", 0, 0)

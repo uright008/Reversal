@@ -96,8 +96,8 @@ public class GuiConnecting extends GuiScreen
                         return;
                     }
 
-                    GuiConnecting.logger.error((String)"Couldn't connect to server", (Throwable)unknownhostexception);
-                    GuiConnecting.this.mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new ChatComponentTranslation("disconnect.genericReason", "Unknown host")));
+                    logger.error("Couldn't connect to server", unknownhostexception);
+                    mc.addScheduledTask(() -> mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new ChatComponentTranslation("disconnect.genericReason", "Unknown host"))));
                 }
                 catch (Exception exception)
                 {
@@ -106,7 +106,7 @@ public class GuiConnecting extends GuiScreen
                         return;
                     }
 
-                    GuiConnecting.logger.error("Couldn't connect to server", (Throwable)exception);
+                    logger.error("Couldn't connect to server", exception);
                     String s = exception.toString();
 
                     if (inetaddress != null)
@@ -115,7 +115,7 @@ public class GuiConnecting extends GuiScreen
                         s = s.replaceAll(s1, "");
                     }
 
-                    GuiConnecting.this.mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new ChatComponentTranslation("disconnect.genericReason", s)));
+                    mc.addScheduledTask(() -> mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new ChatComponentTranslation("disconnect.genericReason", "Unknown host"))));
                 }
             }
         }).start();
@@ -148,7 +148,7 @@ public class GuiConnecting extends GuiScreen
     {
         GameInstance.clearRunnables();
         Reversal.notificationManager.registerNotification("Connecting to: " + mc.getCurrentServerData().serverIP, "Server", 3000L, NotificationType.NOTIFICATION);
-        this.cancelButton = new TextButton(width / 2 - 100, height / 2 + 100, 200, 20, this::action, "取消", "", true, 6, 90, 5, 20);
+        this.cancelButton = new TextButton(width / 2f - 100, height / 2f + 100, 200, 20, this::action, "取消", "", true, 6, 90, 5, 20);
     }
 
     /**

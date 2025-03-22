@@ -22,10 +22,6 @@ public class ResidentProcessor {
     public void onUpdateAlways() {
     }
 
-    public void onLoad() {
-        FastTrig.init();
-    }
-
     public void onClick(ClickEvent event) {
         if (event.getType() == ClickEvent.ClickType.LEFT) {
             ModuleInstance.getModule(CPSCounter.class).Lclicks.add(System.currentTimeMillis());

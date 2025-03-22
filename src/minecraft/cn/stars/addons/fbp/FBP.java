@@ -1,8 +1,6 @@
 package cn.stars.addons.fbp;
 
 import java.io.File;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,22 +14,18 @@ import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
-import com.google.common.base.Throwables;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.init.Blocks;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 
 public class FBP {
-	public final static String MODID = "fbp";
 	public static final ResourceLocation LOCATION_PARTICLE_TEXTURE = new ResourceLocation(
 			"textures/particle/particles.png");
 	public static final Vec3[] CUBE = {
@@ -164,8 +158,7 @@ public class FBP {
 
 		String name = b.getLocalizedName();
 
-		if (blockParticleBlacklist.contains(name))
-			blockParticleBlacklist.remove(name);
+        blockParticleBlacklist.remove(name);
 	}
 
 	public void resetBlacklist() {

@@ -1834,11 +1834,6 @@ public class ConnectedTextures
         }
         else
         {
-            if (Reflector.ForgeBlock_getExtendedState.exists())
-            {
-                neighbourState = (IBlockState)Reflector.call(neighbourState.getBlock(), Reflector.ForgeBlock_getExtendedState, new Object[] {neighbourState, iblockaccess, blockPos});
-            }
-
             EnumFacing enumfacing = getFacing(side);
             List list = ibakedmodel.getFaceQuads(enumfacing);
 
@@ -1853,7 +1848,7 @@ public class ConnectedTextures
                     list = BetterGrass.getFaceQuads(iblockaccess, neighbourState, blockPos, enumfacing, list);
                 }
 
-                if (list.size() > 0)
+                if (!list.isEmpty())
                 {
                     BakedQuad bakedquad1 = (BakedQuad)list.get(0);
                     return bakedquad1.getSprite();
@@ -2191,10 +2186,10 @@ public class ConnectedTextures
 
     public static void updateIcons(TextureMap textureMap)
     {
-        blockProperties = (ConnectedProperties[][])null;
-        tileProperties = (ConnectedProperties[][])null;
+        blockProperties = null;
+        tileProperties = null;
         spriteQuadMaps = null;
-        spriteQuadCompactMaps = (Map[][])null;
+        spriteQuadCompactMaps = null;
 
         if (Config.isConnectedTextures())
         {
@@ -2215,12 +2210,12 @@ public class ConnectedTextures
 
             if (blockProperties.length <= 0)
             {
-                blockProperties = (ConnectedProperties[][])null;
+                blockProperties = null;
             }
 
             if (tileProperties.length <= 0)
             {
-                tileProperties = (ConnectedProperties[][])null;
+                tileProperties = null;
             }
         }
     }
@@ -2232,45 +2227,34 @@ public class ConnectedTextures
     public static void updateIcons(TextureMap textureMap, IResourcePack rp)
     {
         String[] astring = ResUtils.collectFiles(rp, "mcpatcher/ctm/", ".properties", getDefaultCtmPaths());
-        Arrays.sort((Object[])astring);
+        Arrays.sort(astring);
         List list = makePropertyList(tileProperties);
         List list1 = makePropertyList(blockProperties);
 
-        for (int i = 0; i < astring.length; ++i)
-        {
-            String s = astring[i];
+        for (String s : astring) {
             Config.dbg("ConnectedTextures: " + s);
 
-            try
-            {
+            try {
                 ResourceLocation resourcelocation = new ResourceLocation(s);
                 InputStream inputstream = rp.getInputStream(resourcelocation);
 
-                if (inputstream == null)
-                {
+                if (inputstream == null) {
                     Config.warn("ConnectedTextures file not found: " + s);
-                }
-                else
-                {
+                } else {
                     Properties properties = new PropertiesOrdered();
                     properties.load(inputstream);
                     inputstream.close();
                     ConnectedProperties connectedproperties = new ConnectedProperties(properties, s);
 
-                    if (connectedproperties.isValid(s))
-                    {
+                    if (connectedproperties.isValid(s)) {
                         connectedproperties.updateIcons(textureMap);
                         addToTileList(connectedproperties, list);
                         addToBlockList(connectedproperties, list1);
                     }
                 }
-            }
-            catch (FileNotFoundException var11)
-            {
+            } catch (FileNotFoundException var11) {
                 Config.warn("ConnectedTextures file not found: " + s);
-            }
-            catch (Exception exception)
-            {
+            } catch (Exception exception) {
                 exception.printStackTrace();
             }
         }
@@ -2281,20 +2265,20 @@ public class ConnectedTextures
         Config.dbg("Multipass connected textures: " + multipass);
     }
 
-    private static List makePropertyList(ConnectedProperties[][] propsArr)
+    private static List<List<ConnectedProperties>> makePropertyList(ConnectedProperties[][] propsArr)
     {
-        List list = new ArrayList();
+        List<List<ConnectedProperties>> list = new ArrayList<>();
 
         if (propsArr != null)
         {
             for (int i = 0; i < propsArr.length; ++i)
             {
                 ConnectedProperties[] aconnectedproperties = propsArr[i];
-                List list1 = null;
+                List<ConnectedProperties> list1 = null;
 
                 if (aconnectedproperties != null)
                 {
-                    list1 = new ArrayList(Arrays.asList(aconnectedproperties));
+                    list1 = new ArrayList<>(Arrays.asList(aconnectedproperties));
                 }
 
                 list.add(list1);
@@ -2328,7 +2312,7 @@ public class ConnectedTextures
             }
         }
 
-        ConnectedProperties[] aconnectedproperties1 = (ConnectedProperties[])((ConnectedProperties[])list.toArray(new ConnectedProperties[list.size()]));
+        ConnectedProperties[] aconnectedproperties1 = (ConnectedProperties[]) list.toArray(new ConnectedProperties[list.size()]);
         Set set1 = new HashSet();
         Set set = new HashSet();
 
@@ -2361,7 +2345,7 @@ public class ConnectedTextures
 
             if (sublist != null)
             {
-                ConnectedProperties[] aconnectedproperties1 = (ConnectedProperties[])((ConnectedProperties[])sublist.toArray(new ConnectedProperties[sublist.size()]));
+                ConnectedProperties[] aconnectedproperties1 = (ConnectedProperties[]) sublist.toArray(new ConnectedProperties[sublist.size()]);
                 aconnectedproperties[i] = aconnectedproperties1;
             }
         }
@@ -2377,9 +2361,9 @@ public class ConnectedTextures
             {
                 TextureAtlasSprite textureatlassprite = cp.matchTileIcons[i];
 
-                if (!(textureatlassprite instanceof TextureAtlasSprite))
+                if (textureatlassprite == null)
                 {
-                    Config.warn("TextureAtlasSprite is not TextureAtlasSprite: " + textureatlassprite + ", name: " + textureatlassprite.getIconName());
+                    Config.warn("TextureAtlasSprite is null!");
                 }
                 else
                 {
@@ -2470,7 +2454,7 @@ public class ConnectedTextures
             }
         }
 
-        String[] astring1 = (String[])((String[])list.toArray(new String[list.size()]));
+        String[] astring1 = (String[]) list.toArray(new String[list.size()]);
         return astring1;
     }
 }

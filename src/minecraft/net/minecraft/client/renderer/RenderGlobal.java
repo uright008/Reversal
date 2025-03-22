@@ -89,7 +89,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.Vector3d;
 import net.minecraft.world.IWorldAccess;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -108,7 +107,6 @@ import net.optifine.shaders.Shaders;
 import net.optifine.shaders.ShadersRender;
 import net.optifine.shaders.ShadowUtils;
 import net.optifine.shaders.gui.GuiShaderOptions;
-import net.optifine.util.ChunkUtils;
 import net.optifine.util.RenderChunkUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -265,15 +263,9 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                 this.entityOutlineShader.createBindFramebuffers(this.mc.displayWidth, this.mc.displayHeight);
                 this.entityOutlineFramebuffer = this.entityOutlineShader.getFramebufferRaw("final");
             }
-            catch (IOException ioexception)
+            catch (IOException | JsonSyntaxException ioexception)
             {
-                logger.warn((String)("Failed to load shader: " + resourcelocation), (Throwable)ioexception);
-                this.entityOutlineShader = null;
-                this.entityOutlineFramebuffer = null;
-            }
-            catch (JsonSyntaxException jsonsyntaxexception)
-            {
-                logger.warn((String)("Failed to load shader: " + resourcelocation), (Throwable)jsonsyntaxexception);
+                logger.warn("Failed to load shader: " + resourcelocation, ioexception);
                 this.entityOutlineShader = null;
                 this.entityOutlineFramebuffer = null;
             }
@@ -298,7 +290,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
     protected boolean isRenderEntityOutlines()
     {
-        return !Config.isFastRender() && !Config.isShaders() && !Config.isAntialiasing() ? this.entityOutlineFramebuffer != null && this.entityOutlineShader != null && this.mc.thePlayer != null && this.mc.thePlayer.isSpectator() && this.mc.gameSettings.keyBindSpectatorOutlines.isKeyDown() : false;
+        return !Config.isFastRender() && !Config.isShaders() && !Config.isAntialiasing() && this.entityOutlineFramebuffer != null && this.entityOutlineShader != null && this.mc.thePlayer != null && this.mc.thePlayer.isSpectator() && this.mc.gameSettings.keyBindSpectatorOutlines.isKeyDown();
     }
 
     private void generateSky2()
@@ -1083,7 +1075,7 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
 
                 while (iterator.hasNext())
                 {
-                    RenderChunk renderchunk2 = (RenderChunk)iterator.next();
+                    RenderChunk renderchunk2 = iterator.next();
 
                     if (renderchunk2 != null && renderchunk2.getPosition().getY() <= j)
                     {
@@ -1094,12 +1086,12 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                             this.renderInfos.add(renderglobal$containerlocalrenderinformation);
                         }
 
-                        if (ChunkUtils.hasEntities(renderchunk2.getChunk()))
+                        if (renderchunk2.getChunk().hasEntities)
                         {
                             this.renderInfosEntities.add(renderglobal$containerlocalrenderinformation);
                         }
 
-                        if (renderchunk2.getCompiledChunk().getTileEntities().size() > 0)
+                        if (!renderchunk2.getCompiledChunk().getTileEntities().isEmpty())
                         {
                             this.renderInfosTileEntities.add(renderglobal$containerlocalrenderinformation);
                         }
@@ -1196,12 +1188,12 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
                     this.renderInfos.add(renderglobal$containerlocalrenderinformation5);
                 }
 
-                if (ChunkUtils.hasEntities(renderchunk6.getChunk()))
+                if (renderchunk6.getChunk().hasEntities)
                 {
                     this.renderInfosEntities.add(renderglobal$containerlocalrenderinformation5);
                 }
 
-                if (compiledchunk.getTileEntities().size() > 0)
+                if (!compiledchunk.getTileEntities().isEmpty())
                 {
                     this.renderInfosTileEntities.add(renderglobal$containerlocalrenderinformation5);
                 }

@@ -1,6 +1,7 @@
 package net.minecraft.crash;
 
 import cn.stars.reversal.RainyAPI;
+import cn.stars.reversal.Reversal;
 import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.FileWriter;
@@ -27,7 +28,7 @@ public class CrashReport
     private static final Logger logger = LogManager.getLogger();
     private final String description;
     private final Throwable cause;
-    private final CrashReportCategory theReportCategory = new CrashReportCategory(this, "System Details");
+    private final CrashReportCategory theReportCategory = new CrashReportCategory(this, "系统信息");
     private final List<CrashReportCategory> crashReportSections = Lists.<CrashReportCategory>newArrayList();
     private File crashReportFile;
     private boolean firstCategoryInCrashReport = true;
@@ -43,35 +44,35 @@ public class CrashReport
 
     private void populateEnvironment()
     {
-        this.theReportCategory.addCrashSectionCallable("Minecraft Version", new Callable<String>()
+        this.theReportCategory.addCrashSectionCallable("Minecraft版本", new Callable<String>()
         {
             public String call()
             {
-                return "1.8.9";
+                return Reversal.MINECRAFT_VERSION;
             }
         });
-        this.theReportCategory.addCrashSectionCallable("Operating System", new Callable<String>()
+        this.theReportCategory.addCrashSectionCallable("操作系统", new Callable<String>()
         {
             public String call()
             {
                 return System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version");
             }
         });
-        this.theReportCategory.addCrashSectionCallable("Java Version", new Callable<String>()
+        this.theReportCategory.addCrashSectionCallable("Java版本", new Callable<String>()
         {
             public String call()
             {
                 return System.getProperty("java.version") + ", " + System.getProperty("java.vendor");
             }
         });
-        this.theReportCategory.addCrashSectionCallable("Java VM Version", new Callable<String>()
+        this.theReportCategory.addCrashSectionCallable("JVM版本", new Callable<String>()
         {
             public String call()
             {
                 return System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor");
             }
         });
-        this.theReportCategory.addCrashSectionCallable("Memory", new Callable<String>()
+        this.theReportCategory.addCrashSectionCallable("内存", new Callable<String>()
         {
             public String call()
             {
@@ -85,7 +86,7 @@ public class CrashReport
                 return k + " bytes (" + j1 + " MB) / " + j + " bytes (" + i1 + " MB) up to " + i + " bytes (" + l + " MB)";
             }
         });
-        this.theReportCategory.addCrashSectionCallable("JVM Flags", new Callable<String>()
+        this.theReportCategory.addCrashSectionCallable("JVM参数", new Callable<String>()
         {
             public String call()
             {
@@ -107,22 +108,15 @@ public class CrashReport
                     }
                 }
 
-                return String.format("%d total; %s", new Object[] {Integer.valueOf(i), stringbuilder.toString()});
+                return String.format("共计 %d; %s", i, stringbuilder);
             }
         });
         this.theReportCategory.addCrashSectionCallable("IntCache", new Callable<String>()
         {
-            public String call() throws Exception
-            {
+            public String call() {
                 return IntCache.getCacheSizes();
             }
         });
-
-        if (Reflector.FMLCommonHandler_enhanceCrashReport.exists())
-        {
-            Object object = Reflector.call(Reflector.FMLCommonHandler_instance, new Object[0]);
-            Reflector.callString(object, Reflector.FMLCommonHandler_enhanceCrashReport, new Object[] {this, this.theReportCategory});
-        }
     }
 
     public String getDescription()
@@ -137,9 +131,9 @@ public class CrashReport
 
     public void getSectionsInStringBuilder(StringBuilder builder)
     {
-        if ((this.stacktrace == null || this.stacktrace.length <= 0) && this.crashReportSections.size() > 0)
+        if ((this.stacktrace == null || this.stacktrace.length == 0) && !this.crashReportSections.isEmpty())
         {
-            this.stacktrace = (StackTraceElement[])((StackTraceElement[])ArrayUtils.subarray(((CrashReportCategory)this.crashReportSections.get(0)).getStackTrace(), 0, 1));
+            this.stacktrace = ArrayUtils.subarray(this.crashReportSections.get(0).getStackTrace(), 0, 1);
         }
 
         if (this.stacktrace != null && this.stacktrace.length > 0)
@@ -189,7 +183,7 @@ public class CrashReport
             throwable.setStackTrace(this.cause.getStackTrace());
         }
 
-        String s = throwable.toString();
+        String s;
 
         try
         {
@@ -200,8 +194,8 @@ public class CrashReport
         }
         finally
         {
-            IOUtils.closeQuietly((Writer)stringwriter);
-            IOUtils.closeQuietly((Writer)printwriter);
+            IOUtils.closeQuietly(stringwriter);
+            IOUtils.closeQuietly(printwriter);
         }
 
         return s;
@@ -217,18 +211,17 @@ public class CrashReport
 
         StringBuilder stringbuilder = new StringBuilder();
         stringbuilder.append("---- Minecraft 崩溃报告 ----\n");
-        stringbuilder.append("如果你不是开发者，请将这份文件发送给本客户端的开发者，以协助解决相关问题。请勿发送启动器崩溃截图等无用信息。\n");
         stringbuilder.append("// ");
         stringbuilder.append(getWittyComment());
         stringbuilder.append("\n\n");
-        stringbuilder.append("Time: ");
+        stringbuilder.append("时间: ");
         stringbuilder.append((new SimpleDateFormat()).format(new Date()));
         stringbuilder.append("\n");
-        stringbuilder.append("Description: ");
+        stringbuilder.append("简介: ");
         stringbuilder.append(this.description);
         stringbuilder.append("\n\n");
         stringbuilder.append(this.getCauseStackTraceOrString());
-        stringbuilder.append("\n\nA detailed walkthrough of the error, its code path and all known details is as follows:\n");
+        stringbuilder.append("\n\n错误的详细回顾,相关的代码字段和所有已知的细节如下:\n");
 
         for (int i = 0; i < 87; ++i)
         {
@@ -268,7 +261,7 @@ public class CrashReport
             }
             catch (Throwable throwable)
             {
-                logger.error("Could not save crash report to " + toFile, throwable);
+                logger.error("Could not save crash report to {}", toFile, throwable);
                 return false;
             }
         }
@@ -301,7 +294,7 @@ public class CrashReport
                 System.out.println("Negative index in crash report handler (" + astacktraceelement.length + "/" + i + ")");
             }
 
-            if (astacktraceelement != null && 0 <= j && j < astacktraceelement.length)
+            if (0 <= j && j < astacktraceelement.length)
             {
                 stacktraceelement = astacktraceelement[j];
 
@@ -318,7 +311,7 @@ public class CrashReport
                 CrashReportCategory crashreportcategory1 = (CrashReportCategory)this.crashReportSections.get(this.crashReportSections.size() - 1);
                 crashreportcategory1.trimStackTraceEntriesFromBottom(i);
             }
-            else if (astacktraceelement != null && astacktraceelement.length >= i && 0 <= j && j < astacktraceelement.length)
+            else if (astacktraceelement.length >= i && 0 <= j && j < astacktraceelement.length)
             {
                 this.stacktrace = new StackTraceElement[j];
                 System.arraycopy(astacktraceelement, 0, this.stacktrace, 0, this.stacktrace.length);

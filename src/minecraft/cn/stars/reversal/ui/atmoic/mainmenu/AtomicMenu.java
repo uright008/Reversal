@@ -39,7 +39,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     private final MFont psm16 = FontManager.getPSM(16);
     private final MFont atomic24 = FontManager.getAtomic(24);
     private final LocalDateTime initTime;
-    private ResourceLocation headImage = null;
+    private ResourceLocation headImage;
 
     private final Animation upperSelectionAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
     private final Animation initAnimation = new Animation(Easing.LINEAR, 200);
@@ -55,7 +55,6 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     public void initGui() {
         currentGui.initGui();
     }
-
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -259,7 +258,6 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     }
 
     public static void switchGui(int index) {
-    //    reinit();
         currentGui = atomicGuis.get(index);
         currentGui.initGui();
         if (GameInstance.mc.currentScreen instanceof AtomicMenu) GameInstance.mc.getSoundHandler().playUISound("click");

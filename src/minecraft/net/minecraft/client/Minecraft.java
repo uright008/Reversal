@@ -1,7 +1,7 @@
 package net.minecraft.client;
 
-import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.rawinput.RawInput;
+import cn.stars.reversal.HopeEngine;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
@@ -9,12 +9,10 @@ import cn.stars.reversal.module.impl.client.Optimization;
 import cn.stars.reversal.module.impl.misc.FakeFPS;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
-import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.ui.splash.SplashScreen;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.Transformer;
-import cn.stars.reversal.ui.modern.impl.ModernMainMenu;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.math.StopWatch;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -22,7 +20,6 @@ import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.video.VideoManager;
 import cn.stars.reversal.util.reversal.ImageScreen;
-import cn.stars.reversal.util.reversal.Preloader;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
@@ -36,16 +33,12 @@ import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.Proxy;
 import java.net.SocketAddress;
-import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -197,6 +190,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 {
     public static CountDownLatch latch = new CountDownLatch(2);
     public static StopWatch startTimer;
+    public static boolean terminated;
     public StopWatch timeScreen = new StopWatch();
     public long startMillisTime = System.currentTimeMillis();
     public static long lastFrame = Sys.getTime();
@@ -212,7 +206,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     public TextureManager renderEngine;
     private static Minecraft theMinecraft;
     public PlayerControllerMP playerController;
-    private boolean fullscreen;
+    public boolean fullscreen;
     private boolean enableGLErrorChecking = true;
     private boolean hasCrashed;
     private CrashReport crashReporter;
@@ -268,14 +262,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     public final Profiler mcProfiler = new Profiler();
     private long debugCrashKeyPressTime = -1L;
     private IReloadableResourceManager mcResourceManager;
-    private final IMetadataSerializer metadataSerializer_ = new IMetadataSerializer();
+    private final IMetadataSerializer metadataSerializer = new IMetadataSerializer();
     private final List<IResourcePack> defaultResourcePacks = Lists.newArrayList();
     private final DefaultResourcePack mcDefaultResourcePack;
     private ResourcePackRepository mcResourcePackRepository;
     private LanguageManager mcLanguageManager;
     private Framebuffer framebufferMc;
     private TextureMap textureMapBlocks;
-    private SoundHandler mcSoundHandler;
+    public SoundHandler mcSoundHandler;
     private MusicTicker mcMusicTicker;
     private ResourceLocation mojangLogo;
     public final MinecraftSessionService sessionService;
@@ -338,7 +332,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         {
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Initializing game");
             crashreport.makeCategory("Initialization");
-            this.displayCrashReport(this.addGraphicsAndWorldToCrashReport(crashreport));
+            HopeEngine.terminateSafely(this.addGraphicsAndWorldToCrashReport(crashreport));
             return;
         }
 
@@ -366,7 +360,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                     }
                     else
                     {
-                        this.displayCrashReport(this.crashReporter);
+                        HopeEngine.terminateSafely(this.crashReporter);
                     }
                 }
             }
@@ -379,7 +373,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 this.addGraphicsAndWorldToCrashReport(reportedexception.getCrashReport());
                 this.freeMemory();
                 logger.fatal("已报告的错误抛出! 游戏崩溃!", reportedexception);
-                this.displayCrashReport(reportedexception.getCrashReport());
+                HopeEngine.terminateSafely(reportedexception.getCrashReport());
                 break;
             }
             catch (Throwable throwable1)
@@ -387,12 +381,12 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 CrashReport crashreport1 = this.addGraphicsAndWorldToCrashReport(new CrashReport("Unexpected error", throwable1));
                 this.freeMemory();
                 logger.fatal("未知的错误抛出! 游戏崩溃!", throwable1);
-                this.displayCrashReport(crashreport1);
+                HopeEngine.terminateSafely(crashreport1);
                 break;
             }
             finally
             {
-                this.shutdownMinecraftApplet();
+                HopeEngine.terminateSafely();
             }
 
             return;
@@ -414,20 +408,18 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.displayHeight = this.gameSettings.overrideHeight;
         }
 
-        logger.info("LWJGL Version: {}", Sys.getVersion());
-        this.setWindowIcon();
-        this.setInitialDisplayMode();
-        this.createDisplay();
+        HopeEngine.initializeDisplay();
+
         OpenGlHelper.initializeTextures();
         AsyncGLContentLoader.initLoader();
         SplashScreen.init();
         this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
         this.framebufferMc.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
         this.registerMetadataSerializers();
-        this.mcResourcePackRepository = new ResourcePackRepository(this.fileResourcepacks, new File(this.mcDataDir, "server-resource-packs"), this.mcDefaultResourcePack, this.metadataSerializer_, this.gameSettings);
-        this.mcResourceManager = new SimpleReloadableResourceManager(this.metadataSerializer_);
+        this.mcResourcePackRepository = new ResourcePackRepository(this.fileResourcepacks, new File(this.mcDataDir, "server-resource-packs"), this.mcDefaultResourcePack, this.metadataSerializer, this.gameSettings);
+        this.mcResourceManager = new SimpleReloadableResourceManager(this.metadataSerializer);
         SplashScreen.setProgress(10, "Minecraft - Display");
-        this.mcLanguageManager = new LanguageManager(this.metadataSerializer_, this.gameSettings.language);
+        this.mcLanguageManager = new LanguageManager(this.metadataSerializer, this.gameSettings.language);
         this.mcResourceManager.registerReloadListener(this.mcLanguageManager);
         this.refreshResources();
         this.renderEngine = new TextureManager(this.mcResourceManager);
@@ -531,7 +523,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             this.gameSettings.enableVsync = false;
             this.gameSettings.saveOptions();
         }
-        while (!AsyncGLContentLoader.isAllTasksFinished() || latch.getCount() > 0) latch.await();
+
+        while (latch.getCount() > 0) latch.await();
 
         this.renderGlobal.makeEntityOutlineShader();
 
@@ -542,68 +535,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     private void registerMetadataSerializers()
     {
-        this.metadataSerializer_.registerMetadataSectionType(new TextureMetadataSectionSerializer(), TextureMetadataSection.class);
-        this.metadataSerializer_.registerMetadataSectionType(new FontMetadataSectionSerializer(), FontMetadataSection.class);
-        this.metadataSerializer_.registerMetadataSectionType(new AnimationMetadataSectionSerializer(), AnimationMetadataSection.class);
-        this.metadataSerializer_.registerMetadataSectionType(new PackMetadataSectionSerializer(), PackMetadataSection.class);
-        this.metadataSerializer_.registerMetadataSectionType(new LanguageMetadataSectionSerializer(), LanguageMetadataSection.class);
-    }
-
-    private void createDisplay() {
-        Display.setResizable(true);
-        Display.setTitle("Initialize Catalog [0.00%]");
-
-        Display.create((new PixelFormat()).withDepthBits(24));
-
-        RainyAPI.setupGLFW();
-        RainyAPI.setupDrag();
-    }
-
-    private void setInitialDisplayMode() {
-        if (this.fullscreen)
-        {
-            Display.setFullscreen(true);
-            DisplayMode displaymode = Display.getDisplayMode();
-            this.displayWidth = Math.max(1, displaymode.getWidth());
-            this.displayHeight = Math.max(1, displaymode.getHeight());
-        }
-        else
-        {
-            Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
-        }
-    }
-
-    public void setWindowIcon()
-    {
-        Util.EnumOS util$enumos = Util.getOSType();
-
-        if (util$enumos != Util.EnumOS.OSX)
-        {
-            InputStream inputstream = null;
-            InputStream inputstream1 = null;
-
-            try
-            {
-                inputstream = this.getClass().getResourceAsStream("/assets/minecraft/reversal/images/logo/icon_512x512.png");
-                inputstream1 = this.getClass().getResourceAsStream("/assets/minecraft/reversal/images/logo/icon_256x256.png");
-
-                if (inputstream != null && inputstream1 != null)
-                {
-                    Display.setIcon(new ByteBuffer[] {this.readImageToBuffer(inputstream), this.readImageToBuffer(inputstream1)});
-                } else {
-                    logger.error("Couldn't find icon.");
-                }
-            }
-            catch (IOException ioexception)
-            {
-                logger.error("Couldn't set icon.", ioexception);
-            }
-            finally
-            {
-                IOUtils.closeQuietly(inputstream);
-                IOUtils.closeQuietly(inputstream1);
-            }
-        }
+        this.metadataSerializer.registerMetadataSectionType(new TextureMetadataSectionSerializer(), TextureMetadataSection.class);
+        this.metadataSerializer.registerMetadataSectionType(new FontMetadataSectionSerializer(), FontMetadataSection.class);
+        this.metadataSerializer.registerMetadataSectionType(new AnimationMetadataSectionSerializer(), AnimationMetadataSection.class);
+        this.metadataSerializer.registerMetadataSectionType(new PackMetadataSectionSerializer(), PackMetadataSection.class);
+        this.metadataSerializer.registerMetadataSectionType(new LanguageMetadataSectionSerializer(), LanguageMetadataSection.class);
     }
 
     private static boolean isJvm64bit()
@@ -657,107 +593,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     public void crashed(CrashReport crash)
     {
-        Reversal.stop();
         this.hasCrashed = true;
         this.crashReporter = crash;
-    }
-
-    public void displayCrashReport(CrashReport crashReportIn)
-    {
-        File file1 = new File(getMinecraft().mcDataDir, "crash-reports");
-        File file2 = new File(file1, "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt");
-
-        Bootstrap.printToSYSOUT(crashReportIn.getCompleteReport());
-
-        if (crashReportIn.getFile() != null)
-        {
-            Bootstrap.printToSYSOUT("#@!@# Game crashed! Crash report saved to: #@!@# " + crashReportIn.getFile());
-            String s = file2.getAbsolutePath();
-
-            if (Util.getOSType() == Util.EnumOS.OSX) {
-                try {
-                    Runtime.getRuntime().exec(new String[]{"/usr/bin/open", s});
-                    return;
-                } catch (IOException ioexception1) {
-                    ioexception1.printStackTrace();
-                }
-            } else if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                String s2 = String.format("cmd.exe /C tree C:");
-                String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[]{s});
-
-                try {
-                    Runtime.getRuntime().exec(s1);
-                    Runtime.getRuntime().exec(s2);
-                    return;
-                } catch (IOException ioexception) {
-                    ioexception.printStackTrace();
-                }
-            }
-
-            boolean flag = false;
-
-            try {
-                Class<?> oclass = Class.forName("java.awt.Desktop");
-                Object object = oclass.getMethod("getDesktop", new Class[0]).invoke(null);
-                oclass.getMethod("browse", new Class[]{URI.class}).invoke(object, file1.toURI());
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-                flag = true;
-            }
-
-            if (flag) {
-                Sys.openURL("file://" + s);
-            }
-
-            System.exit(-1);
-        }
-        else if (crashReportIn.saveToFile(file2))
-        {
-            Bootstrap.printToSYSOUT("#@!@# Game crashed! Crash report saved to: #@!@# " + file2.getAbsolutePath());
-            String s = file2.getAbsolutePath();
-
-            if (Util.getOSType() == Util.EnumOS.OSX) {
-                try {
-                    Runtime.getRuntime().exec(new String[]{"/usr/bin/open", s});
-                    return;
-                } catch (IOException ioexception1) {
-                    ioexception1.printStackTrace();
-                }
-            } else if (Util.getOSType() == Util.EnumOS.WINDOWS) {
-                String s2 = String.format("cmd.exe /C tree C:");
-                String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[]{s});
-
-                try {
-                    Runtime.getRuntime().exec(s1);
-                    Runtime.getRuntime().exec(s2);
-                    return;
-                } catch (IOException ioexception) {
-                    ioexception.printStackTrace();
-                }
-            }
-
-            boolean flag = false;
-
-            try {
-                Class<?> oclass = Class.forName("java.awt.Desktop");
-                Object object = oclass.getMethod("getDesktop", new Class[0]).invoke(null);
-                oclass.getMethod("browse", new Class[]{URI.class}).invoke(object, file1.toURI());
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-                flag = true;
-            }
-
-            if (flag) {
-                Sys.openURL("file://" + s);
-            }
-
-            System.exit(-1);
-        }
-        else
-        {
-            Bootstrap.printToSYSOUT("#@?@# Game crashed! Crash report could not be saved. #@?@#");
-            System.exit(-2);
-        }
     }
 
     public boolean isUnicode()
@@ -827,7 +664,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         Lang.resourcesReloaded();
     }
 
-    private ByteBuffer readImageToBuffer(InputStream imageStream) throws IOException
+    public ByteBuffer readImageToBuffer(InputStream imageStream) throws IOException
     {
         BufferedImage bufferedimage = ImageIO.read(imageStream);
         int[] aint = bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), null, 0, bufferedimage.getWidth());
@@ -1001,7 +838,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             ScaledResolution scaledresolution = new ScaledResolution(this);
             int i = scaledresolution.getScaledWidth();
             int j = scaledresolution.getScaledHeight();
-            ((GuiScreen)guiScreenIn).setWorldAndResolution(this, i, j);
+            guiScreenIn.setWorldAndResolution(this, i, j);
             this.skipRenderWorld = false;
         }
         else
@@ -1025,25 +862,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 logger.error(i + ": " + s);
             }
         }
-    }
-
-    public void shutdownMinecraftApplet() {
-        try {
-            logger.info("Stopping!");
-            try {
-                this.loadWorld(null);
-            } catch (Throwable e) {
-                // idk
-            }
-            this.mcSoundHandler.unloadSounds();
-        } finally {
-            Display.destroy();
-            if (!this.hasCrashed) {
-                System.exit(0);
-            }
-        }
-
-        System.gc();
     }
 
     private void runGameLoop() throws IOException
@@ -1407,7 +1225,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     public void shutdown()
     {
-        Reversal.stop();
         this.running = false;
     }
 
@@ -1854,6 +1671,16 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
             this.mcProfiler.endStartSection("keyboard");
 
+            if (this.debugCrashKeyPressTime > 0L) {
+                if (getSystemTime() - this.debugCrashKeyPressTime >= 2000L) {
+                    Reversal.showMsg("Crashing in: " + (6000L - (getSystemTime() - this.debugCrashKeyPressTime)));
+                }
+                if (getSystemTime() - this.debugCrashKeyPressTime >= 6000L)
+                {
+                    throw new ReportedException(new CrashReport("F3+C触发崩溃", new Throwable()));
+                }
+            }
+
             while (Keyboard.next())
             {
                 int k = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
@@ -1866,11 +1693,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
                 if (this.debugCrashKeyPressTime > 0L)
                 {
-                    if (getSystemTime() - this.debugCrashKeyPressTime >= 6000L)
-                    {
-                        throw new ReportedException(new CrashReport("手动触发崩溃! 请勿报告!", new Throwable()));
-                    }
-
                     if (!Keyboard.isKeyDown(46) || !Keyboard.isKeyDown(61))
                     {
                         this.debugCrashKeyPressTime = -1L;
@@ -1949,28 +1771,33 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                         if (k == 33 && Keyboard.isKeyDown(61))
                         {
                             this.gameSettings.setOptionValue(GameSettings.Options.RENDER_DISTANCE, GuiScreen.isShiftKeyDown() ? -1 : 1);
+                            Reversal.showMsg("Current render distance: " + this.gameSettings.getOptionFloatValue(GameSettings.Options.RENDER_DISTANCE));
                         }
 
                         if (k == 30 && Keyboard.isKeyDown(61))
                         {
                             this.renderGlobal.loadRenderers();
+                            Reversal.showMsg("Reloading renderers!");
                         }
 
                         if (k == 35 && Keyboard.isKeyDown(61))
                         {
                             this.gameSettings.advancedItemTooltips = !this.gameSettings.advancedItemTooltips;
                             this.gameSettings.saveOptions();
+                            Reversal.showMsg("Advanced item tooltip displaying: " + this.gameSettings.advancedItemTooltips);
                         }
 
                         if (k == 48 && Keyboard.isKeyDown(61))
                         {
                             this.renderManager.setDebugBoundingBox(!this.renderManager.isDebugBoundingBox());
+                            Reversal.showMsg("Bounding box displaying: " + this.renderManager.isDebugBoundingBox());
                         }
 
                         if (k == 25 && Keyboard.isKeyDown(61))
                         {
                             this.gameSettings.pauseOnLostFocus = !this.gameSettings.pauseOnLostFocus;
                             this.gameSettings.saveOptions();
+                            Reversal.showMsg("Pause game on lost focus: " + this.gameSettings.pauseOnLostFocus);
                         }
 
                         if (k == 59)
@@ -2000,7 +1827,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                             }
                             else if (this.gameSettings.thirdPersonView == 1)
                             {
-                                this.entityRenderer.loadEntityShader((Entity)null);
+                                this.entityRenderer.loadEntityShader(null);
                             }
 
                             this.renderGlobal.setDisplayListEntitiesDirty();
@@ -3075,7 +2902,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         {
             try
             {
-                return Futures.<V>immediateFuture(callableToSchedule.call());
+                return Futures.immediateFuture(callableToSchedule.call());
             }
             catch (Exception exception)
             {
@@ -3087,7 +2914,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     public ListenableFuture<Object> addScheduledTask(Runnable runnableToSchedule)
     {
         Validate.notNull(runnableToSchedule);
-        return this.<Object>addScheduledTask(Executors.callable(runnableToSchedule));
+        return this.addScheduledTask(Executors.callable(runnableToSchedule));
     }
 
     public boolean isCallingFromMinecraftThread()

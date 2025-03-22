@@ -1,7 +1,7 @@
 package cn.stars.reversal.util.world;
 
 import cn.stars.reversal.GameInstance;
-import com.logisticscraft.occlusionculling.util.Vec3d;
+import cn.stars.addons.culling.util.Vec3d;
 import lombok.experimental.UtilityClass;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

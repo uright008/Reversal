@@ -116,6 +116,7 @@ public class SettingsGui extends AtomicGui {
         return ichatcomponent.getFormattedText();
     }
 
+    @Override
     public void confirmClicked(boolean result, int id)
     {
         mc.displayGuiScreen(Reversal.atomicMenu);
@@ -142,6 +143,7 @@ public class SettingsGui extends AtomicGui {
                 }
             } catch (ConcurrentModificationException ignored) {}
         }
+        super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
@@ -247,5 +249,10 @@ public class SettingsGui extends AtomicGui {
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    @Override
+    public void mouseReleased(int mouseX, int mouseY, int state) {
+        super.mouseReleased(mouseX, mouseY, state);
     }
 }

@@ -4,6 +4,7 @@ import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import com.google.common.collect.Lists;
 
@@ -96,7 +97,10 @@ public class GuiNewChat extends Gui
                                 }
                                 String s = chatline.getChatComponent().getFormattedText();
                                 if (modernFont) {
-                                    GameInstance.regular16.drawString(s, (float) i2, (float) (j2 - 7), 16777215 + (l1 << 24));
+                                    GlStateManager.enableBlend();
+                                    GameInstance.regular16.drawString(s, (float) i2, (float) (j2 - 7),16777215 + (l1 << 24));
+                                    GlStateManager.disableAlpha();
+                                    GlStateManager.disableBlend();
                                 }
                                 else {
                                     GlStateManager.enableBlend();
@@ -294,12 +298,8 @@ public class GuiNewChat extends Gui
                     }
 
                 }
-                return null;
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 
@@ -314,7 +314,7 @@ public class GuiNewChat extends Gui
 
         while (iterator.hasNext())
         {
-            ChatLine chatline = (ChatLine)iterator.next();
+            ChatLine chatline = iterator.next();
 
             if (chatline.getChatLineID() == id)
             {

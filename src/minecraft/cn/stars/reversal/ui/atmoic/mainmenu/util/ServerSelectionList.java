@@ -71,7 +71,7 @@ public class ServerSelectionList extends GuiListExtended
         return slotIndex == this.selectedSlotIndex;
     }
 
-    public int func_148193_k()
+    public int getSelectedIndex()
     {
         return this.selectedSlotIndex;
     }

@@ -6,7 +6,6 @@ import java.util.Random;
 import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.fbp.particle.FBPParticleRain;
 import cn.stars.addons.fbp.particle.FBPParticleSnow;
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.world.TimeTraveller;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import org.lwjgl.opengl.GL11;
@@ -26,8 +25,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class FBPWeatherRenderer {
 
-	private static final ResourceLocation RAIN_TEXTURES = new ResourceLocation("textures/environment/rain.png");
-	private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
+	private static final ResourceLocation TEXTURE_RAIN = new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation TEXTURE_SNOW_HEAVY = new ResourceLocation("textures/environment/snow.png");
 	private static final ResourceLocation TEXTURE_SNOW_LIGHT = new ResourceLocation("textures/environment/snow_light.png");
 	private static final ResourceLocation TEXTURE_NETHER_PARTICLES = new ResourceLocation("textures/environment/nether_particles.png");
@@ -136,7 +134,7 @@ public class FBPWeatherRenderer {
 										}
 
 										j1 = 0;
-										this.mc.getTextureManager().bindTexture(RAIN_TEXTURES);
+										this.mc.getTextureManager().bindTexture(TEXTURE_RAIN);
 										worldrenderer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 									}
 

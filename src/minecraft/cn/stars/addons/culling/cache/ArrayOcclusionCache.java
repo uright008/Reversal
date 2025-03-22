@@ -1,4 +1,4 @@
-package com.logisticscraft.occlusionculling.cache;
+package cn.stars.addons.culling.cache;
 
 import java.util.Arrays;
 
@@ -25,7 +25,7 @@ public class ArrayOcclusionCache implements OcclusionCache {
         positionKey = x + y * reachX2 + z * reachX2 * reachX2;
         entry = positionKey / 4;
         offset = (positionKey % 4) * 2;
-        cache[entry] |= 1 << offset;
+        cache[entry] |= (byte) (1 << offset);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ArrayOcclusionCache implements OcclusionCache {
         positionKey = x + y * reachX2 + z * reachX2 * reachX2;
         entry = positionKey / 4;
         offset = (positionKey % 4) * 2;
-        cache[entry] |= 1 << offset + 1;
+        cache[entry] |= (byte) (1 << offset + 1);
     }
 
     @Override
@@ -46,12 +46,12 @@ public class ArrayOcclusionCache implements OcclusionCache {
 
     @Override
     public void setLastVisible() {
-        cache[entry] |= 1 << offset;
+        cache[entry] |= (byte) (1 << offset);
     }
 
     @Override
     public void setLastHidden() {
-        cache[entry] |= 1 << offset + 1;
+        cache[entry] |= (byte) (1 << offset + 1);
     }
 
 }

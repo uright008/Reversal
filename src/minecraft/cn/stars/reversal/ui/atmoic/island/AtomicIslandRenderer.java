@@ -219,7 +219,7 @@ public class AtomicIslandRenderer implements GameInstance {
         switch (ModuleInstance.getModule(AtomicIsland.class).musicLyricsMode.getMode()) {
             case "Origin": return musicPlayer.getCurrentLyric(false);
             case "Translated": return musicPlayer.getCurrentLyric(true);
-            case "Both": return musicPlayer.getMusic().hasTranslate ? musicPlayer.getCurrentLyric(true) + " (" + musicPlayer.getCurrentLyric(false) + ")" : musicPlayer.getCurrentLyric(false);
+            case "Both": return musicPlayer.getMusic().hasTranslate || !musicPlayer.getMusic().translatedLyrics.isEmpty() ? musicPlayer.getCurrentLyric(true) + " (" + musicPlayer.getCurrentLyric(false) + ")" : musicPlayer.getCurrentLyric(false);
         }
         return "Unknown";
     }

@@ -7,6 +7,7 @@ import cn.stars.reversal.music.api.base.LyricLine;
 import cn.stars.reversal.music.api.base.Music;
 import cn.stars.reversal.music.thread.ChangeMusicThread;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
+import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
@@ -20,6 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,6 +41,8 @@ public class MusicPlayer {
     private float[] magnitudes;
 
     private List<Music> currentMusicList;
+
+    public static final ArrayList<Integer> randomPlayedIndex = new ArrayList<>();
 
     public MusicPlayer() {
         new JFXPanel();
@@ -97,7 +101,22 @@ public class MusicPlayer {
         double volume = mediaPlayer == null ? 1d : mediaPlayer.getVolume();
         if (mediaPlayer != null) mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setOnEndOfMedia(this::next);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            switch (ModuleInstance.getModule(cn.stars.reversal.module.impl.addons.MusicPlayer.class).playMode.getMode()) {
+                case "Next": {
+                    this.next();
+                    break;
+                }
+                case "Random": {
+                    this.random();
+                    break;
+                }
+                case "Repeat": {
+                    mediaPlayer.seek(mediaPlayer.getStartTime());
+                    mediaPlayer.play();
+                }
+            }
+        });
         mediaPlayer.setAudioSpectrumInterval(0.025);
         mediaPlayer.setAudioSpectrumListener((timestamp, duration, magnitudes, phases) -> {
             this.magnitudes = magnitudes;
@@ -107,6 +126,7 @@ public class MusicPlayer {
     //    ((MusicLyricWidget) Client.instance.uiManager.getWidget(MusicLyricWidget.class)).reset();
         ModuleInstance.getModule(MusicInfo.class).reset();
         Atomic.INSTANCE.reset();
+
         mediaPlayer.play();
 
         this.music = music;
@@ -148,6 +168,16 @@ public class MusicPlayer {
         setMusic(currentMusicList.get(index));
     }
 
+    public void random() {
+        int result = RandomUtil.INSTANCE.nextInt(0, currentMusicList.size() - 1);
+        if (randomPlayedIndex.contains(result)) {
+            this.random();
+        } else {
+            randomPlayedIndex.add(result);
+            setMusic(currentMusicList.get(result));
+        }
+    }
+
     public void setMusicList(List<Music> list) {
         currentMusicList = list;
         if (playMode == PlayMode.SHUFFLE) Collections.shuffle(currentMusicList);
@@ -165,7 +195,7 @@ public class MusicPlayer {
         }
 
         // 获取歌词列表
-        List<LyricLine> lyrics = music.hasTranslate && translated ? music.getTranslatedLyrics() : music.getLyrics();
+        List<LyricLine> lyrics = (music.hasTranslate || !music.getTranslatedLyrics().isEmpty()) && translated ? music.getTranslatedLyrics() : music.getLyrics();
         double currentTime = getCurrentTime();
 
         // 遍历时只考虑当前时间已经跨越的歌词行

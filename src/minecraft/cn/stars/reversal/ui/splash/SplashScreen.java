@@ -1,5 +1,6 @@
 package cn.stars.reversal.ui.splash;
 
+import cn.stars.reversal.HopeEngine;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.notification.NotificationType;
@@ -45,7 +46,6 @@ public class SplashScreen {
     public static boolean waiting = false;
     private static boolean firstFrame = false;
     private static Throwable threadError;
-    private static int max_texture_size = -1;
     private static StopWatch stopWatch = new StopWatch();
 
     public static boolean crashDetected = false;
@@ -71,7 +71,6 @@ public class SplashScreen {
         GL.createCapabilities();
         mc.updateDisplay();
         VideoManager.loadSplash();
-        Display.setTitle("Initialize Catalog [100.00%]");
 
         splashThread = new Thread(new Runnable() {
             @Override
@@ -265,19 +264,6 @@ public class SplashScreen {
         }
     }
 
-    private static int getMaxTextureSize() {
-        if (max_texture_size != -1) return max_texture_size;
-        for (int i = 0x4000; i > 0; i >>= 1) {
-            GL11.glTexImage2D(GL11.GL_PROXY_TEXTURE_2D, 0, GL11.GL_RGBA, i, i, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
-            if (GL11.glGetTexLevelParameteri(GL11.GL_PROXY_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH) != 0) {
-                max_texture_size = i;
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
     @SneakyThrows
     public static void setProgress(int progress, String detail) {
         if (RainyAPI.isSplashScreenDisabled) return;
@@ -285,7 +271,7 @@ public class SplashScreen {
         SplashScreen.progressText = detail;
         mc.updateDisplay();
         ReversalLogger.info("[Startup] " + progress + "% - " + detail);
-        Display.setTitle("正在初始化游戏数据... [Data Initialize..." + progress + "%]");
+        Display.setTitle("Reversal Startup Progress | HopeEngine " + HopeEngine.version + " | " + progress + "%");
     }
 
 }

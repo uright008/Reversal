@@ -36,7 +36,6 @@ public final class ModuleManager {
             moduleList = Arrays.stream(Stream.concat(Arrays.stream(moduleList), Stream.of(module))
                     .toArray(Module[]::new)).sorted(Comparator.comparing(m -> m.getModuleInfo().name())).toArray(Module[]::new);
         }
-        EventHandler.residentProcessor.onLoad();
     }
 
     public void registerModules(Module[] modules) {
@@ -47,7 +46,6 @@ public final class ModuleManager {
             moduleCache.put(module.getModuleInfo().name().toLowerCase(), module);
             module.onLoad();
         }
-        EventHandler.residentProcessor.onLoad();
     }
 
     public List<Module> getEnabledModules() {

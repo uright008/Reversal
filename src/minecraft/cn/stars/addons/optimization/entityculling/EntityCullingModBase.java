@@ -7,7 +7,7 @@ import java.util.HashSet;
 import cn.stars.reversal.util.ReversalLogger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.logisticscraft.occlusionculling.OcclusionCullingInstance;
+import cn.stars.addons.culling.OcclusionCullingInstance;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

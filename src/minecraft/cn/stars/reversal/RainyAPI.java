@@ -29,7 +29,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 
 @Getter
 @Setter
-@UtilityClass
 @SuppressWarnings("all")
 public class RainyAPI {
     public static Minecraft mc = Minecraft.getMinecraft();
@@ -44,9 +43,7 @@ public class RainyAPI {
      */
     public static int backgroundId = 9;
     public static boolean isShaderCompatibility = false;
-    public static boolean isViaCompatibility = false;
     public static boolean isSplashScreenDisabled = false;
-    public static boolean isPreInited = false;
     public static boolean mainMenuDate = false;
     public static boolean guiSnow = false;
     public static boolean backgroundBlur = false;
@@ -65,8 +62,9 @@ public class RainyAPI {
     public static final String[] wittyTitle = new String[]
             {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "Tough. Complex. Incomprehensible.", "时间永远是最难跨过的分界线", "自己选择的路终究由你自己跨过",
             "渴望陪伴,又渴望孤独", "Heaven will not have mercy on the hateful.", "可惜我不是你,没能成为你这样的有成之人", "昨夜西风凋碧树,独上高楼,望尽天涯路", "明天和死亡哪个会先到来?",
-            "虚伪才是绝对的真实", "为了一个人,你会付出自己的一切吗?", "你希望有一个人,为你付出他的一切吗?", "Metamorphosis.", "寂寞的人唱伤心的歌~", "No everlasting love.", "我们就如平行宇宙,近在眼前却又永不相遇",
-            "混乱不应成为常态,错误不应理所当然", "希望本是无所谓有,无所谓无的", "无聊生者不生,即使厌见者不见,为人为己,也还都不错"};
+            "虚伪才是绝对的真实", "为了一个人,你会付出自己的一切吗?", "你希望有一个人,为你付出他的一切吗?", "Metamorphosis.", "衣带渐宽终不悔,为伊消得人憔悴", "No everlasting love.", "我们就如平行宇宙,近在眼前却又永不相遇",
+            "混乱不应成为常态,错误不应理所当然", "希望本是无所谓有,无所谓无的", "无聊生者不生,即使厌见者不见,为人为己,也还都不错", "当世界要求你反省,你可以选择不配合这场审判", "疼痛的目的不是让你查看伤口,而是教会你如何站立",
+            "当友谊成为了冰冷的数字,这段关系或许已经失衡", "放下助人情结,尊重他人命运"};
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];
@@ -129,7 +127,7 @@ public class RainyAPI {
         final String client = FileUtil.loadFile("client.txt");
 
         // re-save if not available on start.
-        if (client == null || !client.contains("DisableShader") || !client.contains("DisableViaMCP") || !client.contains("DisableSplashScreen") || !client.contains("IsPreInited")) {
+        if (client == null || !client.contains("DisableShader") || !client.contains("DisableSplashScreen")) {
             processAPI(false);
             return;
         }
@@ -144,17 +142,8 @@ public class RainyAPI {
             if (split[0].contains("DisableShader")) {
                 isShaderCompatibility = Boolean.parseBoolean(split[1]);
             }
-            if (split[0].contains("DisableViaMCP")) {
-                isViaCompatibility = Boolean.parseBoolean(split[1]);
-            }
             if (split[0].contains("DisableSplashScreen")) {
                 isSplashScreenDisabled = Boolean.parseBoolean(split[1]);
-            }
-            if (split[0].contains("IsPreInited")) {
-                isPreInited = Boolean.parseBoolean(split[1]);
-            }
-            if (split[0].contains("MainMenuDate")) {
-                mainMenuDate = Boolean.parseBoolean(split[1]);
             }
             if (split[0].contains("GuiSnow")) {
                 guiSnow = Boolean.parseBoolean(split[1]);
@@ -177,11 +166,7 @@ public class RainyAPI {
     public static void processAPI(boolean post) {
         final StringBuilder clientBuilder = new StringBuilder();
         clientBuilder.append("DisableShader_").append(isShaderCompatibility).append("\r\n");
-        clientBuilder.append("DisableViaMCP_").append(isViaCompatibility).append("\r\n");
         clientBuilder.append("DisableSplashScreen_").append(isSplashScreenDisabled).append("\r\n");
-        clientBuilder.append("IsPreInited_").append(isPreInited).append("\r\n");
-        clientBuilder.append("LicenseReviewed_").append(isPreInited).append("\r\n");
-        clientBuilder.append("MainMenuDate_").append(mainMenuDate).append("\r\n");
         clientBuilder.append("GuiSnow_").append(guiSnow).append("\r\n");
         clientBuilder.append("BackgroundBlur_").append(backgroundBlur).append("\r\n");
         clientBuilder.append("ImageScreen_").append(imageScreen).append("\r\n");

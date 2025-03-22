@@ -194,8 +194,6 @@ public class RenderChunk
             chunkcacheof.renderStart();
             boolean[] aboolean = new boolean[ENUM_WORLD_BLOCK_LAYERS.length];
             BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-            boolean flag = Reflector.ForgeBlock_canRenderInLayer.exists();
-            boolean flag1 = Reflector.ForgeHooksClient_setRenderLayer.exists();
 
             for (Object o : BlockPosM.getAllInBoxMutable(blockpos, blockpos1))
             {
@@ -208,7 +206,7 @@ public class RenderChunk
                     lvt_10_1_.func_178606_a(blockposm);
                 }
 
-                if (ReflectorForge.blockHasTileEntity(iblockstate))
+                if (block.hasTileEntity())
                 {
                     TileEntity tileentity = chunkcacheof.getTileEntity(new BlockPos(blockposm));
                     TileEntitySpecialRenderer<TileEntity> tileentityspecialrenderer = TileEntityRendererDispatcher.instance.<TileEntity>getSpecialRenderer(tileentity);
@@ -226,64 +224,33 @@ public class RenderChunk
 
                 EnumWorldBlockLayer[] aenumworldblocklayer;
 
-                if (flag)
-                {
-                    aenumworldblocklayer = ENUM_WORLD_BLOCK_LAYERS;
-                }
-                else
-                {
-                    aenumworldblocklayer = this.blockLayersSingle;
-                    aenumworldblocklayer[0] = block.getBlockLayer();
-                }
+                aenumworldblocklayer = this.blockLayersSingle;
+                aenumworldblocklayer[0] = block.getBlockLayer();
 
-                for (int j = 0; j < aenumworldblocklayer.length; ++j)
-                {
-                    EnumWorldBlockLayer enumworldblocklayer = aenumworldblocklayer[j];
-
-                    if (flag)
-                    {
-                        boolean flag2 = Reflector.callBoolean(block, Reflector.ForgeBlock_canRenderInLayer, new Object[] {enumworldblocklayer});
-
-                        if (!flag2)
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (flag1)
-                    {
-                        Reflector.callVoid(Reflector.ForgeHooksClient_setRenderLayer, new Object[] {enumworldblocklayer});
-                    }
+                for (EnumWorldBlockLayer enumWorldBlockLayer : aenumworldblocklayer) {
+                    EnumWorldBlockLayer enumworldblocklayer = enumWorldBlockLayer;
 
                     enumworldblocklayer = this.fixBlockLayer(iblockstate, enumworldblocklayer);
                     int k = enumworldblocklayer.ordinal();
 
-                    if (block.getRenderType() != -1)
-                    {
+                    if (block.getRenderType() != -1) {
                         WorldRenderer worldrenderer = generator.getRegionRenderCacheBuilder().getWorldRendererByLayerId(k);
                         worldrenderer.setBlockLayer(enumworldblocklayer);
                         RenderEnv renderenv = worldrenderer.getRenderEnv(iblockstate, blockposm);
                         renderenv.setRegionRenderCacheBuilder(generator.getRegionRenderCacheBuilder());
 
-                        if (!compiledchunk.isLayerStarted(enumworldblocklayer))
-                        {
+                        if (!compiledchunk.isLayerStarted(enumworldblocklayer)) {
                             compiledchunk.setLayerStarted(enumworldblocklayer);
                             this.preRenderBlocks(worldrenderer, blockpos);
                         }
 
                         aboolean[k] |= blockrendererdispatcher.renderBlock(iblockstate, blockposm, chunkcacheof, worldrenderer);
 
-                        if (renderenv.isOverlaysRendered())
-                        {
+                        if (renderenv.isOverlaysRendered()) {
                             this.postRenderOverlays(generator.getRegionRenderCacheBuilder(), compiledchunk, aboolean);
                             renderenv.setOverlaysRendered(false);
                         }
                     }
-                }
-
-                if (flag1)
-                {
-                    Reflector.callVoid(Reflector.ForgeHooksClient_setRenderLayer, new Object[] {(Object)null});
                 }
             }
 

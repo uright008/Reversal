@@ -1,5 +1,7 @@
 package cn.stars.reversal.font;
 
+import java.util.List;
+
 public abstract class MFont {
     public abstract int drawString(String text, double x, double y, int color, boolean dropShadow);
 
@@ -7,11 +9,11 @@ public abstract class MFont {
 
     public abstract int drawStringWithShadow(final String text, final double x, final double y, final int color);
 
-    public abstract float width(String text);
+    public abstract int width(String text);
 
-    public float getWidth(String text) { return width(text); }
+    public abstract float getWidth(String text);
 
-    public float getStringWidth(String text) { return width(text); }
+    public float getStringWidth(String text) { return getWidth(text); }
 
     public abstract float drawCenteredString(final String text, final double x, final double y, final int color);
 

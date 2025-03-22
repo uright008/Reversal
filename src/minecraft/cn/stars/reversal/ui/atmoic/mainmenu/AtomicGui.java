@@ -17,6 +17,7 @@ public class AtomicGui implements GameInstance {
     protected int width;
     protected int height;
     protected List<GuiButton> buttonList = Lists.newArrayList();
+    public GuiButton selectedButton;
 
     public final Animation hoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
@@ -53,6 +54,7 @@ public class AtomicGui implements GameInstance {
                 for (GuiButton guiButton : this.buttonList) {
 
                     if (guiButton.mousePressed(mc, mouseX, mouseY)) {
+                        this.selectedButton = guiButton;
                         guiButton.playPressSound(mc.getSoundHandler());
                         this.actionPerformed(guiButton);
                     }
@@ -61,7 +63,13 @@ public class AtomicGui implements GameInstance {
         }
     }
 
-    public void mouseReleased(int mouseX, int mouseY, int state) {}
+    public void mouseReleased(int mouseX, int mouseY, int state) {
+        if (this.selectedButton != null && state == 0)
+        {
+            this.selectedButton.mouseReleased(mouseX, mouseY);
+            this.selectedButton = null;
+        }
+    }
 
     public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {}
 

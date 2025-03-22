@@ -1,4 +1,4 @@
-package com.logisticscraft.occlusionculling.cache;
+package cn.stars.addons.culling.cache;
 
 public interface OcclusionCache {
 

@@ -73,6 +73,7 @@ public class ModernClickGUI extends GuiScreen {
         int y = height / 2 - 180 + addY;
 
         boolean localization = ModuleInstance.getClientSettings().localization.enabled;
+        Color valueColor = ModuleInstance.getModule(ClickGui.class).customColor.enabled ? ModuleInstance.getModule(ClickGui.class).colorValue.getColor() : new Color(100, 200, 255, 250);
 
         if (isDragging) {
             addX = mouseX - deltaX;
@@ -108,13 +109,12 @@ public class ModernClickGUI extends GuiScreen {
         for (final Category category : Category.values()) {
             if (category == selectedCategory) {
                 sideAnimation.run(renderSelectY);
-                RoundedUtil.drawRound(x + 5, (float) sideAnimation.getValue() + 1, 100, 18, 5, ColorUtil.withAlpha(ThemeUtil.getThemeColor(ThemeType.FLAT_COLOR), 100));
+                RenderUtil.roundedRectangle(x + 5, (float) sideAnimation.getValue() + 1, 100, 18, 5, ColorUtil.withAlpha(valueColor, 120));
                 cur26.drawString(getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(200,200,200, 240).getRGB());
                 regular20.drawString(localization ? I18n.format("category." + category.name() + ".name") : StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(240,240,240, 240).getRGB());
             } else {
                 if (RenderUtil.isHovered(x + 5, renderSelectY, 100, 20, mouseX, mouseY)) {
                     category.alphaAnimation.run(80);
-                    //    RenderUtil.roundedRectangle(x + 5, renderSelectY, 105, 20, 4, new Color(80, 80, 80, 180));
                 } else {
                     category.alphaAnimation.run(0);
                 }
@@ -176,6 +176,7 @@ public class ModernClickGUI extends GuiScreen {
                     for (final Value setting : m.getSettings()) {
                         if (!setting.isHidden()) {
                             String settingName = localization ? I18n.format(setting.localizedName) : setting.name;
+                            int addY = localization && setting.localizedName.startsWith("value.") && ModuleInstance.getClientSettings().language.getMode().equals("Chinese") ? 1 : 0;
                             if (setting instanceof NoteValue) {
                                 psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(150, 150, 150, 150).getRGB());
                                 settingY += 12;
@@ -183,9 +184,9 @@ public class ModernClickGUI extends GuiScreen {
                             }
                             if (setting instanceof BoolValue) {
                                 psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
-                                RenderUtil.roundedOutlineRectangle(setting.guiX + 5 + psr18.width(settingName), setting.yAnimation.getValue() - 15.5, 8, 8, 4, 0.5, new Color(100, 200, 255, 200));
+                                RenderUtil.roundedOutlineRectangle(setting.guiX + 5 + psr18.width(settingName), setting.yAnimation.getValue() - 15.5 + addY, 8, 8, 4, 0.5, valueColor);
                                 if (((BoolValue) setting).isEnabled())
-                                    RenderUtil.roundedRectangle(setting.guiX + 6.5 + psr18.width(settingName), setting.yAnimation.getValue() - 14, 5, 5, 2.5, new Color(100, 200, 255, 250));
+                                    RenderUtil.roundedRectangle(setting.guiX + 6.5 + psr18.width(settingName), setting.yAnimation.getValue() - 14 + addY, 5, 5, 2.5, valueColor);
                                 settingY += 12;
                                 m.sizeInGui += 12;
                             }
@@ -226,10 +227,10 @@ public class ModernClickGUI extends GuiScreen {
                                     }
                                 }
 
-                                RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 13, 100, 2, 1, new Color(200, 200, 200, 200));
-                                RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 13, settingValue.renderPercentage * 100, 2, 1, new Color(100, 200, 255, 250));
-                                RenderUtil.roundedRectangle(setting.guiX + fontWidth + settingValue.renderPercentage * 100, setting.yAnimation.getValue() - 14.5, 5, 5, 2.5, new Color(100, 200, 255, 250));
-                                psr18.drawString(value, setting.guiX + fontWidth + 109, setting.yAnimation.getValue() - 15, new Color(240, 240, 240, 240).getRGB());
+                                RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 13 + addY, 100, 2, 1, new Color(200, 200, 200, 200));
+                                RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 13 + addY, settingValue.renderPercentage * 100 + 1, 2, 1, valueColor);
+                                RenderUtil.roundedRectangle(setting.guiX + fontWidth + settingValue.renderPercentage * 100, setting.yAnimation.getValue() - 14.5 + addY, 5, 5, 2.5, valueColor);
+                                psr18.drawString(value, setting.guiX + fontWidth + 109, setting.yAnimation.getValue() - 15 + addY, new Color(240, 240, 240, 240).getRGB());
                                 settingY += 12;
                                 m.sizeInGui += 12;
                             }
@@ -240,7 +241,7 @@ public class ModernClickGUI extends GuiScreen {
                                     psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - (colorValue.isDontShowThemeColor() ? 70 : 80), new Color(200, 200, 200, 200).getRGB());
                                     float[] hsb = {colorValue.getHue(), colorValue.getSaturation(), colorValue.getBrightness()};
                                     float gradientX = setting.guiX + fontWidth;
-                                    float gradientY = (float) (setting.yAnimation.getValue() - (colorValue.isDontShowThemeColor() ? 70 : 80));
+                                    float gradientY = (float) (setting.yAnimation.getValue() - (colorValue.isDontShowThemeColor() ? 70 : 80)) + addY;
                                     float gradientWidth = 97;
                                     float gradientHeight = 50;
                                     Gui.drawRect2(gradientX, gradientY, gradientWidth, gradientHeight, Color.getHSBColor(hsb[0], 1, 1).getRGB());
@@ -257,7 +258,7 @@ public class ModernClickGUI extends GuiScreen {
 
                                     GL11.glEnable(GL11.GL_BLEND);
                                     RenderUtil.color(-1);
-                                    mc.getTextureManager().bindTexture(new ResourceLocation("reversal/images/colorpicker2.png"));
+                                    mc.getTextureManager().bindTexture(new ResourceLocation("reversal/images/colorpicker.png"));
                                     Gui.drawModalRectWithCustomSizedTexture(pickerX, pickerY, 0, 0, 4, 4, 4, 4);
 
 
@@ -279,9 +280,9 @@ public class ModernClickGUI extends GuiScreen {
 
                                     if (!colorValue.isDontShowThemeColor()) {
                                         psr18.drawString("Follow Theme", gradientX, gradientY + gradientHeight + 14, new Color(200, 200, 200, 200).getRGB());
-                                        RenderUtil.roundedOutlineRectangle(gradientX + psr18.width("Follow Theme") + 5, gradientY + gradientHeight + 13, 8, 8, 4, 0.5, new Color(100, 200, 255, 200));
+                                        RenderUtil.roundedOutlineRectangle(gradientX + psr18.width("Follow Theme") + 5, gradientY + gradientHeight + 13, 8, 8, 4, 0.5, valueColor);
                                         if (colorValue.isThemeColor())
-                                            RenderUtil.roundedRectangle(gradientX + psr18.width("Follow Theme") + 6.5, gradientY + gradientHeight + 14.5, 5, 5, 2.5, new Color(100, 200, 255, 250));
+                                            RenderUtil.roundedRectangle(gradientX + psr18.width("Follow Theme") + 6.5, gradientY + gradientHeight + 14.5, 5, 5, 2.5, valueColor);
                                     }
 
                                     if (Mouse.isButtonDown(0)) {
@@ -310,9 +311,9 @@ public class ModernClickGUI extends GuiScreen {
                                     m.sizeInGui += (colorValue.isDontShowThemeColor() ? 70 : 80);
                                 } else {
                                     psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
-                                    RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 16, 8, 8, 2, colorValue.getColor());
+                                    RenderUtil.roundedRectangle(setting.guiX + fontWidth, setting.yAnimation.getValue() - 16 + addY, 8, 8, 2, colorValue.getColor());
                                     psr16.drawString("(" + String.format("#%02X%02X%02X", colorValue.getColor().getRed(), colorValue.getColor().getGreen(), colorValue.getColor().getBlue()) + ")",
-                                            setting.guiX + fontWidth + 12, setting.yAnimation.getValue() - 14.5, colorValue.getColor().getRGB());
+                                            setting.guiX + fontWidth + 12, setting.yAnimation.getValue() - 14.5 + addY, colorValue.getColor().getRGB());
                                     settingY += 12;
                                     m.sizeInGui += 12;
                                 }
@@ -320,7 +321,7 @@ public class ModernClickGUI extends GuiScreen {
                             if (setting instanceof ModeValue) {
                                 psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
                                 psr18.drawString(((ModeValue) setting).getModes().get(((ModeValue) setting).index),
-                                        setting.guiX + 5 + psr18.width(settingName), setting.yAnimation.getValue() - 15, new Color(240, 240, 240, 240).getRGB());
+                                        setting.guiX + 5 + psr18.width(settingName), setting.yAnimation.getValue() - 15 + addY, new Color(240, 240, 240, 240).getRGB());
                                 settingY += 12;
                                 m.sizeInGui += 12;
                             }
@@ -352,7 +353,7 @@ public class ModernClickGUI extends GuiScreen {
 
             //    RenderUtil.roundedRectangle(m.guiX - 0.5, m.yAnimation.getValue() + 10, 1, 10, 1, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
                 RenderUtil.roundedRectangle(m.guiX, m.yAnimation.getValue(), 390, m.sizeAnimation.getValue() - 5, 3, new Color(80,80,80, (int) (40 + m.alphaAnimation.getValue())));
-                RenderUtil.roundedRectangle(m.guiX + 8, m.yAnimation.getValue() + 12, 6, 6, 3, m.isEnabled() ? new Color(50,255,50, 220) : new Color(160, 160, 160, 200));
+                RenderUtil.roundedRectangle(m.guiX + 8, m.yAnimation.getValue() + 12, 6, 6, 3, m.isEnabled() ? valueColor : new Color(160, 160, 160, 200));
 
                 settingY = moduleY + m.sizeInGui;
                 moduleY += m.sizeInGui;

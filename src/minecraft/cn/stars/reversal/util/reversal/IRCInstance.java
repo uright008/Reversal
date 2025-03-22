@@ -10,6 +10,7 @@ import cn.stars.reversal.util.misc.ModuleInstance;
 import com.blogspot.debukkitsblog.net.Client;
 import com.blogspot.debukkitsblog.net.Datapackage;
 import com.blogspot.debukkitsblog.net.Executable;
+import net.minecraft.client.Minecraft;
 
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class IRCInstance extends Client {
             @Override
             public void run(Datapackage msg, Socket socket) {
                 if (ModuleInstance.getModule(IRC.class).isEnabled()) {
-                    Reversal.showMsg(msg.get(1));
+                    Minecraft.getMinecraft().addScheduledTask(() ->Reversal.showMsg(msg.get(1)));
                 }
             }
         });
@@ -53,13 +54,13 @@ public class IRCInstance extends Client {
 
     @Override
     protected void repairConnection() {
-        if (reconnectedTimes < 5) {
-            Reversal.showMsg("[IRC] Reconnecting! Times:" + reconnectedTimes);
+        if (reconnectedTimes < 30 && reconnectedTimes >= 0) {
+        //    Minecraft.getMinecraft().addScheduledTask(() -> Reversal.showMsg("[IRC] Reconnecting! Times:" + reconnectedTimes));
             super.repairConnection();
             reconnectedTimes++;
         } else {
-            Reversal.showMsg("[IRC] Failed to reconnect after 5 times of try!");
-            reconnectedTimes = 0;
+            Minecraft.getMinecraft().addScheduledTask(() -> Reversal.showMsg("[IRC] Failed to reconnect after 30 times of try!"));
+            reconnectedTimes = -1;
             this.stop();
         }
     }

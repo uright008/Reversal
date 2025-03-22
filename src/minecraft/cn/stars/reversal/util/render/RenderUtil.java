@@ -394,7 +394,7 @@ public final class RenderUtil implements GameInstance {
     public void color(Color color, final int alpha) {
         if (color == null)
             color = Color.white;
-        color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 0.5);
+        color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, alpha);
     }
 
     public void lineWidth(final double width) {

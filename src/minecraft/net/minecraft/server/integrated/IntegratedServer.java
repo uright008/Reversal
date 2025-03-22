@@ -81,8 +81,7 @@ public class IntegratedServer extends MinecraftServer
 
             if (nbttagcompound != null && nbttagcompound.hasKey("Dimension"))
             {
-                int i = nbttagcompound.getInteger("Dimension");
-                PacketThreadUtil.lastDimensionId = i;
+                PacketThreadUtil.lastDimensionId = nbttagcompound.getInteger("Dimension");
                 this.mc.loadingScreen.setLoadingProgress(-1);
             }
         }
@@ -144,8 +143,7 @@ public class IntegratedServer extends MinecraftServer
         this.initialWorldChunkLoad();
     }
 
-    protected boolean startServer() throws IOException
-    {
+    protected boolean startServer() {
         logger.info("Starting integrated minecraft server version 1.9");
         this.setOnlineMode(true);
         this.setCanSpawnAnimals(true);

@@ -1,12 +1,12 @@
-package com.logisticscraft.occlusionculling;
+package cn.stars.addons.culling;
 
 import java.util.Arrays;
 import java.util.BitSet;
 
-import com.logisticscraft.occlusionculling.cache.ArrayOcclusionCache;
-import com.logisticscraft.occlusionculling.cache.OcclusionCache;
-import com.logisticscraft.occlusionculling.util.MathUtilities;
-import com.logisticscraft.occlusionculling.util.Vec3d;
+import cn.stars.addons.culling.cache.ArrayOcclusionCache;
+import cn.stars.addons.culling.cache.OcclusionCache;
+import cn.stars.addons.culling.util.MathUtilities;
+import cn.stars.addons.culling.util.Vec3d;
 
 public class OcclusionCullingInstance {
 
@@ -100,29 +100,29 @@ public class OcclusionCullingInstance {
             // only after the first hit wall the cache becomes valid.
             allowRayChecks = false;
             
-            // since the cache wasn't helpfull 
+            // since the cache wasn't helpful
             id = 0;
             for (int x = minX; x <= maxX; x++) {
                 byte visibleOnFaceX = 0;
                 byte faceEdgeDataX = 0;
-                faceEdgeDataX |= (x == minX) ? ON_MIN_X : 0;
-                faceEdgeDataX |= (x == maxX) ? ON_MAX_X : 0;
-                visibleOnFaceX |= (x == minX && relX == Relative.POSITIVE) ? ON_MIN_X : 0;
-                visibleOnFaceX |= (x == maxX && relX == Relative.NEGATIVE) ? ON_MAX_X : 0; 
+                faceEdgeDataX |= (byte) ((x == minX) ? ON_MIN_X : 0);
+                faceEdgeDataX |= (byte) ((x == maxX) ? ON_MAX_X : 0);
+                visibleOnFaceX |= (byte) ((x == minX && relX == Relative.POSITIVE) ? ON_MIN_X : 0);
+                visibleOnFaceX |= (byte) ((x == maxX && relX == Relative.NEGATIVE) ? ON_MAX_X : 0);
                 for (int y = minY; y <= maxY; y++) {
                     byte faceEdgeDataY = faceEdgeDataX;
                     byte visibleOnFaceY = visibleOnFaceX;
-                    faceEdgeDataY |= (y == minY) ? ON_MIN_Y : 0;
-                    faceEdgeDataY |= (y == maxY) ? ON_MAX_Y : 0;
-                    visibleOnFaceY |= (y == minY && relY == Relative.POSITIVE) ? ON_MIN_Y : 0;
-                    visibleOnFaceY |= (y == maxY && relY == Relative.NEGATIVE) ? ON_MAX_Y : 0;
+                    faceEdgeDataY |= (byte) ((y == minY) ? ON_MIN_Y : 0);
+                    faceEdgeDataY |= (byte) ((y == maxY) ? ON_MAX_Y : 0);
+                    visibleOnFaceY |= (byte) ((y == minY && relY == Relative.POSITIVE) ? ON_MIN_Y : 0);
+                    visibleOnFaceY |= (byte) ((y == maxY && relY == Relative.NEGATIVE) ? ON_MAX_Y : 0);
                     for (int z = minZ; z <= maxZ; z++) {
                         byte faceEdgeData = faceEdgeDataY;
                         byte visibleOnFace = visibleOnFaceY;
-                        faceEdgeData |= (z == minZ) ? ON_MIN_Z : 0;
-                        faceEdgeData |= (z == maxZ) ? ON_MAX_Z : 0;
-                        visibleOnFace |= (z == minZ && relZ == Relative.POSITIVE) ? ON_MIN_Z : 0;
-                        visibleOnFace |= (z == maxZ && relZ == Relative.NEGATIVE) ? ON_MAX_Z : 0;
+                        faceEdgeData |= (byte) ((z == minZ) ? ON_MIN_Z : 0);
+                        faceEdgeData |= (byte) ((z == maxZ) ? ON_MAX_Z : 0);
+                        visibleOnFace |= (byte) ((z == minZ && relZ == Relative.POSITIVE) ? ON_MIN_Z : 0);
+                        visibleOnFace |= (byte) ((z == maxZ && relZ == Relative.NEGATIVE) ? ON_MAX_Z : 0);
                         if(skipList.get(id)) { // was checked and it wasn't visible
                             id++;
                             continue;
@@ -140,9 +140,7 @@ public class OcclusionCullingInstance {
             }
 
             return false;
-        } catch (Throwable t) {
-            // Failsafe
-            t.printStackTrace();
+        } catch (Throwable ignored) {
         }
         return true;
     }

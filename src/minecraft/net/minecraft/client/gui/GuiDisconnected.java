@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.stars.reversal.GameInstance;
@@ -30,14 +31,12 @@ public class GuiDisconnected extends GuiScreen
     private String reason;
     private IChatComponent message;
     private List<String> multilineMessage;
-    private final GuiScreen parentScreen;
     private int field_175353_i;
     private TextButton reconnectButton, cancelButton;
     private TextButton[] buttons;
 
     public GuiDisconnected(GuiScreen screen, String reasonLocalizationKey, IChatComponent chatComp)
     {
-        this.parentScreen = screen;
         this.reason = I18n.format(reasonLocalizationKey);
         this.message = chatComp;
     }
@@ -49,7 +48,7 @@ public class GuiDisconnected extends GuiScreen
     public void initGui()
     {
         this.buttonList.clear();
-        this.multilineMessage = this.fontRendererObj.listFormattedStringToWidth(this.message.getFormattedText(), this.width - 50);
+        this.multilineMessage = Arrays.asList(regular16.autoReturn(this.message.getFormattedText(), this.width - 50, 100).split("\n"));
         this.field_175353_i = (int) (this.multilineMessage.size() * regular16.height());
         reconnectButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height(), 200, 20, () -> this.mc.displayGuiScreen(Reversal.atomicMenu), "返回主菜单", "", true, 1, 75, 5, 20);
         cancelButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height() + 25, 200, 20, () -> this.mc.displayGuiScreen(new GuiConnecting(Reversal.atomicMenu, mc, mc.getCurrentServerData())), "重连", "", true, 1, 90, 5, 20);
@@ -110,10 +109,6 @@ public class GuiDisconnected extends GuiScreen
                     i += regular16.height();
                 }
             }
-
-            regular16.drawString("Open Source PVP Client By Stars.", 4, height - 30, new Color(220, 220, 220, 240).getRGB());
-            regular16.drawString("https://www.github.com/RinoRika/Reversal", 4, height - 20, new Color(220, 220, 220, 240).getRGB());
-            regular16.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")), 4, height - 10, new Color(220, 220, 220, 240).getRGB());
 
             Atomic.INSTANCE.render(new ScaledResolution(mc));
 

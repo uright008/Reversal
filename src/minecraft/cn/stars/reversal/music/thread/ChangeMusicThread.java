@@ -21,12 +21,14 @@ public class ChangeMusicThread extends Thread {
         this.music = music;
         this.playList = playList;
         setName("Music-ChangeMusic");
+        setPriority(MAX_PRIORITY);
     }
 
     public ChangeMusicThread(Music music) {
         this.music = music;
         this.playList = null;
         setName("Music-ChangeMusic");
+        setPriority(MAX_PRIORITY);
     }
 
     @Override
