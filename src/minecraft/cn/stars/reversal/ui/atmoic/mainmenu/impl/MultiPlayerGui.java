@@ -52,6 +52,7 @@ public class MultiPlayerGui extends AtomicGui {
     public TextButton editButton, deleteButton, selectButton, directButton, addButton, refreshButton, cancelButton, reverseButton;
     private TextButton[] buttons;
     GuiListExtended.IGuiListEntry guilistextended$iguilistentry;
+    private boolean initialized;
     public TextField searchField;
     public boolean reversed;
 
@@ -72,20 +73,30 @@ public class MultiPlayerGui extends AtomicGui {
         searchField = new TextField(width - 165, 20, GameInstance.regular16, new Color(30, 30, 30, 100), new Color(30,30,30,120));
         searchField.setSelectedLine(true);
 
-        this.savedServerList = new ServerList(mc);
-        this.savedServerList.loadServerList();
-        this.lanServerList = new LanServerDetector.LanServerList();
+        if (!this.initialized)
+        {
+            this.initialized = true;
+            this.savedServerList = new ServerList(mc);
+            this.savedServerList.loadServerList();
+            this.lanServerList = new LanServerDetector.LanServerList();
 
-        try {
-            this.lanServerDetector = new LanServerDetector.ThreadLanServerFind(this.lanServerList);
-            this.lanServerDetector.start();
-        } catch (Exception exception) {
-            logger.warn("Unable to start LAN server detection: {}", exception.getMessage());
+            try
+            {
+                this.lanServerDetector = new LanServerDetector.ThreadLanServerFind(this.lanServerList);
+                this.lanServerDetector.start();
+            }
+            catch (Exception exception)
+            {
+                logger.warn("Unable to start LAN server detection: {}", exception.getMessage());
+            }
+
+            this.serverListSelector = new ServerSelectionList(this, mc, this.width, this.height, 105, this.height - 155, 36);
+            this.serverListSelector.loadInternetServerList(this.savedServerList);
         }
-
-        this.serverListSelector = new ServerSelectionList(this, mc, this.width, this.height, 105, this.height - 90, 36);
-        this.serverListSelector.loadInternetServerList(this.savedServerList);
-        this.serverListSelector.setDimensions(this.width, this.height, 105, this.height - 155);
+        else
+        {
+            this.serverListSelector.setDimensions(this.width, this.height, 105, this.height - 155);
+        }
 
         this.createButtons();
     }

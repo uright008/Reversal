@@ -19,7 +19,7 @@ public class MusicPlayer extends Module {
     @Override
     protected void onEnable() {
         if (RainyAPI.hasJavaFX) mc.displayGuiScreen(Reversal.musicManager.screen);
-        else Reversal.showMsg(I18n.format("module.MusicPlayer.msg"));
+        else Reversal.showMsg(I18n.format("message.MusicPlayer.error"));
         this.setEnabled(false);
     }
 }

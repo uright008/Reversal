@@ -50,6 +50,9 @@ public class ModernClickGUI extends GuiScreen {
     private boolean themeColorFlag = false;
     private boolean hasEditedSliders = false;
 
+    private boolean isEditingKey = false;
+    private Module editingModule;
+
     private final TimeUtil timer = new TimeUtil();
     private float wheel = Mouse.getDWheel();
     private final TextField searchField = new TextField(150, 15, GameInstance.regular16, backgroundColor, new Color(100,100,100,100));
@@ -342,9 +345,10 @@ public class ModernClickGUI extends GuiScreen {
                 m.yAnimation.run(m.guiY);
 
                 // Keybinding
-                RenderUtil.roundedOutlineRectangle(m.guiX + 340 - psr16.width(Keyboard.getKeyName(m.getKeyBind())), m.yAnimation.getValue() + 9,
-                        4.5 + psr16.width(Keyboard.getKeyName(m.getKeyBind())), 12, 2, 0.7, new Color(160, 160, 160, 160));
-                psr16.drawString(Keyboard.getKeyName(m.getKeyBind()), m.guiX + 342 - psr16.width(Keyboard.getKeyName(m.getKeyBind())),
+                String keyName = isEditingKey && editingModule == m ? "LISTENING..." : Keyboard.getKeyName(m.getKeyBind());
+                RenderUtil.roundedOutlineRectangle(m.guiX + 340 - psr16.width(keyName) / 2f, m.yAnimation.getValue() + 9,
+                        4.5 + psr16.width(keyName), 12, 2, 0.7, new Color(160, 160, 160, 160));
+                psr16.drawString(keyName, m.guiX + 342 - psr16.width(keyName) / 2f,
                         m.yAnimation.getValue() + 12.5, new Color(160,160,160,160).getRGB());
 
                 if (!m.getSettings().isEmpty()) {
@@ -476,10 +480,22 @@ public class ModernClickGUI extends GuiScreen {
             if ((m.getModuleInfo().category() == selectedCategory && searchField.text.isEmpty()) || getRelevantModules(searchField.text).contains(m)) {
                 if (RenderUtil.isHovered(moduleX, m.guiY, 390, 30, mouseX, mouseY)) {
                     if (m.guiY + psm24.height() < y || m.guiY + psm24.height() > y + 360) return;
+                    if (mouseButton == 1) {
+                        if (RenderUtil.isHovered(moduleX + 335 - psr16.width(Keyboard.getKeyName(m.getKeyBind())) / 2f, m.guiY, psr16.width(Keyboard.getKeyName(m.getKeyBind())) + 10, 30, mouseX, mouseY)) {
+                            if (isEditingKey) {
+                                m.setKeyBind(Keyboard.KEY_NONE);
+                                isEditingKey = false;
+                            } else {
+                                isEditingKey = true;
+                            }
+                            editingModule = m;
+                        } else {
+                            m.expanded = !m.expanded;
+                        }
+                    }
                     if (mouseButton == 0) {
                         m.toggleModule();
                     }
-                    else if (mouseButton == 1) m.expanded = !m.expanded;
                 }
                 for (final Value setting : m.getSettings()) {
                     if (m.expanded) {
@@ -578,6 +594,11 @@ public class ModernClickGUI extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (isEditingKey && editingModule != null) {
+            ModuleInstance.getModule(editingModule.getModuleInfo().name()).setKeyBind(keyCode);
+            isEditingKey = false;
+            editingModule = null;
+        }
         if (isCtrlKeyDown() && keyCode == Keyboard.KEY_F) {
             searchField.focused = true;
         }

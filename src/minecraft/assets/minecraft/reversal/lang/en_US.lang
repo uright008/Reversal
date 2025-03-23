@@ -22,9 +22,10 @@ command.SetText.success=Successfully set the custom text: '%s'.
 command.Toggle.success=Successfully toggled module '%s' to '%b'.
 command.Online.current=Current IRC online users (%s):
 
-module.FreeLook.msg=Bind FreeLook to a key to use!
-module.MoBends.msg=WaveyCapes and RealFirstPerson are not supported by MoBends.
-module.MusicPlayer.msg=JavaFX is not found on your current java version. Music Player is disabled.
+message.FreeLook.keyBind=Bind FreeLook to a key to use!
+message.MoBends.conflict=WaveyCapes and RealFirstPerson are not supported by MoBends.
+message.MusicPlayer.error=JavaFX is not found on your current java version. Music Player is disabled.
+message.IRC.tip=Tip: Use ".chat <message>" to chat in the irc channel!
 
 # Categories
 category.title=CATEGORIES

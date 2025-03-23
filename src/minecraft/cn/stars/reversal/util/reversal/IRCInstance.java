@@ -11,6 +11,7 @@ import com.blogspot.debukkitsblog.net.Client;
 import com.blogspot.debukkitsblog.net.Datapackage;
 import com.blogspot.debukkitsblog.net.Executable;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 
 import java.net.Socket;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IRCInstance extends Client {
+    public boolean receivedMsg = false;
     public String id;
     int reconnectedTimes = 0;
     public Map<String, String> users = new HashMap<>();
@@ -31,7 +33,11 @@ public class IRCInstance extends Client {
             @Override
             public void run(Datapackage msg, Socket socket) {
                 if (ModuleInstance.getModule(IRC.class).isEnabled()) {
-                    Minecraft.getMinecraft().addScheduledTask(() ->Reversal.showMsg(msg.get(1)));
+                    if (!receivedMsg) {
+                        Minecraft.getMinecraft().addScheduledTask(() -> Reversal.showMsg(I18n.format("message.IRC.tip")));
+                        receivedMsg = true;
+                    }
+                    Minecraft.getMinecraft().addScheduledTask(() -> Reversal.showMsg(msg.get(1)));
                 }
             }
         });

@@ -37,7 +37,7 @@ public class MoBends extends Module {
     @Override
     public void onUpdateAlways() {
         if ((ModuleInstance.getModule(WaveyCapes.class).isEnabled() || ModuleInstance.getModule(RealFirstPerson.class).isEnabled()) && this.isEnabled()) {
-            Reversal.showMsg(I18n.format("module.MoBends.msg"));
+            Reversal.showMsg(I18n.format("message.MoBends.conflict"));
             this.setEnabled(false);
         }
     }

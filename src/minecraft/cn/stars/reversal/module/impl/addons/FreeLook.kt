@@ -18,7 +18,7 @@ class FreeLook : Module() {
 
     override fun onEnable() {
         if (this.keyBind == Keyboard.KEY_NONE) {
-            Reversal.showMsg(I18n.format("module.FreeLook.msg"))
+            Reversal.showMsg(I18n.format("message.FreeLook.keyBind"))
             toggleModule()
             return
         }

@@ -1,6 +1,8 @@
 package net.minecraft.client.renderer;
 
 import java.util.Collection;
+
+import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
@@ -26,7 +28,8 @@ public abstract class InventoryEffectRenderer extends GuiContainer
     {
         if (!this.mc.thePlayer.getActivePotionEffects().isEmpty())
         {
-            this.guiLeft = 160 + (this.width - this.xSize - 200) / 2;
+            if (ModuleInstance.getInterface().moveWhenPotionActive.enabled) this.guiLeft = 160 + (this.width - this.xSize - 200) / 2;
+            else this.guiLeft = (this.width - this.xSize) / 2;
             this.hasActivePotionEffects = true;
         }
         else
@@ -50,7 +53,6 @@ public abstract class InventoryEffectRenderer extends GuiContainer
     {
         int i = this.guiLeft - 124;
         int j = this.guiTop;
-        int k = 166;
         Collection<PotionEffect> collection = this.mc.thePlayer.getActivePotionEffects();
 
         if (!collection.isEmpty())

@@ -62,7 +62,7 @@ public class Reversal {
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.PRE_RELEASE;
-    public static final String BUILD_VERSION = "Release Candidate 2";
+    public static final String BUILD_VERSION = "Release Candidate 3";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();

@@ -17,4 +17,7 @@ public class Interface extends Module {
     public final BoolValue modernFont_Chat = new BoolValue("Modern Font (Chat)", "value.Interface.modernFont_Chat",this, false);
     public final BoolValue chatBackground = new BoolValue("Background", "value.Interface.chatBackground",this, true);
     public final BoolValue combineDuplicatedMsg = new BoolValue("Combine Duplicated Messages", "value.Interface.combineDuplicatedMsg",this, false);
+
+    public final NoteValue note3 = new NoteValue("< Inventory >", this);
+    public final BoolValue moveWhenPotionActive = new BoolValue("Move when potion active", this, true);
 }
