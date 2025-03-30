@@ -10,6 +10,7 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.ClickGui;
+import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
 import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
@@ -33,15 +34,17 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import static cn.stars.reversal.GameInstance.*;
 
 public class ModernClickGUI extends GuiScreen {
     public final Color backgroundColor = new Color(20,20,20,255);
-    public Animation scaleAnimation = new Animation(Easing.EASE_IN_OUT_QUAD, 300);
+    public Animation scaleAnimation = new Animation(Easing.EASE_OUT_EXPO, 300);
     private final Animation sideAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
     private Category selectedCategory = Category.COMBAT;
     private static float scrollAmount;
+    private final ArrayList<GUIBubble> bubbles = new ArrayList<>();
 
     // Values
     private NumberValue selectedSlider;
@@ -63,14 +66,7 @@ public class ModernClickGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (scaleAnimation.getDestinationValue() == 0d) {
-            scaleAnimation.run(0d);
-            if (scaleAnimation.isFinished()) {
-                mc.displayGuiScreen(null);
-            }
-        } else {
-            scaleAnimation.run(1);
-        }
+        scaleAnimation.run(1.0);
 
         int x = width / 2 - 260 + addX;
         int y = height / 2 - 180 + addY;
@@ -101,9 +97,7 @@ public class ModernClickGUI extends GuiScreen {
 
         // Shadow
         if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled && scaleAnimation.isFinished()) {
-            MODERN_BLOOM_RUNNABLES.add(() -> {
-                RoundedUtil.drawRound(x, y, 520, 360, 5, backgroundColor);
-            });
+            MODERN_BLOOM_RUNNABLES.add(() -> RoundedUtil.drawRound(x, y, 520, 360, 5, backgroundColor));
         }
 
         // Category
@@ -362,6 +356,21 @@ public class ModernClickGUI extends GuiScreen {
                 settingY = moduleY + m.sizeInGui;
                 moduleY += m.sizeInGui;
 
+                try {
+                    if (ModuleInstance.getModule(ClickGui.class).bubbles.enabled) {
+                        for (GUIBubble bubble : bubbles) {
+                            if (bubble.shouldRemove()) {
+                                bubbles.remove(bubble);
+                            } else {
+                                if (bubble.x > m.guiX - 1 && bubble.x < m.guiX + 390 && bubble.y > m.yAnimation.getValue() && bubble.y < m.yAnimation.getValue() + m.sizeAnimation.getValue() - 5)
+                                    bubble.render();
+                            }
+                        }
+                    } else {
+                        bubbles.clear();
+                    }
+                } catch (ConcurrentModificationException ignored) {}
+
                 if (isDragging) {
                     m.alphaAnimation.finishNow();
                     m.yAnimation.finishNow();
@@ -497,6 +506,9 @@ public class ModernClickGUI extends GuiScreen {
                         m.toggleModule();
                     }
                 }
+                if (RenderUtil.isHovered(moduleX, m.guiY, 390, m.sizeAnimation.getValue() - 5, mouseX, mouseY)) {
+                    bubbles.add(new GUIBubble(mouseX, mouseY, 10, 15));
+                }
                 for (final Value setting : m.getSettings()) {
                     if (m.expanded) {
                         if (!setting.isHidden()) {
@@ -621,7 +633,7 @@ public class ModernClickGUI extends GuiScreen {
         Keyboard.enableRepeatEvents(true);
         hasEditedSliders = false;
         sideAnimation.reset();
-        scaleAnimation.run(1d);
+        scaleAnimation.run(1.0d);
         wheel = Mouse.getDWheel();
         super.initGui();
     }

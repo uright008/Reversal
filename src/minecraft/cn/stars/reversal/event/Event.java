@@ -10,6 +10,6 @@ public abstract class Event {
     private boolean cancelled;
 
     public void call() {
-        if (Minecraft.getMinecraft().thePlayer != null) EventHandler.handle(this);
+        EventHandler.handle(this);
     }
 }

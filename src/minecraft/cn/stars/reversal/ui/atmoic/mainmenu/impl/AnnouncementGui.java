@@ -69,7 +69,7 @@ public class AnnouncementGui extends AtomicGui {
             Announcement announcement = announcements.get(announcementIndex);
             hoverAnimation.run(RenderUtil.isHovered(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, mouseX, mouseY) ? 150 : 100);
 
-            psm24.drawCenteredString("[" + announcement.id + "] - " + announcement.getDate(), width / 2f, 73, new Color(250,250,250,250).getRGB());
+            psm24.drawCenteredString("[" + announcement.id + "] - " + announcement.getDate(), width / 2f, 73, Color.WHITE.getRGB());
 
             ModuleInstance.getPostProcessing().drawElementWithBloom(() -> RoundedUtil.drawRound(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, 3, Color.BLACK), 2, 2);
 
@@ -77,8 +77,8 @@ public class AnnouncementGui extends AtomicGui {
 
             RoundedUtil.drawRound(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, 3, new Color(30,30,30, (int) hoverAnimation.getValue()));
 
-            atomic24.drawString("1", anPosX + 5, anPosY + 10, new Color(250,250,250,250).getRGB());
-            psm24.drawString(announcement.title, anPosX + 20, anPosY + 9, new Color(250,250,250,250).getRGB());
+            atomic24.drawString("1", anPosX + 5, anPosY + 10, Color.WHITE.getRGB());
+            psm24.drawString(announcement.title, anPosX + 20, anPosY + 9, Color.WHITE.getRGB());
             for (String line : announcement.content) {
                 psm18.drawString(line, anPosX + 10, anPosY + 25 + announcement.content.indexOf(line) * 10, new Color(220,220,220,240).getRGB());
             }
@@ -151,52 +151,38 @@ public class AnnouncementGui extends AtomicGui {
     }
 
     private void loadAnnouncements() {
-        Announcement announcement1 = new Announcement("Reversal Announcement", "2025/3/2", 0)
+        Announcement announcement1 = new Announcement("Reversal Announcement", "2025/3/26", 0)
                 .addContent("你正在使用" + Reversal.NAME + " " + Reversal.VERSION + " (Minecraft " + Reversal.MINECRAFT_VERSION + ").")
                 .addContent("本客户端由" + Reversal.AUTHOR + "制作,由Aerolite Society强力驱动.")
                 .addContent("感谢您对Reversal的支持!")
                 .addContent("")
                 .addContent("[Github] https://www.github.com/RinoRika/Reversal")
                 .addContent("[QQ] https://qm.qq.com/q/M6dDLtw3oS")
+                .addContent("[BiliBili] https://space.bilibili.com/670866766")
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Reversal 2.0.0+Release Candidate 2", "2025/3/22", 1)
-                .addContent("[*] 修复打开ClickGUI崩溃")
-                .addContent("[*] 修复打开音乐播放器崩溃")
-                .addContent("[*] 修复Optifine导致的未知崩溃")
-                .addContent("[*] 修复主界面设置界面拉条异常")
-                .addContent("[*] 修复部分主界面的字在某些分辨率下会超出屏幕")
-                .addContent("[*] 修复跨版本修复在聊天栏刷屏")
-                .addContent("[-] 删除DisableViaMCP选项")
-                .addContent("[-] 删除MainMenuDate选项")
-                .addContent("[/] 优化性能")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Reversal 2.0.0+Release Candidate", "2025/3/21", 2)
-                .addContent("[*] 修复编辑服务器界面 IP地址为空")
-                .addContent("[*] 修复Chunk.hasEntities错误;删除reflect获取")
-                .addContent("[*] 修复IRC发送消息,接收消息,重连导致的崩溃")
-                .addContent("[*] 修复掉线界面导致的崩溃")
-                .addContent("[*] 修复死亡界面按钮消失")
-                .addContent("[*] 修复聊天栏高级字体导致的崩溃")
-                .addContent("[*] 修复HUD的字体位置不正确")
-                .addContent("[*] 修复部分字体出现裂缝;位置不正确")
-                .addContent("[*] 修复音乐播放器部分情况下无法改变音乐")
-                .addContent("[*] 修复Shader3DEvent可能被错误触发")
-                .addContent("[*] 修复视频背景可能导致的崩溃")
-                .addContent("[*] 修复聊天栏Component无法触发")
-                .addContent("[*] 修复主界面动画异常")
-                .addContent("[*] 修复材质包载入异常")
-                .addContent("[*] 修复ClickGui的字位置异常")
-                .addContent("[*] 修复我的伤口")
+        Announcement announcement2 = new Announcement("Reversal 2.0.1", "2025/3/30", 1)
+                .addContent("[+] 新增主界面点击特效")
+                .addContent("[+] 新增主界面左右按钮快速切换界面")
+                .addContent("[+] 新增更高级的掉线和连接界面")
+                .addContent("[+] 更新HopeEngine至1.0.7")
+                .addContent("[+] 单人游戏和多人游戏界面新增每个项目的快捷操作(删除,重命名等)")
+                .addContent("[+] 新增一些提示")
                 .addContent("[+] 新增随机标题")
-                .addContent("[+] 音乐播放器新增单曲播放,随机播放 (展开MusicPlayer功能)")
-                .addContent("[+] 新增ClickGui自定义颜色,新增后处理")
-                .addContent("[+] 新增新的崩溃处理机制")
-                .addContent("[+] 新增online指令,查看IRC在线的玩家")
-                .addContent("[+] 新增F3按键指令的一些提示")
-                .addContent("[+] 新增HopeEngine 完全重写原版启动&退出过程")
-                .addContent("[/] 优化启动速度")
+                .addContent("[/] 调整部分界面的颜色")
+                .addContent("[/] 优化原版连接方式")
+                .addContent("[*] 修复连接服务器时会卡顿一下的问题")
+                .addContent("[*] 修复部分情况下掉线界面异常显示的问题")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Reversal 2.0.0", "2025/3/26", 2)
+                .addContent("### 测试版本更新的所有内容 略 ###")
+                .addContent("[+] 主界面点击特效")
+                .addContent("[+] ClickGUI点击特效")
+                .addContent("[*] 修复主界面列表位置不正确")
+                .addContent("[*] 修复多人游戏界面在小窗无法进行操作")
+                .addContent("[*] 修复掉线界面按钮位置不正确")
+                .addContent("[*] 修复未进入游戏时客户端颜色异常")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);

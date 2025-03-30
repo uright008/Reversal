@@ -6,6 +6,7 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.AddServerGui;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.ConnectingGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.DirectConnectGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerListEntryLanScan;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerListEntryNormal;
@@ -29,6 +30,7 @@ import net.minecraft.client.resources.I18n;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -41,12 +43,12 @@ public class MultiPlayerGui extends AtomicGui {
     private final OldServerPinger oldServerPinger = new OldServerPinger();
     public ServerSelectionList serverListSelector;
     private ServerList savedServerList;
-    private boolean deletingServer;
+    public boolean deletingServer;
     private boolean addingServer;
-    private boolean editingServer;
+    public boolean editingServer;
     private boolean directConnect;
     private String hoveringText;
-    private ServerData selectedServer;
+    public ServerData selectedServer;
     private LanServerDetector.LanServerList lanServerList;
     private LanServerDetector.ThreadLanServerFind lanServerDetector;
     public TextButton editButton, deleteButton, selectButton, directButton, addButton, refreshButton, cancelButton, reverseButton;
@@ -90,17 +92,16 @@ public class MultiPlayerGui extends AtomicGui {
                 logger.warn("Unable to start LAN server detection: {}", exception.getMessage());
             }
 
-            this.serverListSelector = new ServerSelectionList(this, mc, this.width, this.height, 105, this.height - 155, 36);
+            this.serverListSelector = new ServerSelectionList(this, mc, this.width, this.height, 105, this.height - 70, 36);
             this.serverListSelector.loadInternetServerList(this.savedServerList);
         }
         else
         {
-            this.serverListSelector.setDimensions(this.width, this.height, 105, this.height - 155);
+            this.serverListSelector.setDimensions(this.width, this.height, 105, this.height - 70);
         }
 
         this.createButtons();
     }
-
 
     @Override
     public void handleMouseInput()
@@ -115,13 +116,13 @@ public class MultiPlayerGui extends AtomicGui {
 
         directButton = new TextButton(this.width / 2.0 - 50, this.height - 70, 100, 20, () -> {
             this.directConnect = true;
-            AtomicMenu.atomicGuis.set(8, new DirectConnectGui(this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
+            AtomicMenu.setMiscGui(new DirectConnectGui(this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
             AtomicMenu.switchGui(8);
         }, "直接连接", "", true, 1, 30, 5, 20);
 
         addButton = new TextButton(this.width / 2.0 + 4 + 50, this.height - 70, 100, 20, () -> {
             this.addingServer = true;
-            AtomicMenu.atomicGuis.set(8, new AddServerGui(this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
+            AtomicMenu.setMiscGui(new AddServerGui(this.selectedServer = new ServerData(I18n.format("selectServer.defaultName"), "", false)));
             AtomicMenu.switchGui(8);
         }, "添加服务器", "", true, 1, 25, 5, 20);
 
@@ -131,7 +132,7 @@ public class MultiPlayerGui extends AtomicGui {
                 ServerData serverdata = ((ServerListEntryNormal)guilistextended$iguilistentry).getServerData();
                 this.selectedServer = new ServerData(serverdata.serverName, serverdata.serverIP, false);
                 this.selectedServer.copyFrom(serverdata);
-                AtomicMenu.atomicGuis.set(8, new AddServerGui(this.selectedServer));
+                AtomicMenu.setMiscGui(new AddServerGui(this.selectedServer));
                 AtomicMenu.switchGui(8);
             }
         }, "编辑", "", true, 1, 25, 5, 20);
@@ -142,10 +143,10 @@ public class MultiPlayerGui extends AtomicGui {
                 if (s4 != null)
                 {
                     this.deletingServer = true;
-                    String s = I18n.format("selectServer.deleteQuestion", new Object[0]);
-                    String s1 = "'" + s4 + "' " + I18n.format("selectServer.deleteWarning", new Object[0]);
-                    String s2 = I18n.format("selectServer.deleteButton", new Object[0]);
-                    String s3 = I18n.format("gui.cancel", new Object[0]);
+                    String s = I18n.format("selectServer.deleteQuestion");
+                    String s1 = "'" + s4 + "' " + I18n.format("selectServer.deleteWarning");
+                    String s2 = I18n.format("selectServer.deleteButton");
+                    String s3 = I18n.format("gui.cancel");
                     GuiYesNo guiyesno = new GuiYesNo(Reversal.atomicMenu, s, s1, s2, s3, this.serverListSelector.getSelectedIndex());
                     mc.displayGuiScreen(guiyesno);
                 }
@@ -191,6 +192,11 @@ public class MultiPlayerGui extends AtomicGui {
         }
 
         this.oldServerPinger.pingPendingNetworks();
+
+        if (Display.wasResized()) {
+            this.initialized = false;
+            AtomicMenu.switchGui(2);
+        }
     }
 
     @Override
@@ -209,6 +215,7 @@ public class MultiPlayerGui extends AtomicGui {
 
     private void refreshServerList()
     {
+        this.initialized = false;
         AtomicMenu.switchGui(2);
     }
 
@@ -403,7 +410,7 @@ public class MultiPlayerGui extends AtomicGui {
         FontManager.getRainbowParty(48).drawString("multiplayer", 75, 35, Color.WHITE.getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        RenderUtil.scissor(50, 100, width - 100, height - 150);
+        RenderUtil.scissor(50, 100, width - 100, height - 170);
         this.serverListSelector.setShowSelectionBox(false);
         this.serverListSelector.drawScreen(mouseX, mouseY, partialTicks);
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -434,18 +441,19 @@ public class MultiPlayerGui extends AtomicGui {
 
         if (guilistextended$iguilistentry instanceof ServerListEntryNormal)
         {
-            this.connectToServer(((ServerListEntryNormal)guilistextended$iguilistentry).getServerData());
+            connectToServer(((ServerListEntryNormal)guilistextended$iguilistentry).getServerData());
         }
         else if (guilistextended$iguilistentry instanceof ServerListEntryLanDetected)
         {
             LanServerDetector.LanServer lanserverdetector$lanserver = ((ServerListEntryLanDetected)guilistextended$iguilistentry).getLanServer();
-            this.connectToServer(new ServerData(lanserverdetector$lanserver.getServerMotd(), lanserverdetector$lanserver.getServerIpPort(), true));
+            connectToServer(new ServerData(lanserverdetector$lanserver.getServerMotd(), lanserverdetector$lanserver.getServerIpPort(), true));
         }
     }
 
-    private void connectToServer(ServerData server)
+    public static void connectToServer(ServerData server)
     {
-        mc.displayGuiScreen(new GuiConnecting(Reversal.atomicMenu, mc, server));
+        AtomicMenu.setMiscGui(new ConnectingGui(server));
+        AtomicMenu.switchGui(8);
     }
 
     public void selectServer(int index)

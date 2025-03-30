@@ -5,9 +5,13 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.impl.client.PostProcessing;
+import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.*;
+import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
 import cn.stars.reversal.ui.notification.NotificationManager;
+import cn.stars.reversal.util.animation.advanced.composed.CustomAnimation;
+import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -20,6 +24,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import org.lwjgl.input.Keyboard;
@@ -31,9 +36,11 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 public class AtomicMenu extends GuiScreen implements GameInstance {
     public static ArrayList<AtomicGui> atomicGuis = new ArrayList<>();
+    private final ArrayList<GUIBubble> bubbles = new ArrayList<>();
     public static AtomicGui currentGui;
     public static int lastGuiIndex;
     private final MFont psm16 = FontManager.getPSM(16);
@@ -46,6 +53,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
     private final Animation subHoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation subPosAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final CustomAnimation cursorAnimation = new CustomAnimation(SmoothStepAnimation.class, 1000, -5, 5);
     private boolean subMenu = false;
 
     public static int announcementIndex = 0;
@@ -65,6 +73,19 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         // Background Blur
         initAnimation.run(currentGui == atomicGuis.get(0) ? 0 : 255);
         ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(0,0,0, (int) initAnimation.getValue())), 2, 2);
+
+        if (RainyAPI.menuBubble) {
+            try {
+                for (GUIBubble bubble : bubbles) {
+                    if (bubble.shouldRemove()) {
+                        bubbles.remove(bubble);
+                    } else {
+                        bubble.render();
+                    }
+                }
+            } catch (ConcurrentModificationException ignored) {
+            }
+        } else bubbles.clear();
 
         // Current AtomicGui
         currentGui.drawScreen(mouseX, mouseY, partialTicks);
@@ -102,6 +123,18 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         }, 2, 2);
 
         RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+
+        if (cursorAnimation.getAnimation().finished(cursorAnimation.getAnimation().getDirection())) cursorAnimation.changeDirection();
+
+        if (atomicGuis.indexOf(currentGui) != 0) {
+            RenderUtil.image(new ResourceLocation("reversal/images/music/arrow-left.png"), 15 + cursorAnimation.getOutput().floatValue(), height / 2f - 12f, 24,24,
+                    RenderUtil.isHovered(8, height / 2f - 15, 40, 30, mouseX, mouseY) ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 150));
+        }
+
+        if (atomicGuis.indexOf(currentGui) != atomicGuis.size() - 1) {
+            RenderUtil.image(new ResourceLocation("reversal/images/music/arrow-right.png"), width - 39 - cursorAnimation.getOutput().floatValue(), height / 2f - 12f, 24,24,
+                    RenderUtil.isHovered(width - 48, height / 2f - 15, 40, 30, mouseX, mouseY) ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 150));
+        }
 
         // Other
         psm16.drawString(Minecraft.getDebugFPS() + " FPS", 1, 1, Color.WHITE.getRGB());
@@ -149,6 +182,12 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         psm24.drawString("[" + RainyAPI.backgroundId + "]", width - subPosAnimation.getValue() + 40, 45, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
         psm24.drawString("→", width - subPosAnimation.getValue() + 65, 45, new Color(c2,c2,c2, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
 
+        psm18.drawString("Click Bubble", width - subPosAnimation.getValue() + 8, 70, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+
+        int c3 = RenderUtil.isHovered(width - subPosAnimation.getValue() + 68, 73, 15, 15, mouseX, mouseY) ? 255 : 150;
+
+        psm24.drawString(RainyAPI.menuBubble ? "✓" : "×", width - subPosAnimation.getValue() + 70, 68, new Color(c3,c3,c3, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 
@@ -159,27 +198,44 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
                 lastGuiIndex = atomicGuis.indexOf(currentGui);
                 currentGui = atomicGui;
                 currentGui.initGui();
-                GameInstance.mc.getSoundHandler().playUISound("click");
+                uiClick();
             }
         }
         if (RenderUtil.isHovered(width - 25, 0, 25, 25, mouseX, mouseY)) {
             subMenu = !subMenu;
-            GameInstance.mc.getSoundHandler().playUISound("click");
+            uiClick();
         } else if (subMenu && !RenderUtil.isHovered(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height, mouseX, mouseY)) {
             subMenu = false;
-            GameInstance.mc.getSoundHandler().playUISound("click");
+            uiClick();
+        }
+        if (atomicGuis.indexOf(currentGui) != 0) {
+            if (RenderUtil.isHovered(8, height / 2f - 15, 40, 30, mouseX, mouseY)) {
+                switchGui(atomicGuis.indexOf(currentGui) - 1);
+                uiClick();
+            }
+        }
+        if (atomicGuis.indexOf(currentGui) != atomicGuis.size() - 1) {
+            if (RenderUtil.isHovered(width - 48, height / 2f - 15, 40, 30, mouseX, mouseY)) {
+                switchGui(atomicGuis.indexOf(currentGui) + 1);
+                uiClick();
+            }
         }
         if (subMenu) {
             if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 18, 43, 15, 15, mouseX, mouseY)) {
                 changeMenuBackground(true);
-                GameInstance.mc.getSoundHandler().playUISound("click");
+                uiClick();
             }
             if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 63, 43, 15, 15, mouseX, mouseY)) {
                 changeMenuBackground(false);
-                GameInstance.mc.getSoundHandler().playUISound("click");
+                uiClick();
+            }
+            if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 68, 73, 15, 15, mouseX, mouseY)) {
+                RainyAPI.menuBubble = !RainyAPI.menuBubble;
+                uiClick();
             }
         }
         currentGui.mouseClicked(mouseX, mouseY, mouseButton);
+        bubbles.add(new GUIBubble(mouseX, mouseY, 10, 50));
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
@@ -248,7 +304,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         currentGui.initGui();
         initTime = LocalDateTime.now();
         lastGuiIndex = 0;
-        atomicGuis.set(8, new MiscGui());
+        setMiscGui(new MiscGui());
 
         try {
             headImage = SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15);
@@ -260,7 +316,11 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     public static void switchGui(int index) {
         currentGui = atomicGuis.get(index);
         currentGui.initGui();
-        if (GameInstance.mc.currentScreen instanceof AtomicMenu) GameInstance.mc.getSoundHandler().playUISound("click");
+        if (GameInstance.mc.currentScreen instanceof AtomicMenu) uiClick();
+    }
+
+    public static void setMiscGui(MiscGui miscGui) {
+        atomicGuis.set(8, miscGui);
     }
 
     private static void init() {

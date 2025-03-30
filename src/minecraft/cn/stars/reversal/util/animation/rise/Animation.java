@@ -49,6 +49,11 @@ public class Animation {
         }
     }
 
+    public void changeDirection() {
+        reset();
+        run(this.startValue);
+    }
+
     /**
      * Returns the progress of the animation
      *

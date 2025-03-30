@@ -12,6 +12,8 @@ import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.DisconnectGui;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.ui.notification.NotificationType;
@@ -97,7 +99,11 @@ public class GuiConnecting extends GuiScreen
                     }
 
                     logger.error("Couldn't connect to server", unknownhostexception);
-                    mc.addScheduledTask(() -> mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new ChatComponentTranslation("disconnect.genericReason", "Unknown host"))));
+                    mc.addScheduledTask(() -> {
+                        AtomicMenu.setMiscGui(new DisconnectGui("connect.failed", new ChatComponentTranslation("disconnect.genericReason", "Unknown host")));
+                        AtomicMenu.switchGui(8);
+                        mc.displayGuiScreen(Reversal.atomicMenu);
+                    });
                 }
                 catch (Exception exception)
                 {
@@ -115,7 +121,11 @@ public class GuiConnecting extends GuiScreen
                         s = s.replaceAll(s1, "");
                     }
 
-                    mc.addScheduledTask(() -> mc.displayGuiScreen(new GuiDisconnected(GuiConnecting.this.previousGuiScreen, "connect.failed", new ChatComponentTranslation("disconnect.genericReason", "Unknown host"))));
+                    mc.addScheduledTask(() -> {
+                        AtomicMenu.setMiscGui(new DisconnectGui("connect.failed", new ChatComponentTranslation("disconnect.genericReason", "Unknown host")));
+                        AtomicMenu.switchGui(8);
+                        mc.displayGuiScreen(Reversal.atomicMenu);
+                    });
                 }
             }
         }).start();

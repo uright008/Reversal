@@ -38,6 +38,7 @@ import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ChatComponentText;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.Display;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import tech.skidonion.obfuscator.annotations.StringEncryption;
@@ -58,11 +59,11 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v2.0.0";
+    public static final String VERSION = "v2.0.1";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
-    public static final Branch BRANCH = Branch.PRE_RELEASE;
-    public static final String BUILD_VERSION = "Release Candidate 3";
+    public static final Branch BRANCH = Branch.PRODUCTION;
+    public static final String BUILD_VERSION = "";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -214,7 +215,7 @@ public class Reversal {
             FBP.init();
 
         //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
-            Display.setTitle(NAME + " " + VERSION + "+" + BUILD_VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
+            setWindowTitle();
             //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH));
             //    Display.setTitle(NAME + " (" + VERSION + "/" + BRANCH.name() + "/RainyAPI/LWJGL " + Sys.getVersion() + ")");
             ReversalLogger.info("Client finalized.");
@@ -224,7 +225,7 @@ public class Reversal {
     }
 
     public static void setWindowTitle() {
-        Display.setTitle(NAME + " " + VERSION + "+" + BUILD_VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
+        Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
     }
 
     public static boolean onSendChatMessage(final String s) {
@@ -233,6 +234,10 @@ public class Reversal {
             return false;
         }
         return true;
+    }
+
+    public static Logger getLogger() {
+        return ReversalLogger.logger;
     }
 
     private static final Command[] commands = new Command[] {

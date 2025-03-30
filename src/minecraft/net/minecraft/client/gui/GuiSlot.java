@@ -4,7 +4,6 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.util.animation.SmoothScrolling;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -384,7 +383,7 @@ public abstract class GuiSlot {
                 if (wheel != 0) {
                     if (wheel > 0) {
                         wheel = -1;
-                    } else if (wheel < 0) {
+                    } else {
                         wheel = 1;
                     }
 

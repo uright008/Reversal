@@ -878,8 +878,8 @@ public final class RenderUtil implements GameInstance {
     public void image(final ResourceLocation imageLocation, final float x, final float y, final float width, final float height) {
         enable(GL11.GL_BLEND);
         mc.getTextureManager().bindTexture(imageLocation);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
         disable(GL11.GL_BLEND);
     }

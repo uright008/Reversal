@@ -1,7 +1,10 @@
 package cn.stars.reversal.ui.atmoic.mainmenu.util;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.Reversal;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.MultiPlayerGui;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.AddServerGui;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -12,18 +15,18 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiListExtended;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -32,7 +35,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
+public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry, GameInstance
 {
     private static final Logger logger = LogManager.getLogger();
     private static final ThreadPoolExecutor field_148302_b = new ScheduledThreadPoolExecutor(5, (new ThreadFactoryBuilder()).setNameFormat("Server Pinger #%d").setDaemon(true).build());
@@ -47,6 +50,8 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
     private long field_148298_f;
     private final Animation hoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation selectAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation deleteAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation editAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
 
     protected ServerListEntryNormal(MultiPlayerGui p_i45048_1_, ServerData serverIn)
@@ -91,26 +96,56 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
         } else {
             selectAnimation.run(0);
         }
+
+        deleteAnimation.run(RenderUtil.isHovered(x - 25 + listWidth + 1, y - 5 + slotHeight / 2f, 16, 16, mouseX, mouseY) ? 255 : 155);
+        editAnimation.run(RenderUtil.isHovered(x - 50 + listWidth + 1, y - 5 + slotHeight / 2f, 16, 16, mouseX, mouseY) ? 255 : 155);
+
         RenderUtil.roundedRectangle(x - 2, y - 2, listWidth, slotHeight + 4, 2, new Color(20, 20, 20, (int) selectAnimation.getValue()));
 
         boolean flag = this.server.version > 47;
         boolean flag1 = this.server.version < 47;
         boolean flag2 = flag || flag1;
-        GameInstance.regular20Bold.drawString(this.server.serverName, x + 40, y + 2, Color.WHITE.getRGB());
-        GameInstance.psr16.drawString("[" + this.server.serverIP + "]", x + 45 + GameInstance.regular20Bold.width(this.server.serverName), y + 3, new Color(120, 120, 120, 250).getRGB());
+        regular20Bold.drawString(this.server.serverName, x + 40, y + 2, Color.WHITE.getRGB());
+        psr16.drawString("[" + this.server.serverIP + "]", x + 45 + regular20Bold.width(this.server.serverName), y + 3, new Color(120, 120, 120, 250).getRGB());
         List<String> list = mc.fontRendererObj.listFormattedStringToWidth(this.server.serverMOTD, listWidth - 32 - 2);
 
-        float iconPos = x + 60 + GameInstance.regular20Bold.width(this.server.serverName) + 5 + GameInstance.psr16.width("[" + this.server.serverIP + "]");
+        float iconPos = x + 60 + regular20Bold.width(this.server.serverName) + 5 + psr16.width("[" + this.server.serverIP + "]");
         for (int i = 0; i < Math.min(list.size(), 2); ++i)
         {
-            GameInstance.regular16.drawString(list.get(i), x + 40, y + 14 + GameInstance.regular16.height() * i,  new Color(220, 220, 220, 250).getRGB());
-            iconPos = Math.max(iconPos, x + 60 + GameInstance.regular16.width(list.get(i)));
+            regular16.drawString(list.get(i), x + 40, y + 14 + regular16.height() * i,  new Color(220, 220, 220, 250).getRGB());
+            iconPos = Math.max(iconPos, x + 60 + regular16.width(list.get(i)));
         }
 
-        GameInstance.psm16.drawString(this.server.populationInfo, x + listWidth - GameInstance.psm16.width(this.server.populationInfo) - 18, y + 2.5,  new Color(220, 220, 220, 250).getRGB());
-        GameInstance.psm16.drawString(this.server.gameVersion, x + listWidth - GameInstance.psm16.width(this.server.gameVersion) - 5, y + 14,  new Color(120, 120, 120, 250).getRGB());
-        GameInstance.psm16.drawString(this.server.pingToServer + "ms", x + listWidth - GameInstance.psm16.width(this.server.pingToServer + "ms") - 5, y + 24,  new Color(120, 120, 120, 250).getRGB());
-        GameInstance.atomic24.drawString("A", iconPos, y + 12, new Color(250,250,250, (int)(selectAnimation.getValue() * 1.6)).getRGB());
+        psm16.drawString(this.server.populationInfo, x + listWidth - psm16.width(this.server.populationInfo) - 18, y + 2.5,  new Color(220, 220, 220, 250).getRGB());
+
+        atomic24.drawString("A", iconPos, y + 12, new Color(250,250,250, (int)(selectAnimation.getValue() * 1.6)).getRGB());
+
+        atomic24.drawString("B", x - 20 + listWidth, y + slotHeight / 2f, new Color(255,255,255, (int) deleteAnimation.getValue()).getRGB());
+        atomic24.drawString("C", x - 45 + listWidth, y + slotHeight / 2f, new Color(255,255,255, (int) editAnimation.getValue()).getRGB());
+
+        if (Mouse.isButtonDown(0)) {
+            if (RenderUtil.isHovered(x - 25 + listWidth + 1, y - 5 + slotHeight / 2f, 16, 16, mouseX, mouseY) && deleteAnimation.getValue() > 200) {
+                String s4 = this.getServerData().serverName;
+                if (s4 != null)
+                {
+                    owner.deletingServer = true;
+                    String s = I18n.format("selectServer.deleteQuestion");
+                    String s1 = "'" + s4 + "' " + I18n.format("selectServer.deleteWarning");
+                    String s2 = I18n.format("selectServer.deleteButton");
+                    String s3 = I18n.format("gui.cancel");
+                    GuiYesNo guiyesno = new GuiYesNo(Reversal.atomicMenu, s, s1, s2, s3, owner.serverListSelector.getSelectedIndex());
+                    mc.displayGuiScreen(guiyesno);
+                }
+            }
+            if (RenderUtil.isHovered(x - 50 + listWidth + 1, y - 5 + slotHeight / 2f, 16, 16, mouseX, mouseY) && editAnimation.getValue() > 200) {
+                owner.editingServer = true;
+                ServerData serverdata = this.getServerData();
+                owner.selectedServer = new ServerData(serverdata.serverName, serverdata.serverIP, false);
+                owner.selectedServer.copyFrom(serverdata);
+                AtomicMenu.setMiscGui(new AddServerGui(owner.selectedServer));
+                AtomicMenu.switchGui(8);
+            }
+        }
         int k = 0;
         String s = null;
         int l;
@@ -199,7 +234,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
         {
             this.owner.setHoveringText(s1);
         }
-        else if (i1 >= listWidth - GameInstance.psm16.width(this.server.populationInfo) - 15 - 2 && i1 <= listWidth - 15 - 2 && j1 >= 0 && j1 <= 8)
+        else if (i1 >= listWidth - psm16.width(this.server.populationInfo) - 15 - 2 && i1 <= listWidth - 15 - 2 && j1 >= 0 && j1 <= 8)
         {
             this.owner.setHoveringText(s);
         }

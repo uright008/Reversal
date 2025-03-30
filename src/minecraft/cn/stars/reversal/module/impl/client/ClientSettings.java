@@ -46,11 +46,6 @@ public final class ClientSettings extends Module {
 
     @Override
     public void onUpdateAlways() {
-        Reversal.CLIENT_THEME_COLOR = color1.getColor().getRGB();
-        Reversal.CLIENT_THEME_COLOR_BRIGHT = new Color(Math.min(color1.getColor().getRed(), 255), Math.min(color1.getColor().getGreen() + 45, 255), Math.min(color1.getColor().getBlue() + 13, 255)).hashCode();
-        Reversal.CLIENT_THEME_COLOR_2 = color2.getColor().getRGB();
-        Reversal.CLIENT_THEME_COLOR_BRIGHT_2 = new Color(Math.min(color2.getColor().getRed(), 255), Math.min(color2.getColor().getGreen() + 45, 255), Math.min(color2.getColor().getBlue() + 13, 255)).hashCode();
-
         colorType.hidden = theme.getMode().equals("ThunderHack");
         color1.hidden = theme.getMode().equals("ThunderHack");
         color2.hidden = theme.getMode().equals("ThunderHack");

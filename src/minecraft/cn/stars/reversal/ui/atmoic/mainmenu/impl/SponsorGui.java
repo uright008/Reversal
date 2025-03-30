@@ -59,16 +59,17 @@ public class SponsorGui extends AtomicGui {
         regular18.drawString("非常感谢各位对我们开发的支持! =w=", 60, 100, new Color(220,220,220,220).getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        RenderUtil.scissor(50, 65, width - 100, height - 85);
+        RenderUtil.scissor(50, 65, width - 100, height - 120);
         for (String string : sponsors) {
             regular20.drawString(string, 60, 120 + sponsors.indexOf(string) * 15, Color.WHITE.getRGB());
         }
         if (showSponsor) {
             RenderUtil.image(new ResourceLocation("reversal/images/sponsor.png"), width - 250, 100, 200, 200);
         }
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+
         regular18.drawString("特别鸣谢: ZedWAre, Bzdhyp, Crazy1101010, ChuKai, BingSiNiao.", 60, height - 40, new Color(220,220,220,220).getRGB());
         regular18.drawString("※ 顺序不分先后; 如果你赞助过但不在列表里,请联系Stars留下你的网名!", 60, height - 30, new Color(220,220,220,220).getRGB());
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
         for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);

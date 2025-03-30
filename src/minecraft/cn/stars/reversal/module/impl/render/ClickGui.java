@@ -23,6 +23,7 @@ public final class ClickGui extends Module {
     public final BoolValue customColor = new BoolValue("Custom Color", this, false);
     public final ColorValue colorValue = new ColorValue("Color", this);
     public final NumberValue scrollSpeed = new NumberValue("Scroll Speed", this, 4.0, 0.5, 10.0, 1.0);
+    public final BoolValue bubbles = new BoolValue("Bubbles", this, false);
 
     @Override
     public void onUpdateAlwaysInGui() {

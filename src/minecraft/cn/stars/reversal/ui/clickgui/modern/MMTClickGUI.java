@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import static cn.stars.reversal.GameInstance.regular18;
 import static cn.stars.reversal.GameInstance.regular20;
 
+@Deprecated
 public class MMTClickGUI extends GuiScreen {
     public Color backgroundColor = new Color(30,30,30, 220);
     public Animation scaleAnimation = new Animation(Easing.EASE_IN_CUBIC, 150);

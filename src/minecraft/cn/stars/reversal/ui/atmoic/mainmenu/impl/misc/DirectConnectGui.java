@@ -7,6 +7,7 @@ import cn.stars.reversal.ui.atmoic.mainmenu.impl.MiscGui;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.multiplayer.ServerData;
@@ -34,7 +35,6 @@ public class DirectConnectGui extends MiscGui {
             if (!this.field_146302_g.getText().isEmpty()) {
                 this.field_146301_f.serverIP = this.field_146302_g.getText();
                 AtomicMenu.atomicGuis.get(2).confirmClicked(true, 0);
-                AtomicMenu.switchGui(2);
             }
         }, "连接服务器", "", true, 1, 75, 5, 20);
         cancelButton = new TextButton(this.width / 2f - 100, this.height / 2f + 24, 200, 20, () -> AtomicMenu.atomicGuis.get(2).confirmClicked(false, 0), "取消", "", true, 1, 90, 5, 20);
@@ -79,10 +79,12 @@ public class DirectConnectGui extends MiscGui {
     {
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(width / 2f - 200, height / 2f - 50, 400, 100, 4, Color.BLACK);
+            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
             RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
             FontManager.getRainbowParty(48).drawString("direct connection", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
+        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
         RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
         FontManager.getRainbowParty(48).drawString("direct connection", 75, 35, Color.WHITE.getRGB());
 

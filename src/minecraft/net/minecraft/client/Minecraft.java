@@ -9,6 +9,7 @@ import cn.stars.reversal.module.impl.client.Optimization;
 import cn.stars.reversal.module.impl.misc.FakeFPS;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.ConnectingGui;
 import cn.stars.reversal.ui.splash.SplashScreen;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
 import cn.stars.reversal.util.ReversalLogger;
@@ -503,10 +504,11 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.ingameGUI = new GuiIngame(this);
 
         if (this.serverName != null) {
-            this.displayGuiScreen(new GuiConnecting(Transformer.transformMainMenu(), this, this.serverName, this.serverPort));
+            AtomicMenu.setMiscGui(new ConnectingGui(getCurrentServerData()));
+            AtomicMenu.switchGui(8);
+            this.displayGuiScreen(Reversal.atomicMenu);
         } else {
-            this.displayGuiScreen(Transformer.transformMainMenu());
-
+            this.displayGuiScreen(Reversal.atomicMenu);
         }
 
         this.renderEngine.deleteTexture(this.mojangLogo);

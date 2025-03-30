@@ -50,8 +50,8 @@ public class GuiDisconnected extends GuiScreen
         this.buttonList.clear();
         this.multilineMessage = Arrays.asList(regular16.autoReturn(this.message.getFormattedText(), this.width - 50, 100).split("\n"));
         this.field_175353_i = (int) (this.multilineMessage.size() * regular16.height());
-        reconnectButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height(), 200, 20, () -> this.mc.displayGuiScreen(Reversal.atomicMenu), "返回主菜单", "", true, 1, 75, 5, 20);
-        cancelButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + regular16.height() + 25, 200, 20, () -> this.mc.displayGuiScreen(new GuiConnecting(Reversal.atomicMenu, mc, mc.getCurrentServerData())), "重连", "", true, 1, 90, 5, 20);
+        reconnectButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2, 200, 20, () -> this.mc.displayGuiScreen(Reversal.atomicMenu), "返回主菜单", "", true, 1, 75, 5, 20);
+        cancelButton = new TextButton(this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + 25, 200, 20, () -> this.mc.displayGuiScreen(new GuiConnecting(Reversal.atomicMenu, mc, mc.getCurrentServerData())), "重连", "", true, 1, 90, 5, 20);
         buttons = new TextButton[]{reconnectButton, cancelButton};
     }
 

@@ -79,7 +79,7 @@ public class MainGui extends AtomicGui {
 
         RoundedUtil.drawRound(width / 2f - 25, height / 2f - 50, 50, 50, 24, new Color(100,200,255, 255));
         RenderUtils.drawLoadingCircle3(width / 2f, height / 2f - 25, 32, Color.WHITE);
-        atomic64.drawString("2", width / 2f - 16, height / 2f - 36, new Color(250,250,250, 220).getRGB());
+        atomic64.drawString("2", width / 2f - 16, height / 2f - 36, new Color(255,255,255, 220).getRGB());
         rp64.drawCenteredString("Reversal", width / 2f, height / 2f + 15, Color.WHITE.getRGB());
         regular16.drawCenteredString(Reversal.VERSION, width / 2f, height / 2f + 50, Color.WHITE.getRGB());
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {

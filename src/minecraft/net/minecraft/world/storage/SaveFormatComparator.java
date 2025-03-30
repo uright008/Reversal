@@ -18,6 +18,9 @@ public class SaveFormatComparator implements Comparable<SaveFormatComparator>
     private final boolean cheatsEnabled;
     private final Animation hoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation selectAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation deleteAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation recreateAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation renameAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
     public SaveFormatComparator(String fileNameIn, String displayNameIn, long lastTimePlayedIn, long sizeOnDiskIn, WorldSettings.GameType theEnumGameTypeIn, boolean requiresConversionIn, boolean hardcoreIn, boolean cheatsEnabledIn)
     {

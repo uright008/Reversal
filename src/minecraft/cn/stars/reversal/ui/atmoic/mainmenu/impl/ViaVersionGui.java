@@ -142,6 +142,8 @@ public class ViaVersionGui extends AtomicGui {
         this.viaList.drawScreen(mouseX, mouseY, partialTicks);
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
+        regular18.drawString("※ 不推荐使用! 不懂的不要改! 造成的封禁或误判开发者一概不负责!!!", 60, height - 30, new Color(220,220,220,220).getRGB());
+
         for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
@@ -153,7 +155,7 @@ public class ViaVersionGui extends AtomicGui {
     {
         public List(Minecraft mcIn)
         {
-            super(mcIn, ViaVersionGui.this.width, ViaVersionGui.this.height, 105, ViaVersionGui.this.height - 80, 26);
+            super(mcIn, ViaVersionGui.this.width, ViaVersionGui.this.height, 105, ViaVersionGui.this.height - 50, 26);
         }
 
         protected int getSize()
@@ -217,7 +219,7 @@ public class ViaVersionGui extends AtomicGui {
             else if (protocols.get(entryID).getName().equalsIgnoreCase("1.21.4"))
                 GameInstance.psm16.drawString("(latest version)", p_180791_2_ + getListWidth() - 60, p_180791_3_ + 7, new Color(120, 120, 120, 250).getRGB());
 
-            GameInstance.atomic24.drawString("A", width / 2f + GameInstance.psm24.width(protocols.get(entryID).getName()) / 2f + 20, p_180791_3_ + p_180791_4_ / 2f - atomic24.height() / 2f, new Color(250,250,250, (int)(pva.getSelectAnimation().getValue() * 1.6)).getRGB());
+            GameInstance.atomic24.drawString("A", width / 2f + GameInstance.psm24.width(protocols.get(entryID).getName()) / 2f + 20, p_180791_3_ + p_180791_4_ / 2f - atomic24.height() / 2f, new Color(255,255,255, (int)(pva.getSelectAnimation().getValue() * 1.6)).getRGB());
         }
 
         @Override

@@ -1,5 +1,6 @@
 package cn.stars.reversal.util;
 
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
@@ -7,8 +8,8 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class ReversalLogger {
     // Enhanced Logger
-    private static final Logger logger = LogManager.getLogger("Reversal");
-    private static final String prefix = "[Reversal] ";
+    public static final Logger logger = LogManager.getLogger("Reversal");
+    public static final String prefix = "[Reversal] ";
 
     public static void info(String s) {
         logger.info(prefix + s);

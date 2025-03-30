@@ -3,6 +3,7 @@ package net.minecraft.client.network;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.TeleportEvent;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.DisconnectGui;
 import cn.stars.reversal.util.Transformer;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
@@ -26,10 +27,8 @@ import net.minecraft.client.audio.GuardianSound;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiDisconnected;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiMerchant;
-import net.minecraft.client.gui.GuiMultiplayer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.client.gui.GuiScreenDemo;
@@ -708,12 +707,13 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     public void onDisconnect(IChatComponent reason) {
         this.gameController.loadWorld(null);
 
-        if (this.guiScreenServer != null) {
-
-            this.gameController.displayGuiScreen(new GuiDisconnected(this.guiScreenServer, "disconnect.lost", reason));
-        } else {
+        if (reason.getUnformattedText().toLowerCase().contains("quitting")) {
             AtomicMenu.switchGui(2);
-            this.gameController.displayGuiScreen(new GuiDisconnected(Reversal.atomicMenu, "disconnect.lost", reason));
+            gameController.displayGuiScreen(Reversal.atomicMenu);
+        } else {
+            AtomicMenu.setMiscGui(new DisconnectGui("disconnect.lost", reason));
+            AtomicMenu.switchGui(8);
+            gameController.displayGuiScreen(Reversal.atomicMenu);
         }
     }
 

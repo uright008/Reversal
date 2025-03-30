@@ -48,6 +48,7 @@ public class RainyAPI {
     public static boolean guiSnow = false;
     public static boolean backgroundBlur = false;
     public static boolean imageScreen = false;
+    public static boolean menuBubble = false;
 
     /**
      * 崩溃报告上面的字
@@ -64,7 +65,7 @@ public class RainyAPI {
             "渴望陪伴,又渴望孤独", "Heaven will not have mercy on the hateful.", "可惜我不是你,没能成为你这样的有成之人", "昨夜西风凋碧树,独上高楼,望尽天涯路", "明天和死亡哪个会先到来?",
             "虚伪才是绝对的真实", "为了一个人,你会付出自己的一切吗?", "你希望有一个人,为你付出他的一切吗?", "Metamorphosis.", "衣带渐宽终不悔,为伊消得人憔悴", "No everlasting love.", "我们就如平行宇宙,近在眼前却又永不相遇",
             "混乱不应成为常态,错误不应理所当然", "希望本是无所谓有,无所谓无的", "无聊生者不生,即使厌见者不见,为人为己,也还都不错", "当世界要求你反省,你可以选择不配合这场审判", "疼痛的目的不是让你查看伤口,而是教会你如何站立",
-            "当友谊成为了冰冷的数字,这段关系或许已经失衡", "放下助人情结,尊重他人命运"};
+            "当友谊成为了冰冷的符号,这段关系或许已经失衡", "放下助人情结,尊重他人命运", "Be responsible for your own life.", "如何达成理解?", "利益是人类建立关系的基础", "有时,我们注定只能成为别人生活中的配角"};
 
     public static String getRandomTitle() {
         return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];
@@ -154,6 +155,9 @@ public class RainyAPI {
             if (split[0].contains("ImageScreen")) {
                 imageScreen = Boolean.parseBoolean(split[1]);
             }
+            if (split[0].contains("MenuBubble")) {
+                menuBubble = Boolean.parseBoolean(split[1]);
+            }
             if (split[0].contains("CustomText") && post) {
                 Reversal.customText = split[1];
             }
@@ -170,6 +174,7 @@ public class RainyAPI {
         clientBuilder.append("GuiSnow_").append(guiSnow).append("\r\n");
         clientBuilder.append("BackgroundBlur_").append(backgroundBlur).append("\r\n");
         clientBuilder.append("ImageScreen_").append(imageScreen).append("\r\n");
+        clientBuilder.append("MenuBubble_").append(menuBubble).append("\r\n");
         if (post) clientBuilder.append("CustomText_").append(Reversal.customText).append("\r\n");
 
         FileUtil.saveFile("client.txt", true, clientBuilder.toString());

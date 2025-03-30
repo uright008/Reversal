@@ -276,5 +276,10 @@ public final class EventHandler {
 
             residentProcessor.onValueChanged(event);
         }
+
+        Reversal.CLIENT_THEME_COLOR = ModuleInstance.getClientSettings().color1.getColor().getRGB();
+        Reversal.CLIENT_THEME_COLOR_BRIGHT = new Color(Math.min(ModuleInstance.getClientSettings().color1.getColor().getRed(), 255), Math.min(ModuleInstance.getClientSettings().color1.getColor().getGreen() + 45, 255), Math.min(ModuleInstance.getClientSettings().color1.getColor().getBlue() + 13, 255)).hashCode();
+        Reversal.CLIENT_THEME_COLOR_2 = ModuleInstance.getClientSettings().color2.getColor().getRGB();
+        Reversal.CLIENT_THEME_COLOR_BRIGHT_2 = new Color(Math.min(ModuleInstance.getClientSettings().color2.getColor().getRed(), 255), Math.min(ModuleInstance.getClientSettings().color2.getColor().getGreen() + 45, 255), Math.min(ModuleInstance.getClientSettings().color2.getColor().getBlue() + 13, 255)).hashCode();
     }
 }

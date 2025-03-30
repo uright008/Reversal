@@ -30,7 +30,7 @@ import static net.minecraft.client.Minecraft.*;
  */
 @SuppressWarnings("all")
 public class HopeEngine {
-    public static final String version = "1.0.3";
+    public static final String version = "1.0.7";
     private static final Minecraft mc = Minecraft.getMinecraft();
 
     @SneakyThrows
@@ -104,6 +104,9 @@ public class HopeEngine {
 
         VideoUtil.stop();
         Reversal.stop();
+        if (RainyAPI.ircUser != null) {
+            RainyAPI.ircUser.stop();
+        }
 
         // Minecraft Termination
         if (crashReport != null) {
@@ -126,6 +129,7 @@ public class HopeEngine {
             File file = new File(parent, "crash-" + (new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss")).format(new Date()) + "-client.txt");
             crashReport.saveToFile(file);
 
+            info("[HopeEngine] Crash report dialog displayed.");
             showCrashReportDialog(file);
         } else {
             info("[HopeEngine] Terminating normally!");

@@ -1,5 +1,8 @@
 package net.minecraft.client.network;
 
+import cn.stars.reversal.Reversal;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.DisconnectGui;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.exceptions.AuthenticationException;
 import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
@@ -11,7 +14,6 @@ import java.math.BigInteger;
 import java.security.PublicKey;
 import javax.crypto.SecretKey;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiDisconnected;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.NetworkManager;
@@ -89,7 +91,7 @@ public class NetHandlerLoginClient implements INetHandlerLoginClient
             {
                 NetHandlerLoginClient.this.networkManager.enableEncryption(secretkey);
             }
-        }, new GenericFutureListener[0]);
+        });
     }
 
     private MinecraftSessionService getSessionService()
@@ -106,7 +108,9 @@ public class NetHandlerLoginClient implements INetHandlerLoginClient
 
     public void onDisconnect(IChatComponent reason)
     {
-        this.mc.displayGuiScreen(new GuiDisconnected(this.previousGuiScreen, "connect.failed", reason));
+        AtomicMenu.setMiscGui(new DisconnectGui("connect.failed", reason));
+        AtomicMenu.switchGui(8);
+        mc.displayGuiScreen(Reversal.atomicMenu);
     }
 
     public void handleDisconnect(S00PacketDisconnect packetIn)

@@ -25,6 +25,7 @@ import net.minecraft.world.storage.WorldInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -226,7 +227,7 @@ public class SinglePlayerGui extends AtomicGui {
         FontManager.getRainbowParty(48).drawString("singleplayer", 75, 35, Color.WHITE.getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        RenderUtil.scissor(50, 100, width - 100, height - 150);
+        RenderUtil.scissor(50, 100, width - 100, height - 170);
         this.availableWorlds.setShowSelectionBox(false);
         this.availableWorlds.drawScreen(mouseX, mouseY, partialTicks);
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -247,11 +248,11 @@ public class SinglePlayerGui extends AtomicGui {
         return new GuiYesNo(selectWorld, s, s1, s2, s3, id);
     }
 
-    class List extends GuiSlot
+    class List extends GuiSlot implements GameInstance
     {
         public List(Minecraft mcIn)
         {
-            super(mcIn, SinglePlayerGui.this.width, SinglePlayerGui.this.height, 105, SinglePlayerGui.this.height - 90, 36);
+            super(mcIn, SinglePlayerGui.this.width, SinglePlayerGui.this.height, 105, SinglePlayerGui.this.height - 70, 36);
         }
 
         protected int getSize()
@@ -305,7 +306,7 @@ public class SinglePlayerGui extends AtomicGui {
         }
 
         @SneakyThrows
-        protected void drawSlot(int entryID, int p_180791_2_, int p_180791_3_, int p_180791_4_, int mouseXIn, int mouseYIn) {
+        protected void drawSlot(int entryID, int x, int y, int height, int mouseXIn, int mouseYIn) {
             SaveFormatComparator saveformatcomparator = SinglePlayerGui.this.saveList.get(entryID);
             String s = saveformatcomparator.getDisplayName();
 
@@ -332,21 +333,50 @@ public class SinglePlayerGui extends AtomicGui {
                 }
             }
 
-            SinglePlayerGui.this.saveList.get(entryID).getHoverAnimation().run(RenderUtil.isHovered(p_180791_2_ - 2, p_180791_3_ - 2 , getListWidth(), slotHeight, mouseXIn, mouseYIn) ? 100 : 0);
-            RenderUtil.roundedRectangle(p_180791_2_ - 2, p_180791_3_ - 2, getListWidth(), slotHeight, 2, new Color(20, 20, 20, (int) SinglePlayerGui.this.saveList.get(entryID).getHoverAnimation().getValue()));
+            SinglePlayerGui.this.saveList.get(entryID).getHoverAnimation().run(RenderUtil.isHovered(x - 2, y - 2 , getListWidth(), slotHeight, mouseXIn, mouseYIn) ? 100 : 0);
+            SinglePlayerGui.this.saveList.get(entryID).getDeleteAnimation().run(RenderUtil.isHovered(x - 25 + getListWidth() + 1, y - 10 + slotHeight / 2f, 16, 16, mouseXIn, mouseYIn) ? 255 : 155);
+            SinglePlayerGui.this.saveList.get(entryID).getRecreateAnimation().run(RenderUtil.isHovered(x - 50 + getListWidth(), y - 10 + slotHeight / 2f, 16, 16, mouseXIn, mouseYIn) ? 255 : 155);
+            SinglePlayerGui.this.saveList.get(entryID).getRenameAnimation().run(RenderUtil.isHovered(x - 75 + getListWidth() + 1, y - 10 + slotHeight / 2f, 16, 16, mouseXIn, mouseYIn) ? 255 : 155);
+
+            if (Mouse.isButtonDown(0)) {
+                if (RenderUtil.isHovered(x - 25 + getListWidth() + 1, y - 10 + slotHeight / 2f, 16, 16, mouseXIn, mouseYIn) && saveList.get(entryID).getDeleteAnimation().getValue() > 200) {
+                    if (func_146614_d(entryID) != null) {
+                        confirmingDelete = true;
+                        GuiYesNo guiyesno = makeDeleteWorldYesNo(Reversal.atomicMenu, s, entryID);
+                        GameInstance.mc.displayGuiScreen(guiyesno);
+                    }
+                }
+                if (RenderUtil.isHovered(x - 50 + getListWidth(), y - 10 + slotHeight / 2f, 16, 16, mouseXIn, mouseYIn) && saveList.get(entryID).getRecreateAnimation().getValue() > 200) {
+                    GuiCreateWorld guicreateworld = new GuiCreateWorld(Reversal.atomicMenu);
+                    ISaveHandler isavehandler = GameInstance.mc.getSaveLoader().getSaveLoader(func_146621_a(entryID), false);
+                    WorldInfo worldinfo = isavehandler.loadWorldInfo();
+                    isavehandler.flush();
+                    guicreateworld.recreateFromExistingWorld(worldinfo);
+                    GameInstance.mc.displayGuiScreen(guicreateworld);
+                }
+                if (RenderUtil.isHovered(x - 75 + getListWidth() + 1, y - 10 + slotHeight / 2f, 16, 16, mouseXIn, mouseYIn) && saveList.get(entryID).getRenameAnimation().getValue() > 200) {
+                    GameInstance.mc.displayGuiScreen(new GuiRenameWorld(Reversal.atomicMenu, func_146621_a(entryID)));
+                }
+            }
+
+            RenderUtil.roundedRectangle(x - 2, y - 2, getListWidth(), slotHeight, 2, new Color(20, 20, 20, (int) SinglePlayerGui.this.saveList.get(entryID).getHoverAnimation().getValue()));
             if (isSelected(entryID)) {
                 SinglePlayerGui.this.saveList.get(entryID).getSelectAnimation().run(150);
             } else {
                 SinglePlayerGui.this.saveList.get(entryID).getSelectAnimation().run(0);
             }
-            RenderUtil.roundedRectangle(p_180791_2_ - 2, p_180791_3_ - 2, getListWidth(), slotHeight, 2, new Color(20, 20, 20, (int) SinglePlayerGui.this.saveList.get(entryID).getSelectAnimation().getValue()));
+            RenderUtil.roundedRectangle(x - 2, y - 2, getListWidth(), slotHeight, 2, new Color(20, 20, 20, (int) SinglePlayerGui.this.saveList.get(entryID).getSelectAnimation().getValue()));
 
-            GameInstance.regular20Bold.drawString(s, p_180791_2_ + 2, p_180791_3_ + 3, Color.WHITE.getRGB());
+            regular20Bold.drawString(s, x + 2, y + 3, Color.WHITE.getRGB());
 
-            GameInstance.regular16.drawString(s1, p_180791_2_ + 2, p_180791_3_ + 15, new Color(120, 120, 120, 250).getRGB());
-            GameInstance.regular16.drawString(s2, p_180791_2_ + 2, p_180791_3_ + 15 + 10, new Color(120, 120, 120, 250).getRGB());
+            regular16.drawString(s1, x + 2, y + 15, new Color(120, 120, 120, 250).getRGB());
+            regular16.drawString(s2, x + 2, y + 15 + 10, new Color(120, 120, 120, 250).getRGB());
 
-            GameInstance.atomic24.drawString("A", p_180791_2_ + 20 + Math.max(Math.max(regular16.width(s1), regular16.width(s2)), regular20Bold.width(s)), p_180791_3_ + 12, new Color(250,250,250, (int)(saveList.get(entryID).getSelectAnimation().getValue() * 1.6)).getRGB());
+            atomic24.drawString("A", x + 20 + Math.max(Math.max(regular16.width(s1), regular16.width(s2)), regular20Bold.width(s)), y + 12, new Color(255,255,255, (int)(saveList.get(entryID).getSelectAnimation().getValue() * 1.6)).getRGB());
+
+            atomic24.drawString("B", x - 20 + getListWidth(), y - 5 + slotHeight / 2f, new Color(255,255,255, (int)(saveList.get(entryID).getDeleteAnimation().getValue())).getRGB());
+            atomic24.drawString("D", x - 46 + getListWidth(), y - 5 + slotHeight / 2f, new Color(255,255,255, (int)(saveList.get(entryID).getRecreateAnimation().getValue())).getRGB());
+            atomic24.drawString("C", x - 70 + getListWidth(), y - 5 + slotHeight / 2f, new Color(255,255,255, (int)(saveList.get(entryID).getRenameAnimation().getValue())).getRGB());
         }
 
         @Override

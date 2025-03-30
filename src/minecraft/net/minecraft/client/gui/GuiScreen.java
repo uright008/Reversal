@@ -107,6 +107,10 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         }
     }
 
+    protected static void uiClick() {
+        GameInstance.mc.getSoundHandler().playUISound("click");
+    }
+
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         for (GuiButton guiButton : this.buttonList) {
