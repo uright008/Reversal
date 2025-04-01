@@ -443,7 +443,7 @@ public class Hud implements GameInstance {
                     int y = textGui.getY();
                     float off = 0;
 
-                    RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 7, psb20.height() + 1.5, new Color(0, 0, 0, 80));
+                    RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 8, psb20.height() + 1.5, new Color(0, 0, 0, 80));
 
                     for (int i = 0; i < clientName.length(); i++) {
                         final String character = String.valueOf(clientName.charAt(i));
@@ -461,13 +461,13 @@ public class Hud implements GameInstance {
 
                     if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                         MODERN_BLOOM_RUNNABLES.add(() -> {
-                            RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 7, psb20.height() + 1.5, Color.BLACK);
+                            RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 8, psb20.height() + 1.5, Color.BLACK);
                         });
                     }
 
                     if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
                         MODERN_BLUR_RUNNABLES.add(() -> {
-                            RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 7, psb20.height() + 1.5, Color.BLACK);
+                            RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 8, psb20.height() + 1.5, Color.BLACK);
                         });
                     }
                 }

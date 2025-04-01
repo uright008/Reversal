@@ -15,4 +15,38 @@ public enum Category {
     CLIENT;
 
     public final Animation alphaAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+
+    // curiosity font
+    public static String getCategoryIcon(Category c) {
+        switch (c) {
+            case COMBAT: {
+                return "A";
+            }
+            case MOVEMENT: {
+                return "B";
+            }
+            case PLAYER: {
+                return "C";
+            }
+            case RENDER: {
+                return "D";
+            }
+            case MISC: {
+                return "E";
+            }
+            case WORLD: {
+                return "F";
+            }
+            case HUD: {
+                return "G";
+            }
+            case ADDONS: {
+                return "H";
+            }
+            case CLIENT: {
+                return "e";
+            }
+        }
+        return "A";
+    }
 }

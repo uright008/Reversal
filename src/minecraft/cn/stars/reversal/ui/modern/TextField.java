@@ -41,7 +41,7 @@ public class TextField {
     public Color backgroundColor, outlineColor;
     private final ColorAnimation textColorAnim;
     private final ColorAnimation cursorColorAnim;
-    private final Animation posAnimation = new Animation(Easing.EASE_OUT_EXPO, 150);
+    private final Animation posAnimation = new Animation(Easing.EASE_OUT_EXPO, 200);
     private final Animation selectedLineAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
 
     public TextField(float width, float height, MFont font, Color backgroundColor, Color outlineColor) {

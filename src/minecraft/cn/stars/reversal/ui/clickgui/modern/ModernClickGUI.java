@@ -41,7 +41,7 @@ import static cn.stars.reversal.GameInstance.*;
 public class ModernClickGUI extends GuiScreen {
     public final Color backgroundColor = new Color(20,20,20,255);
     public Animation scaleAnimation = new Animation(Easing.EASE_OUT_EXPO, 300);
-    private final Animation sideAnimation = new Animation(Easing.EASE_OUT_EXPO, 400);
+    private final Animation sideAnimation = new Animation(Easing.EASE_OUT_EXPO, 300);
     private Category selectedCategory = Category.COMBAT;
     private static float scrollAmount;
     private final ArrayList<GUIBubble> bubbles = new ArrayList<>();
@@ -107,7 +107,7 @@ public class ModernClickGUI extends GuiScreen {
             if (category == selectedCategory) {
                 sideAnimation.run(renderSelectY);
                 RenderUtil.roundedRectangle(x + 5, (float) sideAnimation.getValue() + 1, 100, 18, 5, ColorUtil.withAlpha(valueColor, 120));
-                cur26.drawString(getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(200,200,200, 240).getRGB());
+                cur26.drawString(Category.getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(200,200,200, 240).getRGB());
                 regular20.drawString(localization ? I18n.format("category." + category.name() + ".name") : StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(240,240,240, 240).getRGB());
             } else {
                 if (RenderUtil.isHovered(x + 5, renderSelectY, 100, 20, mouseX, mouseY)) {
@@ -116,7 +116,7 @@ public class ModernClickGUI extends GuiScreen {
                     category.alphaAnimation.run(0);
                 }
                 RoundedUtil.drawRound(x + 5, renderSelectY + 1, 100, 18, 5, new Color(50,50,50,(int)category.alphaAnimation.getValue()));
-                cur26.drawString(getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(160, 160, 160, 200).getRGB());
+                cur26.drawString(Category.getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(160, 160, 160, 200).getRGB());
                 regular20.drawString(localization ? I18n.format("category." + category.name() + ".name") : StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(200,200,200, 200).getRGB());
             }
             renderSelectY += 25;
@@ -490,20 +490,24 @@ public class ModernClickGUI extends GuiScreen {
                 if (RenderUtil.isHovered(moduleX, m.guiY, 390, 30, mouseX, mouseY)) {
                     if (m.guiY + psm24.height() < y || m.guiY + psm24.height() > y + 360) return;
                     if (mouseButton == 1) {
-                        if (RenderUtil.isHovered(moduleX + 335 - psr16.width(Keyboard.getKeyName(m.getKeyBind())) / 2f, m.guiY, psr16.width(Keyboard.getKeyName(m.getKeyBind())) + 10, 30, mouseX, mouseY)) {
-                            if (isEditingKey) {
-                                m.setKeyBind(Keyboard.KEY_NONE);
-                                isEditingKey = false;
-                            } else {
-                                isEditingKey = true;
-                            }
-                            editingModule = m;
-                        } else {
+                        if (!RenderUtil.isHovered(moduleX + 335 - psr16.width(Keyboard.getKeyName(m.getKeyBind())) / 2f, m.guiY, psr16.width(Keyboard.getKeyName(m.getKeyBind())) + 10, 30, mouseX, mouseY)) {
                             m.expanded = !m.expanded;
                         }
                     }
                     if (mouseButton == 0) {
-                        m.toggleModule();
+                        if (!RenderUtil.isHovered(moduleX + 335 - psr16.width(Keyboard.getKeyName(m.getKeyBind())) / 2f, m.guiY, psr16.width(Keyboard.getKeyName(m.getKeyBind())) + 10, 30, mouseX, mouseY)) {
+                            if (RenderUtil.isHovered(moduleX + 370, m.guiY, 20, 30, mouseX, mouseY)) m.expanded = !m.expanded;
+                            else m.toggleModule();
+                        }
+                    }
+                    if (RenderUtil.isHovered(moduleX + 335 - psr16.width(Keyboard.getKeyName(m.getKeyBind())) / 2f, m.guiY, psr16.width(Keyboard.getKeyName(m.getKeyBind())) + 10, 30, mouseX, mouseY)) {
+                        if (isEditingKey) {
+                            m.setKeyBind(Keyboard.KEY_NONE);
+                            isEditingKey = false;
+                        } else {
+                            isEditingKey = true;
+                        }
+                        editingModule = m;
                     }
                 }
                 if (RenderUtil.isHovered(moduleX, m.guiY, 390, m.sizeAnimation.getValue() - 5, mouseX, mouseY)) {
@@ -562,39 +566,6 @@ public class ModernClickGUI extends GuiScreen {
         selectedCategory = category;
         scrollAmount = -5;
         mc.getSoundHandler().playButtonPress();
-    }
-
-    private String getCategoryIcon(Category c) {
-        switch (c) {
-            case COMBAT: {
-                return "A";
-            }
-            case MOVEMENT: {
-                return "B";
-            }
-            case PLAYER: {
-                return "C";
-            }
-            case RENDER: {
-                return "D";
-            }
-            case MISC: {
-                return "E";
-            }
-            case WORLD: {
-                return "F";
-            }
-            case HUD: {
-                return "G";
-            }
-            case ADDONS: {
-                return "H";
-            }
-            case CLIENT: {
-                return "e";
-            }
-        }
-        return "A";
     }
 
     @Override

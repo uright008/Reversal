@@ -1,20 +1,34 @@
 package net.minecraft.potion;
 
+import cn.stars.reversal.util.animation.rise.Animation;
+import cn.stars.reversal.util.animation.rise.Easing;
+import cn.stars.reversal.util.math.TimeUtil;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+@Setter
+@Getter
 public class PotionEffect
 {
     private static final Logger LOGGER = LogManager.getLogger();
     private int potionID;
+    private int initialDuration;
     private int duration;
     private int amplifier;
     private boolean isSplashPotion;
     private boolean isAmbient;
     private boolean isPotionDurationMax;
     private boolean showParticles;
+
+    private final Animation xAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
+    private final Animation yAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
+    private final Animation progressAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
+    private double progress;
+    private final TimeUtil progressTimer = new TimeUtil();
 
     public PotionEffect(int id, int effectDuration)
     {
@@ -29,6 +43,7 @@ public class PotionEffect
     public PotionEffect(int id, int effectDuration, int effectAmplifier, boolean ambient, boolean showParticles)
     {
         this.potionID = id;
+        this.initialDuration = effectDuration;
         this.duration = effectDuration;
         this.amplifier = effectAmplifier;
         this.isAmbient = ambient;
@@ -38,6 +53,7 @@ public class PotionEffect
     public PotionEffect(PotionEffect other)
     {
         this.potionID = other.potionID;
+        this.initialDuration = other.initialDuration;
         this.duration = other.duration;
         this.amplifier = other.amplifier;
         this.isAmbient = other.isAmbient;
@@ -54,10 +70,12 @@ public class PotionEffect
         if (other.amplifier > this.amplifier)
         {
             this.amplifier = other.amplifier;
+            this.initialDuration = other.initialDuration;
             this.duration = other.duration;
         }
         else if (other.amplifier == this.amplifier && this.duration < other.duration)
         {
+            this.initialDuration = other.initialDuration;
             this.duration = other.duration;
         }
         else if (!other.isAmbient && this.isAmbient)
@@ -66,21 +84,6 @@ public class PotionEffect
         }
 
         this.showParticles = other.showParticles;
-    }
-
-    public int getPotionID()
-    {
-        return this.potionID;
-    }
-
-    public int getDuration()
-    {
-        return this.duration;
-    }
-
-    public int getAmplifier()
-    {
-        return this.amplifier;
     }
 
     public void setSplashPotion(boolean splashPotion)
@@ -106,16 +109,15 @@ public class PotionEffect
             {
                 this.performEffect(entityIn);
             }
-
             this.deincrementDuration();
         }
 
         return this.duration > 0;
     }
 
-    private int deincrementDuration()
+    private void deincrementDuration()
     {
-        return --this.duration;
+        --this.duration;
     }
 
     public void performEffect(EntityLivingBase entityIn)

@@ -369,8 +369,8 @@ public class SinglePlayerGui extends AtomicGui {
 
             regular20Bold.drawString(s, x + 2, y + 3, Color.WHITE.getRGB());
 
-            regular16.drawString(s1, x + 2, y + 15, new Color(120, 120, 120, 250).getRGB());
-            regular16.drawString(s2, x + 2, y + 15 + 10, new Color(120, 120, 120, 250).getRGB());
+            regular16.drawString(s1, x + 2, y + 15, Color.GRAY.getRGB());
+            regular16.drawString(s2, x + 2, y + 15 + 10, Color.GRAY.getRGB());
 
             atomic24.drawString("A", x + 20 + Math.max(Math.max(regular16.width(s1), regular16.width(s2)), regular20Bold.width(s)), y + 12, new Color(255,255,255, (int)(saveList.get(entryID).getSelectAnimation().getValue() * 1.6)).getRGB());
 

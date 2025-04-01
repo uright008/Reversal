@@ -22,6 +22,10 @@ public final class MathUtil {
         return a + c * (b - a);
     }
 
+    public int between(int target, int min, int max) {
+        return Math.max(min, Math.min(max, target));
+    }
+
     public boolean roughlyEquals(final double alpha, final double beta) {
         return Math.abs(alpha - beta) < 1.0E-4;
     }

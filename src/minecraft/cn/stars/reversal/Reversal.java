@@ -59,7 +59,7 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v2.0.1";
+    public static final String VERSION = "v2.0.2";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.PRODUCTION;
@@ -322,6 +322,7 @@ public class Reversal {
             new MusicInfo(),
             new MusicVisualizer(),
             new PingCounter(),
+            new PotionEffect(),
     //        new PotionEffects(),
             new Scoreboard(),
             new SessionInfo(),

@@ -27,7 +27,7 @@ public class Hotbar extends Module {
     private static final ResourceLocation widgetsTexPath = new ResourceLocation("textures/gui/widgets.png");
     private ScaledResolution sr = new ScaledResolution(mc);
     EntityPlayer entityplayer;
-    private final Animation animation = new Animation(Easing.EASE_OUT_EXPO, 400);
+    private final Animation animation = new Animation(Easing.EASE_OUT_EXPO, 500);
 
     @Override
     public void onUpdateAlways() {

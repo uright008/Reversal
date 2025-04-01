@@ -13,6 +13,7 @@ import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.render.*;
+import net.minecraft.client.gui.GuiChat;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class CPSCounter extends Module {
 
     @Override
     public void onShader3D(Shader3DEvent event) {
-        if (displayOnClick.isEnabled() && (Lclicks.isEmpty() && Rclicks.isEmpty())) return;
+        if (displayOnClick.isEnabled() && (Lclicks.isEmpty() && Rclicks.isEmpty()) && !(mc.currentScreen instanceof GuiChat)) return;
         String cpsString = Lclicks.size() + " CPS | " + Rclicks.size() + " CPS";
         if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) cpsString = "[" + Lclicks.size() + " CPS | " + Rclicks.size() + " CPS]";
 
@@ -107,7 +108,7 @@ public class CPSCounter extends Module {
             mc.fontRendererObj.drawStringWithShadow(cpsString, getX() + 2, getY() + 2, Color.WHITE.getRGB());
         } else {
             icon.drawString("P", getX() + 3.5, getY() + 2, new Color(250, 250, 250, 200).getRGB());
-            psm.drawString(cpsString, getX() + 17, getY() + 2.5f, new Color(250, 250, 250, 200).getRGB());
+            psm.drawString(cpsString, getX() + 17, getY() + 3f, new Color(250, 250, 250, 200).getRGB());
         }
     }
 }

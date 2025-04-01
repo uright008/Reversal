@@ -106,7 +106,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry, Gam
         boolean flag1 = this.server.version < 47;
         boolean flag2 = flag || flag1;
         regular20Bold.drawString(this.server.serverName, x + 40, y + 2, Color.WHITE.getRGB());
-        psr16.drawString("[" + this.server.serverIP + "]", x + 45 + regular20Bold.width(this.server.serverName), y + 3, new Color(120, 120, 120, 250).getRGB());
+        psr16.drawString("[" + this.server.serverIP + "]", x + 45 + regular20Bold.width(this.server.serverName), y + 3, Color.GRAY.getRGB());
         List<String> list = mc.fontRendererObj.listFormattedStringToWidth(this.server.serverMOTD, listWidth - 32 - 2);
 
         float iconPos = x + 60 + regular20Bold.width(this.server.serverName) + 5 + psr16.width("[" + this.server.serverIP + "]");
