@@ -32,7 +32,6 @@ import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.util.render.video.VideoManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.reversal.Branch;
-import cn.stars.reversal.util.reversal.ClientType;
 import cn.stars.reversal.util.reversal.Preloader;
 import de.florianmichael.viamcp.ViaMCP;
 import lombok.Getter;
@@ -226,7 +225,7 @@ public class Reversal {
     }
 
     public static void setWindowTitle() {
-        Display.setTitle(NAME + ClientType.getIdentifier(RainyAPI.TYPE) + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
+        Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
     }
 
     public static boolean onSendChatMessage(final String s) {
