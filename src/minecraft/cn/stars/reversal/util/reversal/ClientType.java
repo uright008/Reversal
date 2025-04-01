@@ -6,8 +6,8 @@ public enum ClientType {
     public static String getIdentifier(ClientType type) {
         switch (type) {
             case MAIN: return "";
-            case HACK: return " [A]";
-            case FORGE: return " [B]";
+            case HACK: return " A";
+            case FORGE: return " B";
         }
         return "";
     }

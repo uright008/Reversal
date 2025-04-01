@@ -80,7 +80,7 @@ public class HopeEngine {
         }
         info("[HopeEngine] Creating display...");
         Display.setResizable(true);
-        Display.setTitle("Reversal" + ClientType.getIdentifier(Reversal.TYPE) + " Startup Progress | HopeEngine " + version);
+        Display.setTitle("Reversal" + ClientType.getIdentifier(RainyAPI.TYPE) + " Startup Progress | HopeEngine " + version);
 
         Display.create((new PixelFormat()).withDepthBits(24));
 
@@ -101,7 +101,7 @@ public class HopeEngine {
 
         // Reversal Termination
         info("[HopeEngine] Handling termination!");
-        Display.setTitle("Reversal Termination Progress | HopeEngine " + version);
+        Display.setTitle("Reversal" + ClientType.getIdentifier(RainyAPI.TYPE) + " Termination Progress | HopeEngine " + version);
 
         VideoUtil.stop();
         Reversal.stop();

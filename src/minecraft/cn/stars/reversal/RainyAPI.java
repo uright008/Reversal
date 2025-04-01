@@ -8,6 +8,7 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.math.MathUtil;
+import cn.stars.reversal.util.reversal.ClientType;
 import cn.stars.reversal.util.reversal.IRCInstance;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.misc.FileUtil;
@@ -32,6 +33,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 @Setter
 @SuppressWarnings("all")
 public class RainyAPI {
+    public static final ClientType TYPE = ClientType.MAIN;
     public static Minecraft mc = Minecraft.getMinecraft();
     public static long window;
     

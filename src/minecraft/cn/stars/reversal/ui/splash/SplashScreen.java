@@ -272,7 +272,7 @@ public class SplashScreen {
         SplashScreen.progressText = detail;
         mc.updateDisplay();
         ReversalLogger.info("[Startup] " + progress + "% - " + detail);
-        Display.setTitle("Reversal" + ClientType.getIdentifier(Reversal.TYPE) + " Startup Progress | HopeEngine " + HopeEngine.version + " | " + progress + "%");
+        Display.setTitle("Reversal" + ClientType.getIdentifier(RainyAPI.TYPE) + " Startup Progress | HopeEngine " + HopeEngine.version + " | " + progress + "%");
     }
 
 }
