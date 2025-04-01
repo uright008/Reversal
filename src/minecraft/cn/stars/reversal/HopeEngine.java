@@ -2,7 +2,6 @@ package cn.stars.reversal;
 
 import cn.stars.reversal.font.FontUtil;
 import cn.stars.reversal.util.render.video.VideoUtil;
-import cn.stars.reversal.util.reversal.ClientType;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
@@ -80,7 +79,7 @@ public class HopeEngine {
         }
         info("[HopeEngine] Creating display...");
         Display.setResizable(true);
-        Display.setTitle("Reversal" + ClientType.getIdentifier(RainyAPI.TYPE) + " Startup Progress | HopeEngine " + version);
+        Display.setTitle("Reversal Startup Progress | HopeEngine " + version);
 
         Display.create((new PixelFormat()).withDepthBits(24));
 
@@ -101,7 +100,7 @@ public class HopeEngine {
 
         // Reversal Termination
         info("[HopeEngine] Handling termination!");
-        Display.setTitle("Reversal" + ClientType.getIdentifier(RainyAPI.TYPE) + " Termination Progress | HopeEngine " + version);
+        Display.setTitle("Reversal Termination Progress | HopeEngine " + version);
 
         VideoUtil.stop();
         Reversal.stop();

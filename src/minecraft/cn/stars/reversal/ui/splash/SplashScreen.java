@@ -14,7 +14,6 @@ import cn.stars.reversal.util.math.StopWatch;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.video.VideoManager;
-import cn.stars.reversal.util.reversal.ClientType;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -272,7 +271,7 @@ public class SplashScreen {
         SplashScreen.progressText = detail;
         mc.updateDisplay();
         ReversalLogger.info("[Startup] " + progress + "% - " + detail);
-        Display.setTitle("Reversal" + ClientType.getIdentifier(RainyAPI.TYPE) + " Startup Progress | HopeEngine " + HopeEngine.version + " | " + progress + "%");
+        Display.setTitle("Reversal Startup Progress | HopeEngine " + HopeEngine.version + " | " + progress + "%");
     }
 
 }
