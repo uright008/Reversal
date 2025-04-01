@@ -80,15 +80,15 @@ public class MainGui extends AtomicGui {
         RoundedUtil.drawRound(width / 2f - 25, height / 2f - 50, 50, 50, 24, new Color(100,200,255, 255));
         RenderUtils.drawLoadingCircle3(width / 2f, height / 2f - 25, 32, Color.WHITE);
         atomic64.drawString("2", width / 2f - 16, height / 2f - 36, new Color(255,255,255, 220).getRGB());
-        rp64.drawCenteredString("Reversal", width / 2f, height / 2f + 15, Color.WHITE.getRGB());
+        rp64.drawCenteredString(Reversal.NAME, width / 2f, height / 2f + 15, Color.WHITE.getRGB());
         regular16.drawCenteredString(Reversal.VERSION, width / 2f, height / 2f + 50, Color.WHITE.getRGB());
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             atomic64.drawString("2", width / 2f - 16, height / 2f - 36, ColorUtil.whiteAnimation.getOutput().getRGB());
-            rp64.drawCenteredString("Reversal", width / 2f, height / 2f + 15, ColorUtil.whiteAnimation.getOutput().getRGB());
+            rp64.drawCenteredString(Reversal.NAME, width / 2f, height / 2f + 15, ColorUtil.whiteAnimation.getOutput().getRGB());
             RenderUtils.drawLoadingCircle3(width / 2f, height / 2f - 25, 30, ColorUtil.whiteAnimation.getOutput());
         }, 2, 2);
 
-        psm18.drawString("Reversal " + Reversal.VERSION, 2, height - 30, Color.WHITE.getRGB());
+        psm18.drawString(Reversal.NAME + " " + Reversal.VERSION, 2, height - 30, Color.WHITE.getRGB());
         psm18.drawString("Minecraft " + Reversal.MINECRAFT_VERSION, 2, height - 20, Color.WHITE.getRGB());
         psm18.drawString("OptiFine_1.8.9_HD_U_M6_pre2", 2, height - 10, Color.WHITE.getRGB());
 
