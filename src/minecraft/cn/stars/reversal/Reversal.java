@@ -228,8 +228,8 @@ public class Reversal {
 
     public static void setWindowTitle() {
         if (TYPE == ClientType.MAIN) Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
-        else if (TYPE == ClientType.HACK) Display.setTitle(NAME + " A " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
-        else if (TYPE == ClientType.FORGE) Display.setTitle(NAME + " B " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
+        else if (TYPE == ClientType.HACK) Display.setTitle(NAME + " [A] " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
+        else if (TYPE == ClientType.FORGE) Display.setTitle(NAME + ClientType.getIdentifier(TYPE) + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
     }
 
     public static boolean onSendChatMessage(final String s) {
