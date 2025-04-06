@@ -122,9 +122,11 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             RoundedUtil.drawRound(58, 43, 4, 4, 1.5f, Color.WHITE);
             RenderUtils.drawLoadingCircle3(60, 45, 5, Color.WHITE);
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
-            RenderUtil.scissor(50, 33, (float) displayNameAnimation.getValue(), 23);
+            RenderUtil.scissor(50, 33, (float) displayNameAnimation.getValue() + 2, 23);
             FontManager.getRainbowParty(40).drawString(currentGui.displayName, 75, 35, Color.WHITE.getRGB());
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        } else {
+            displayNameAnimation.run(0);
         }
 
         // Player & Time
@@ -147,7 +149,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
                 RoundedUtil.drawRound(58, 43, 4, 4, 1.5f, Color.WHITE);
                 RenderUtils.drawLoadingCircle3(60, 45, 5, Color.WHITE);
                 GL11.glEnable(GL11.GL_SCISSOR_TEST);
-                RenderUtil.scissor(50, 33, (float) displayNameAnimation.getValue(), 23);
+                RenderUtil.scissor(50, 33, (float) displayNameAnimation.getValue() + 2, 23);
                 FontManager.getRainbowParty(40).drawString(currentGui.displayName, 75, 35, Color.WHITE.getRGB());
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
             }
