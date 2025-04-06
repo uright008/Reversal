@@ -36,7 +36,7 @@ public class AnnouncementGui extends AtomicGui {
     private float deltaY;
 
     public AnnouncementGui() {
-        super("Announcement", "f");
+        super("Announcement", "announcement", "f");
     }
 
     @Override
@@ -49,17 +49,9 @@ public class AnnouncementGui extends AtomicGui {
 
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, Color.BLACK);
-
-            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-            FontManager.getRainbowParty(48).drawString("announcement", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, new Color(20, 20, 20, 160));
-
-        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-        FontManager.getRainbowParty(48).drawString("announcement", 75, 35, Color.WHITE.getRGB());
 
         for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);

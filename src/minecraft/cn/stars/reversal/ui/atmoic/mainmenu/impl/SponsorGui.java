@@ -29,7 +29,7 @@ public class SponsorGui extends AtomicGui {
     private boolean showSponsor = false;
 
     public SponsorGui() {
-        super("Sponsor", "g");
+        super("Sponsor", "sponsor", "g");
     }
 
     @Override
@@ -42,17 +42,9 @@ public class SponsorGui extends AtomicGui {
 
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, Color.BLACK);
-
-            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-            FontManager.getRainbowParty(48).drawString("sponsor", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, new Color(20, 20, 20, 160));
-
-        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-        FontManager.getRainbowParty(48).drawString("sponsor", 75, 35, Color.WHITE.getRGB());
 
         regular18.drawString("以下是为Reversal客户端开发者提供过赞助的人员名单", 60, 80, new Color(220,220,220,220).getRGB());
         regular18.drawString("本客户端一直免费开源,开发者没有渠道盈利,有能力的话给我们买杯奶茶~", 60, 90, new Color(220,220,220,220).getRGB());

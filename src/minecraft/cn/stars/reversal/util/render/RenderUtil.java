@@ -959,6 +959,26 @@ public final class RenderUtil implements GameInstance {
         RiseShaders.ROGQ_SHADER.draw(x, y, width, height, radius, borderSize, color1, color2);
     }
 
+    public static void drawRightTrapezoid(float x, float y, float width, float height, float offset, float radius, Color color) {
+        RiseShaders.RT_SHADER.draw(x, y, width, height, offset, radius, color);
+    }
+
+    public static void drawGradientRightTrapezoid(float x, float y, float width, float height, float offset, float radius, Color firstColor, Color secondColor, boolean vertical) {
+        RiseShaders.GRT_SHADER.draw(x, y, width, height, offset, radius, firstColor, secondColor, vertical);
+    }
+
+    public static void drawParallelogram(float x, float y, float width, float height, float offset, float radius, Color color) {
+        RiseShaders.P_SHADER.draw(x, y, width, height, offset, radius, color);
+    }
+
+    public static void drawGradientParallelogram(float x, float y, float width, float height, float offset, float radius, Color firstColor, Color secondColor, boolean vertical) {
+        RiseShaders.GP_SHADER.draw(x, y, width, height, offset, radius, firstColor, secondColor, vertical);
+    }
+
+    public static void drawIsoscelesTrapezoid(float x, float y, float width, float height, float offset, float radius, Color color) {
+        RiseShaders.IT_SHADER.draw(x, y, width, height, offset, radius, color);
+    }
+
     public void rectangle(final double x, final double y, final double width, final double height, final Color color) {
         start();
 

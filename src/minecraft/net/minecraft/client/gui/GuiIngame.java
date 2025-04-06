@@ -127,8 +127,7 @@ public class GuiIngame extends Gui {
         if (this.mc.playerController.isSpectator()) {
             this.spectatorGui.renderTooltip(scaledresolution, partialTicks);
         } else {
-            if (ModuleInstance.getModule(Hotbar.class).mode.getMode().equals("Vanilla"))
-                ModuleInstance.getModule(Hotbar.class).renderMinecraftTooltip(scaledresolution, partialTicks);
+            ModuleInstance.getModule(Hotbar.class).renderHotbar(scaledresolution, partialTicks);
         }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

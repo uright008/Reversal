@@ -5,7 +5,7 @@ import cn.stars.reversal.event.impl.UpdateEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.module.impl.render.lineglyphs.GlyphVecRenderer;
+import cn.stars.reversal.module.util.lineglyphs.GlyphVecRenderer;
 import cn.stars.reversal.util.animation.simple.AnimationUtils2;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.math.RandomUtil;

@@ -20,6 +20,7 @@ public class ConnectingGui extends MiscGui {
 
     public ConnectingGui(ServerData serverData)
     {
+        super("connecting");
         mc.loadWorld(null);
         mc.setServerData(serverData);
         serverConnector.reset();
@@ -69,16 +70,9 @@ public class ConnectingGui extends MiscGui {
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(width / 2f - 200, height / 2f - 60, 400, 120, 3, Color.BLACK);
             RenderUtils.drawLoadingCircle2(this.width / 2f, this.height / 2f + 15, 10, Color.WHITE);
-
-            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-            FontManager.getRainbowParty(48).drawString("connecting", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(width / 2f - 200, height / 2f - 60, 400, 120, 3, new Color(20, 20, 20, 160));
-        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-        FontManager.getRainbowParty(48).drawString("connecting", 75, 35, Color.WHITE.getRGB());
 
         String ip = "Unknown";
 

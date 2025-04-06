@@ -25,7 +25,7 @@ public class ReversalSettingsGui extends AtomicGui {
     private TextButton[] buttons;
 
     public ReversalSettingsGui() {
-        super("Reversal Settings", "e");
+        super("Reversal Settings", "reversal settings", "e");
     }
 
     @Override
@@ -38,17 +38,9 @@ public class ReversalSettingsGui extends AtomicGui {
 
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, Color.BLACK);
-
-            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-            FontManager.getRainbowParty(48).drawString("reversal settings", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(50, 65, width - 100, height - 85, 3, new Color(20, 20, 20, 160));
-
-        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-        FontManager.getRainbowParty(48).drawString("reversal settings", 75, 35, Color.WHITE.getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.scissor(50, 65, width - 100, height - 85);

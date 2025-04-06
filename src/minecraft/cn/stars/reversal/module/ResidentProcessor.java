@@ -47,7 +47,6 @@ public class ResidentProcessor {
     }
 
     public void onRender2D(Render2DEvent event) {
-        ModuleInstance.getModule(Hotbar.class).onRender2D(event);
         ModuleInstance.getModule(HurtCam.class).onRender2D(event);
     }
 

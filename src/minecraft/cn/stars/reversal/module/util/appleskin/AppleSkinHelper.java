@@ -1,4 +1,4 @@
-package cn.stars.reversal.module.impl.render.appleskin;
+package cn.stars.reversal.module.util.appleskin;
 
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;

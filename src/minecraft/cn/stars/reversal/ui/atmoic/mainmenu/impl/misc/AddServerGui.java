@@ -31,6 +31,7 @@ public class AddServerGui extends MiscGui {
 
     public AddServerGui(ServerData p_i1033_2_)
     {
+        super("add server");
         this.serverData = p_i1033_2_;
     }
 
@@ -95,14 +96,7 @@ public class AddServerGui extends MiscGui {
     {
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(width / 2f - 200, height / 2f - 75, 400, 150, 4, Color.BLACK);
-            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-            FontManager.getRainbowParty(48).drawString("add server", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
-
-        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-        FontManager.getRainbowParty(48).drawString("add server", 75, 35, Color.WHITE.getRGB());
 
         RoundedUtil.drawRound(width / 2f - 200, height / 2f - 75, 400, 150, 4, new Color(20, 20, 20, 160));
 

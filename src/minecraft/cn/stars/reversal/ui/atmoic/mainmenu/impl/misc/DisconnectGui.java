@@ -27,6 +27,7 @@ public class DisconnectGui extends MiscGui {
 
     public DisconnectGui(String reasonLocalizationKey, IChatComponent chatComp)
     {
+        super("disconnected");
         this.reason = I18n.format(reasonLocalizationKey);
         this.message = chatComp;
     }
@@ -73,15 +74,9 @@ public class DisconnectGui extends MiscGui {
 
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(this.width / 2f - finalMaxLength / 2 - 30, this.height / 2f - this.totalHeight / 2f - regular16.height() * 2 - 10, finalMaxLength + 60, 100 + 10 * multilineMessage.size(), 3, Color.BLACK);
-            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-            FontManager.getRainbowParty(48).drawString("disconnected", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(this.width / 2f - maxLength / 2 - 30, this.height / 2f - this.totalHeight / 2f - regular16.height() * 2 - 10, maxLength + 60, 100 + 10 * multilineMessage.size(), 3, new Color(20, 20, 20, 160));
-        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-        FontManager.getRainbowParty(48).drawString("disconnected", 75, 35, Color.WHITE.getRGB());
 
         for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);

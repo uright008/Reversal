@@ -5,6 +5,7 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.MultiPlayerGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.AddServerGui;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.YesNoGui;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -123,6 +124,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry, Gam
         atomic24.drawString("B", x - 20 + listWidth, y + slotHeight / 2f, new Color(255,255,255, (int) deleteAnimation.getValue()).getRGB());
         atomic24.drawString("C", x - 45 + listWidth, y + slotHeight / 2f, new Color(255,255,255, (int) editAnimation.getValue()).getRGB());
 
+        float finalIconPos = iconPos;
+        AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> {
+            atomic24.drawString("A", finalIconPos, y + 12, new Color(250,250,250, (int)(selectAnimation.getValue() * 1.6)).getRGB());
+
+            atomic24.drawString("B", x - 20 + listWidth, y + slotHeight / 2f, new Color(255,255,255, (int) deleteAnimation.getValue()).getRGB());
+            atomic24.drawString("C", x - 45 + listWidth, y + slotHeight / 2f, new Color(255,255,255, (int) editAnimation.getValue()).getRGB());
+        });
+
         if (Mouse.isButtonDown(0)) {
             if (RenderUtil.isHovered(x - 25 + listWidth + 1, y - 5 + slotHeight / 2f, 16, 16, mouseX, mouseY) && deleteAnimation.getValue() > 200) {
                 String s4 = this.getServerData().serverName;
@@ -131,10 +140,9 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry, Gam
                     owner.deletingServer = true;
                     String s = I18n.format("selectServer.deleteQuestion");
                     String s1 = "'" + s4 + "' " + I18n.format("selectServer.deleteWarning");
-                    String s2 = I18n.format("selectServer.deleteButton");
-                    String s3 = I18n.format("gui.cancel");
-                    GuiYesNo guiyesno = new GuiYesNo(Reversal.atomicMenu, s, s1, s2, s3, owner.serverListSelector.getSelectedIndex());
-                    mc.displayGuiScreen(guiyesno);
+                    YesNoGui guiyesno = new YesNoGui(2, owner.serverListSelector.getSelectedIndex(), s, s1);
+                    AtomicMenu.setMiscGui(guiyesno);
+                    AtomicMenu.switchGui(8);
                 }
             }
             if (RenderUtil.isHovered(x - 50 + listWidth + 1, y - 5 + slotHeight / 2f, 16, 16, mouseX, mouseY) && editAnimation.getValue() > 200) {

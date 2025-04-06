@@ -1,11 +1,9 @@
-package cn.stars.reversal.module.impl.render.lineglyphs;
+package cn.stars.reversal.module.util.lineglyphs;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.module.impl.render.LineGlyphs;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
-import cn.stars.reversal.util.render.ThemeType;
-import cn.stars.reversal.util.render.ThemeUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;

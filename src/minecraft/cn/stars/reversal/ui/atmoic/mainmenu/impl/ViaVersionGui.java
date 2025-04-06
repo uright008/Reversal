@@ -31,7 +31,7 @@ public class ViaVersionGui extends AtomicGui {
     private boolean reversed = false;
 
     public ViaVersionGui() {
-        super("ViaVersion", "i");
+        super("ViaVersion", "viaversion", "i");
     }
 
     @Override
@@ -120,10 +120,6 @@ public class ViaVersionGui extends AtomicGui {
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(50, 100, width - 100, height - 120, 3, Color.BLACK);
             RoundedUtil.drawRound(50, 65, width - 100, 25, 3, Color.BLACK);
-
-            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-            FontManager.getRainbowParty(48).drawString("via version", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(50, 100, width - 100, height - 120, 3, new Color(20, 20, 20, 160));
@@ -131,10 +127,6 @@ public class ViaVersionGui extends AtomicGui {
 
         atomic24.drawString("3", 55, 74, Color.WHITE.getRGB());
         searchField.draw(70, 68, mouseX, mouseY);
-
-        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-        FontManager.getRainbowParty(48).drawString("via version", 75, 35, Color.WHITE.getRGB());
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.scissor(50, 100, width - 100, height - 160);

@@ -10,6 +10,7 @@ import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.*;
 import lombok.SneakyThrows;
+import net.minecraft.client.renderer.GlStateManager;
 
 import java.awt.*;
 
@@ -24,7 +25,7 @@ public class MainGui extends AtomicGui {
     private final Animation settingsAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation exitAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     public MainGui() {
-        super("Main", "a");
+        super("Main", "", "a");
     }
 
     @Override

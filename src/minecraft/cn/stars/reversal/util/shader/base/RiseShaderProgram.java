@@ -6,12 +6,55 @@ import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public class RiseShaderProgram implements GameInstance {
 
     private final int programId;
 
     public RiseShaderProgram(final String fragmentPath, final String vertexPath) {
         this.programId = ShaderUtil.createShader(fragmentPath, vertexPath);
+    }
+
+    public static void drawTrapezoid(float x, float y, float offset, float width, float height) {
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(x, y);
+        glTexCoord2f(0, 1);
+        glVertex2f(x + offset, y + height);
+        glTexCoord2f(1, 1);
+        glVertex2f(x + width, y + height);
+        glTexCoord2f(1, 0);
+        glVertex2f(x + width + offset, y);
+        glEnd();
+    }
+
+    public static void drawRightTrapezoid(float x, float y, float offset, float width, float height) {
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(x, y);
+        glTexCoord2f(0, 1);
+        glVertex2f(x, y + height);
+        glTexCoord2f(1, 1);
+        glVertex2f(x + width + offset, y + height);
+        glTexCoord2f(1, 0);
+        glVertex2f(x + width, y);
+        glEnd();
+    }
+
+
+
+    public static void drawQuads(float x, float y, float offset, float width, float height) {
+        glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(x, y);
+        glTexCoord2f(0, 1);
+        glVertex2f(x + offset, y + height);
+        glTexCoord2f(1, 1);
+        glVertex2f(x + width + offset, y + height);
+        glTexCoord2f(1, 0);
+        glVertex2f(x + width, y);
+        glEnd();
     }
 
     public static void drawQuad(final double x, final double y, final double width, final double height) {

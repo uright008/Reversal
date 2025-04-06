@@ -12,6 +12,7 @@ import java.util.List;
 
 public class AtomicGui implements GameInstance {
     public String name;
+    public String displayName;
     public String icon;
     protected ScaledResolution sr = new ScaledResolution(mc);
     protected int width;
@@ -24,6 +25,13 @@ public class AtomicGui implements GameInstance {
     public AtomicGui(String name, String icon) {
         this.name = name;
         this.icon = icon;
+        this.displayName = "";
+    }
+
+    public AtomicGui(String name, String displayName, String icon) {
+        this.name = name;
+        this.icon = icon;
+        this.displayName = displayName;
     }
 
     public void initGui() {

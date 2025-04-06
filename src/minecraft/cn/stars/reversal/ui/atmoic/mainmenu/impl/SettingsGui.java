@@ -5,6 +5,7 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -28,7 +29,7 @@ public class SettingsGui extends AtomicGui {
     private GuiLockIconButton field_175356_r;
 
     public SettingsGui() {
-        super("Settings", "d");
+        super("Settings", "settings", "d");
     }
 
     @Override
@@ -234,15 +235,6 @@ public class SettingsGui extends AtomicGui {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
-            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-            FontManager.getRainbowParty(48).drawString("options", 75, 35, Color.WHITE.getRGB());
-        }, 2, 2);
-
-        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-        FontManager.getRainbowParty(48).drawString("options", 75, 35, Color.WHITE.getRGB());
 
         for (GuiButton guiButton : this.buttonList) {
             guiButton.drawButton(mc, mouseX, mouseY);

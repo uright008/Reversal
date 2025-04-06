@@ -25,7 +25,7 @@ import java.util.Comparator;
 
 @ModuleInfo(name = "PotionEffect", localizedName = "module.PotionEffect.name", description = "Draw potion effect stats", localizedDescription = "module.PotionEffect.desc",category = Category.HUD)
 public class PotionEffect extends Module {
-    public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Minecraft", "Minecraft 2", "Simple", "Empathy");
+    public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Minecraft", "Minecraft 2", "Simple", "Empathy", "Blue Archive");
     public final ColorValue colorValue = new ColorValue("Color", this);
     public final BoolValue background = new BoolValue("Background", this, true);
     public final BoolValue progress = new BoolValue("Progress", this, true);
@@ -87,12 +87,13 @@ public class PotionEffect extends Module {
         else potionEffects.sort((o1, o2) -> Integer.compare(o2.getDuration(), o1.getDuration()));
 
         if (!potionEffects.isEmpty()) {
+            int posX = x;
             int posY = y;
 
             for (net.minecraft.potion.PotionEffect potionEffect : potionEffects) {
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-                potionEffect.getXAnimation().run(x);
+                potionEffect.getXAnimation().run(posX);
                 potionEffect.getYAnimation().run(posY);
                 int renderY = (int) potionEffect.getYAnimation().getValue();
                 int renderX = (int) potionEffect.getXAnimation().getValue();
@@ -117,36 +118,45 @@ public class PotionEffect extends Module {
                     case "Empathy":
                         RenderUtil.roundedRectangle(renderX, renderY, 140, 32, 3f, ColorUtil.empathyColor());
                         if (progress.enabled) {
-                            RenderUtil.roundedRectangle(renderX, renderY, potionEffect.getProgressAnimation().getValue(), 32, 3f, ColorUtil.empathyColor());
+                            RenderUtil.roundedRectangle(renderX, renderY, potionEffect.getProgressAnimation().getValue(), 32, 3f, new Color(0, 0, 0, 80));
                         }
                         RenderUtil.roundedRectangle(renderX - 0.5, renderY + 11, 1.5, 10, 1f, colorValue.getColor());
                         break;
                 }
 
-                if (potion.hasStatusIcon() && !mode.getMode().equals("Minecraft 2")) {
+                if (potion.hasStatusIcon() && !mode.getMode().equals("Minecraft 2") && !mode.getMode().equals("Blue Archive")) {
                     int i1 = potion.getStatusIconIndex();
                     mc.getTextureManager().bindTexture(inventoryBackground);
                     Gui.drawTexturedModalRectStatic(renderX + 6, renderY + 7, i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
                 }
 
-                String s1 = I18n.format(potion.getName());
+                String potionName = I18n.format(potion.getName());
+                ResourceLocation potionAmplifierIcon = new ResourceLocation("reversal/images/ba/potion/x1.png");
 
                 if (potionEffect.getAmplifier() == 1) {
-                    s1 = s1 + " " + I18n.format("enchantment.level.2");
+                    potionName = potionName + " " + I18n.format("enchantment.level.2");
+                    potionAmplifierIcon = new ResourceLocation("reversal/images/ba/potion/x2.png");
                 } else if (potionEffect.getAmplifier() == 2) {
-                    s1 = s1 + " " + I18n.format("enchantment.level.3");
+                    potionName = potionName + " " + I18n.format("enchantment.level.3");
+                    potionAmplifierIcon = new ResourceLocation("reversal/images/ba/potion/x3.png");
                 } else if (potionEffect.getAmplifier() == 3) {
-                    s1 = s1 + " " + I18n.format("enchantment.level.4");
+                    potionName = potionName + " " + I18n.format("enchantment.level.4");
+                    potionAmplifierIcon = new ResourceLocation("reversal/images/ba/potion/x4.png");
                 }
 
                 if (mode.getMode().equals("Minecraft 2")) {
-                    drawString(s1, (float) renderX, (float) renderY, modernFont.enabled ? colorValue.getColor().getRGB() : Potion.potionTypes[potionEffect.getPotionID()].getLiquidColor());
+                    drawString(potionName, (float) renderX, (float) renderY, modernFont.enabled ? colorValue.getColor().getRGB() : Potion.potionTypes[potionEffect.getPotionID()].getLiquidColor());
                     String s = Potion.getDurationString(potionEffect);
-                    drawString(s, renderX + 2 + fontWidth(s1), (float) renderY, Color.GRAY.getRGB());
+                    drawString(s, renderX + 2 + fontWidth(potionName), (float) renderY, Color.GRAY.getRGB());
                     if (reverse.enabled) posY -= 10;
                     else posY += 10;
+                } else if (mode.getMode().equals("Blue Archive")) {
+                    RenderUtil.image(potion.getImage(), renderX, renderY, 12, 13);
+                    RenderUtil.image(potionAmplifierIcon, renderX + 7, renderY + 7, 8, 7);
+                    if (reverse.enabled) posX -= 15;
+                    else posX += 15;
                 } else {
-                    drawString(s1, (float) (renderX + 10 + 18), (float) (renderY + 7), Color.WHITE.getRGB());
+                    drawString(potionName, (float) (renderX + 10 + 18), (float) (renderY + 7), Color.WHITE.getRGB());
                     String s = Potion.getDurationString(potionEffect);
                     drawString(s, (float) (renderX + 10 + 18), (float) (renderY + 8 + 10), Color.GRAY.getRGB());
                     if (reverse.enabled) posY -= 35;
@@ -158,11 +168,24 @@ public class PotionEffect extends Module {
         if (mode.getMode().equals("Minecraft 2")) {
             setWidth(150);
             setHeight(10 * potionEffects.size() + 10);
-            if (reverse.enabled) setAdditionalHeight(-10 * (potionEffects.size() - 1));
+            if (reverse.enabled) {
+                setAdditionalWidth(0);
+                setAdditionalHeight(-10 * (potionEffects.size() - 1));
+            }
+        } else if (mode.getMode().equals("Blue Archive")) {
+            setWidth(20 * potionEffects.size() + 10);
+            setHeight(30);
+            if (reverse.enabled) {
+                setAdditionalWidth(-20 * (potionEffects.size() - 1));
+                setAdditionalHeight(0);
+            }
         } else {
             setWidth(150);
             setHeight(35 * potionEffects.size() + 10);
-            if (reverse.enabled) setAdditionalHeight(-35 * (potionEffects.size() - 1));
+            if (reverse.enabled) {
+                setAdditionalWidth(0);
+                setAdditionalHeight(-35 * (potionEffects.size() - 1));
+            }
         }
     }
 

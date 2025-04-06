@@ -5,6 +5,7 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.YesNoGui;
 import cn.stars.reversal.ui.modern.TextButton;
 import cn.stars.reversal.ui.modern.TextField;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -51,7 +52,7 @@ public class SinglePlayerGui extends AtomicGui {
     private boolean reversed = false;
 
     public SinglePlayerGui() {
-        super("SinglePlayer", "b");
+        super("SinglePlayer", "singleplayer", "b");
     }
 
     @Override
@@ -163,8 +164,9 @@ public class SinglePlayerGui extends AtomicGui {
                 String s = this.func_146614_d(this.selectedIndex);
                 if (s != null) {
                     this.confirmingDelete = true;
-                    GuiYesNo guiyesno = makeDeleteWorldYesNo(Reversal.atomicMenu, s, this.selectedIndex);
-                    mc.displayGuiScreen(guiyesno);
+                    YesNoGui guiyesno = makeDeleteWorldYesNo(s, selectedIndex);
+                    AtomicMenu.setMiscGui(guiyesno);
+                    AtomicMenu.switchGui(8);
                 }
             }
         }, "删除", "", true, 1, 25, 5, 20);
@@ -210,10 +212,6 @@ public class SinglePlayerGui extends AtomicGui {
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(50, 100, width - 100, height - 120, 3, Color.BLACK);
             RoundedUtil.drawRound(50, 65, width - 100, 25, 3, Color.BLACK);
-
-            RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-            RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-            FontManager.getRainbowParty(48).drawString("singleplayer", 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RoundedUtil.drawRound(50, 100, width - 100, height - 120, 3, new Color(20, 20, 20, 160));
@@ -222,9 +220,7 @@ public class SinglePlayerGui extends AtomicGui {
         atomic24.drawString("3", 55, 74, Color.WHITE.getRGB());
         searchField.draw(70, 68, mouseX, mouseY);
 
-        RoundedUtil.drawRound(55,45,4,4,1.5f, Color.WHITE);
-        RenderUtils.drawLoadingCircle3(57,47,5, Color.WHITE);
-        FontManager.getRainbowParty(48).drawString("singleplayer", 75, 35, Color.WHITE.getRGB());
+        AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> atomic24.drawString("3", 55, 74, Color.WHITE.getRGB()));
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.scissor(50, 100, width - 100, height - 170);
@@ -239,13 +235,11 @@ public class SinglePlayerGui extends AtomicGui {
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    public static GuiYesNo makeDeleteWorldYesNo(GuiYesNoCallback selectWorld, String name, int id)
+    public static YesNoGui makeDeleteWorldYesNo(String name, int id)
     {
         String s = I18n.format("selectWorld.deleteQuestion");
         String s1 = "'" + name + "' " + I18n.format("selectWorld.deleteWarning");
-        String s2 = I18n.format("selectWorld.deleteButton");
-        String s3 = I18n.format("gui.cancel");
-        return new GuiYesNo(selectWorld, s, s1, s2, s3, id);
+        return new YesNoGui(1, id, s, s1);
     }
 
     class List extends GuiSlot implements GameInstance
@@ -308,15 +302,8 @@ public class SinglePlayerGui extends AtomicGui {
         @SneakyThrows
         protected void drawSlot(int entryID, int x, int y, int height, int mouseXIn, int mouseYIn) {
             SaveFormatComparator saveformatcomparator = SinglePlayerGui.this.saveList.get(entryID);
-            String s = saveformatcomparator.getDisplayName();
-
-            if (StringUtils.isEmpty(s)) {
-                s = SinglePlayerGui.this.field_146637_u + " " + (entryID + 1);
-            }
-
-            String s1 = saveformatcomparator.getFileName();
-            s1 = s1 + " (" + SinglePlayerGui.this.field_146633_h.format(new Date(saveformatcomparator.getLastTimePlayed()));
-            s1 = s1 + ")";
+            String s = saveformatcomparator.getDisplayName().isEmpty() ? SinglePlayerGui.this.field_146637_u + " " + (entryID + 1) : saveformatcomparator.getDisplayName();
+            String s1 = saveformatcomparator.getFileName() + " (" + SinglePlayerGui.this.field_146633_h.format(new Date(saveformatcomparator.getLastTimePlayed())) + ")";
             String s2 = "";
 
             if (saveformatcomparator.requiresConversion()) {
@@ -342,8 +329,9 @@ public class SinglePlayerGui extends AtomicGui {
                 if (RenderUtil.isHovered(x - 25 + getListWidth() + 1, y - 10 + slotHeight / 2f, 16, 16, mouseXIn, mouseYIn) && saveList.get(entryID).getDeleteAnimation().getValue() > 200) {
                     if (func_146614_d(entryID) != null) {
                         confirmingDelete = true;
-                        GuiYesNo guiyesno = makeDeleteWorldYesNo(Reversal.atomicMenu, s, entryID);
-                        GameInstance.mc.displayGuiScreen(guiyesno);
+                        YesNoGui guiyesno = makeDeleteWorldYesNo(s, selectedIndex);
+                        AtomicMenu.setMiscGui(guiyesno);
+                        AtomicMenu.switchGui(8);
                     }
                 }
                 if (RenderUtil.isHovered(x - 50 + getListWidth(), y - 10 + slotHeight / 2f, 16, 16, mouseXIn, mouseYIn) && saveList.get(entryID).getRecreateAnimation().getValue() > 200) {
@@ -377,6 +365,18 @@ public class SinglePlayerGui extends AtomicGui {
             atomic24.drawString("B", x - 20 + getListWidth(), y - 5 + slotHeight / 2f, new Color(255,255,255, (int)(saveList.get(entryID).getDeleteAnimation().getValue())).getRGB());
             atomic24.drawString("D", x - 46 + getListWidth(), y - 5 + slotHeight / 2f, new Color(255,255,255, (int)(saveList.get(entryID).getRecreateAnimation().getValue())).getRGB());
             atomic24.drawString("C", x - 70 + getListWidth(), y - 5 + slotHeight / 2f, new Color(255,255,255, (int)(saveList.get(entryID).getRenameAnimation().getValue())).getRGB());
+
+            String finalS = s2;
+            AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> {
+                if (isSelected(entryID)) {
+                    regular20Bold.drawString(s, x + 2, y + 3, new Color(255,255,255, (int)(saveList.get(entryID).getSelectAnimation().getValue() * 1.6)).getRGB());
+                }
+                atomic24.drawString("A", x + 20 + Math.max(Math.max(regular16.width(s1), regular16.width(finalS)), regular20Bold.width(s)), y + 12, new Color(255,255,255, (int)(saveList.get(entryID).getSelectAnimation().getValue() * 1.6)).getRGB());
+
+                atomic24.drawString("B", x - 20 + getListWidth(), y - 5 + slotHeight / 2f, new Color(255,255,255, (int)(saveList.get(entryID).getDeleteAnimation().getValue())).getRGB());
+                atomic24.drawString("D", x - 46 + getListWidth(), y - 5 + slotHeight / 2f, new Color(255,255,255, (int)(saveList.get(entryID).getRecreateAnimation().getValue())).getRGB());
+                atomic24.drawString("C", x - 70 + getListWidth(), y - 5 + slotHeight / 2f, new Color(255,255,255, (int)(saveList.get(entryID).getRenameAnimation().getValue())).getRGB());
+            });
         }
 
         @Override

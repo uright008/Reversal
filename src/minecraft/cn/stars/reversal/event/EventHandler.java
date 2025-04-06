@@ -29,15 +29,15 @@ public final class EventHandler {
             RenderUtil.delta2DFrameTime = (System.currentTimeMillis() - RenderUtil.last2DFrame) / 10F;
             RenderUtil.last2DFrame = System.currentTimeMillis();
 
+            NotificationManager.onRender2D();
+            residentProcessor.onRender2D(event);
+
             for (final Module module : modules) {
                 if (module.isEnabled()) {
                     if (module.getModuleInfo().category().equals(Category.HUD) && !ModuleInstance.canDrawHUD()) return;
                     module.onRender2D(event);
                 }
             }
-            NotificationManager.onRender2D();
-            residentProcessor.onRender2D(event);
-
         } else if (e instanceof Render3DEvent) {
             final Render3DEvent event = ((Render3DEvent) e);
 
@@ -61,6 +61,7 @@ public final class EventHandler {
             }
         } else if (e instanceof Shader3DEvent) {
             final Shader3DEvent event = ((Shader3DEvent) e);
+            residentProcessor.onShader3D(event);
 
             for (final Module module : modules) {
                 if (module.isEnabled()) {
@@ -68,8 +69,6 @@ public final class EventHandler {
                     module.onShader3D(event);
                 }
             }
-
-            residentProcessor.onShader3D(event);
         } else if (e instanceof PreBlurEvent) {
             final PreBlurEvent event = ((PreBlurEvent) e);
 

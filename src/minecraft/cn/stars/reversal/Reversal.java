@@ -59,15 +59,15 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v2.0.2";
+    public static final String VERSION = "v2.1.0";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
-    public static final Branch BRANCH = Branch.PRODUCTION;
+    public static final Branch BRANCH = Branch.DEVELOPMENT;
     public static final String BUILD_VERSION = "";
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
-    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(2);
+    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(3);
 
     public static String customName = "";
     public static String customText = ".setText <text>";
@@ -209,6 +209,9 @@ public class Reversal {
         try {
             VideoUtil.stop();
             VideoManager.loadBackground();
+
+            // Enable HUD
+            if (firstBoot) ModuleInstance.getModule(HUD.class).enabled = true;
 
             // Init it here because it causes crashes if it's initialized before the client is fully loaded.
             // Who knows why?

@@ -11,6 +11,8 @@ public class MiscGui extends AtomicGui {
         super("Misc", "h");
     }
 
+    public MiscGui(String displayName) { super("Misc", displayName, "h"); }
+
     @Override
     public void drawIcon(int posX, int posY, int color) {
         atomic24.drawString(icon, posX, posY + 1, color);

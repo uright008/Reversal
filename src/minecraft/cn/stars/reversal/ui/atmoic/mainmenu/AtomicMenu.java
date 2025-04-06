@@ -16,10 +16,7 @@ import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.player.SkinUtil;
-import cn.stars.reversal.util.render.ColorUtil;
-import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.ThemeType;
-import cn.stars.reversal.util.render.ThemeUtil;
+import cn.stars.reversal.util.render.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -59,6 +56,9 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     public static int announcementIndex = 0;
     public static float anPosX = 60, anPosY = 80;
 
+    public static ArrayList<Runnable> PRE_POSTPROCESSING_QUEUE = new ArrayList<>();
+    public static ArrayList<Runnable> POST_POSTPROCESSING_QUEUE = new ArrayList<>();
+
     @Override
     public void initGui() {
         currentGui.initGui();
@@ -87,6 +87,10 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             }
         } else bubbles.clear();
 
+        if (!PRE_POSTPROCESSING_QUEUE.isEmpty()) ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
+            PRE_POSTPROCESSING_QUEUE.forEach(Runnable::run);
+        }, 2, 2);
+
         // Current AtomicGui
         currentGui.drawScreen(mouseX, mouseY, partialTicks);
 
@@ -105,6 +109,20 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8, Color.WHITE.getRGB());
         }
 
+        // Name
+        ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
+            if (!currentGui.displayName.isEmpty()) {
+                RenderUtil.drawRightTrapezoid(50, 33, 26 + FontManager.getRainbowParty(40).width(currentGui.displayName), 23, 10, 0, Color.BLACK);
+            }
+        }, 2, 2);
+
+        if (!currentGui.displayName.isEmpty()) {
+            RenderUtil.drawRightTrapezoid(50, 33, 26 + FontManager.getRainbowParty(40).width(currentGui.displayName), 23, 10, 0, new Color(20, 20, 20, 160));
+            RoundedUtil.drawRound(58, 43, 4, 4, 1.5f, Color.WHITE);
+            RenderUtils.drawLoadingCircle3(60, 45, 5, Color.WHITE);
+            FontManager.getRainbowParty(40).drawString(currentGui.displayName, 75, 35, Color.WHITE.getRGB());
+        }
+
         // Player & Time
         this.drawPlayerImage();
         psm18.drawString(GameInstance.mc.session.getUsername(), width - 130 - psm18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
@@ -120,6 +138,10 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
             currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8, ColorUtil.whiteAnimation.getOutput().getRGB());
             this.drawPlayerImage();
+
+            RoundedUtil.drawRound(58, 43, 4, 4, 1.5f, Color.WHITE);
+            RenderUtils.drawLoadingCircle3(60, 45, 5, Color.WHITE);
+            FontManager.getRainbowParty(40).drawString(currentGui.displayName, 75, 35, Color.WHITE.getRGB());
         }, 2, 2);
 
         RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
@@ -158,6 +180,13 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
         // Sub Menu
         drawSubMenu(mouseX, mouseY, partialTicks);
+
+        if (!POST_POSTPROCESSING_QUEUE.isEmpty()) ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
+            POST_POSTPROCESSING_QUEUE.forEach(Runnable::run);
+        }, 2, 2);
+
+        PRE_POSTPROCESSING_QUEUE.clear();
+        POST_POSTPROCESSING_QUEUE.clear();
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

@@ -34,13 +34,15 @@ public class Hotbar extends Module {
         if (this.enabled) this.enabled = false;
     }
 
-    @Override
-    public void onRender2D(Render2DEvent event) {
+    public void renderHotbar(ScaledResolution sr, float partialTicks) {
         if (mc.getRenderViewEntity() instanceof EntityPlayer) {
+            this.sr = sr;
             entityplayer = (EntityPlayer) mc.getRenderViewEntity();
-            sr = event.getScaledResolution();
-            animation.run(entityplayer.inventory.currentItem * 20);
-            if (!mode.getMode().equals("Vanilla")) renderModernTooltip(sr, event.getPartialTicks());
+            if (mode.getMode().equals("Vanilla")) renderMinecraftTooltip(sr, partialTicks);
+            else {
+                animation.run(entityplayer.inventory.currentItem * 20);
+                renderModernTooltip(sr, partialTicks);
+            }
         }
     }
 
@@ -51,12 +53,6 @@ public class Hotbar extends Module {
             RenderUtil.roundedRectangle(x - 91, sr.getScaledHeight() - 22, 182, 25, 2, Color.BLACK);
             RenderUtil.roundedRectangle(x - 91 + animation.getValue(), sr.getScaledHeight() - 22, 22, 22, 3, Color.BLACK);
         }
-    }
-
-    private void drawSection(ScaledResolution sr) {
-        int x = sr.getScaledWidth() / 2;
-        RenderUtil.roundedRectangle(x - 91, sr.getScaledHeight() - 22, 182, 22, 2, new Color(0,0,0,60));
-        RenderUtil.roundedRectangle(x - 91 + animation.getValue(), sr.getScaledHeight() - 22, 22, 22, 3, new Color(0,0,0,80));
     }
 
     public void renderMinecraftTooltip(ScaledResolution sr, float partialTicks) {
@@ -89,7 +85,9 @@ public class Hotbar extends Module {
         if (entityplayer == null) return;
         float f = Gui.zLevel;
         Gui.zLevel = -90.0F;
-        drawSection(sr);
+        int x = sr.getScaledWidth() / 2;
+        RenderUtil.roundedRectangle(x - 91, sr.getScaledHeight() - 22, 182, 22, 2, new Color(0,0,0,60));
+        RenderUtil.roundedRectangle(x - 91 + animation.getValue(), sr.getScaledHeight() - 22, 22, 22, 3, new Color(0,0,0,80));
         Gui.zLevel = f;
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableBlend();
