@@ -47,9 +47,9 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
     private final Animation upperSelectionAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
     private final Animation initAnimation = new Animation(Easing.LINEAR, 200);
-
     private final Animation subHoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation subPosAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation displayNameAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final CustomAnimation cursorAnimation = new CustomAnimation(SmoothStepAnimation.class, 1000, -5, 5);
     private boolean subMenu = false;
 
@@ -112,15 +112,19 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         // Name
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             if (!currentGui.displayName.isEmpty()) {
-                RenderUtil.drawRightTrapezoid(50, 33, 26 + FontManager.getRainbowParty(40).width(currentGui.displayName), 23, 10, 0, Color.BLACK);
+                RenderUtil.drawRightTrapezoid(50, 33, (float) displayNameAnimation.getValue(), 23, 10, 0, Color.BLACK);
             }
         }, 2, 2);
 
         if (!currentGui.displayName.isEmpty()) {
-            RenderUtil.drawRightTrapezoid(50, 33, 26 + FontManager.getRainbowParty(40).width(currentGui.displayName), 23, 10, 0, new Color(20, 20, 20, 160));
+            displayNameAnimation.run(26 + FontManager.getRainbowParty(40).width(currentGui.displayName));
+            RenderUtil.drawRightTrapezoid(50, 33, (float) displayNameAnimation.getValue(), 23, 10, 0, new Color(20, 20, 20, 160));
             RoundedUtil.drawRound(58, 43, 4, 4, 1.5f, Color.WHITE);
             RenderUtils.drawLoadingCircle3(60, 45, 5, Color.WHITE);
+            GL11.glEnable(GL11.GL_SCISSOR_TEST);
+            RenderUtil.scissor(50, 33, (float) displayNameAnimation.getValue(), 23);
             FontManager.getRainbowParty(40).drawString(currentGui.displayName, 75, 35, Color.WHITE.getRGB());
+            GL11.glDisable(GL11.GL_SCISSOR_TEST);
         }
 
         // Player & Time
@@ -139,9 +143,14 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8, ColorUtil.whiteAnimation.getOutput().getRGB());
             this.drawPlayerImage();
 
-            RoundedUtil.drawRound(58, 43, 4, 4, 1.5f, Color.WHITE);
-            RenderUtils.drawLoadingCircle3(60, 45, 5, Color.WHITE);
-            FontManager.getRainbowParty(40).drawString(currentGui.displayName, 75, 35, Color.WHITE.getRGB());
+            if (!currentGui.displayName.isEmpty()) {
+                RoundedUtil.drawRound(58, 43, 4, 4, 1.5f, Color.WHITE);
+                RenderUtils.drawLoadingCircle3(60, 45, 5, Color.WHITE);
+                GL11.glEnable(GL11.GL_SCISSOR_TEST);
+                RenderUtil.scissor(50, 33, (float) displayNameAnimation.getValue(), 23);
+                FontManager.getRainbowParty(40).drawString(currentGui.displayName, 75, 35, Color.WHITE.getRGB());
+                GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            }
         }, 2, 2);
 
         RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));

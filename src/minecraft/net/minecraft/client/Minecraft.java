@@ -681,7 +681,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         return bytebuffer;
     }
 
-    private void updateDisplayMode() throws LWJGLException {
+    private void updateDisplayMode() {
         Set<DisplayMode> set = Sets.<DisplayMode>newHashSet();
         Collections.addAll(set, Display.getAvailableDisplayModes());
         DisplayMode displaymode = Display.getDesktopDisplayMode();
@@ -1441,15 +1441,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 this.displayWidth = Display.getDisplayMode().getWidth();
                 this.displayHeight = Display.getDisplayMode().getHeight();
 
-                if (this.displayWidth <= 0)
-                {
-                    this.displayWidth = 1;
-                }
-
-                if (this.displayHeight <= 0)
-                {
-                    this.displayHeight = 1;
-                }
             }
             else
             {
@@ -1457,15 +1448,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 this.displayWidth = this.tempDisplayWidth;
                 this.displayHeight = this.tempDisplayHeight;
 
-                if (this.displayWidth <= 0)
-                {
-                    this.displayWidth = 1;
-                }
-
-                if (this.displayHeight <= 0)
-                {
-                    this.displayHeight = 1;
-                }
+            }
+            if (this.displayWidth <= 0)
+            {
+                this.displayWidth = 1;
+            }
+            if (this.displayHeight <= 0)
+            {
+                this.displayHeight = 1;
             }
 
             if (this.currentScreen != null)
@@ -1483,7 +1473,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
         catch (Exception exception)
         {
-            logger.error((String)"Couldn\'t toggle fullscreen", (Throwable)exception);
+            logger.error("Couldn't toggle fullscreen", exception);
         }
     }
 

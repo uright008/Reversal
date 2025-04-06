@@ -7,6 +7,7 @@ import cn.stars.reversal.music.api.user.QRCodeState;
 import cn.stars.reversal.music.api.user.ScanResult;
 import cn.stars.reversal.util.math.TimerUtil;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
 
 import java.io.IOException;
 
@@ -31,13 +32,13 @@ public class LoginThread extends Thread {
         int count = 0;
         while (qrCode == null) {
             if (count >= 5) {
-                Reversal.showMsg("Please check your Internet connection.");
+                Minecraft.getMinecraft().addScheduledTask(() -> Reversal.showMsg("Please check your Internet connection."));
                 return;
             }
             try {
                 qrCode = MusicAPI.genQRCode();
             } catch (IOException e) {
-                Reversal.showMsg("Failed to generate QR Code. Retry...");
+                Minecraft.getMinecraft().addScheduledTask(() -> Reversal.showMsg("Failed to generate QR Code. Retry..."));
                 count++;
             }
         }
@@ -47,7 +48,7 @@ public class LoginThread extends Thread {
         do {
             if (timer.hasTimeElapsed(1000)) {
                 result = MusicAPI.getScanResult(qrCode.getKey());
-                Reversal.showMsg("Login state: " + result.getState());
+                Minecraft.getMinecraft().addScheduledTask(() -> Reversal.showMsg("Login state: " + result.getState()));
                 timer.reset();
             }
         } while (result.getState() == QRCodeState.WAITING_SCAN || result.getState() == QRCodeState.WAITING_CONFIRM);

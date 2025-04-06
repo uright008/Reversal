@@ -36,10 +36,10 @@ public class HopeEngine {
     @SneakyThrows
     public static void initializeDisplay() {
         info("[HopeEngine] Handling display initialization!");
-        Util.EnumOS util$enumos = Util.getOSType();
+        Util.EnumOS os = Util.getOSType();
 
         info("[HopeEngine] Setting window icon...");
-        if (util$enumos != Util.EnumOS.OSX)
+        if (os != Util.EnumOS.OSX)
         {
             InputStream inputstream = null;
             InputStream inputstream1 = null;

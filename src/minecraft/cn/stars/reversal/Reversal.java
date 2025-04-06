@@ -59,7 +59,7 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v2.1.0";
+    public static final String VERSION = "v2.0.3";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;

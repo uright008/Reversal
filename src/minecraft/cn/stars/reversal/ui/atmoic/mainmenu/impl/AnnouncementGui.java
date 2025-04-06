@@ -154,7 +154,20 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Reversal 2.0.1", "2025/3/30", 1)
+        Announcement announcement2 = new Announcement("Reversal 2.0.3", "2025/4/6", 1)
+                .addContent("[+] 新增BA式药水显示")
+                .addContent("[+] 新增现代化GuiYesNo")
+                .addContent("[+] 第一次启动时,自动开启HUD")
+                .addContent("[+] 新增主界面一些发光效果")
+                .addContent("[+] 新增几个Shader")
+                .addContent("[+] 新增随机标题")
+                .addContent("[/] 优化主界面设计")
+                .addContent("[/] 优化指令体验")
+                .addContent("[*] 修复部分Event未按预期运行")
+                .addContent("[*] 修复物品栏和受伤动画的显示会被HUD的状态影响")
+                .addContent("[*] 修复音乐播放器崩端")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("Reversal 2.0.1", "2025/3/30", 2)
                 .addContent("[+] 新增主界面点击特效")
                 .addContent("[+] 新增主界面左右按钮快速切换界面")
                 .addContent("[+] 新增更高级的掉线和连接界面")
@@ -166,15 +179,6 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("[/] 优化原版连接方式")
                 .addContent("[*] 修复连接服务器时会卡顿一下的问题")
                 .addContent("[*] 修复部分情况下掉线界面异常显示的问题")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Reversal 2.0.0", "2025/3/26", 2)
-                .addContent("### 测试版本更新的所有内容 略 ###")
-                .addContent("[+] 主界面点击特效")
-                .addContent("[+] ClickGUI点击特效")
-                .addContent("[*] 修复主界面列表位置不正确")
-                .addContent("[*] 修复多人游戏界面在小窗无法进行操作")
-                .addContent("[*] 修复掉线界面按钮位置不正确")
-                .addContent("[*] 修复未进入游戏时客户端颜色异常")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);
