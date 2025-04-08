@@ -60,7 +60,7 @@ public class SponsorGui extends AtomicGui {
         }
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
-        regular18.drawString("特别鸣谢: ZedWAre, Bzdhyp, Crazy1101010, ChuKai, BingSiNiao.", 60, height - 40, new Color(220,220,220,220).getRGB());
+        regular18.drawString("特别鸣谢: ZedWAre, Bzdhyp, Crazy1101010, ChuKai, BingSiNiao, Petey.", 60, height - 40, new Color(220,220,220,220).getRGB());
         regular18.drawString("※ 顺序不分先后; 如果你赞助过但不在列表里,请联系Stars留下你的网名!", 60, height - 30, new Color(220,220,220,220).getRGB());
 
         for (TextButton button : buttons) {

@@ -34,6 +34,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 public class RainyAPI {
     public static Minecraft mc = Minecraft.getMinecraft();
     public static long window;
+    public static int randomTitleId = -1;
     
     public static IRCInstance ircUser = null;
     public static boolean hasJavaFX = true;
@@ -67,14 +68,11 @@ public class RainyAPI {
             "虚伪才是绝对的真实", "为了一个人,你会付出自己的一切吗?", "你希望有一个人,为你付出他的一切吗?", "Metamorphosis.", "衣带渐宽终不悔,为伊消得人憔悴", "No everlasting love.", "我们就如平行宇宙,近在眼前却又永不相遇",
             "混乱不应成为常态,错误不应理所当然", "希望本是无所谓有,无所谓无的", "无聊生者不生,即使厌见者不见,为人为己,也还都不错", "当世界要求你反省,你可以选择不配合这场审判", "疼痛的目的不是让你查看伤口,而是教会你如何站立",
             "当友谊成为了冰冷的符号,这段关系或许已经失衡", "放下助人情结,尊重他人命运", "Be responsible for your own life.", "如何达成理解?", "利益是人类建立关系的基础", "有时,我们注定只能成为别人生活中的配角",
-            "揭开伪装你的面具,露出你真实的另一面", "人都会变,莫谈永远", "Helpfully help the helpless."};
+            "揭开伪装你的面具,露出你真实的另一面", "人都会变,莫谈永远", "Helpfully help the helpless.", "我知道你没去,所以我也没来", "没有理由的伤害,到底谁来决定对错?", "“用自己创造的麻烦来博取人们的怜惜，最终或许只会被唾弃",
+            "没想过你把我放在第一位,可惜我根本就不在列"};
 
     public static String getRandomTitle() {
-        if (System.getProperty("randomTitle.id") != null) {
-            int id = Integer.parseInt(System.getProperty("randomTitle.id"));
-            return wittyTitle[MathUtil.between(id, 0, wittyTitle.length - 1)];
-        }
-        return wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)];
+        return randomTitleId == -1 ? wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)] : wittyTitle[randomTitleId];
     }
 
     /**
@@ -126,11 +124,21 @@ public class RainyAPI {
         });
     }
 
+    public static void readProperties() {
+        if (System.getProperty("randomTitle.id") != null) {
+            int id = Integer.parseInt(System.getProperty("randomTitle.id"));
+            randomTitleId = MathUtil.between(id, 0, wittyTitle.length - 1);
+        } else {
+            randomTitleId = -1;
+        }
+    }
+
     /**
      * 加载客户端设置
      */
     public static void loadAPI(boolean post) {
         ReversalLogger.info("Loading RainyAPI...");
+        readProperties();
         final String client = FileUtil.loadFile("client.txt");
 
         // re-save if not available on start.

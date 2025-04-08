@@ -12,6 +12,7 @@ import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
 import cn.stars.reversal.ui.modern.TextField;
+import cn.stars.reversal.util.MiscUtil;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.math.TimeUtil;
@@ -60,7 +61,7 @@ public class ModernClickGUI extends GuiScreen {
     private float wheel = Mouse.getDWheel();
     private final TextField searchField = new TextField(150, 15, GameInstance.regular16, backgroundColor, new Color(100,100,100,100));
 
-    // Drag
+    // Drag & Click
     private int addX, addY, deltaX, deltaY = 0;
     private boolean isDragging;
 
@@ -149,7 +150,7 @@ public class ModernClickGUI extends GuiScreen {
                     RenderUtil.scissor(moduleX, y, 400, 360);
                 }
                 if (localization) {
-                    if (ModuleInstance.getModule(ClientSettings.class).language.getMode().equals("Chinese")) {
+                    if (ModuleInstance.getModule(ClientSettings.class).isNonAlphabeticLanguage()) {
                         regular24Bold.drawString(I18n.format(m.getModuleInfo().localizedName()), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 5.5, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                         regular16.drawString(I18n.format(m.getModuleInfo().localizedDescription()),
                                 m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 21, new Color(160, 160, 160, 160).getRGB());
@@ -173,7 +174,7 @@ public class ModernClickGUI extends GuiScreen {
                     for (final Value setting : m.getSettings()) {
                         if (!setting.isHidden()) {
                             String settingName = localization ? I18n.format(setting.localizedName) : setting.name;
-                            int addY = localization && setting.localizedName.startsWith("value.") && ModuleInstance.getClientSettings().language.getMode().equals("Chinese") ? 1 : 0;
+                            int addY = localization && setting.localizedName.startsWith("value.") && ModuleInstance.getClientSettings().isNonAlphabeticLanguage() ? 1 : 0;
                             if (setting instanceof NoteValue) {
                                 psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(150, 150, 150, 150).getRGB());
                                 settingY += 12;
@@ -289,7 +290,7 @@ public class ModernClickGUI extends GuiScreen {
                                             hueFlag = false;
                                         }
 
-                                        if (RenderUtil.isHovered(gradientX, gradientY + gradientHeight + 13, 200, psr18.height(), mouseX, mouseY) && !colorValue.isDontShowThemeColor()) {
+                                        if (RenderUtil.isHovered(gradientX, gradientY + gradientHeight + 13, 100, psr18.height(), mouseX, mouseY) && !colorValue.isDontShowThemeColor()) {
                                             if (!themeColorFlag) colorValue.setThemeColor(!colorValue.isThemeColor());
                                             themeColorFlag = true;
                                         } else if (RenderUtil.isHovered(gradientX - 10, gradientY - 10, 200, gradientHeight + 24, mouseX, mouseY)) {
@@ -300,6 +301,7 @@ public class ModernClickGUI extends GuiScreen {
                                                 colorValue.setSaturation(Math.min(1, Math.max(0, (mouseX - gradientX) / gradientWidth)));
                                             }
                                         }
+                                        new ValueChangedEvent(m, setting).call();
                                     } else {
                                         themeColorFlag = false;
                                     }
@@ -316,9 +318,34 @@ public class ModernClickGUI extends GuiScreen {
                                 }
                             }
                             if (setting instanceof ModeValue) {
-                                psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
-                                psr18.drawString(((ModeValue) setting).getModes().get(((ModeValue) setting).index),
-                                        setting.guiX + 5 + psr18.width(settingName), setting.yAnimation.getValue() - 15 + addY, new Color(240, 240, 240, 240).getRGB());
+                                ModeValue modeValue = (ModeValue) setting;
+                                float offset = modeValue.expanded ? modeValue.modes.size() * 12 + 10 : 0;
+                                float fontWidth = psr18.getWidth(settingName) + 5;
+                                if (modeValue.expanded) {
+                                    float maxWidth = 0;
+                                    double posY = setting.yAnimation.getValue() - offset;
+                                    for (String s : modeValue.getModes()) {
+                                        if (Mouse.isButtonDown(0) && setting.yAnimation.isFinished()) {
+                                            if (RenderUtil.isHovered(setting.guiX - 10, posY, 100, 12, mouseX, mouseY)) {
+                                                modeValue.setIndex(modeValue.getModes().indexOf(s));
+                                                new ValueChangedEvent(m, setting).call();
+                                            }
+                                        }
+                                        psr18.drawString(s, setting.guiX + fontWidth, posY + 1, new Color(200, 200, 200, 200).getRGB());
+                                        RenderUtil.roundedOutlineRectangle(setting.guiX + fontWidth - 12, posY, 8, 8, 4, 0.5, valueColor);
+                                        if (s.equals(modeValue.getMode())) {
+                                            RenderUtil.roundedRectangle(setting.guiX + fontWidth - 10.5, posY + 1.5, 5, 5, 2.5, valueColor);
+                                        }
+                                        maxWidth = Math.max(maxWidth, psr18.width(s) + 25);
+                                        posY += 12;
+                                    }
+                                    settingY += offset;
+                                    m.sizeInGui += offset;
+                                }
+                                psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15 - offset, new Color(200, 200, 200, 200).getRGB());
+                                psr18.drawString(modeValue.getModes().get(modeValue.index),
+                                        setting.guiX + 5 + psr18.width(settingName), setting.yAnimation.getValue() - 15 + addY - offset, new Color(240, 240, 240, 240).getRGB());
+                                icon16.drawString(modeValue.expanded ? "h" : "i", setting.guiX + 370, setting.yAnimation.getValue() - 12.5 - offset, new Color(200,200,200,200).getRGB());
                                 settingY += 12;
                                 m.sizeInGui += 12;
                             }
@@ -447,6 +474,7 @@ public class ModernClickGUI extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         int x = width / 2 - 260 + addX;
         int y = height / 2 - 160 + addY;
+        boolean localization = ModuleInstance.getClientSettings().localization.enabled;
 
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
 
@@ -516,40 +544,45 @@ public class ModernClickGUI extends GuiScreen {
                 for (final Value setting : m.getSettings()) {
                     if (m.expanded) {
                         if (!setting.isHidden()) {
+                            String settingName = localization ? I18n.format(setting.localizedName) : setting.name;
                             if (setting instanceof NoteValue) {
-                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY)) {
+                                if (RenderUtil.isHovered(setting.guiX + psr18.width(settingName), setting.guiY - 15, 380, 12, mouseX, mouseY)) {
                                     new ValueChangedEvent(m, setting).call();
                                 }
                             }
                             if (setting instanceof BoolValue) {
-                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY) && mouseButton == 0) {
+                                if (RenderUtil.isHovered(setting.guiX + psr18.width(settingName), setting.guiY - 15, 100, 12, mouseX, mouseY) && mouseButton == 0) {
                                     ((BoolValue) setting).toggle();
                                     new ValueChangedEvent(m, setting).call();
                                 }
                             }
                             if (setting instanceof NumberValue) {
-                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY) && mouseButton == 0) {
+                                if (RenderUtil.isHovered(setting.guiX + psr18.width(settingName), setting.guiY - 15, 110, 12, mouseX, mouseY) && mouseButton == 0) {
                                     selectedSlider = (NumberValue) setting;
                                     new ValueChangedEvent(m, setting).call();
                                 }
                             }
                             if (setting instanceof ColorValue) {
                                 if (selectedColor == setting) {
-                                    if (RenderUtil.isHovered(setting.guiX, setting.guiY - 80, 380, 80, mouseX, mouseY) && mouseButton == 1) {
+                                    if (RenderUtil.isHovered(setting.guiX + psr18.width(settingName), setting.guiY - 80, 300, 80, mouseX, mouseY) && mouseButton == 1) {
                                         selectedColor = null;
                                         return;
                                     }
                                 }
-                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY) && mouseButton == 1) {
+                                if (RenderUtil.isHovered(setting.guiX + psr18.width(settingName), setting.guiY - 15, 300, 12, mouseX, mouseY) && mouseButton == 1) {
                                     selectedColor = (ColorValue) setting;
                                     new ValueChangedEvent(m, setting).call();
                                 }
                             }
                             if (setting instanceof ModeValue) {
-                                if (RenderUtil.isHovered(setting.guiX, setting.guiY - 15, 380, 12, mouseX, mouseY)) {
-                                    if (mouseButton == 0) ((ModeValue) setting).cycle(true);
-                                    if (mouseButton == 1) ((ModeValue) setting).cycle(false);
+                                ModeValue modeValue = (ModeValue) setting;
+                                float offset = modeValue.expanded ? modeValue.modes.size() * 12 + 10 : 0;
+                                if (RenderUtil.isHovered(setting.guiX + psr18.width(settingName), setting.guiY - 15 - offset, 30 + psr18.width(modeValue.getMode()), 12, mouseX, mouseY)) {
+                                    if (mouseButton == 0) modeValue.cycle(true);
+                                    if (mouseButton == 1) modeValue.cycle(false);
                                     new ValueChangedEvent(m, setting).call();
+                                } else if (RenderUtil.isHovered(setting.guiX + 360, setting.guiY - 15 - offset, 20, 12, mouseX, mouseY)) {
+                                    modeValue.expanded = !modeValue.expanded;
                                 }
                             }
                         }
@@ -629,7 +662,7 @@ public class ModernClickGUI extends GuiScreen {
         return Math.round(value * precision) / precision;
     }
 
-    public ArrayList<Module> getRelevantModules(final String search) {
+    private ArrayList<Module> getRelevantModules(final String search) {
         final ArrayList<Module> relevantModules = new ArrayList<>();
 
         if (search.isEmpty()) return relevantModules;

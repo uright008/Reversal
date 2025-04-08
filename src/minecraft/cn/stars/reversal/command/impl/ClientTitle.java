@@ -19,10 +19,10 @@ public final class ClientTitle extends Command {
             if (identifier.equals("reset")) {
                 Reversal.setWindowTitle();
             } else {
-                String storedId = System.getProperty("randomTitle.id");
-                System.setProperty("randomTitle.id", identifier);
+                int storedId = RainyAPI.randomTitleId;
+                RainyAPI.randomTitleId = Integer.parseInt(identifier);
                 Reversal.setWindowTitle();
-                System.setProperty("randomTitle.id", storedId.isEmpty() ? "" : storedId);
+                RainyAPI.randomTitleId = storedId;
             }
         } else {
             Display.setTitle(String.join(" ", args));

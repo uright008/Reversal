@@ -59,7 +59,7 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v2.0.3";
+    public static final String VERSION = "v2.0.4";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
@@ -325,6 +325,7 @@ public class Reversal {
             new MusicInfo(),
             new MusicVisualizer(),
             new PingCounter(),
+            new PlayerModel(),
             new PotionEffect(),
     //        new PotionEffects(),
             new Scoreboard(),
@@ -342,10 +343,9 @@ public class Reversal {
             new IRC(),
     };
 
-    // TODO: why int??? change it later
-    public static int CLIENT_THEME_COLOR = new Color(159, 24, 242).hashCode();
-    public static int CLIENT_THEME_COLOR_2 = new Color(159, 24, 242).hashCode();
-    public static int CLIENT_THEME_COLOR_BRIGHT = new Color(185, 69, 255).hashCode();
-    public static int CLIENT_THEME_COLOR_BRIGHT_2 = new Color(185, 69, 255).hashCode();
+    public static Color CLIENT_THEME_COLOR = new Color(159, 24, 242);
+    public static Color CLIENT_THEME_COLOR_2 = new Color(159, 24, 242);
+    public static Color CLIENT_THEME_COLOR_BRIGHT = new Color(185, 69, 255);
+    public static Color CLIENT_THEME_COLOR_BRIGHT_2 = new Color(185, 69, 255);
 
 }

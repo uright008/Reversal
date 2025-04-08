@@ -55,7 +55,7 @@ public final class ThemeUtil implements GameInstance {
             timer.reset();
             theme = ModuleInstance.getModule(ClientSettings.class).theme.getMode();
             colorType = ModuleInstance.getModule(ClientSettings.class).colorType.getMode();
-            color = new Color(Reversal.CLIENT_THEME_COLOR);
+            color = Reversal.CLIENT_THEME_COLOR;
         }
 
         if (theme == null || color == null || colorType == null) return color;
@@ -85,13 +85,13 @@ public final class ThemeUtil implements GameInstance {
                         break;
                     case "Fade":
                         final float offset1 = (float) (Math.abs(Math.sin(timer * 0.5 * speed + colorOffset * 0.45)) / 2.2f) + 1f;
-                        color = ColorUtil.liveColorBrighter(new Color(Reversal.CLIENT_THEME_COLOR_BRIGHT), offset1);
+                        color = ColorUtil.liveColorBrighter(Reversal.CLIENT_THEME_COLOR_BRIGHT, offset1);
                         break;
                     case "Double":
-                        color = ColorUtils.INSTANCE.interpolateColorsBackAndForth((int) (20 * (1 / speed)), (int) colorOffset * 4, new Color(Reversal.CLIENT_THEME_COLOR), new Color(Reversal.CLIENT_THEME_COLOR_2), true);
+                        color = ColorUtils.INSTANCE.interpolateColorsBackAndForth((int) (20 * (1 / speed)), (int) colorOffset * 4, Reversal.CLIENT_THEME_COLOR, Reversal.CLIENT_THEME_COLOR_2, true);
                         break;
                     default:
-                        color = new Color(Reversal.CLIENT_THEME_COLOR);
+                        color = Reversal.CLIENT_THEME_COLOR;
                         break;
                 }
                 break;
@@ -103,13 +103,13 @@ public final class ThemeUtil implements GameInstance {
                         color = new Color(ColorUtil.getColor(1 + colorOffset * 1.4f, 0.5f, 1));
                         break;
                     case "Fade":
-                        color = new Color(Reversal.CLIENT_THEME_COLOR_BRIGHT);
+                        color = Reversal.CLIENT_THEME_COLOR_BRIGHT;
                         break;
                     case "Double":
-                        color = ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 1, new Color(Reversal.CLIENT_THEME_COLOR_BRIGHT), new Color(Reversal.CLIENT_THEME_COLOR_BRIGHT_2), true);
+                        color = ColorUtils.INSTANCE.interpolateColorsBackAndForth(4, 1, Reversal.CLIENT_THEME_COLOR_BRIGHT, Reversal.CLIENT_THEME_COLOR_BRIGHT_2, true);
                         break;
                     default:
-                        color = new Color(Reversal.CLIENT_THEME_COLOR);
+                        color = Reversal.CLIENT_THEME_COLOR;
                         break;
                 }
                 break;
@@ -117,7 +117,7 @@ public final class ThemeUtil implements GameInstance {
 
             default:
             case FLAT_COLOR:
-                color = new Color(Reversal.CLIENT_THEME_COLOR);
+                color = Reversal.CLIENT_THEME_COLOR;
         }
 
         return color;

@@ -14,6 +14,8 @@ public final class ModeValue extends Value {
 
     public int index;
     public List<String> modes;
+    public boolean expanded;
+
 
     public ModeValue(final String name, final Module parent, final String defaultMode, final String... modes) {
         this.name = name;

@@ -44,6 +44,12 @@ public class Lang
             case "Chinese":
                 list.add("reversal/lang/zh_CN.lang");
                 break;
+            case "Chinese Traditional":
+                list.add("reversal/lang/zh_TW.lang");
+                break;
+            case "Japanese":
+                list.add("reversal/lang/ja_JP.lang");
+                break;
         }
 
         String[] astring = list.toArray(new String[0]);

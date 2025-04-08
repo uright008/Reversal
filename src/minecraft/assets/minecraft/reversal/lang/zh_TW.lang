@@ -1,0 +1,235 @@
+# Reversal Client Language File
+# zh-TW
+reversal.test=測試字元
+# Messages
+command.title=指令
+command.message.invalid=未知指令用法: '%s'。
+command.message.valueError=為 '%s' 提供的參數錯誤。請檢查參數。
+command.message.valueNonExist=值 '%s' 在 '%s' 中不存在。請不要打空格！
+command.message.moduleOrCommandNonExist=功能或指令 '%s' 不存在。
+command.message.moduleNonExist=功能 '%s' 不存在。
+
+command.Bind.success=成功將功能 '%s' 綁定至按鍵 '%s'。
+command.Bind.invalidArgs=未知參數。需要綁定的按鍵。
+command.Chat.notConnected=你還未連接至IRC！
+command.ClientName.success=成功設定客戶端名稱: '%s'。
+command.ClientTitle.success=成功設定客戶端標題: '%s'。
+command.Config.emptyName=配置名為空。
+command.Config.invalidConfig=未知配置: '%s'。
+command.Help.1=所有可用的指令:
+command.Name.success=成功設定玩家名稱: '%s'。
+command.SetText.success=成功設定自訂文字: '%s'。
+command.Toggle.success=成功將功能 '%s' 狀態切換至 '%b'。
+command.Online.current=當前IRC在線的用戶 (%s):
+
+message.FreeLook.keyBind=綁定自由視角至一個按鍵即可使用！
+message.MoBends.conflict=飄揚皮膚和真實第一人稱與更多動作衝突。
+message.MusicPlayer.error=未在運行遊戲的Java版本上找到JavaFX。音樂播放器已禁用。
+message.IRC.tip=提示: 使用 ".chat <信息>" 可以在IRC頻道內聊天！
+
+# Categories
+category.title=分類
+category.ADDONS.name=小組件
+category.CLIENT.name=客戶端
+category.COMBAT.name=戰鬥
+category.HUD.name=介面
+category.MISC.name=雜項
+category.MOVEMENT.name=移動
+category.PLAYER.name=玩家
+category.RENDER.name=渲染
+category.WORLD.name=世界
+
+# Addons
+module.FancyBlockParticles.name=夢幻方塊粒子
+module.FancyBlockParticles.desc=為方塊和天氣添加夢幻粒子效果。
+module.FreeLook.name=自由視角
+module.FreeLook.desc=自由地觀看四周。
+module.MoBends.name=更多動作
+module.MoBends.desc=為玩家和生物添加真實的動作。
+
+module.MusicPlayer.name=音樂播放器
+module.MusicPlayer.desc=遊戲內網易雲音樂播放器。
+value.MusicPlayer.playMode=播放模式
+
+module.RealFirstPerson.name=真實第一人稱
+module.RealFirstPerson.desc=真實的第一人稱視角。
+module.SkinLayers3D.name=3D皮膚層
+module.SkinLayers3D.desc=使皮膚層變3D。
+module.WaveyCapes.name=飄揚披風
+module.WaveyCapes.desc=讓披風在風中搖擺~
+
+# Client
+module.ClientSettings.name=客戶端設定
+module.ClientSettings.desc=控制遊戲的整體設定。
+value.ClientSettings.note1=< 顏色設定 >
+value.ClientSettings.theme=主題
+value.ClientSettings.colorType=顏色類型
+value.ClientSettings.color1=顏色1
+value.ClientSettings.color2=顏色2
+value.ClientSettings.indexTimes=變化次數
+value.ClientSettings.indexSpeed=變化速度
+value.ClientSettings.note2=< 特定設定 >
+value.ClientSettings.listAnimation=功能列表動畫
+value.ClientSettings.empathyGlow=Empathy 發光
+value.ClientSettings.note3=< 客戶端設定 >
+value.ClientSettings.localization=本地化
+value.ClientSettings.language=語言
+value.ClientSettings.showNotifications=展示通知
+value.ClientSettings.hudTextWithBracket=主介面文字附加中括號
+value.ClientSettings.clientMsgCustomName=客戶端訊息使用自訂名稱
+value.ClientSettings.modernUISound=高級UI音效
+value.ClientSettings.note4=< 我的世界設定 >
+value.ClientSettings.loadingScreenBg=載入界面替換背景
+value.ClientSettings.rawInput=原始輸入
+
+module.Hotbar.name=快捷欄
+module.Hotbar.desc=快捷欄相關功能。
+module.HurtCam.name=受傷視角
+module.HurtCam.desc=受傷視角相關功能。
+
+module.Interface.name=介面設定
+module.Interface.desc=我的世界介面相關功能。
+value.Interface.note1=< 標題和副標題 >
+value.Interface.modernFont_T_S=高級字型
+value.Interface.yOffset=Y調整
+value.Interface.note2=< 聊天 >
+value.Interface.modernFont_Chat=高級字型
+value.Interface.chatBackground=背景
+value.Interface.combineDuplicatedMsg=合併重複的訊息
+
+module.IRC.name=聊天頻道
+module.IRC.desc=Reversal的聊天頻道。
+module.NameTag.name=名稱標籤
+module.NameTag.desc=名稱標籤相關功能。
+module.PostProcessing.name=後處理
+module.PostProcessing.desc=增加模糊和發光效果。
+
+# Combat
+module.ClickSound.name=點擊音效
+module.ClickSound.desc=在點擊時播放預製音效。
+module.NoClickDelay.name=移除點擊延遲
+module.NoClickDelay.desc=移除原版的點擊延遲。
+
+# Hud
+module.ArmorHUD.name=裝備顯示
+module.ArmorHUD.desc=顯示裝備狀態和耐久。
+module.Arraylist.name=功能列表
+module.Arraylist.desc=顯示一個已開啟功能的列表
+module.AtomicIsland.name=原子島
+module.AtomicIsland.desc=顯示一個擁有有用功能和資訊的條子
+module.BASticker.name=蔚藍檔案貼紙
+module.BASticker.desc=在螢幕上繪製蔚藍檔案角色。
+module.BPSCounter.name=移動速度顯示
+module.BPSCounter.desc=顯示每秒移動的距離。
+module.CPSCounter.name=點擊速度顯示
+module.CPSCounter.desc=顯示每秒點擊的次數。
+module.CustomText.name=自訂文字
+module.CustomText.desc=在螢幕上顯示自訂文字。
+module.FPSCounter.name=幀率顯示
+module.FPSCounter.desc=顯示每秒的幀率。
+module.HUD.name=主介面
+module.HUD.desc=顯示主介面的模組。
+module.Keystrokes.name=按鍵顯示
+module.Keystrokes.desc=顯示你的按鍵操作。
+module.MusicInfo.name=音樂資訊
+module.MusicInfo.desc=顯示播放的音樂資訊。
+module.MusicVisualizer.name=音樂可視化
+module.MusicVisualizer.desc=以音樂韻律為基礎顯示動態的可視化條子。
+module.PingCounter.name=延遲顯示
+module.PingCounter.desc=顯示連接伺服器的延遲。
+module.PotionEffect.name=藥水效果
+module.PotionEffect.desc=顯示藥水效果
+module.Scoreboard.name=計分板
+module.Scoreboard.desc=顯示自訂計分板。
+module.SessionInfo.name=遊戲資訊
+module.SessionInfo.desc=顯示遊戲中的一些狀態資訊。
+module.TargetHUD.name=目標資訊
+module.TargetHUD.desc=顯示當前敵人的資訊。
+module.TestElement.name=測試模組
+module.TestElement.desc=僅供測試。
+module.TextGui.name=客戶端標題
+module.TextGui.desc=顯示客戶端水印。
+
+# Misc
+module.ClientSpoofer.name=客戶端欺騙
+module.ClientSpoofer.desc=在進入伺服器時發送假的客戶端標識。
+module.CustomName.name=自訂名稱
+module.CustomName.desc=將你的玩家名稱改為假的值。
+module.FakeFPS.name=虛假幀率
+module.FakeFPS.desc=將你的幀率改為假的值。
+module.NoAchievements.name=移除成就
+module.NoAchievements.desc=移除成就的提示。
+module.Protocol.name=跨版本協議
+module.Protocol.desc=修復一些跨版本時的版本差異。
+
+# Movement
+module.Sprint.name=強制疾跑
+module.Sprint.desc=在移動時自動疾跑。
+
+# Player
+module.AutoGG.name=自動GG
+module.AutoGG.desc=在遊戲結束後自動發送GG。
+module.Dinnerbone.name=倒立
+module.Dinnerbone.desc=使玩家倒立。
+module.HealthWarn.name=血量警告
+module.HealthWarn.desc=在血量過低時發出警告。
+module.SmallPlayer.name=縮小玩家
+module.SmallPlayer.desc=使玩家變成小孩。
+module.SmoothSneak.name=流暢下蹲
+module.SmoothSneak.desc=高版本我的世界下蹲動畫。
+
+# Render
+module.Animations.name=動畫
+module.Animations.desc=物品、手部和視角動畫。
+module.AppleSkin.name=蘋果皮
+module.AppleSkin.desc=顯示飽和度等有用的食物資訊。
+module.BAHalo.name=蔚藍檔案光環
+module.BAHalo.desc=在你的頭頂顯示一個蔚藍檔案角色的光環。
+module.BetterFont.name=更好的字型
+module.BetterFont.desc=將原版的字型替換為TTF字型。
+module.BlockinDisplay.name=偷家顯示
+module.BlockinDisplay.desc=在Blockin時顯示需要放置的方塊。
+module.BlockOverlay.name=方塊描邊
+module.BlockOverlay.desc=為選中的方塊繪製邊框。
+module.ChinaHat.name=中國帽
+module.ChinaHat.desc=在玩家頭頂顯示一個帽子。
+module.ClickGui.name=點擊介面
+module.ClickGui.desc=管理功能的介面。
+module.Crosshair.name=準星
+module.Crosshair.desc=將準星改為自訂風格。
+module.DamageParticle.name=傷害粒子
+module.DamageParticle.desc=顯示攻擊傷害數值。
+module.EnvironmentEffect.name=環境效果
+module.EnvironmentEffect.desc=在你周圍繪製美麗的特效。
+module.Fullbright.name=夜視
+module.Fullbright.desc=點亮這個世界。
+module.HitEffect.name=攻擊粒子
+module.HitEffect.desc=在攻擊時繪製一些粒子效果。
+module.ItemPhysics.name=物理掉落
+module.ItemPhysics.desc=讓物品像真實世界一樣渲染。
+module.JumpCircle.name=跳躍圓圈
+module.JumpCircle.desc=在跳躍時繪製圓圈。
+module.LineGlyphs.name=線條圖像
+module.LineGlyphs.desc=在世界中繪製線條。
+module.MotionBlur.name=動態模糊
+module.MotionBlur.desc=在視角移動時繪製模糊效果。
+module.NoBob.name=移除搖晃
+module.NoBob.desc=移除走路時手部的搖晃。
+module.Particles.name=粒子
+module.Particles.desc=在你攻擊時生成彈射的彩色小球。
+module.ReachDisplay.name=攻擊距離顯示
+module.ReachDisplay.desc=顯示玩家的攻擊距離。
+module.TargetESP.name=目標標記
+module.TargetESP.desc=在你當前的敵人身上繪製標記。
+module.TNTTimer.name=炸彈計時
+module.TNTTimer.desc=顯示TNT爆炸的倒計時。
+module.Trail.name=足跡
+module.Trail.desc=在你走過的地方繪製足跡。
+module.TrueSights.name=實際視角
+module.TrueSights.desc=渲染像屏障這類你無法正常看見的東西。
+module.Wings.name=翅膀
+module.Wings.desc=在你的背後渲染翅膀。
+
+# World
+module.TimeTraveller.name=時間穿越
+module.TimeTraveller.desc=更改世界的時間和天氣。

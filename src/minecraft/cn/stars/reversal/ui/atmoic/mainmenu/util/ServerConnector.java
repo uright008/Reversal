@@ -4,8 +4,6 @@ import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.DisconnectGui;
-import cn.stars.reversal.util.ReversalLogger;
-import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerAddress;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.network.NetHandlerLoginClient;
@@ -15,8 +13,6 @@ import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.C00PacketLoginStart;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

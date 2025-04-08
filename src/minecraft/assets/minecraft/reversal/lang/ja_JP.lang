@@ -1,0 +1,235 @@
+# Reversal Client Language File
+# ja-JP
+reversal.test=テスト文字
+# Messages
+command.title=コマンド
+command.message.invalid=未知のコマンド: '%s'
+command.message.valueError=引数 '%s' が無効です
+command.message.valueNonExist=値 '%s' は '%s' に存在しません
+command.message.moduleOrCommandNonExist=機能/コマンド '%s' が存在しません
+command.message.moduleNonExist=機能 '%s' が存在しません
+
+command.Bind.success=機能 '%s' をキー '%s' にバインドしました
+command.Bind.invalidArgs=キーを指定してください
+command.Chat.notConnected=IRC未接続です
+command.ClientName.success=クライアント名を '%s' に設定しました
+command.ClientTitle.success=クライアントタイトルを '%s' に設定しました
+command.Config.emptyName=設定名が空です
+command.Config.invalidConfig=未知の設定: '%s'
+command.Help.1=利用可能なコマンド一覧:
+command.Name.success=プレイヤー名を '%s' に設定しました
+command.SetText.success=カスタムテキストを '%s' に設定しました
+command.Toggle.success=機能 '%s' を %b に切り替えました
+command.Online.current=IRCオンラインユーザー (%s):
+
+message.FreeLook.keyBind=キーにバインドで自由視点を有効化
+message.MoBends.conflict=MoBendsと一部機能が競合しています
+message.MusicPlayer.error=JavaFXが見つかりません（音楽プレイヤー無効化）
+message.IRC.tip=Tip: 「.chat <メッセージ>」でIRCチャット可能
+
+# Categories
+category.title=カテゴリ
+category.ADDONS.name=アドオン
+category.CLIENT.name=クライアント
+category.COMBAT.name=戦闘
+category.HUD.name=HUD
+category.MISC.name=その他
+category.MOVEMENT.name=移動
+category.PLAYER.name=プレイヤー
+category.RENDER.name=描画
+category.WORLD.name=ワールド
+
+# Addons
+module.FancyBlockParticles.name=装飾ブロックエフェクト
+module.FancyBlockParticles.desc=ブロック/天候に装飾用パーティクル
+module.FreeLook.name=自由視点
+module.FreeLook.desc=周囲を自由に見回す
+module.MoBends.name=MoBends
+module.MoBends.desc=プレイヤー/Mobの動きを改良
+
+module.MusicPlayer.name=音楽プレイヤー
+module.MusicPlayer.desc=NetEase Cloud Music連携
+value.MusicPlayer.playMode=再生モード
+
+module.RealFirstPerson.name=リアルFPS
+module.RealFirstPerson.desc=没入型一人称視点
+module.SkinLayers3D.name=3Dスキンレイヤー
+module.SkinLayers3D.desc=スキンレイヤーを立体化
+module.WaveyCapes.name=ケープ揺れ
+module.WaveyCapes.desc=ケープに物理演算を適用
+
+# Client
+module.ClientSettings.name=クライアント設定
+module.ClientSettings.desc=全般設定を管理
+value.ClientSettings.note1=< カラー設定 >
+value.ClientSettings.theme=テーマ
+value.ClientSettings.colorType=カラータイプ
+value.ClientSettings.color1=カラー1
+value.ClientSettings.color2=カラー2
+value.ClientSettings.indexTimes=色変化回数
+value.ClientSettings.indexSpeed=色変化速度
+value.ClientSettings.note2=< 詳細設定 >
+value.ClientSettings.listAnimation=リストアニメ
+value.ClientSettings.empathyGlow=エンパシー発光
+value.ClientSettings.note3=< クライアント設定 >
+value.ClientSettings.localization=ローカライズ
+value.ClientSettings.language=言語
+value.ClientSettings.showNotifications=通知表示
+value.ClientSettings.hudTextWithBracket=HUD括弧表示
+value.ClientSettings.clientMsgCustomName=カスタム名使用
+value.ClientSettings.modernUISound=UI音効
+value.ClientSettings.note4=< Minecraft設定 >
+value.ClientSettings.loadingScreenBg=ロード画面背景
+value.ClientSettings.rawInput=生入力
+
+module.Hotbar.name=ホットバー
+module.Hotbar.desc=ホットバー機能
+module.HurtCam.name=ダメージカメラ
+module.HurtCam.desc=被ダメージ時の視点効果
+
+module.Interface.name=インターフェース
+module.Interface.desc=UI関連設定
+value.Interface.note1=< タイトル >
+value.Interface.modernFont_T_S=モダンフォント
+value.Interface.yOffset=Y位置調整
+value.Interface.note2=< チャット >
+value.Interface.modernFont_Chat=モダンフォント
+value.Interface.chatBackground=背景表示
+value.Interface.combineDuplicatedMsg=重複メッセージ統合
+
+module.IRC.name=IRCチャット
+module.IRC.desc=Reversal公式IRC
+module.NameTag.name=ネームタグ
+module.NameTag.desc=ネームタグ設定
+module.PostProcessing.name=ポスト処理
+module.PostProcessing.desc=ブラー/グロー効果
+
+# Combat
+module.ClickSound.name=クリック音
+module.ClickSound.desc=クリック効果音を変更
+module.NoClickDelay.name=クリック遅延解除
+module.NoClickDelay.desc=クリック遅延を削除
+
+# Hud
+module.ArmorHUD.name=防具HUD
+module.ArmorHUD.desc=防具状態を表示
+module.Arraylist.name=モジュールリスト
+module.Arraylist.desc=有効機能をリスト表示
+module.AtomicIsland.name=情報バー
+module.AtomicIsland.desc=ゲーム情報を表示するバー
+module.BASticker.name=ブルアカステッカー
+module.BASticker.desc=ブルアカキャラを表示
+module.BPSCounter.name=BPS計測
+module.BPSCounter.desc=移動速度を表示
+module.CPSCounter.name=CPS計測
+module.CPSCounter.desc=クリック速度を表示
+module.CustomText.name=カスタムテキスト
+module.CustomText.desc=自由テキストを表示
+module.FPSCounter.name=FPS表示
+module.FPSCounter.desc=FPSカウンター
+module.HUD.name=メインHUD
+module.HUD.desc=基本HUDモジュール
+module.Keystrokes.name=キー表示
+module.Keystrokes.desc=押下キーを可視化
+module.MusicInfo.name=音楽情報
+module.MusicInfo.desc=再生中の楽曲情報
+module.MusicVisualizer.name=ビジュアライザー
+module.MusicVisualizer.desc=音楽に同期した可視化
+module.PingCounter.name=Ping表示
+module.PingCounter.desc=サーバー遅延を表示
+module.PotionEffect.name=ポーション効果
+module.PotionEffect.desc=ポーション効果表示
+module.Scoreboard.name=スコアボード
+module.Scoreboard.desc=カスタムスコアボード
+module.SessionInfo.name=セッション情報
+module.SessionInfo.desc=プレイ状況を表示
+module.TargetHUD.name=ターゲットHUD
+module.TargetHUD.desc=敵情報を表示
+module.TestElement.name=テストモジュール
+module.TestElement.desc=テスト用
+module.TextGui.name=クライアント表示
+module.TextGui.desc=クライアント透かし表示
+
+# Misc
+module.ClientSpoofer.name=クライアント偽装
+module.ClientSpoofer.desc=クライアント情報を偽装
+module.CustomName.name=カスタム名
+module.CustomName.desc=プレイヤー名を偽装
+module.FakeFPS.name=FPS偽装
+module.FakeFPS.desc=FPS値を偽装
+module.NoAchievements.name=実績非表示
+module.NoAchievements.desc=実績通知を削除
+module.Protocol.name=バージョン互換
+module.Protocol.desc=マルチバージョン対応
+
+# Movement
+module.Sprint.name=自動ダッシュ
+module.Sprint.desc=移動時に自動でダッシュ
+
+# Player
+module.AutoGG.name=自動GG
+module.AutoGG.desc=ゲーム終了時に自動送信
+module.Dinnerbone.name=逆さ表示
+module.Dinnerbone.desc=プレイヤーを逆さに表示
+module.HealthWarn.name=HP警告
+module.HealthWarn.desc=低HP時に警告
+module.SmallPlayer.name=小型化
+module.SmallPlayer.desc=プレイヤーサイズを縮小
+module.SmoothSneak.name=スムーススニーク
+module.SmoothSneak.desc=最新版のスニーク動作
+
+# Render
+module.Animations.name=アニメーション
+module.Animations.desc=アイテム/視点アニメ
+module.AppleSkin.name=AppleSkin
+module.AppleSkin.desc=食料情報を詳細表示
+module.BAHalo.name=ブルアカ光輪
+module.BAHalo.desc=頭上に光輪を表示
+module.BetterFont.name=フォント改良
+module.BetterFont.desc=TTFフォントを適用
+module.BlockinDisplay.name=ブロック配置表示
+module.BlockinDisplay.desc=配置予定ブロックを表示
+module.BlockOverlay.name=ブロック枠線
+module.BlockOverlay.desc=選択ブロックに枠線
+module.ChinaHat.name=中国帽
+module.ChinaHat.desc=頭上の帽子を表示
+module.ClickGui.name=クリックGUI
+module.ClickGui.desc=機能管理用GUI
+module.Crosshair.name=クロスヘア
+module.Crosshair.desc=カスタム照準器
+module.DamageParticle.name=ダメージ表示
+module.DamageParticle.desc=ダメージ数値を表示
+module.EnvironmentEffect.name=環境エフェクト
+module.EnvironmentEffect.desc=周囲にエフェクト追加
+module.Fullbright.name=常時明るさ
+module.Fullbright.desc=暗闇を可視化
+module.HitEffect.name=攻撃エフェクト
+module.HitEffect.desc=攻撃時にエフェクト
+module.ItemPhysics.name=アイテム物理
+module.ItemPhysics.desc=アイテムに物理演算
+module.JumpCircle.name=ジャンプ円
+module.JumpCircle.desc=ジャンプ時に円を表示
+module.LineGlyphs.name=ライン描画
+module.LineGlyphs.desc=ワールドに線を描画
+module.MotionBlur.name=モーションブラー
+module.MotionBlur.desc=動きにブラー効果
+module.NoBob.name=視点揺れ解除
+module.NoBob.desc=歩行時の揺れを削除
+module.Particles.name=パーティクル
+module.Particles.desc=攻撃時にパーティクル
+module.ReachDisplay.name=到達距離表示
+module.ReachDisplay.desc=攻撃範囲を表示
+module.TargetESP.name=ターゲットESP
+module.TargetESP.desc=敵にマーカーを表示
+module.TNTTimer.name=TNTタイマー
+module.TNTTimer.desc=TNTの爆発時間を表示
+module.Trail.name=足跡
+module.Trail.desc=足跡エフェクトを表示
+module.TrueSights.name=可視化
+module.TrueSights.desc=不可視ブロックを可視化
+module.Wings.name=翼
+module.Wings.desc=背中に翼を表示
+
+# World
+module.TimeTraveller.name=時間操作
+module.TimeTraveller.desc=時間/天候を変更

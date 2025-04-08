@@ -31,7 +31,7 @@ public final class ClientSettings extends Module {
 
     public final NoteValue note3 = new NoteValue("< Client Settings >", "value.ClientSettings.note3", this);
     public final BoolValue localization = new BoolValue("Localization", "value.ClientSettings.localization", this, true);
-    public final ModeValue language = new ModeValue("Language", "value.ClientSettings.language", this, "English", "English", "Chinese");
+    public final ModeValue language = new ModeValue("Language", "value.ClientSettings.language", this, "English", "English", "Chinese", "Chinese Traditional", "Japanese");
     public final BoolValue showNotifications = new BoolValue("Show Notifications", "value.ClientSettings.showNotifications", this, true);
     public final BoolValue hudTextWithBracket = new BoolValue("Hud Text With Bracket", "value.ClientSettings.hudTextWithBracket", this, false);
     public final BoolValue clientMsgCustomName = new BoolValue("Client Message Custom Name", "value.ClientSettings.clientMsgCustomName", this, false);
@@ -42,6 +42,10 @@ public final class ClientSettings extends Module {
     public final BoolValue rawInput = new BoolValue("Raw Input", "value.ClientSettings.rawInput", this, false);
 
     public ClientSettings() {
+    }
+
+    public boolean isNonAlphabeticLanguage() {
+        return language.getMode().equals("Chinese") || language.getMode().equals("Japanese") || language.getMode().equals("Chinese Traditional");
     }
 
     @Override

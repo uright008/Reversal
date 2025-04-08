@@ -40,7 +40,7 @@ public class DisconnectGui extends MiscGui {
         this.multilineMessage = Arrays.asList(regular16.autoReturn(this.message.getFormattedText(), this.width - 50, 100).split("\n"));
         this.totalHeight = (int) (this.multilineMessage.size() * regular16.height());
         reconnectButton = new TextButton(this.width / 2f - 100, this.height / 2f + this.totalHeight / 2f + 10, 200, 20, () -> AtomicMenu.switchGui(2), "返回主菜单", "", true, 1, 75, 5, 20);
-        cancelButton = new TextButton(this.width / 2f - 100, this.height / 2f + this.totalHeight / 2f + 35, 200, 20, () -> {
+        cancelButton = new TextButton(this.width / 2f - 100, this.height / 2f + this.totalHeight / 2f + 34, 200, 20, () -> {
             AtomicMenu.setMiscGui(new ConnectingGui(mc.getCurrentServerData()));
             AtomicMenu.switchGui(8);
         }, "重连", "", true, 1, 90, 5, 20);
