@@ -500,14 +500,6 @@ public final class RenderUtil implements GameInstance {
             GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
             GL11.glLineWidth(1.0f);
 
-            begin(GL11.GL_LINE_LOOP);
-            vertex(x, y);
-            vertex(x + width, y);
-            vertex(x + width + skew, y + height);
-            vertex(x + skew, y + height);
-            end();
-
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
         } else {
             // Draw non-filled shape with smooth lines
             if (color != null)
@@ -517,15 +509,14 @@ public final class RenderUtil implements GameInstance {
             GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
             GL11.glLineWidth(1.5f);
 
-            begin(GL11.GL_LINE_LOOP);
-            vertex(x, y);
-            vertex(x + width, y);
-            vertex(x + width + skew, y + height);
-            vertex(x + skew, y + height);
-            end();
-
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
         }
+        begin(GL11.GL_LINE_LOOP);
+        vertex(x, y);
+        vertex(x + width, y);
+        vertex(x + width + skew, y + height);
+        vertex(x + skew, y + height);
+        end();
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
 
         stop();
     }
@@ -876,30 +867,20 @@ public final class RenderUtil implements GameInstance {
     }
 
     public void image(final ResourceLocation imageLocation, final float x, final float y, final float width, final float height) {
-        enable(GL11.GL_BLEND);
+        GlUtils.startBlend();
         mc.getTextureManager().bindTexture(imageLocation);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
-        disable(GL11.GL_BLEND);
+        GlUtils.endBlend();
     }
 
     public static void image(DynamicTexture image, float x, float y, float imgWidth, float imgHeight) {
         GlUtils.startBlend();
-
-        // 绑定纹理并设置过滤参数
         GlStateManager.bindTexture(image.getGlTextureId());
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        // 启用多重采样
-        glEnable(GL13.GL_MULTISAMPLE);
-
         Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
-
-        // 禁用多重采样
-        glDisable(GL13.GL_MULTISAMPLE);
-
         GlUtils.endBlend();
     }
 

@@ -169,9 +169,9 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
                     RenderUtil.isHovered(width - 48, height / 2f - 15, 40, 30, mouseX, mouseY) ? new Color(255, 255, 255, 255) : new Color(255, 255, 255, 150));
         }
 
-        // Other
+      /*  // Other
         psm16.drawString(Minecraft.getDebugFPS() + " FPS", 1, 1, Color.WHITE.getRGB());
-        psm16.drawString(currentGui.name, 1, 8, Color.WHITE.getRGB());
+        psm16.drawString(currentGui.name, 1, 8, Color.WHITE.getRGB()); */
 
         // Gui Elements
         NotificationManager.onRender2D();

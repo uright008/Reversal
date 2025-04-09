@@ -8,6 +8,7 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.math.MathUtil;
+import cn.stars.reversal.util.render.video.BackgroundManager;
 import cn.stars.reversal.util.reversal.IRCInstance;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.misc.FileUtil;
@@ -16,11 +17,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWDropCallback;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryUtil;
 
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -98,9 +101,9 @@ public class RainyAPI {
                     File droppedFile = new File(filePath);
 
                     // 检测后缀名
-                    if (droppedFile.exists() && droppedFile.getName().toLowerCase().endsWith(".mp4")) {
-                        ReversalLogger.info("Dragged file detected: " + droppedFile.getAbsolutePath());
-
+                    if (!droppedFile.exists()) return;
+                    ReversalLogger.info("Dragged file detected: " + droppedFile.getAbsolutePath());
+                    if (droppedFile.getName().toLowerCase().endsWith(".mp4")) {
                         try {
                             // 停止加载
                             VideoUtil.stop();
@@ -114,6 +117,19 @@ public class RainyAPI {
                         } catch (Exception e) {
                             ReversalLogger.error("Error while loading file.", e);
                             Reversal.notificationManager.registerNotification("更换视频背景时出现错误!", "主菜单", 2000L, NotificationType.ERROR);
+                        }
+                    } else if (droppedFile.getName().toLowerCase().endsWith(".png") || droppedFile.getName().toLowerCase().endsWith(".jpg")) {
+                        try {
+                            // 将获取的文件替换现有的文件
+                            File tempFile = new File(Minecraft.getMinecraft().mcDataDir, "Reversal/Background");
+                            File imageFile = new File(tempFile, "background.png");
+                            Files.copy(droppedFile.toPath(), imageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                            // 重新加载
+                            BackgroundManager.backgroundImage = new DynamicTexture(ImageIO.read(imageFile));
+                            Reversal.notificationManager.registerNotification("成功更换静态背景!", "主菜单", 2000L, NotificationType.SUCCESS);
+                        } catch (Exception e) {
+                            ReversalLogger.error("Error while loading file.", e);
+                            Reversal.notificationManager.registerNotification("更换静态背景时出现错误!", "主菜单", 2000L, NotificationType.ERROR);
                         }
                     } else {
                         Reversal.notificationManager.registerNotification("不支持的文件类型!", "主菜单", 2000L, NotificationType.ERROR);

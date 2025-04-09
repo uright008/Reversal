@@ -29,7 +29,7 @@ import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ThemeUtil;
-import cn.stars.reversal.util.render.video.VideoManager;
+import cn.stars.reversal.util.render.video.BackgroundManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.reversal.Branch;
 import cn.stars.reversal.util.reversal.Preloader;
@@ -59,7 +59,7 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v2.0.4";
+    public static final String VERSION = "v2.0.5";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
@@ -208,7 +208,7 @@ public class Reversal {
     public static void postInitialize() {
         try {
             VideoUtil.stop();
-            VideoManager.loadBackground();
+            BackgroundManager.loadBackground();
 
             // Enable HUD
             if (firstBoot) ModuleInstance.getModule(HUD.class).enabled = true;

@@ -4,6 +4,8 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.video.BackgroundManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -147,8 +149,9 @@ public class LoadingScreenRenderer implements IProgressUpdate
                 }
 
 
-                if (RainyAPI.backgroundId == 9 && ModuleInstance.getModule(ClientSettings.class).loadingScreenBg.enabled) {
-                    VideoUtil.render(0, 0, scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
+                if (ModuleInstance.getModule(ClientSettings.class).loadingScreenBg.enabled && (RainyAPI.backgroundId == 9 || RainyAPI.backgroundId == 10)) {
+                    if (RainyAPI.backgroundId == 9) VideoUtil.render(0, 0, scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
+                    else RenderUtil.image(BackgroundManager.backgroundImage, 0, 0, scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
                 } else {
                     Tessellator tessellator = Tessellator.getInstance();
                     WorldRenderer worldrenderer = tessellator.getWorldRenderer();

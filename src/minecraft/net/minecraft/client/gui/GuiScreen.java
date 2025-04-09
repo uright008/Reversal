@@ -5,6 +5,7 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
+import cn.stars.reversal.util.render.video.BackgroundManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.shader.RiseShaders;
@@ -736,9 +737,13 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     final WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 
     public void drawMenuBackground(float partialTicks, int mouseX, int mouseY) {
-        if (RainyAPI.backgroundId > 9 || RainyAPI.backgroundId < 0) RainyAPI.backgroundId = 9;
+        if (RainyAPI.backgroundId > 10 || RainyAPI.backgroundId < 0) RainyAPI.backgroundId = 9;
         if (RainyAPI.backgroundId == 9) {
             VideoUtil.render(0, 0, width, height);
+            return;
+        }
+        if (RainyAPI.backgroundId == 10) {
+            RenderUtil.image(BackgroundManager.backgroundImage, 0, 0, width, height);
             return;
         }
         if (RainyAPI.isShaderCompatibility) {
@@ -789,11 +794,11 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
             return;
         }
         if (!previous) {
-            if (RainyAPI.backgroundId < 9) RainyAPI.backgroundId++;
+            if (RainyAPI.backgroundId < 10) RainyAPI.backgroundId++;
             else RainyAPI.backgroundId = 0;
         } else {
             if (RainyAPI.backgroundId > 0) RainyAPI.backgroundId--;
-            else RainyAPI.backgroundId = 9;
+            else RainyAPI.backgroundId = 10;
         }
         Reversal.notificationManager.registerNotification("Background id changed to: " + RainyAPI.backgroundId, "Main Menu", 2000, NotificationType.SUCCESS);
         ReversalLogger.info("(GuiMainMenuNew) Current background id: " + RainyAPI.backgroundId);

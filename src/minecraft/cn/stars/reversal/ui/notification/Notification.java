@@ -86,7 +86,7 @@ public final class Notification implements GameInstance {
 
         if (timer.hasReached(1000 / 60)) {
             xVisual = lerp(xVisual, x, 0.2f);
-            yVisual = lerp(yVisual, y - (mc.currentScreen instanceof AtomicMenu ? 180 : 0), 0.2f);
+            yVisual = lerp(yVisual, y, 0.2f);
             timer.reset();
         }
 

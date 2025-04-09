@@ -19,7 +19,7 @@ import cn.stars.reversal.util.math.StopWatch;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;
-import cn.stars.reversal.util.render.video.VideoManager;
+import cn.stars.reversal.util.render.video.BackgroundManager;
 import cn.stars.reversal.util.reversal.ImageScreen;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -67,7 +67,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.achievement.GuiAchievement;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.main.GameConfiguration;
-import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -400,7 +399,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
         RainyAPI.loadAPI(false);
-        VideoManager.loadFiles();
+        BackgroundManager.loadFiles();
 
         if (RainyAPI.imageScreen) ImageScreen.load();
 

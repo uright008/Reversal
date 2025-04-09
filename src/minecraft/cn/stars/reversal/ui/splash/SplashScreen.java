@@ -13,7 +13,7 @@ import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.math.StopWatch;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.video.VideoManager;
+import cn.stars.reversal.util.render.video.BackgroundManager;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,8 +21,6 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-
-import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -70,7 +68,7 @@ public class SplashScreen {
         GLFW.glfwMakeContextCurrent(subWindow);
         GL.createCapabilities();
         mc.updateDisplay();
-        VideoManager.loadSplash();
+        BackgroundManager.loadSplash();
 
         splashThread = new Thread(new Runnable() {
             @Override
