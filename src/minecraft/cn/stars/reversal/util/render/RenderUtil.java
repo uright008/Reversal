@@ -41,6 +41,7 @@ import java.awt.*;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.time.LocalDateTime;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
@@ -649,12 +650,12 @@ public final class RenderUtil implements GameInstance {
         gradientSideways(x, y, width, height, true, color1, color2);
     }
 
-    public void polygon(final double x, final double y, double sideLength, final double amountOfSides, final boolean filled, final Color color) {
+    public void polygon(final double x, final double y, double sideLength, final double amountOfSides, final float lineWidth, final boolean filled, final Color color) {
         sideLength /= 2;
         start();
         if (color != null)
             color(color);
-        if (!filled) GL11.glLineWidth(2);
+        if (!filled) GL11.glLineWidth(lineWidth);
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         begin(filled ? GL11.GL_TRIANGLE_FAN : GL11.GL_LINE_STRIP);
         {
@@ -666,6 +667,10 @@ public final class RenderUtil implements GameInstance {
         end();
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
         stop();
+    }
+
+    public void polygon(final double x, final double y, double sideLength, final double amountOfSides, final boolean filled, final Color color) {
+        polygon(x, y, sideLength, amountOfSides, 2f, filled, color);
     }
 
     public void polygon(final double x, final double y, final double sideLength, final int amountOfSides, final boolean filled) {
@@ -843,6 +848,29 @@ public final class RenderUtil implements GameInstance {
 
     public void line(final double firstX, final double firstY, final double secondX, final double secondY) {
         line(firstX, firstY, secondX, secondY, 0, null);
+    }
+
+    public static void clock(double x, double y, double radius, double hourLineWidth, double minuteLineWidth, double secondLineWidth, Color color) {
+        int hour = LocalDateTime.now().getHour();
+        int minute = LocalDateTime.now().getMinute();
+        int second = LocalDateTime.now().getSecond();
+
+        polygon(x, y, radius, 360, 1.5f, false, color);
+
+        double centerX = x + radius / 2;
+        double centerY = y + radius / 2;
+
+        double hourEndX = centerX + radius / 2 * 0.7 * Math.sin(Math.toRadians(hour * 30.0 + (minute + second / 60.0) * 0.5));
+        double hourEndY = centerY - radius / 2 * 0.7 * Math.cos(Math.toRadians(hour * 30.0 + (minute + second / 60.0) * 0.5));
+        line(centerX, centerY, hourEndX, hourEndY, hourLineWidth, Color.WHITE);
+
+        double minuteEndX = centerX + radius / 2 * 0.85 * Math.sin(Math.toRadians((minute + second / 60.0) * 6.0));
+        double minuteEndY = centerY - radius / 2 * 0.85 * Math.cos(Math.toRadians((minute + second / 60.0) * 6.0));
+        line(centerX, centerY, minuteEndX, minuteEndY, minuteLineWidth, Color.WHITE);
+
+        double secondEndX = centerX + radius / 2 * 0.9 * Math.sin(Math.toRadians(second * 6.0));
+        double secondEndY = centerY - radius / 2 * 0.9 * Math.cos(Math.toRadians(second * 6.0));
+        line(centerX, centerY, secondEndX, secondEndY, secondLineWidth, Color.WHITE);
     }
 
     /**

@@ -761,7 +761,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double)partialTicks;
         d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double)partialTicks + (double)f;
         d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double)partialTicks;
-        this.cloudFog = this.mc.renderGlobal.hasCloudFog(d0, d1, d2, partialTicks);
+        this.cloudFog = false;
     }
 
     public void setupCameraTransform(float partialTicks, int pass)

@@ -26,10 +26,11 @@ public class FBPVector3d extends Vector3d {
 		this.z = vec.z;
 	}
 
-	public void add(Vector3d vec) {
+	public Vector3d add(Vector3d vec) {
 		this.x += vec.x;
 		this.y += vec.y;
 		this.z += vec.z;
+		return vec;
 	}
 
 	public void zero() {

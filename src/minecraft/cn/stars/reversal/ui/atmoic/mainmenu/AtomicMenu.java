@@ -94,27 +94,18 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         // Current AtomicGui
         currentGui.drawScreen(mouseX, mouseY, partialTicks);
 
-        // Upper part
-        RenderUtil.rect(0, 0, this.width, 25, new Color(20,20,20,200));
-
-        upperSelectionAnimation.run(50 + atomicGuis.indexOf(currentGui) * 25);
-        RenderUtil.rect(upperSelectionAnimation.getValue(), 0, 25, 25, new Color(20,20,20,100));
-
-        for (AtomicGui atomicGui : atomicGuis) {
-            if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) atomicGui.hoverAnimation.run(80);
-            else atomicGui.hoverAnimation.run(0);
-            RenderUtil.rect(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, new Color(20,20,20, (int) atomicGui.hoverAnimation.getValue()));
-            RenderUtil.roundedRectangle(60 - psm16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 27, psm16.width(atomicGui.name) + 5, psm16.height() + 2, 2, new Color(20, 20, 20, (int) atomicGui.hoverAnimation.getValue() * 2));
-            psm16.drawString(atomicGui.name, 62.5 - psm16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 30, new Color(255,255,255, (int) atomicGui.hoverAnimation.getValue() * 3).getRGB());
-            atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8, Color.WHITE.getRGB());
-        }
-
         // Name
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             if (!currentGui.displayName.isEmpty()) {
                 RenderUtil.drawRightTrapezoid(50, 33, (float) displayNameAnimation.getValue(), 23, 10, 0, Color.BLACK);
             }
         }, 2, 2);
+
+        // Upper part
+        RenderUtil.rect(0, 0, this.width, 25, new Color(20,20,20,200));
+
+        upperSelectionAnimation.run(50 + atomicGuis.indexOf(currentGui) * 25);
+        RenderUtil.rect(upperSelectionAnimation.getValue(), 0, 25, 25, new Color(20,20,20,100));
 
         if (!currentGui.displayName.isEmpty()) {
             displayNameAnimation.run(26 + FontManager.getRainbowParty(40).width(currentGui.displayName));
@@ -129,16 +120,27 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             displayNameAnimation.run(0);
         }
 
+        for (AtomicGui atomicGui : atomicGuis) {
+            if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) atomicGui.hoverAnimation.run(80);
+            else atomicGui.hoverAnimation.run(0);
+            RenderUtil.rect(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, new Color(20,20,20, (int) atomicGui.hoverAnimation.getValue()));
+            RenderUtil.roundedRectangle(60 - psm16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 27, psm16.width(atomicGui.name) + 5, psm16.height() + 2, 2, new Color(20, 20, 20, (int) atomicGui.hoverAnimation.getValue() * 2));
+            psm16.drawString(atomicGui.name, 62.5 - psm16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 30, new Color(255,255,255, (int) atomicGui.hoverAnimation.getValue() * 3).getRGB());
+            atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8, Color.WHITE.getRGB());
+        }
+
         // Player & Time
         this.drawPlayerImage();
-        psm18.drawString(GameInstance.mc.session.getUsername(), width - 130 - psm18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
-        RenderUtil.rect(width - 107, 5, 1, 15, Color.WHITE);
+        psm18.drawString(GameInstance.mc.session.getUsername(), width - 150 - psm18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
+        RenderUtil.rect(width - 127, 5, 1, 15, Color.WHITE);
         RenderUtil.rect(width - 30, 5, 1, 15, Color.WHITE);
 
         psm18.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + " " + (LocalDateTime.now().getHour() > 12 ? "PM" : "AM"),
                 width - 100, 6, Color.WHITE.getRGB());
         Duration duration = Duration.between(initTime, LocalDateTime.now());
         psm16.drawString("running " + String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60), width - 100, 14, Color.WHITE.getRGB());
+
+        RenderUtil.clock(width - 120, 5, 15, 2.4,2,1.2, Color.WHITE);
 
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
@@ -178,12 +180,6 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
         Atomic.INSTANCE.render(new ScaledResolution(GameInstance.mc));
 
-    /*    TEMP_TEXT_BUTTON_RUNNABLES.forEach(i -> {
-            ModuleInstance.getModule(PostProcessing.class).drawElementWithBlur(i, 2,2);
-            ModuleInstance.getModule(PostProcessing.class).drawElementWithBloom(i, 2, 2);
-        });
-        TEMP_TEXT_BUTTON_RUNNABLES.clear(); */
-
         UI_BLOOM_RUNNABLES.forEach(Runnable::run);
         UI_BLOOM_RUNNABLES.clear();
 
@@ -192,9 +188,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         // Sub Menu
         drawSubMenu(mouseX, mouseY, partialTicks);
 
-        if (!POST_POSTPROCESSING_QUEUE.isEmpty()) ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
-            POST_POSTPROCESSING_QUEUE.forEach(Runnable::run);
-        }, 2, 2);
+        if (!POST_POSTPROCESSING_QUEUE.isEmpty()) ModuleInstance.getPostProcessing().drawElementWithBloom(() -> POST_POSTPROCESSING_QUEUE.forEach(Runnable::run), 2, 2);
 
         PRE_POSTPROCESSING_QUEUE.clear();
         POST_POSTPROCESSING_QUEUE.clear();
@@ -233,32 +227,12 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for (AtomicGui atomicGui : atomicGuis) {
-            if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) {
-                lastGuiIndex = atomicGuis.indexOf(currentGui);
-                currentGui = atomicGui;
-                currentGui.initGui();
-                uiClick();
-            }
-        }
         if (RenderUtil.isHovered(width - 25, 0, 25, 25, mouseX, mouseY)) {
             subMenu = !subMenu;
             uiClick();
         } else if (subMenu && !RenderUtil.isHovered(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height, mouseX, mouseY)) {
             subMenu = false;
             uiClick();
-        }
-        if (atomicGuis.indexOf(currentGui) != 0) {
-            if (RenderUtil.isHovered(8, height / 2f - 15, 40, 30, mouseX, mouseY)) {
-                switchGui(atomicGuis.indexOf(currentGui) - 1);
-                uiClick();
-            }
-        }
-        if (atomicGuis.indexOf(currentGui) != atomicGuis.size() - 1) {
-            if (RenderUtil.isHovered(width - 48, height / 2f - 15, 40, 30, mouseX, mouseY)) {
-                switchGui(atomicGuis.indexOf(currentGui) + 1);
-                uiClick();
-            }
         }
         if (subMenu) {
             if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 18, 43, 15, 15, mouseX, mouseY)) {
@@ -273,6 +247,27 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
                 RainyAPI.menuBubble = !RainyAPI.menuBubble;
                 uiClick();
             }
+            return;
+        }
+        for (AtomicGui atomicGui : atomicGuis) {
+            if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) {
+                lastGuiIndex = atomicGuis.indexOf(currentGui);
+                currentGui = atomicGui;
+                currentGui.initGui();
+                uiClick();
+            }
+        }
+        if (atomicGuis.indexOf(currentGui) != 0) {
+            if (RenderUtil.isHovered(8, height / 2f - 15, 40, 30, mouseX, mouseY)) {
+                switchGui(atomicGuis.indexOf(currentGui) - 1);
+                uiClick();
+            }
+        }
+        if (atomicGuis.indexOf(currentGui) != atomicGuis.size() - 1) {
+            if (RenderUtil.isHovered(width - 48, height / 2f - 15, 40, 30, mouseX, mouseY)) {
+                switchGui(atomicGuis.indexOf(currentGui) + 1);
+                uiClick();
+            }
         }
         currentGui.mouseClicked(mouseX, mouseY, mouseButton);
         bubbles.add(new GUIBubble(mouseX, mouseY, 10, 50));
@@ -281,9 +276,9 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
     private void drawPlayerImage() {
         try {
-            RenderUtil.image(headImage, width - 130, 5, 15, 15);
+            RenderUtil.image(headImage, width - 150, 5, 15, 15);
         } catch (Exception e) {
-            RenderUtil.rect(width - 130, 5, 15, 15, Color.WHITE);
+            RenderUtil.rect(width - 150, 5, 15, 15, Color.WHITE);
         }
     }
 
@@ -348,6 +343,10 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
         try {
             headImage = SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15);
+
+            if (headImage == null) {
+                headImage = SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf("Steve"), 15);
+            }
         } catch (Exception e) {
             headImage = SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf("Steve"), 15);
         }

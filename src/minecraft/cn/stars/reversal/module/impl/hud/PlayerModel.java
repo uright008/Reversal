@@ -60,7 +60,7 @@ public class PlayerModel extends Module {
         GuiInventory.drawEntityOnScreen(getX() + 1, getY() + 1, scale.getInt(), yaw, pitch, mc.thePlayer);
 
         setWidth(scale.getInt() * 1.5f);
-        setHeight(scale.getInt() * 2f);
+        setHeight(scale.getInt() * 2f + 10);
         setAdditionalWidth(-scale.getInt() * 0.75f);
         setAdditionalHeight(-scale.getInt() * 2f);
     }

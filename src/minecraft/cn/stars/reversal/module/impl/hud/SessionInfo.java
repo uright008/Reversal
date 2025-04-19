@@ -30,7 +30,6 @@ public class SessionInfo extends Module {
     ArrayList<EntityLivingBase> attackedEntityList = new ArrayList<>();
     ArrayList<EntityLivingBase> attackedEntityListToRemove = new ArrayList<>();
     MFont psb = FontManager.getPSB(20);
-    MFont psm = FontManager.getPSM(18);
     MFont icon = FontManager.getIcon(24);
     MFont iconSmall = FontManager.getIcon(18);
 
@@ -102,28 +101,28 @@ public class SessionInfo extends Module {
 
         // 第一行 游玩时间
         iconSmall.drawString("e", x, y + 12, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString("Play Time", x + 12, y + 11, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString(playtime, x + 145 - psm.getWidth(playtime), y + 11, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString("Play Time", x + 12, y + 11, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString(playtime, x + 145 - psm18.getWidth(playtime), y + 11, new Color(250, 250, 250, 200).getRGB());
 
         // 第二行 击杀数量
         iconSmall.drawString("a", x, y + 22, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString("Killed", x + 12, y + 21, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString(kills, x + 145 - psm.getWidth(kills), y + 21, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString("Killed", x + 12, y + 21, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString(kills, x + 145 - psm18.getWidth(kills), y + 21, new Color(250, 250, 250, 200).getRGB());
 
         // 第三行 HurtTime
         iconSmall.drawString("c", x, y + 32, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString("HurtTime", x + 12, y + 31, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString(hurtTime, x + 145 - psm.getWidth(hurtTime), y + 31, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString("HurtTime", x + 12, y + 31, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString(hurtTime, x + 145 - psm18.getWidth(hurtTime), y + 31, new Color(250, 250, 250, 200).getRGB());
 
         // 第四行 速度
         iconSmall.drawString("b", x, y + 42, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString("Speed", x + 12, y + 41, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString(speed, x + 145 - psm.getWidth(speed), y + 41, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString("Speed", x + 12, y + 41, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString(speed, x + 145 - psm18.getWidth(speed), y + 41, new Color(250, 250, 250, 200).getRGB());
 
         // 第五行 血量
         iconSmall.drawString("s", x, y + 52, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString("HP", x + 12, y + 51, new Color(250, 250, 250, 200).getRGB());
-        psm.drawString(health, x + 145 - psm.getWidth(health), y + 51, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString("HP", x + 12, y + 51, new Color(250, 250, 250, 200).getRGB());
+        psm18.drawString(health, x + 145 - psm18.getWidth(health), y + 51, new Color(250, 250, 250, 200).getRGB());
 
     }
 

@@ -442,7 +442,6 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
                 {
                     float f10 = 0.1F;
                     GlStateManager.color(f10, f10, f10, 1.0F);
-                    this.itemRender.isNotRenderingEffectsInGUI(false);
                 }
 
                 GlStateManager.enableLighting();
@@ -450,11 +449,6 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
                 this.itemRender.renderItemAndEffectIntoGUI(achievement2.theItemStack, l6 + 3, j7 + 3);
                 GlStateManager.blendFunc(770, 771);
                 GlStateManager.disableLighting();
-
-                if (!this.statFileWriter.canUnlockAchievement(achievement2))
-                {
-                    this.itemRender.isNotRenderingEffectsInGUI(true);
-                }
 
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 

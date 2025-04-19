@@ -1,6 +1,7 @@
 package cn.stars.reversal.ui.hud;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.module.Category;
@@ -24,11 +25,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Hud implements GameInstance {
-    public static float ticks, ticksSinceClickgui;
     public static float positionOfLastModule;
     public static String key;
     public static List<Module> modules;
-    private static final TimeUtil timer2 = new TimeUtil();
     private static final TimeUtil timer = new TimeUtil();
     public static final KeystrokeUtil forward = new KeystrokeUtil();
     public static final KeystrokeUtil backward = new KeystrokeUtil();
@@ -40,7 +39,7 @@ public class Hud implements GameInstance {
     static ModuleComparator moduleComparator = new ModuleComparator();
 
     public static void renderKeyStrokes() {
-        Keystrokes keystrokes = (Keystrokes) ModuleInstance.getModule(Keystrokes.class);
+        Keystrokes keystrokes = ModuleInstance.getModule(Keystrokes.class);
         if (keystrokes.isEnabled()) {
 
             final int x = keystrokes.getX() + 35;
@@ -144,7 +143,7 @@ public class Hud implements GameInstance {
             final float renderX = module.getRenderX();
             final float renderY = arraylist.getY() + module.getRenderY();
 
-            if (module.getModuleInfo().category().equals(Category.RENDER) && ModuleInstance.getModule(Arraylist.class).noRenderModules.isEnabled())
+            if ((module.getModuleInfo().category().equals(Category.RENDER) || module.getModuleInfo().category().equals(Category.HUD)) && ModuleInstance.getModule(Arraylist.class).noRenderModules.isEnabled())
                 continue;
 
             if (ModuleInstance.isSpecialModule(module))
@@ -296,7 +295,7 @@ public class Hud implements GameInstance {
 
             final String animationMode = ModuleInstance.getModule(ClientSettings.class).listAnimation.getMode();
             
-            if (timer2.hasReached(1000 / 100)) {
+            if (timer.hasReached(1000 / 100)) {
                 switch (animationMode) {
                     case "Reversal":
                         module.renderX = (module.renderX * (speed - 1) + finalX) / speed;
@@ -319,30 +318,11 @@ public class Hud implements GameInstance {
 
         }
 
-        arraylist.setHeight((int)(moduleCount * 12 * (mode.equals("Empathy") ? 1.25 : 1)));
-
-        // Resetting timer
-        if (timer2.hasReached(1000 / 100)) {
-            timer2.reset();
-        }
-
-        if (timer.hasReached(1000 / 60)) {
+        if (timer.hasReached(1000 / 100)) {
             timer.reset();
-
-            if (mc.ingameGUI != null && !(mc.currentScreen instanceof GuiChat)) {
-                if (ticksSinceClickgui <= 5)
-                    ticksSinceClickgui++;
-            } else {
-                if (ticksSinceClickgui >= 1)
-                    ticksSinceClickgui--;
-            }
-
-            forward.updateAnimations();
-            backward.updateAnimations();
-            left.updateAnimations();
-            right.updateAnimations();
-            space.updateAnimations();
         }
+
+        arraylist.setHeight((int)(moduleCount * 12 * (mode.equals("Empathy") ? 1.25 : 1)));
     }
     
     private static void renderClientName() {

@@ -370,6 +370,8 @@ public class ItemRenderer
                             this.performDrinking(entityPlayer, partialTicks);
                             if (m && ModuleInstance.getModule(Animations.class).foodSwing.isEnabled())
                                 this.transformFirstPersonItem(f, f1);
+                            else
+                                this.transformFirstPersonItem(f, 0.0F);
                             //    this.transformFirstPersonFood(f, f1);
                             break;
 
@@ -496,7 +498,7 @@ public class ItemRenderer
 
             if (iblockstate.getBlock().getRenderType() != -1)
             {
-                this.renderBlockInHand(partialTicks, this.mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(iblockstate));
+                this.renderBlockInHand(this.mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(iblockstate));
             }
         }
 
@@ -509,14 +511,14 @@ public class ItemRenderer
 
             if (this.mc.thePlayer.isBurning())
             {
-                this.renderFireInFirstPerson(partialTicks);
+                this.renderFireInFirstPerson();
             }
         }
 
         GlStateManager.enableAlpha();
     }
 
-    private void renderBlockInHand(float partialTicks, TextureAtlasSprite atlas)
+    private void renderBlockInHand(TextureAtlasSprite atlas)
     {
         this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
         Tessellator tessellator = Tessellator.getInstance();
@@ -563,7 +565,7 @@ public class ItemRenderer
         }
     }
 
-    private void renderFireInFirstPerson(float partialTicks)
+    private void renderFireInFirstPerson()
     {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();

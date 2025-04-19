@@ -2,7 +2,7 @@
  * Reversal Client - A PVP Client with hack visual.
  * Copyright 2025 Aerolite Society, Some rights reserved.
  */
-package cn.stars.reversal.util.reversal;
+package cn.stars.reversal.util.reversal.irc;
 
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.client.IRC;

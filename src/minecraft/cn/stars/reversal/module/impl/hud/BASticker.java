@@ -33,11 +33,6 @@ public class BASticker extends Module {
     }
 
     @Override
-    public void onUpdateAlways() {
-        setSuffix(character.getMode());
-    }
-
-    @Override
     public void onRender2D(Render2DEvent event) {
         sr = new ScaledResolution(mc);
         int x = getX() + 5;

@@ -69,7 +69,7 @@ public class WorldRenderer
             int i = this.byteBuffer.capacity();
             int j = i % 2097152;
             int k = j + (((this.rawIntBuffer.position() + p_181670_1_) * 4 - j) / 2097152 + 1) * 2097152;
-            LogManager.getLogger().warn("Needed to grow BufferBuilder buffer: Old size " + i + " bytes, new size " + k + " bytes.");
+            LogManager.getLogger().warn("Needed to grow BufferBuilder buffer: Old size {} bytes, new size {} bytes.", i, k);
             int l = this.rawIntBuffer.position();
             ByteBuffer bytebuffer = GLAllocation.createDirectByteBuffer(k);
             this.byteBuffer.position(0);
@@ -107,14 +107,14 @@ public class WorldRenderer
 
         for (int k = 0; k < ainteger.length; ++k)
         {
-            ainteger[k] = Integer.valueOf(k);
+            ainteger[k] = k;
         }
 
         Arrays.sort(ainteger, new Comparator<Integer>()
         {
             public int compare(Integer p_compare_1_, Integer p_compare_2_)
             {
-                return Floats.compare(afloat[p_compare_2_.intValue()], afloat[p_compare_1_.intValue()]);
+                return Floats.compare(afloat[p_compare_2_], afloat[p_compare_1_]);
             }
         });
         BitSet bitset = new BitSet();
@@ -123,7 +123,7 @@ public class WorldRenderer
 
         for (int l1 = 0; (l1 = bitset.nextClearBit(l1)) < ainteger.length; ++l1)
         {
-            int i1 = ainteger[l1].intValue();
+            int i1 = ainteger[l1];
 
             if (i1 != l1)
             {
@@ -132,7 +132,7 @@ public class WorldRenderer
                 this.rawIntBuffer.get(aint);
                 int j1 = i1;
 
-                for (int k1 = ainteger[i1].intValue(); j1 != l1; k1 = ainteger[k1].intValue())
+                for (int k1 = ainteger[i1]; j1 != l1; k1 = ainteger[k1])
                 {
                     this.rawIntBuffer.limit(k1 * l + l);
                     this.rawIntBuffer.position(k1 * l);
@@ -162,7 +162,7 @@ public class WorldRenderer
 
             for (int j2 = 0; j2 < ainteger.length; ++j2)
             {
-                int k2 = ainteger[j2].intValue();
+                int k2 = ainteger[j2];
                 atextureatlassprite[j2] = this.quadSprites[k2];
             }
 
@@ -188,7 +188,7 @@ public class WorldRenderer
             System.arraycopy(this.quadSprites, 0, atextureatlassprite, 0, j);
         }
 
-        return new WorldRenderer.State(aint, new VertexFormat(this.vertexFormat), atextureatlassprite);
+        return new State(aint, new VertexFormat(this.vertexFormat), atextureatlassprite);
     }
 
     public int getBufferSize()
@@ -198,16 +198,16 @@ public class WorldRenderer
 
     private static float getDistanceSq(FloatBuffer p_181665_0_, float p_181665_1_, float p_181665_2_, float p_181665_3_, int p_181665_4_, int p_181665_5_)
     {
-        float f = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 0 + 0);
-        float f1 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 0 + 1);
-        float f2 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 0 + 2);
-        float f3 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 1 + 0);
-        float f4 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 1 + 1);
-        float f5 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 1 + 2);
-        float f6 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 2 + 0);
+        float f = p_181665_0_.get(p_181665_5_);
+        float f1 = p_181665_0_.get(p_181665_5_ + 1);
+        float f2 = p_181665_0_.get(p_181665_5_ + 2);
+        float f3 = p_181665_0_.get(p_181665_5_ + p_181665_4_ );
+        float f4 = p_181665_0_.get(p_181665_5_ + p_181665_4_  + 1);
+        float f5 = p_181665_0_.get(p_181665_5_ + p_181665_4_  + 2);
+        float f6 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 2);
         float f7 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 2 + 1);
         float f8 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 2 + 2);
-        float f9 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 3 + 0);
+        float f9 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 3);
         float f10 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 3 + 1);
         float f11 = p_181665_0_.get(p_181665_5_ + p_181665_4_ * 3 + 2);
         float f12 = (f + f3 + f6 + f9) * 0.25F - p_181665_1_;
@@ -847,10 +847,6 @@ public class WorldRenderer
                 ++j;
             }
 
-            if (j > 0)
-            {
-                ;
-            }
         }
     }
 
@@ -1045,12 +1041,7 @@ public class WorldRenderer
         }
     }
 
-    public boolean isColorDisabled()
-    {
-        return this.noColor;
-    }
-
-    public class State
+    public static class State
     {
         private final int[] stateRawBuffer;
         private final VertexFormat stateVertexFormat;

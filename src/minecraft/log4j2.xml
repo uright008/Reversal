@@ -20,9 +20,9 @@
             <filters>
                 <MarkerFilter marker="NETWORK_PACKETS" onMatch="DENY" onMismatch="NEUTRAL" />
             </filters>
-            <AppenderRef ref="SysOut"/>
-            <AppenderRef ref="File"/>
-            <AppenderRef ref="ServerGuiConsole"/>
+            <AppenderRef ref="SysOut" level="info"/>
+            <AppenderRef ref="File" level="info"/>
+            <AppenderRef ref="ServerGuiConsole" level="info"/>
         </Root>
     </Loggers>
 </Configuration>

@@ -241,7 +241,7 @@ public class EntityTracker
             }
         }
 
-        EntityTrackerEntry entitytrackerentry1 = (EntityTrackerEntry)this.trackedEntityHashTable.removeObject(entityIn.getEntityId());
+        EntityTrackerEntry entitytrackerentry1 = this.trackedEntityHashTable.removeObject(entityIn.getEntityId());
 
         if (entitytrackerentry1 != null)
         {
@@ -252,7 +252,7 @@ public class EntityTracker
 
     public void updateTrackedEntities()
     {
-        List<EntityPlayerMP> list = Lists.<EntityPlayerMP>newArrayList();
+        List<EntityPlayerMP> list = Lists.newArrayList();
 
         for (EntityTrackerEntry entitytrackerentry : this.trackedEntities)
         {
@@ -264,15 +264,11 @@ public class EntityTracker
             }
         }
 
-        for (int i = 0; i < ((List)list).size(); ++i)
-        {
-            EntityPlayerMP entityplayermp = (EntityPlayerMP)list.get(i);
+        for (EntityPlayerMP entityPlayerMP : list) {
 
-            for (EntityTrackerEntry entitytrackerentry1 : this.trackedEntities)
-            {
-                if (entitytrackerentry1.trackedEntity != entityplayermp)
-                {
-                    entitytrackerentry1.updatePlayerEntity(entityplayermp);
+            for (EntityTrackerEntry entitytrackerentry1 : this.trackedEntities) {
+                if (entitytrackerentry1.trackedEntity != entityPlayerMP) {
+                    entitytrackerentry1.updatePlayerEntity(entityPlayerMP);
                 }
             }
         }

@@ -978,6 +978,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.frameTimer.addFrame(k - this.startNanoTime);
         this.startNanoTime = k;
 
+    //    RainyAPI.passAllRunnables();
+
         while (getSystemTime() >= this.debugUpdateTime + 1000L)
         {
             FakeFPS fakeFPS = ModuleInstance.getModule(FakeFPS.class);

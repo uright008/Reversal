@@ -47,6 +47,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Copyright (c) 2025 Aerolite Society, Some rights reserved.
@@ -59,15 +60,14 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v2.0.5";
+    public static final String VERSION = "v2.1.1";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
-    public static final Branch BRANCH = Branch.DEVELOPMENT;
-    public static final String BUILD_VERSION = "";
+    public static final Branch BRANCH = Branch.PRODUCTION;
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
-    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(3);
+    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(2);
 
     public static String customName = "";
     public static String customText = ".setText <text>";
@@ -325,6 +325,7 @@ public class Reversal {
             new MusicInfo(),
             new MusicVisualizer(),
             new PingCounter(),
+            new PlayerList(),
             new PlayerModel(),
             new PotionEffect(),
     //        new PotionEffects(),

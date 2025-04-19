@@ -1,6 +1,5 @@
 package cn.stars.reversal.ui.atmoic.mainmenu.impl.misc;
 
-import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.MiscGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerConnector;
@@ -69,7 +68,6 @@ public class ConnectingGui extends MiscGui {
     {
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(width / 2f - 200, height / 2f - 60, 400, 120, 3, Color.BLACK);
-            RenderUtils.drawLoadingCircle2(this.width / 2f, this.height / 2f + 15, 10, Color.WHITE);
         }, 2, 2);
 
         RoundedUtil.drawRound(width / 2f - 200, height / 2f - 60, 400, 120, 3, new Color(20, 20, 20, 160));

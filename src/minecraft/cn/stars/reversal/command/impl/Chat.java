@@ -6,7 +6,6 @@ import cn.stars.reversal.command.Command;
 import cn.stars.reversal.command.api.CommandInfo;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.Transformer;
-import cn.stars.reversal.util.reversal.UserHandshakeThread;
 import net.minecraft.client.resources.I18n;
 
 @CommandInfo(name = "Chat", description = "IRC Chat", syntax = ".chat <message>", aliases = "chat")

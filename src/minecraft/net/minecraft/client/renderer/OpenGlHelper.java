@@ -6,6 +6,8 @@ import java.nio.IntBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.src.Config;
@@ -45,7 +47,6 @@ public class OpenGlHelper
     public static int GL_FB_INCOMPLETE_READ_BUFFER;
     private static int framebufferType;
     public static boolean framebufferSupported;
-    private static boolean shadersAvailable;
     private static boolean arbShaders;
     public static int GL_LINK_STATUS;
     public static int GL_COMPILE_STATUS;
@@ -55,7 +56,6 @@ public class OpenGlHelper
     public static int defaultTexUnit;
     public static int lightmapTexUnit;
     public static int GL_TEXTURE2;
-    private static boolean arbTextureEnvCombine;
     public static int GL_COMBINE;
     public static int GL_INTERPOLATE;
     public static int GL_PRIMARY_COLOR;
@@ -79,6 +79,7 @@ public class OpenGlHelper
     public static boolean extBlendFuncSeparate;
     public static boolean openGL21;
     public static boolean shadersSupported;
+    @Getter
     private static String logText = "";
     private static String cpu;
     public static boolean vboSupported;
@@ -99,7 +100,7 @@ public class OpenGlHelper
         Config.initDisplay();
         ContextCapabilities contextcapabilities = GLContext.getCapabilities();
         arbMultitexture = contextcapabilities.GL_ARB_multitexture && !contextcapabilities.OpenGL13;
-        arbTextureEnvCombine = contextcapabilities.GL_ARB_texture_env_combine && !contextcapabilities.OpenGL13;
+        boolean arbTextureEnvCombine = contextcapabilities.GL_ARB_texture_env_combine && !contextcapabilities.OpenGL13;
         openGL31 = contextcapabilities.OpenGL31;
 
         if (openGL31)
@@ -260,7 +261,7 @@ public class OpenGlHelper
         }
 
         openGL21 = contextcapabilities.OpenGL21;
-        shadersAvailable = openGL21 || contextcapabilities.GL_ARB_vertex_shader && contextcapabilities.GL_ARB_fragment_shader && contextcapabilities.GL_ARB_shader_objects;
+        boolean shadersAvailable = openGL21 || contextcapabilities.GL_ARB_vertex_shader && contextcapabilities.GL_ARB_fragment_shader && contextcapabilities.GL_ARB_shader_objects;
         logText = logText + "Shaders are " + (shadersAvailable ? "" : "not ") + "available because ";
 
         if (shadersAvailable)
@@ -334,20 +335,14 @@ public class OpenGlHelper
             Processor[] aprocessor = (new SystemInfo()).getHardware().getProcessors();
             cpu = String.format("%dx %s", new Object[] {Integer.valueOf(aprocessor.length), aprocessor[0]}).replaceAll("\\s+", " ");
         }
-        catch (Throwable var5)
+        catch (Throwable ignored)
         {
-            ;
         }
     }
 
     public static boolean areShadersSupported()
     {
         return shadersSupported;
-    }
-
-    public static String getLogText()
-    {
-        return logText;
     }
 
     public static int glGetProgrami(int program, int pname)
@@ -658,7 +653,7 @@ public class OpenGlHelper
 
     public static boolean useVbo()
     {
-        return Config.isMultiTexture() ? false : (Config.isRenderRegions() && !vboRegions ? false : vboSupported && Minecraft.getMinecraft().gameSettings.useVbo);
+        return !Config.isMultiTexture() && ((!Config.isRenderRegions() || vboRegions) && vboSupported && Minecraft.getMinecraft().gameSettings.useVbo);
     }
 
     public static void glBindFramebuffer(int target, int framebufferIn)
@@ -939,7 +934,7 @@ public class OpenGlHelper
 
     public static boolean isFramebufferEnabled()
     {
-        return Config.isFastRender() ? false : (Config.isAntialiasing() ? false : framebufferSupported && Minecraft.getMinecraft().gameSettings.fboEnable);
+        return !Config.isFastRender() && (!Config.isAntialiasing() && framebufferSupported && Minecraft.getMinecraft().gameSettings.fboEnable);
     }
 
     public static void glBufferData(int p_glBufferData_0_, long p_glBufferData_1_, int p_glBufferData_3_)

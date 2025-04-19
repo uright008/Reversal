@@ -8,8 +8,8 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.util.reversal.IRCInstance;
-import cn.stars.reversal.util.reversal.UserHandshakeThread;
+import cn.stars.reversal.util.reversal.irc.IRCInstance;
+import cn.stars.reversal.util.reversal.irc.UserHandshakeThread;
 import cn.stars.reversal.value.impl.BoolValue;
 
 @ModuleInfo(name = "IRC", localizedName = "module.IRC.name", description = "Private Reversal chat channel", localizedDescription = "module.IRC.desc", category = Category.CLIENT)

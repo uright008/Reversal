@@ -8,14 +8,14 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.math.MathUtil;
+import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.render.video.BackgroundManager;
-import cn.stars.reversal.util.reversal.IRCInstance;
+import cn.stars.reversal.util.reversal.irc.IRCInstance;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.glfw.GLFW;
@@ -27,6 +27,9 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
@@ -38,6 +41,8 @@ public class RainyAPI {
     public static Minecraft mc = Minecraft.getMinecraft();
     public static long window;
     public static int randomTitleId = -1;
+    private static ConcurrentLinkedQueue<Runnable> scheduledRunnables = new ConcurrentLinkedQueue<>();
+    private static TimeUtil scheduleTimer = new TimeUtil();
     
     public static IRCInstance ircUser = null;
     public static boolean hasJavaFX = true;
@@ -72,10 +77,36 @@ public class RainyAPI {
             "混乱不应成为常态,错误不应理所当然", "希望本是无所谓有,无所谓无的", "无聊生者不生,即使厌见者不见,为人为己,也还都不错", "当世界要求你反省,你可以选择不配合这场审判", "疼痛的目的不是让你查看伤口,而是教会你如何站立",
             "当友谊成为了冰冷的符号,这段关系或许已经失衡", "放下助人情结,尊重他人命运", "Be responsible for your own life.", "如何达成理解?", "利益是人类建立关系的基础", "有时,我们注定只能成为别人生活中的配角",
             "揭开伪装你的面具,露出你真实的另一面", "人都会变,莫谈永远", "Helpfully help the helpless.", "我知道你没去,所以我也没来", "没有理由的伤害,到底谁来决定对错?", "“用自己创造的麻烦来博取人们的怜惜，最终或许只会被唾弃",
-            "没想过你把我放在第一位,可惜我根本就不在列"};
+            "没想过你把我放在第一位,可惜我根本就不在列", "其一切奇怪不可迩之状,皆贫病怨恨,不得已诈而遁焉者也", "Intergration. Assimilation. Trust. Understanding."};
 
     public static String getRandomTitle() {
         return randomTitleId == -1 ? wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)] : wittyTitle[randomTitleId];
+    }
+
+    /**
+     * 多线程加载非渲染类任务
+     */
+    public static void asyncExecuteDelayed(Runnable runnable) {
+        scheduledRunnables.add(runnable);
+    }
+
+    public static void asyncExecute(Runnable runnable) {
+        Reversal.threadPoolExecutor.execute(runnable);
+    }
+
+    public static void passAllRunnables() {
+        if (scheduleTimer.hasReached(1000)) {
+            Reversal.threadPoolExecutor.execute(() -> {
+                List<Runnable> tasks = new ArrayList<>();
+                Runnable task;
+                while ((task = scheduledRunnables.poll()) != null && !Minecraft.terminated) {
+                    tasks.add(task);
+                }
+                tasks.forEach(Runnable::run);
+                ReversalLogger.info("Passed " + tasks.size() + " runnables.");
+            });
+            scheduleTimer.reset();
+        }
     }
 
     /**

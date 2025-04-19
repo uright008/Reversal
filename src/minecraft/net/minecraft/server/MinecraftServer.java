@@ -691,7 +691,10 @@ public abstract class MinecraftServer implements Runnable, ICommandSender, IThre
 
                 this.theProfiler.endSection();
                 this.theProfiler.startSection("tracker");
-                worldserver.getEntityTracker().updateTrackedEntities();
+                try {
+                    worldserver.getEntityTracker().updateTrackedEntities();
+                } catch (Exception ignored) {
+                }
                 this.theProfiler.endSection();
                 this.theProfiler.endSection();
             }

@@ -186,7 +186,7 @@ public class RenderUtils {
         glDisable(GL_LINE_SMOOTH);
 
         GlStateManager.enableTexture2D();
-        disableBlend();
+        GlStateManager.disableBlend();
     }
 
     public static boolean isHovering(int mouseX, int mouseY, float xLeft, float yUp, float xRight, float yBottom) {

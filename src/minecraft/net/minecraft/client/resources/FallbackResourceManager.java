@@ -108,9 +108,7 @@ public class FallbackResourceManager implements IResourceManager
         public InputStreamLeakedResourceLogger(InputStream p_i46093_1_, ResourceLocation location, String resourcePack)
         {
             this.inputStream = p_i46093_1_;
-            ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-            (new Exception()).printStackTrace(new PrintStream(bytearrayoutputstream));
-            this.message = "Leaked resource: \'" + location + "\' loaded from pack: \'" + resourcePack + "\'\n" + bytearrayoutputstream.toString();
+            this.message = "Leaked resource: '" + location + "' loaded from pack: '" + resourcePack + "'";
         }
 
         public void close() throws IOException

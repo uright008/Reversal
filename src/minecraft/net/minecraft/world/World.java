@@ -68,19 +68,18 @@ public abstract class World implements IBlockAccess
 {
     private int seaLevel = 63;
     protected boolean scheduledUpdatesAreImmediate;
-    public final List<Entity> loadedEntityList = Lists.<Entity>newArrayList();
-    protected final List<Entity> unloadedEntityList = Lists.<Entity>newArrayList();
-    public final List<TileEntity> loadedTileEntityList = Lists.<TileEntity>newArrayList();
-    public final List<TileEntity> tickableTileEntities = Lists.<TileEntity>newArrayList();
-    private final List<TileEntity> addedTileEntityList = Lists.<TileEntity>newArrayList();
-    private final List<TileEntity> tileEntitiesToBeRemoved = Lists.<TileEntity>newArrayList();
-    public final List<EntityPlayer> playerEntities = Lists.<EntityPlayer>newArrayList();
-    public final List<Entity> weatherEffects = Lists.<Entity>newArrayList();
-    protected final IntHashMap<Entity> entitiesById = new IntHashMap();
-    private long cloudColour = 16777215L;
+    public final List<Entity> loadedEntityList = Lists.newArrayList();
+    protected final List<Entity> unloadedEntityList = Lists.newArrayList();
+    public final List<TileEntity> loadedTileEntityList = Lists.newArrayList();
+    public final List<TileEntity> tickableTileEntities = Lists.newArrayList();
+    private final List<TileEntity> addedTileEntityList = Lists.newArrayList();
+    private final List<TileEntity> tileEntitiesToBeRemoved = Lists.newArrayList();
+    public final List<EntityPlayer> playerEntities = Lists.newArrayList();
+    public final List<Entity> weatherEffects = Lists.newArrayList();
+    protected final IntHashMap<Entity> entitiesById = new IntHashMap<>();
+    private final long cloudColour = 16777215L;
     private int skylightSubtracted;
     protected int updateLCG = (new Random()).nextInt();
-    protected final int DIST_HASH_MAGIC = 1013904223;
     protected float prevRainingStrength;
     protected float rainingStrength;
     protected float prevThunderingStrength;
@@ -88,7 +87,7 @@ public abstract class World implements IBlockAccess
     private int lastLightningBolt;
     public final Random rand = new Random();
     public final WorldProvider provider;
-    protected List<IWorldAccess> worldAccesses = Lists.<IWorldAccess>newArrayList();
+    protected List<IWorldAccess> worldAccesses = Lists.newArrayList();
     protected IChunkProvider chunkProvider;
     protected final ISaveHandler saveHandler;
     protected WorldInfo worldInfo;
@@ -99,7 +98,7 @@ public abstract class World implements IBlockAccess
     private final Calendar theCalendar = Calendar.getInstance();
     protected Scoreboard worldScoreboard = new Scoreboard();
     public final boolean isRemote;
-    public Set<ChunkCoordIntPair> activeChunkSet = Sets.<ChunkCoordIntPair>newHashSet();
+    public Set<ChunkCoordIntPair> activeChunkSet = Sets.newHashSet();
     private int ambientTickCountdown;
     protected boolean spawnHostileMobs;
     protected boolean spawnPeacefulMobs;

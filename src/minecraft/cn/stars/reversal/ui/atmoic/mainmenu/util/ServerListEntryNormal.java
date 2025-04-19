@@ -126,7 +126,11 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry, Gam
 
         float finalIconPos = iconPos;
         AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> {
-            atomic24.drawString("A", finalIconPos, y + 12, new Color(250,250,250, (int)(selectAnimation.getValue() * 1.6)).getRGB());
+            if (owner.serverListSelector.isSelected(slotIndex)) {
+                regular20Bold.drawString(this.server.serverName, x + 40, y + 2, new Color(255,255,255, (int)(selectAnimation.getValue() * 1.6)).getRGB());
+            }
+
+            atomic24.drawString("A", finalIconPos, y + 12, new Color(255,255,255, (int)(selectAnimation.getValue() * 1.6)).getRGB());
 
             atomic24.drawString("B", x - 20 + listWidth, y + slotHeight / 2f, new Color(255,255,255, (int) deleteAnimation.getValue()).getRGB());
             atomic24.drawString("C", x - 45 + listWidth, y + slotHeight / 2f, new Color(255,255,255, (int) editAnimation.getValue()).getRGB());
@@ -154,19 +158,21 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry, Gam
                 AtomicMenu.switchGui(8);
             }
         }
-        int k = 0;
+        int k;
         String s = null;
         int l;
         String s1;
 
         if (flag2)
         {
+            k = 0;
             l = 5;
             s1 = flag ? "客户端过老!" : "服务器过老!";
             s = this.server.playerList;
         }
         else if (this.server.field_78841_f && this.server.pingToServer != -2L)
         {
+            k = 0;
             if (this.server.pingToServer < 0L)
             {
                 l = 5;

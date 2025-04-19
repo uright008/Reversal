@@ -154,36 +154,22 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Reversal 2.0.3", "2025/4/6", 1)
-                .addContent("[+] 新增BA式药水显示")
-                .addContent("[+] 新增现代化GuiYesNo")
-                .addContent("[+] 第一次启动时,自动开启HUD")
-                .addContent("[+] 新增主界面一些发光效果")
-                .addContent("[+] 新增几个Shader")
-                .addContent("[+] 新增随机标题")
-                .addContent("[/] 优化主界面设计")
-                .addContent("[/] 优化指令体验")
-                .addContent("[*] 修复部分Event未按预期运行")
-                .addContent("[*] 修复物品栏和受伤动画的显示会被HUD的状态影响")
-                .addContent("[*] 修复音乐播放器崩端")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("Reversal 2.0.1", "2025/3/30", 2)
-                .addContent("[+] 新增主界面点击特效")
-                .addContent("[+] 新增主界面左右按钮快速切换界面")
-                .addContent("[+] 新增更高级的掉线和连接界面")
-                .addContent("[+] 更新HopeEngine至1.0.7")
-                .addContent("[+] 单人游戏和多人游戏界面新增每个项目的快捷操作(删除,重命名等)")
-                .addContent("[+] 新增一些提示")
-                .addContent("[+] 新增随机标题")
-                .addContent("[/] 调整部分界面的颜色")
-                .addContent("[/] 优化原版连接方式")
-                .addContent("[*] 修复连接服务器时会卡顿一下的问题")
-                .addContent("[*] 修复部分情况下掉线界面异常显示的问题")
+        Announcement announcement2 = new Announcement("Reversal 2.1.0", "2025/4/18", 1)
+                .addContent("[+] 新增图片背景(ID10),以及拖动PNG/JPG图片更换图片背景")
+                .addContent("[/] 主界面新增一些发光特效")
+                .addContent("[/] 使用多线程处理部分客户端运算,优化性能")
+                .addContent("[/] 使用多线程处理部分世界生物更新,优化性能")
+                .addContent("[/] 优化部分代码,优化性能")
+                .addContent("[/] 优化部分莫名卡顿的情况")
+                .addContent("[/] 优化语言系统")
+                .addContent("[*] 修复物品模型存在空隙的问题(ItemModelFix)")
+                .addContent("[*] 修复主界面部分渲染和操作的优先级问题")
+                .addContent("[*] 修复连接界面渲染错误的问题")
+                .addContent("[*] 修复部分崩端")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);
         announcements.add(announcement2);
-        announcements.add(announcement3);
 
         updateAnnouncementIndex(announcementIndex);
     }

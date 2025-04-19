@@ -23,12 +23,6 @@ public class TimeTraveller extends Module {
     private final TimeUtil timer = new TimeUtil();
 
     @Override
-    public void onUpdateAlways() {
-        setSuffix(String.valueOf((int)time.getValue()));
-
-    }
-
-    @Override
     public void onPacketReceive(final PacketReceiveEvent event) {
         if (event.getPacket() instanceof S03PacketTimeUpdate)
             event.setCancelled(true);

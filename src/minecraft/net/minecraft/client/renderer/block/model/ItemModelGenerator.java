@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
+
+import lombok.Getter;
+import lombok.var;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
@@ -47,10 +50,10 @@ public class ItemModelGenerator
 
     private List<BlockPart> func_178394_a(int p_178394_1_, String p_178394_2_, TextureAtlasSprite p_178394_3_)
     {
-        Map<EnumFacing, BlockPartFace> map = Maps.<EnumFacing, BlockPartFace>newHashMap();
-        map.put(EnumFacing.SOUTH, new BlockPartFace((EnumFacing)null, p_178394_1_, p_178394_2_, new BlockFaceUV(new float[] {0.0F, 0.0F, 16.0F, 16.0F}, 0)));
-        map.put(EnumFacing.NORTH, new BlockPartFace((EnumFacing)null, p_178394_1_, p_178394_2_, new BlockFaceUV(new float[] {16.0F, 0.0F, 0.0F, 16.0F}, 0)));
-        List<BlockPart> list = Lists.<BlockPart>newArrayList();
+        Map<EnumFacing, BlockPartFace> map = Maps.newHashMap();
+        map.put(EnumFacing.SOUTH, new BlockPartFace(null, p_178394_1_, p_178394_2_, new BlockFaceUV(new float[] {0.0F, 0.0F, 16.0F, 16.0F}, 0)));
+        map.put(EnumFacing.NORTH, new BlockPartFace(null, p_178394_1_, p_178394_2_, new BlockFaceUV(new float[] {16.0F, 0.0F, 0.0F, 16.0F}, 0)));
+        List<BlockPart> list = Lists.newArrayList();
         list.add(new BlockPart(new Vector3f(0.0F, 0.0F, 7.5F), new Vector3f(16.0F, 16.0F, 8.5F), map, (BlockPartRotation)null, true));
         list.addAll(this.func_178397_a(p_178394_3_, p_178394_2_, p_178394_1_));
         return list;
@@ -60,7 +63,7 @@ public class ItemModelGenerator
     {
         float f = (float)p_178397_1_.getIconWidth();
         float f1 = (float)p_178397_1_.getIconHeight();
-        List<BlockPart> list = Lists.<BlockPart>newArrayList();
+        List<BlockPart> list = Lists.newArrayList();
 
         for (ItemModelGenerator.Span itemmodelgenerator$span : this.func_178393_a(p_178397_1_))
         {
@@ -77,7 +80,7 @@ public class ItemModelGenerator
             float f12 = (float)itemmodelgenerator$span.func_178385_b();
             float f13 = (float)itemmodelgenerator$span.func_178384_c();
             float f14 = (float)itemmodelgenerator$span.func_178381_d();
-            ItemModelGenerator.SpanFacing itemmodelgenerator$spanfacing = itemmodelgenerator$span.func_178383_a();
+            ItemModelGenerator.SpanFacing itemmodelgenerator$spanfacing = itemmodelgenerator$span.getFacing();
 
             switch (itemmodelgenerator$spanfacing)
             {
@@ -141,36 +144,71 @@ public class ItemModelGenerator
             f7 = f7 * f10;
             f8 = f8 * f11;
             f9 = f9 * f11;
-            Map<EnumFacing, BlockPartFace> map = Maps.<EnumFacing, BlockPartFace>newHashMap();
-            map.put(itemmodelgenerator$spanfacing.getFacing(), new BlockPartFace((EnumFacing)null, p_178397_3_, p_178397_2_, new BlockFaceUV(new float[] {f6, f8, f7, f9}, 0)));
+            Map<EnumFacing, BlockPartFace> map = Maps.newHashMap();
+            map.put(itemmodelgenerator$spanfacing.getFacing(), new BlockPartFace(null, p_178397_3_, p_178397_2_, new BlockFaceUV(new float[] {f6, f8, f7, f9}, 0)));
 
             switch (itemmodelgenerator$spanfacing)
             {
                 case UP:
-                    list.add(new BlockPart(new Vector3f(f2, f3, 7.5F), new Vector3f(f4, f3, 8.5F), map, (BlockPartRotation)null, true));
+                    list.add(new BlockPart(new Vector3f(f2, f3, 7.5F), new Vector3f(f4, f3, 8.5F), map, null, true));
                     break;
 
                 case DOWN:
-                    list.add(new BlockPart(new Vector3f(f2, f5, 7.5F), new Vector3f(f4, f5, 8.5F), map, (BlockPartRotation)null, true));
+                    list.add(new BlockPart(new Vector3f(f2, f5, 7.5F), new Vector3f(f4, f5, 8.5F), map, null, true));
                     break;
 
                 case LEFT:
-                    list.add(new BlockPart(new Vector3f(f2, f3, 7.5F), new Vector3f(f2, f5, 8.5F), map, (BlockPartRotation)null, true));
+                    list.add(new BlockPart(new Vector3f(f2, f3, 7.5F), new Vector3f(f2, f5, 8.5F), map, null, true));
                     break;
 
                 case RIGHT:
-                    list.add(new BlockPart(new Vector3f(f4, f3, 7.5F), new Vector3f(f4, f5, 8.5F), map, (BlockPartRotation)null, true));
+                    list.add(new BlockPart(new Vector3f(f4, f3, 7.5F), new Vector3f(f4, f5, 8.5F), map, null, true));
             }
         }
 
+        // Enlarge faces to fill the empty parts.
+        this.enlargeFaces(list);
+
         return list;
+    }
+
+    public void enlargeFaces(List<BlockPart> cir) {
+        float inc = 0.007f;
+        float inc2 = 0.008f;
+        for (var e : cir) {
+            Vector3f from = e.positionFrom;
+            Vector3f to = e.positionTo;
+
+            var set = e.mapFaces.keySet();
+            if (set.size() == 1) {
+                var dir = set.stream().findAny().get();
+                switch (dir) {
+                    case UP: {
+                        from.set(from.x - inc2, from.y - inc, from.z - inc2);
+                        to.set(to.x + inc2, to.y - inc, to.z + inc2);
+                    }
+                    case DOWN: {
+                        from.set(from.x - inc2, from.y + inc, from.z - inc2);
+                        to.set(to.x + inc2, to.y + inc, to.z + inc2);
+                    }
+                    case WEST: {
+                        from.set(from.x - inc, from.y + inc2, from.z - inc2);
+                        to.set(to.x - inc, to.y - inc2, to.z + inc2);
+                    }
+                    case EAST: {
+                        from.set(from.x + inc, from.y + inc2, from.z - inc2);
+                        to.set(to.x + inc, to.y - inc2, to.z + inc2);
+                    }
+                }
+            }
+        }
     }
 
     private List<ItemModelGenerator.Span> func_178393_a(TextureAtlasSprite p_178393_1_)
     {
         int i = p_178393_1_.getIconWidth();
         int j = p_178393_1_.getIconHeight();
-        List<ItemModelGenerator.Span> list = Lists.<ItemModelGenerator.Span>newArrayList();
+        List<ItemModelGenerator.Span> list = Lists.newArrayList();
 
         for (int k = 0; k < p_178393_1_.getFrameCount(); ++k)
         {
@@ -202,40 +240,34 @@ public class ItemModelGenerator
         }
     }
 
-    private void func_178395_a(List<ItemModelGenerator.Span> p_178395_1_, ItemModelGenerator.SpanFacing p_178395_2_, int p_178395_3_, int p_178395_4_)
-    {
-        ItemModelGenerator.Span itemmodelgenerator$span = null;
-
-        for (ItemModelGenerator.Span itemmodelgenerator$span1 : p_178395_1_)
-        {
-            if (itemmodelgenerator$span1.func_178383_a() == p_178395_2_)
-            {
-                int i = p_178395_2_.func_178369_d() ? p_178395_4_ : p_178395_3_;
-
-                if (itemmodelgenerator$span1.func_178381_d() == i)
-                {
-                    itemmodelgenerator$span = itemmodelgenerator$span1;
-                    break;
-                }
+    private void func_178395_a(List<ItemModelGenerator.Span> listSpans, ItemModelGenerator.SpanFacing spanFacing, int pixelX, int pixelY) {
+        int length;
+        ItemModelGenerator.Span existingSpan = null;
+        for (ItemModelGenerator.Span span2 : listSpans) {
+            if (span2.getFacing() == spanFacing) {
+                int i = spanFacing.func_178369_d() ? pixelY : pixelX;
+                if (span2.func_178381_d() != i) continue;
+                //skips faces with transparent pixels so we can enlarge safely
+                if (span2.func_178384_c() != (!spanFacing.func_178369_d() ? pixelY : pixelX) - 1)
+                    continue;
+                existingSpan = span2;
+                break;
             }
         }
 
-        int j = p_178395_2_.func_178369_d() ? p_178395_4_ : p_178395_3_;
-        int k = p_178395_2_.func_178369_d() ? p_178395_3_ : p_178395_4_;
 
-        if (itemmodelgenerator$span == null)
-        {
-            p_178395_1_.add(new ItemModelGenerator.Span(p_178395_2_, k, j));
-        }
-        else
-        {
-            itemmodelgenerator$span.func_178382_a(k);
+        length = spanFacing.func_178369_d() ? pixelX : pixelY;
+        if (existingSpan == null) {
+            int newStart = spanFacing.func_178369_d() ? pixelY : pixelX;
+            listSpans.add(new ItemModelGenerator.Span(spanFacing, length, newStart));
+        } else {
+            existingSpan.func_178382_a(length);
         }
     }
 
     private boolean func_178391_a(int[] p_178391_1_, int p_178391_2_, int p_178391_3_, int p_178391_4_, int p_178391_5_)
     {
-        return p_178391_2_ >= 0 && p_178391_3_ >= 0 && p_178391_2_ < p_178391_4_ && p_178391_3_ < p_178391_5_ ? (p_178391_1_[p_178391_3_ * p_178391_4_ + p_178391_2_] >> 24 & 255) == 0 : true;
+        return p_178391_2_ < 0 || p_178391_3_ < 0 || p_178391_2_ >= p_178391_4_ || p_178391_3_ >= p_178391_5_ || (p_178391_1_[p_178391_3_ * p_178391_4_ + p_178391_2_] >> 24 & 255) == 0;
     }
 
     static class Span
@@ -265,7 +297,7 @@ public class ItemModelGenerator
             }
         }
 
-        public ItemModelGenerator.SpanFacing func_178383_a()
+        public ItemModelGenerator.SpanFacing getFacing()
         {
             return this.spanFacing;
         }
@@ -280,33 +312,28 @@ public class ItemModelGenerator
             return this.field_178388_c;
         }
 
-        public int func_178381_d()
-        {
+        public int func_178381_d() {
             return this.field_178386_d;
         }
     }
 
-    static enum SpanFacing
+    enum SpanFacing
     {
         UP(EnumFacing.UP, 0, -1),
         DOWN(EnumFacing.DOWN, 0, 1),
         LEFT(EnumFacing.EAST, -1, 0),
         RIGHT(EnumFacing.WEST, 1, 0);
 
+        @Getter
         private final EnumFacing facing;
         private final int field_178373_f;
         private final int field_178374_g;
 
-        private SpanFacing(EnumFacing facing, int p_i46215_4_, int p_i46215_5_)
+        SpanFacing(EnumFacing facing, int p_i46215_4_, int p_i46215_5_)
         {
             this.facing = facing;
             this.field_178373_f = p_i46215_4_;
             this.field_178374_g = p_i46215_5_;
-        }
-
-        public EnumFacing getFacing()
-        {
-            return this.facing;
         }
 
         public int func_178372_b()

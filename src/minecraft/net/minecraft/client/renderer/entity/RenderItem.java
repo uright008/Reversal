@@ -1,7 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockDoublePlant;
@@ -62,15 +61,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3i;
 import net.optifine.CustomColors;
 import net.optifine.CustomItems;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 import net.optifine.shaders.Shaders;
 import net.optifine.shaders.ShadersRender;
 
 public class RenderItem implements IResourceManagerReloadListener
 {
     private static final ResourceLocation RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-    private boolean notRenderingEffectsInGUI = true;
     public float zLevel;
     private final ItemModelMesher itemModelMesher;
     private final TextureManager textureManager;
@@ -85,21 +81,9 @@ public class RenderItem implements IResourceManagerReloadListener
         this.textureManager = textureManager;
         this.modelManager = modelManager;
 
-        if (Reflector.ItemModelMesherForge_Constructor.exists())
-        {
-            this.itemModelMesher = (ItemModelMesher)Reflector.newInstance(Reflector.ItemModelMesherForge_Constructor, new Object[] {modelManager});
-        }
-        else
-        {
-            this.itemModelMesher = new ItemModelMesher(modelManager);
-        }
+        this.itemModelMesher = new ItemModelMesher(modelManager);
 
         this.registerItems();
-    }
-
-    public void isNotRenderingEffectsInGUI(boolean isNot)
-    {
-        this.notRenderingEffectsInGUI = isNot;
     }
 
     public ItemModelMesher getItemModelMesher()
@@ -161,7 +145,7 @@ public class RenderItem implements IResourceManagerReloadListener
 
         if (flag1)
         {
-            worldrenderer.setBlockLayer((EnumWorldBlockLayer)null);
+            worldrenderer.setBlockLayer(null);
             GlStateManager.bindCurrentTexture();
         }
     }
@@ -293,15 +277,7 @@ public class RenderItem implements IResourceManagerReloadListener
         }
 
         renderer.putSprite(quad.getSprite());
-
-        if (Reflector.IColoredBakedQuad.exists() && Reflector.IColoredBakedQuad.isInstance(quad))
-        {
-            forgeHooksClient_putQuadColor(renderer, quad, color);
-        }
-        else
-        {
-            renderer.putColor4(color);
-        }
+        renderer.putColor4(color);
 
         this.putQuadNormal(renderer, quad);
     }
@@ -313,7 +289,7 @@ public class RenderItem implements IResourceManagerReloadListener
 
         for (int j = quads.size(); i < j; ++i)
         {
-            BakedQuad bakedquad = (BakedQuad)quads.get(i);
+            BakedQuad bakedquad = quads.get(i);
             int k = color;
 
             if (flag && bakedquad.hasTintIndex())
@@ -340,7 +316,7 @@ public class RenderItem implements IResourceManagerReloadListener
     public boolean shouldRenderItemIn3D(ItemStack stack)
     {
         IBakedModel ibakedmodel = this.itemModelMesher.getItemModel(stack);
-        return ibakedmodel == null ? false : ibakedmodel.isGui3d();
+        return ibakedmodel != null && ibakedmodel.isGui3d();
     }
 
     private void preTransform(ItemStack stack)
@@ -403,10 +379,6 @@ public class RenderItem implements IResourceManagerReloadListener
                         modelresourcelocation = new ModelResourceLocation("bow_pulling_0", "inventory");
                     }
                 }
-                else if (Reflector.ForgeItem_getModel.exists())
-                {
-                    modelresourcelocation = (ModelResourceLocation)Reflector.call(item, Reflector.ForgeItem_getModel, new Object[] {stack, entityplayer, Integer.valueOf(entityplayer.getItemInUseCount())});
-                }
 
                 if (modelresourcelocation != null)
                 {
@@ -420,8 +392,7 @@ public class RenderItem implements IResourceManagerReloadListener
         }
     }
 
-    protected void renderItemModelTransform(ItemStack stack, IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType)
-    {
+    protected void renderItemModelTransform(ItemStack stack, IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType) {
         this.textureManager.bindTexture(TextureMap.locationBlocksTexture);
         this.textureManager.getTexture(TextureMap.locationBlocksTexture).setBlurMipmap(false, false);
         this.preTransform(stack);
@@ -431,19 +402,11 @@ public class RenderItem implements IResourceManagerReloadListener
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.pushMatrix();
 
-        if (Reflector.ForgeHooksClient_handleCameraTransforms.exists())
-        {
-            model = (IBakedModel)Reflector.call(Reflector.ForgeHooksClient_handleCameraTransforms, new Object[] {model, cameraTransformType});
-        }
-        else
-        {
-            ItemCameraTransforms itemcameratransforms = model.getItemCameraTransforms();
-            itemcameratransforms.applyTransform(cameraTransformType);
+        ItemCameraTransforms itemcameratransforms = model.getItemCameraTransforms();
+        itemcameratransforms.applyTransform(cameraTransformType);
 
-            if (this.isThereOneNegativeScale(itemcameratransforms.getTransform(cameraTransformType)))
-            {
-                GlStateManager.cullFace(1028);
-            }
+        if (this.isThereOneNegativeScale(itemcameratransforms.getTransform(cameraTransformType))) {
+            GlStateManager.cullFace(1028);
         }
 
         this.renderItem(stack, model);
@@ -475,14 +438,7 @@ public class RenderItem implements IResourceManagerReloadListener
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.setupGuiTransform(x, y, ibakedmodel.isGui3d());
 
-        if (Reflector.ForgeHooksClient_handleCameraTransforms.exists())
-        {
-            ibakedmodel = (IBakedModel)Reflector.call(Reflector.ForgeHooksClient_handleCameraTransforms, new Object[] {ibakedmodel, ItemCameraTransforms.TransformType.GUI});
-        }
-        else
-        {
-            ibakedmodel.getItemCameraTransforms().applyTransform(ItemCameraTransforms.TransformType.GUI);
-        }
+        ibakedmodel.getItemCameraTransforms().applyTransform(ItemCameraTransforms.TransformType.GUI);
 
         this.renderItem(stack, ibakedmodel);
         GlStateManager.disableAlpha();
@@ -568,17 +524,10 @@ public class RenderItem implements IResourceManagerReloadListener
                 GlStateManager.enableBlend();
             }
 
-            if (ReflectorForge.isItemDamaged(stack))
+            if (stack.isItemDamaged())
             {
                 int j1 = (int)Math.round(13.0D - (double)stack.getItemDamage() * 13.0D / (double)stack.getMaxDamage());
                 int i = (int)Math.round(255.0D - (double)stack.getItemDamage() * 255.0D / (double)stack.getMaxDamage());
-
-                if (Reflector.ForgeItem_getDurabilityForDisplay.exists())
-                {
-                    double d0 = Reflector.callDouble(stack.getItem(), Reflector.ForgeItem_getDurabilityForDisplay, new Object[] {stack});
-                    j1 = (int)Math.round(13.0D - d0 * 13.0D);
-                    i = (int)Math.round(255.0D - d0 * 255.0D);
-                }
 
                 GlStateManager.disableLighting();
                 GlStateManager.disableDepth();
@@ -601,7 +550,7 @@ public class RenderItem implements IResourceManagerReloadListener
                     {
                         j = i1 >> 16 & 255;
                         k = i1 >> 8 & 255;
-                        l = i1 >> 0 & 255;
+                        l = i1 & 255;
                     }
                 }
 
@@ -618,10 +567,10 @@ public class RenderItem implements IResourceManagerReloadListener
     private void draw(WorldRenderer renderer, int x, int y, int width, int height, int red, int green, int blue, int alpha)
     {
         renderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        renderer.pos((double)(x + 0), (double)(y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
-        renderer.pos((double)(x + 0), (double)(y + height), 0.0D).color(red, green, blue, alpha).endVertex();
+        renderer.pos((double)(x), (double)(y), 0.0D).color(red, green, blue, alpha).endVertex();
+        renderer.pos((double)(x), (double)(y + height), 0.0D).color(red, green, blue, alpha).endVertex();
         renderer.pos((double)(x + width), (double)(y + height), 0.0D).color(red, green, blue, alpha).endVertex();
-        renderer.pos((double)(x + width), (double)(y + 0), 0.0D).color(red, green, blue, alpha).endVertex();
+        renderer.pos((double)(x + width), (double)(y), 0.0D).color(red, green, blue, alpha).endVertex();
         Tessellator.getInstance().draw();
     }
 
@@ -1171,39 +1120,10 @@ public class RenderItem implements IResourceManagerReloadListener
         this.registerBlock(Blocks.brown_mushroom_block, BlockHugeMushroom.EnumType.ALL_INSIDE.getMetadata(), "brown_mushroom_block");
         this.registerBlock(Blocks.red_mushroom_block, BlockHugeMushroom.EnumType.ALL_INSIDE.getMetadata(), "red_mushroom_block");
         this.registerBlock(Blocks.dragon_egg, "dragon_egg");
-
-        if (Reflector.ModelLoader_onRegisterItems.exists())
-        {
-            Reflector.call(Reflector.ModelLoader_onRegisterItems, new Object[] {this.itemModelMesher});
-        }
     }
 
     public void onResourceManagerReload(IResourceManager resourceManager)
     {
         this.itemModelMesher.rebuildCache();
-    }
-
-    public static void forgeHooksClient_putQuadColor(WorldRenderer p_forgeHooksClient_putQuadColor_0_, BakedQuad p_forgeHooksClient_putQuadColor_1_, int p_forgeHooksClient_putQuadColor_2_)
-    {
-        float f = (float)(p_forgeHooksClient_putQuadColor_2_ & 255);
-        float f1 = (float)(p_forgeHooksClient_putQuadColor_2_ >>> 8 & 255);
-        float f2 = (float)(p_forgeHooksClient_putQuadColor_2_ >>> 16 & 255);
-        float f3 = (float)(p_forgeHooksClient_putQuadColor_2_ >>> 24 & 255);
-        int[] aint = p_forgeHooksClient_putQuadColor_1_.getVertexData();
-        int i = aint.length / 4;
-
-        for (int j = 0; j < 4; ++j)
-        {
-            int k = aint[3 + i * j];
-            float f4 = (float)(k & 255);
-            float f5 = (float)(k >>> 8 & 255);
-            float f6 = (float)(k >>> 16 & 255);
-            float f7 = (float)(k >>> 24 & 255);
-            int l = Math.min(255, (int)(f * f4 / 255.0F));
-            int i1 = Math.min(255, (int)(f1 * f5 / 255.0F));
-            int j1 = Math.min(255, (int)(f2 * f6 / 255.0F));
-            int k1 = Math.min(255, (int)(f3 * f7 / 255.0F));
-            p_forgeHooksClient_putQuadColor_0_.putColorRGBA(p_forgeHooksClient_putQuadColor_0_.getColorIndex(4 - j), l, i1, j1, k1);
-        }
     }
 }

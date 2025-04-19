@@ -1,5 +1,6 @@
 package cn.stars.reversal.event;
 
+import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.Category;
@@ -115,6 +116,7 @@ public final class EventHandler {
                 if (mc.currentScreen instanceof ModernClickGUI || mc.currentScreen instanceof MMTClickGUI) {
                     module.onUpdateAlwaysInGui();
                 }
+
                 module.onUpdateAlways();
             }
         } else if (e instanceof TickEvent) {

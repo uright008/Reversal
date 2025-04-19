@@ -46,11 +46,6 @@ public class Animations extends Module {
     }
 
     @Override
-    public void onUpdateAlways() {
-        setSuffix(swordMode.getMode());
-    }
-
-    @Override
     public void onPreMotion(final PreMotionEvent event) {
         RendererLivingEntity.dmgRed = (float) chcRed.getValue() / 255;
         RendererLivingEntity.dmgGreen = (float) chcGreen.getValue() / 255;

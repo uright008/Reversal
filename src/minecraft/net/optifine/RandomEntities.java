@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.DataWatcher;
@@ -89,17 +91,15 @@ public class RandomEntities
     {
         if (newWorld != null)
         {
-            List list = newWorld.getLoadedEntityList();
+            List<Entity> list = newWorld.getLoadedEntityList();
 
-            for (int i = 0; i < list.size(); ++i)
-            {
-                Entity entity = (Entity)list.get(i);
-                entityLoaded(entity, newWorld);
+            for (final Entity o : list) {
+                entityLoaded(o, newWorld);
             }
         }
 
-        randomEntity.setEntity((Entity)null);
-        randomTileEntity.setTileEntity((TileEntity)null);
+        randomEntity.setEntity(null);
+        randomTileEntity.setTileEntity(null);
     }
 
     public static ResourceLocation getTextureLocation(ResourceLocation loc)

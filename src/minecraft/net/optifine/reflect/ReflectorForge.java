@@ -74,11 +74,6 @@ public class ReflectorForge
         }
     }
 
-    public static boolean isItemDamaged(ItemStack stack)
-    {
-        return !Reflector.ForgeItem_showDurabilityBar.exists() ? stack.isItemDamaged() : Reflector.callBoolean(stack.getItem(), Reflector.ForgeItem_showDurabilityBar, new Object[] {stack});
-    }
-
     public static boolean armorHasOverlay(ItemArmor itemArmor, ItemStack itemStack)
     {
         int i = itemArmor.getColor(itemStack);

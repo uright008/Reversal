@@ -130,7 +130,7 @@ public abstract class EntityPlayer extends EntityLivingBase implements CapeHolde
     private final GameProfile gameProfile;
     private boolean hasReducedDebug = false;
     public EntityFishHook fishEntity;
-    private SmoothSneakUtil smoothSneakingState = new SmoothSneakUtil();
+    private final SmoothSneakUtil smoothSneakingState = new SmoothSneakUtil();
 
     public EntityPlayer(World worldIn, GameProfile gameProfileIn)
     {
