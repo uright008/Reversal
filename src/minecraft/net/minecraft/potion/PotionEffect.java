@@ -15,10 +15,10 @@ import org.apache.logging.log4j.Logger;
 public class PotionEffect
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private int potionID;
-    private int initialDuration;
-    private int duration;
-    private int amplifier;
+    public int potionID;
+    public int initialDuration;
+    public int duration;
+    public int amplifier;
     private boolean isSplashPotion;
     private boolean isAmbient;
     private boolean isPotionDurationMax;

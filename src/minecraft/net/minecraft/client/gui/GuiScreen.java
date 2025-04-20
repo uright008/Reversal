@@ -53,6 +53,7 @@ import net.minecraft.util.IChatComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -138,37 +139,13 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     public static String getClipboardString()
     {
-        try
-        {
-            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object)null);
-
-            if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor))
-            {
-                return (String)transferable.getTransferData(DataFlavor.stringFlavor);
-            }
-        }
-        catch (Exception var1)
-        {
-            ;
-        }
-
+        if (GLFW.glfwGetClipboardString(RainyAPI.window) != null) return GLFW.glfwGetClipboardString(RainyAPI.window);
         return "";
     }
 
     public static void setClipboardString(String copyText)
     {
-        if (!StringUtils.isEmpty(copyText))
-        {
-            try
-            {
-                StringSelection stringselection = new StringSelection(copyText);
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, (ClipboardOwner)null);
-            }
-            catch (Exception var2)
-            {
-                ;
-            }
-        }
+        GLFW.glfwSetClipboardString(RainyAPI.window ,copyText);
     }
 
     protected void renderToolTip(ItemStack stack, int x, int y)

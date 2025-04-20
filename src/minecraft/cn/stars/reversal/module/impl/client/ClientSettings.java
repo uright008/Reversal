@@ -22,6 +22,8 @@ public final class ClientSettings extends Module {
     public final ModeValue colorType = new ModeValue("Color Type", "value.ClientSettings.colorType", this, "Rainbow", "Rainbow", "Double", "Fade", "Static");
     public final ColorValue color1 = new ColorValue("Color 1", "value.ClientSettings.color1", this, new Color(20,250,255), true);
     public final ColorValue color2 = new ColorValue("Color 2", "value.ClientSettings.color2", this, new Color(20,250,255), true);
+    public final BoolValue customAlpha = new BoolValue("Custom Alpha", this, false);
+    public final NumberValue alpha = new NumberValue("Alpha", this, 255, 0, 255, 1);
     public final NumberValue indexTimes = new NumberValue("Index Times",  "value.ClientSettings.indexTimes",this, 1, 1, 10, 0.1);
     public final NumberValue indexSpeed = new NumberValue("Index Speed", "value.ClientSettings.indexSpeed",this, 1, 1, 5, 0.1);
 
@@ -50,6 +52,7 @@ public final class ClientSettings extends Module {
 
     @Override
     public void onUpdateAlways() {
+        alpha.hidden = !customAlpha.enabled;
         colorType.hidden = theme.getMode().equals("ThunderHack");
         color1.hidden = theme.getMode().equals("ThunderHack");
         color2.hidden = theme.getMode().equals("ThunderHack");

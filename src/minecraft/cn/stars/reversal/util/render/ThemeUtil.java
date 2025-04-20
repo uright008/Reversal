@@ -17,12 +17,8 @@ public final class ThemeUtil implements GameInstance {
     @Getter
     @Setter
     private String customClientName = "";
-    private final Color color1 = new Color(233,80,169);
-    private final Color color2 = new Color(71, 253, 160);
     private Color color;
-    private String theme;
     private String colorType;
-    private boolean switcher;
 
     private final TimeUtil timer = new TimeUtil();
 
@@ -31,15 +27,15 @@ public final class ThemeUtil implements GameInstance {
     }
 
     public int getThemeColorInt(final ThemeType type) {
-        return getThemeColor(type).hashCode();
+        return getThemeColor(type).getRGB();
     }
 
     public int getThemeColorInt(final float colorOffset, final ThemeType type) {
-        return getThemeColor(colorOffset, type, 1).hashCode();
+        return getThemeColor(colorOffset, type, 1).getRGB();
     }
 
     public int getThemeColorInt(final float colorOffset, final ThemeType type, final float timeMultiplier) {
-        return getThemeColor(colorOffset, type, timeMultiplier).hashCode();
+        return getThemeColor(colorOffset, type, timeMultiplier).getRGB();
     }
 
     public Color getThemeColor(final float colorOffset, final ThemeType type) {
@@ -53,12 +49,15 @@ public final class ThemeUtil implements GameInstance {
     public Color getThemeColor(float colorOffset, final ThemeType type, final float timeMultiplier) {
         if (timer.hasReached(50 * 5)) {
             timer.reset();
-            theme = ModuleInstance.getModule(ClientSettings.class).theme.getMode();
-            colorType = ModuleInstance.getModule(ClientSettings.class).colorType.getMode();
+            try {
+                colorType = ModuleInstance.getClientSettings().colorType.getMode();
+            } catch (Exception e) {
+                colorType = "Rainbow";
+            }
             color = Reversal.CLIENT_THEME_COLOR;
         }
 
-        if (theme == null || color == null || colorType == null) return color;
+        if (color == null || colorType == null) return color;
 
         float colorOffsetMultiplier = 1;
 
@@ -70,9 +69,9 @@ public final class ThemeUtil implements GameInstance {
             }
         }
 
-        colorOffsetMultiplier *= ModuleInstance.getModule(ClientSettings.class).indexTimes.getFloat();
+        colorOffsetMultiplier *= ModuleInstance.getClientSettings().indexTimes.getFloat();
         colorOffset *= colorOffsetMultiplier;
-        float speed = ModuleInstance.getModule(ClientSettings.class).indexSpeed.getFloat();
+        float speed = ModuleInstance.getClientSettings().indexSpeed.getFloat();
 
         final double timer = (System.currentTimeMillis() / 1E+8 * timeMultiplier) * 4E+5;
 
@@ -115,10 +114,12 @@ public final class ThemeUtil implements GameInstance {
                 break;
             }
 
-            default:
             case FLAT_COLOR:
+            default:
                 color = Reversal.CLIENT_THEME_COLOR;
         }
+
+        if (ModuleInstance.getClientSettings().customAlpha.enabled) color = ColorUtil.reAlpha(color, ModuleInstance.getClientSettings().alpha.getInt());
 
         return color;
     }

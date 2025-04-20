@@ -125,7 +125,7 @@ public class ModernMainMenu extends GuiScreen implements GameInstance {
         if (RainyAPI.isShaderCompatibility) regular18.drawCenteredString("警告: 配置已开启DisableShader选项！你将只能使用ID 9作为背景！", this.width / 2f, this.height - 30, new Color(220, 20, 20, 220).getRGB());
 
         //    regular.drawCenteredString(tipString, width / 2f, height / 2f + 100,
-        //            ColorUtil.withAlpha(new Color(250, 250, 250, 250), (int) fontAnimation.getValue()).getRGB());
+        //            ColorUtil.reAlpha(new Color(250, 250, 250, 250), (int) fontAnimation.getValue()).getRGB());
         if (colorAnimation.isFinished()) colorAnimation.changeDirection();
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);

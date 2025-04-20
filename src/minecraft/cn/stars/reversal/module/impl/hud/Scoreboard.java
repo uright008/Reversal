@@ -102,7 +102,7 @@ public class Scoreboard extends Module {
             {
                 String objectiveDisplayName = scoreObjective.getDisplayName();
                 NORMAL_RENDER_RUNNABLES.add(() -> {
-                    drawString(objectiveDisplayName, scoreboardStartX + finalMaxStringWidth / 2f - fontWidth(objectiveDisplayName) / 2f, currentLineY - fontHeight() + (modernFont.enabled ? 2 : 0), Color.WHITE.getRGB());
+                    drawString(objectiveDisplayName, scoreboardStartX + finalMaxStringWidth / 2f - fontWidth(objectiveDisplayName) / 2f, currentLineY - fontHeight(), Color.WHITE.getRGB());
                 });
             }
 

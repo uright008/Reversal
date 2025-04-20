@@ -27,7 +27,7 @@ public class ColorValue extends Value {
         this.dontShowThemeColor = false;
         parent.settings.add(this);
         parent.settingsMap.put(name.toLowerCase(), this);
-        this.setColor(new Color(20,250,255));
+        this.setColor(new Color(20,250,255, 255));
     }
 
     public ColorValue(final String name, final Module parent, Color defaultColor, final boolean dontShowThemeColor) {

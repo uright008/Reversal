@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
  * @author ChengFeng
  * @since 2024/8/11
  **/
+
 public class MusicAPI {
     public static final String host = "https://zm.armoe.cn";
     public static User user = new User();

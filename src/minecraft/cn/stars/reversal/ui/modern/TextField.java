@@ -1,8 +1,10 @@
 package cn.stars.reversal.ui.modern;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.music.ui.ThemeColor;
+import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.advanced.Direction;
 import cn.stars.reversal.util.animation.advanced.composed.ColorAnimation;
 import cn.stars.reversal.util.animation.rise.Animation;
@@ -160,85 +162,89 @@ public class TextField {
 
         if (!focused) return;
 
-        // Ctrl things
-        if (GuiScreen.isCtrlKeyDown()) {
-            if (keyCode == Keyboard.KEY_A) {
-                if (!text.isEmpty()) {
-                    selectionStart = 0;
-                    selectionEnd = text.length();
-                }
-            } else if (keyCode == Keyboard.KEY_C) {
-                if (selectionStart != -1 && selectionEnd != -1) {
-                    int start = Math.min(selectionStart, selectionEnd);
-                    int end = Math.max(selectionStart, selectionEnd);
-                    if (start < 0) start = 0;
-                    if (end > text.length()) end = text.length();
-                    copyToClipboard(text.substring(start, end));
-                }
-            } else if (keyCode == Keyboard.KEY_V) {
-                String clipboardText = getClipboardText();
-                if (clipboardText != null) {
+        try {
+            // Ctrl things
+            if (GuiScreen.isCtrlKeyDown()) {
+                if (keyCode == Keyboard.KEY_A) {
+                    if (!text.isEmpty()) {
+                        selectionStart = 0;
+                        selectionEnd = text.length();
+                    }
+                } else if (keyCode == Keyboard.KEY_C) {
                     if (selectionStart != -1 && selectionEnd != -1) {
                         int start = Math.min(selectionStart, selectionEnd);
                         int end = Math.max(selectionStart, selectionEnd);
                         if (start < 0) start = 0;
                         if (end > text.length()) end = text.length();
-                        text = text.substring(0, start) + clipboardText + text.substring(end);
-                        cursorPosition = start + clipboardText.length();
-                        selectionStart = -1;
-                        selectionEnd = -1;
-                    } else {
-                        text = text.substring(0, cursorPosition) + clipboardText + text.substring(cursorPosition);
-                        cursorPosition += clipboardText.length();
+                        GuiScreen.setClipboardString(text.substring(start, end));
                     }
+                } else if (keyCode == Keyboard.KEY_V) {
+                    String clipboardText = GuiScreen.getClipboardString();
+                    if (clipboardText != null) {
+                        if (selectionStart != -1 && selectionEnd != -1) {
+                            int start = Math.min(selectionStart, selectionEnd);
+                            int end = Math.max(selectionStart, selectionEnd);
+                            if (start < 0) start = 0;
+                            if (end > text.length()) end = text.length();
+                            text = text.substring(0, start) + clipboardText + text.substring(end);
+                            cursorPosition = start + clipboardText.length();
+                            selectionStart = -1;
+                            selectionEnd = -1;
+                        } else {
+                            text = text.substring(0, cursorPosition) + clipboardText + text.substring(cursorPosition);
+                            cursorPosition += clipboardText.length();
+                        }
+                    }
+                } else if (keyCode == Keyboard.KEY_Z) {
+                    // not implement yet > <
                 }
-            } else if (keyCode == Keyboard.KEY_Z) {
-                // not implement yet > <
+                return;
             }
-            return;
-        }
 
-        if (keyCode == Keyboard.KEY_BACK) {
-            if (selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
-                int start = Math.min(selectionStart, selectionEnd);
-                int end = Math.max(selectionStart, selectionEnd);
-                if (start < 0) start = 0;
-                if (end > text.length()) end = text.length();
-                text = text.substring(0, start) + text.substring(end);
-                cursorPosition = start;
-                selectionStart = -1;
-                selectionEnd = -1;
-            } else if (cursorPosition > 0) {
-                text = text.substring(0, cursorPosition - 1) + text.substring(cursorPosition);
-                cursorPosition--;
+            if (keyCode == Keyboard.KEY_BACK) {
+                if (selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
+                    int start = Math.min(selectionStart, selectionEnd);
+                    int end = Math.max(selectionStart, selectionEnd);
+                    if (start < 0) start = 0;
+                    if (end > text.length()) end = text.length();
+                    text = text.substring(0, start) + text.substring(end);
+                    cursorPosition = start;
+                    selectionStart = -1;
+                    selectionEnd = -1;
+                } else if (cursorPosition > 0) {
+                    text = text.substring(0, cursorPosition - 1) + text.substring(cursorPosition);
+                    cursorPosition--;
+                }
+            } else if (keyCode == Keyboard.KEY_LEFT) {
+                if (cursorPosition > 0) {
+                    cursorPosition--;
+                    selectionStart = -1;
+                    selectionEnd = -1;
+                }
+            } else if (keyCode == Keyboard.KEY_RIGHT) {
+                if (cursorPosition < text.length()) {
+                    cursorPosition++;
+                    selectionStart = -1;
+                    selectionEnd = -1;
+                }
+            } else if (isPrintableKey(keyCode)) {
+                if (c == '\u0000') return;
+                if (selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
+                    int start = Math.min(selectionStart, selectionEnd);
+                    int end = Math.max(selectionStart, selectionEnd);
+                    if (start < 0) start = 0;
+                    if (end > text.length()) end = text.length();
+                    text = text.substring(0, start) + c + text.substring(end);
+                    cursorPosition = start + 1;
+                    selectionStart = -1;
+                    selectionEnd = -1;
+                } else {
+                    text = text.substring(0, cursorPosition) + c + text.substring(cursorPosition);
+                    cursorPosition++;
+                }
             }
-        } else if (keyCode == Keyboard.KEY_LEFT) {
-            if (cursorPosition > 0) {
-                cursorPosition--;
-                selectionStart = -1;
-                selectionEnd = -1;
-            }
-        } else if (keyCode == Keyboard.KEY_RIGHT) {
-            if (cursorPosition < text.length()) {
-                cursorPosition++;
-                selectionStart = -1;
-                selectionEnd = -1;
-            }
-        } else if (isPrintableKey(keyCode)) {
-            if (c == '\u0000') return;
-            if (selectionStart != -1 && selectionEnd != -1 && selectionStart != selectionEnd) {
-                int start = Math.min(selectionStart, selectionEnd);
-                int end = Math.max(selectionStart, selectionEnd);
-                if (start < 0) start = 0;
-                if (end > text.length()) end = text.length();
-                text = text.substring(0, start) + c + text.substring(end);
-                cursorPosition = start + 1;
-                selectionStart = -1;
-                selectionEnd = -1;
-            } else {
-                text = text.substring(0, cursorPosition) + c + text.substring(cursorPosition);
-                cursorPosition++;
-            }
+        } catch (Exception e) {
+            ReversalLogger.error("An error occurred while processing text field.", e);
         }
     }
 
@@ -254,25 +260,6 @@ public class TextField {
                 keyCode != Keyboard.KEY_F7 && keyCode != Keyboard.KEY_F8 &&
                 keyCode != Keyboard.KEY_F9 && keyCode != Keyboard.KEY_F10 &&
                 keyCode != Keyboard.KEY_F11 && keyCode != Keyboard.KEY_F12;
-    }
-
-    private void copyToClipboard(String str) {
-        StringSelection stringSelection = new StringSelection(str);
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        clipboard.setContents(stringSelection, null);
-    }
-
-    private String getClipboardText() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        Transferable contents = clipboard.getContents(null);
-        if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-            try {
-                return (String) contents.getTransferData(DataFlavor.stringFlavor);
-            } catch (UnsupportedFlavorException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
     }
 
     public void setText(String text) {

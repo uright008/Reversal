@@ -2,9 +2,6 @@ package cn.stars.reversal.ui.modern;
 
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
-import cn.stars.reversal.module.impl.client.PostProcessing;
-import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
@@ -58,15 +55,15 @@ public class TextButton extends MenuButton {
         super.draw(mouseX, mouseY, partialTicks);
         // Colors for rendering
         final double value = getY();
-        final Color fontColor = enabled ? ColorUtil.withAlpha(new Color(250, 250, 250, 250), (int) this.getCuriosityFontAnimation().getValue()) : new Color(200, 200, 200, 100);
+        final Color fontColor = enabled ? ColorUtil.reAlpha(new Color(250, 250, 250, 250), (int) this.getCuriosityFontAnimation().getValue()) : new Color(200, 200, 200, 100);
 
         // Renders the button text
         UI_BLOOM_RUNNABLES.add(() -> {
             RenderUtil.roundedRectangle(this.getX(), value, this.getWidth(), this.getHeight(), 4,
-                    ColorUtil.withAlpha(new Color(30, 30, 30, 230), (int) this.getCuriosityAnimation().getValue()));
-//            RenderUtil.roundedOutlineRectangle(this.getX(), value, this.getWidth(), this.getHeight(), 5, 0.5f, ColorUtil.withAlpha(Color.WHITE, (int) ((int) this.getHoverAnimation().getValue() / 1.7f)));
+                    ColorUtil.reAlpha(new Color(30, 30, 30, 230), (int) this.getCuriosityAnimation().getValue()));
+//            RenderUtil.roundedOutlineRectangle(this.getX(), value, this.getWidth(), this.getHeight(), 5, 0.5f, ColorUtil.reAlpha(Color.WHITE, (int) ((int) this.getHoverAnimation().getValue() / 1.7f)));
             RenderUtil.roundedOutlineRectangle(this.getX(), value, this.getWidth(), this.getHeight(), 3, 1,
-                    ColorUtil.withAlpha(new Color(250, 250, 250, 250), (int) (getCuriosityBorderAnimation().getValue())));
+                    ColorUtil.reAlpha(new Color(250, 250, 250, 250), (int) (getCuriosityBorderAnimation().getValue())));
             if (this.left) {
                 ICON_RENDERER.drawString(this.icon, (float) (this.getX() + iconX), (float) (value + textY + 1), fontColor.getRGB());
                 FONT_RENDERER.drawString(this.name, (float) (this.getX() + textX), (float) (value + textY + 2), fontColor.getRGB());

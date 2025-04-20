@@ -12,7 +12,6 @@ import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
 import cn.stars.reversal.ui.modern.TextField;
-import cn.stars.reversal.util.MiscUtil;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.math.TimeUtil;
@@ -107,7 +106,7 @@ public class ModernClickGUI extends GuiScreen {
         for (final Category category : Category.values()) {
             if (category == selectedCategory) {
                 sideAnimation.run(renderSelectY);
-                RenderUtil.roundedRectangle(x + 5, (float) sideAnimation.getValue() + 1, 100, 18, 5, ColorUtil.withAlpha(valueColor, 120));
+                RenderUtil.roundedRectangle(x + 5, (float) sideAnimation.getValue() + 1, 100, 18, 5, ColorUtil.reAlpha(valueColor, 120));
                 cur26.drawString(Category.getCategoryIcon(category), x + 10, renderSelectY + 7, new Color(200,200,200, 240).getRGB());
                 regular20.drawString(localization ? I18n.format("category." + category.name() + ".name") : StringUtils.capitalize(category.name().toLowerCase()), x + 28, renderSelectY + 7, new Color(240,240,240, 240).getRGB());
             } else {

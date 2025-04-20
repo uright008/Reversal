@@ -65,7 +65,7 @@ public final class ColorUtil {
         return hexColor(f, f1, f2, (int) alpha);
     }
 
-    public static Color withAlpha(final Color color, final int alpha) {
+    public static Color reAlpha(final Color color, final int alpha) {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) MathUtil.clamp(0, 255, alpha));
     }
 
