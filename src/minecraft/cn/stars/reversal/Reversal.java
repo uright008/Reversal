@@ -60,10 +60,10 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v2.1.2";
+    public static final String VERSION = "v3.0.0-Insider";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
-    public static final Branch BRANCH = Branch.PRODUCTION;
+    public static final Branch BRANCH = Branch.DEVELOPMENT;
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
