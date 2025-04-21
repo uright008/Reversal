@@ -618,6 +618,9 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 }
                 break;
             }
+            case "Cancel": {
+                // Nothing here.
+            }
         }
     }
 
