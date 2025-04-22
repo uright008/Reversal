@@ -266,6 +266,7 @@ public class Reversal {
             new RealFirstPerson(),
             new SkinLayers3D(),
             new WaveyCapes(),
+            new Dglab(),
             // Combat
             new ClickSound(),
             new NoClickDelay(),
@@ -328,6 +329,7 @@ public class Reversal {
             new PlayerList(),
             new PlayerModel(),
             new PotionEffect(),
+            new DglabOverlay(),
     //        new PotionEffects(),
             new Scoreboard(),
             new SessionInfo(),

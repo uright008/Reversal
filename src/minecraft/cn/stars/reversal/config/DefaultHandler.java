@@ -5,10 +5,7 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.value.Value;
-import cn.stars.reversal.value.impl.BoolValue;
-import cn.stars.reversal.value.impl.ColorValue;
-import cn.stars.reversal.value.impl.ModeValue;
-import cn.stars.reversal.value.impl.NumberValue;
+import cn.stars.reversal.value.impl.*;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.render.ThemeUtil;
@@ -115,6 +112,10 @@ public class DefaultHandler {
                 if (split[0].contains("ModeValue") && setting instanceof ModeValue)
                     ((ModeValue) setting).set(split[3]);
 
+                if (split[0].contains("TextValue") && setting instanceof TextValue)
+                    ((TextValue) setting).setText(split[3]);
+
+
                 if (split[0].contains("Bind")) {
                     module.setKeyBind(Integer.parseInt(split[2]));
                 }
@@ -161,6 +162,9 @@ public class DefaultHandler {
                     }
                     if (s instanceof ModeValue) {
                         configBuilder.append("ModeValue_").append(moduleName).append("_").append(s.name).append("_").append(((ModeValue) s).getMode()).append("\r\n");
+                    }
+                    if (s instanceof TextValue) {
+                        configBuilder.append("TextValue_").append(moduleName).append("_").append(s.name).append("_").append(((TextValue) s).getText()).append("\r\n");
                     }
                 }
                 configBuilder.append("Bind_").append(moduleName).append("_").append(m.getKeyBind()).append("\r\n");

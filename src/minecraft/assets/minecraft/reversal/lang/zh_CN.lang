@@ -57,6 +57,8 @@ module.SkinLayers3D.name=3D皮肤层
 module.SkinLayers3D.desc=使皮肤层变3D.
 module.WaveyCapes.name=飘扬披风
 module.WaveyCapes.desc=让披风在风中摇摆~
+module.Dglab.name=郊狼
+module.Dglab.desc=连接至你的郊狼主机 (需要3.x)
 
 # Client
 module.ClientSettings.name=客户端设置
@@ -153,6 +155,8 @@ module.TestElement.name=测试模块
 module.TestElement.desc=仅供测试.
 module.TextGui.name=客户端标题
 module.TextGui.desc=显示客户端水印.
+module.DglabOverlay.name=郊狼信息
+module.DglabOverlay.desc=显示郊狼设备信息
 
 # Misc
 module.ClientSpoofer.name=客户端欺骗
