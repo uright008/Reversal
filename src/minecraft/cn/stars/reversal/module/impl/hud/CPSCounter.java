@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ModuleInfo(name = "CPSCounter", localizedName = "module.CPSCounter.name", description = "Show your CPS on screen",
-        localizedDescription = "module.CPSCounter.name", category = Category.HUD)
+        localizedDescription = "module.CPSCounter.desc", category = Category.HUD)
 public class CPSCounter extends Module {
     private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
     public final ColorValue colorValue = new ColorValue("Color", this);
