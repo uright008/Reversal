@@ -5,6 +5,7 @@ import cn.stars.reversal.event.impl.Shader3DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.value.impl.BoolValue;
@@ -25,7 +26,7 @@ import java.util.Comparator;
 
 @ModuleInfo(name = "PotionEffect", localizedName = "module.PotionEffect.name", description = "Draw potion effect stats", localizedDescription = "module.PotionEffect.desc",category = Category.HUD)
 public class PotionEffect extends Module {
-    public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Minecraft", "Minecraft 2", "Simple", "Empathy", "Blue Archive");
+    public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Simple", "Modern", "Empathy", "Minecraft", "Minecraft 2", "Shader", "Blue Archive");
     public final ColorValue colorValue = new ColorValue("Color", this);
     public final BoolValue background = new BoolValue("Background", this, true);
     public final BoolValue progress = new BoolValue("Progress", this, true);
@@ -67,6 +68,18 @@ public class PotionEffect extends Module {
                         break;
                     case "Simple":
                         RenderUtil.rect(renderX, renderY, 140, 32, Color.BLACK);
+                        break;
+                    case "Modern":
+                        if (event.isBloom())
+                            RenderUtil.roundedRectangle(renderX, renderY, 140, 32, 4f, colorValue.getColor());
+                        else
+                            RenderUtil.roundedRectangle(renderX, renderY, 140, 32, 4f, Color.BLACK);
+                        break;
+                    case "Shader":
+                        if (event.isBloom())
+                            RenderUtil.roundedRectangle(renderX, renderY, 140, 32, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), colorValue.getColor());
+                        else
+                            RenderUtil.roundedRectangle(renderX, renderY, 140, 32, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
                         break;
                     case "Empathy":
                         RenderUtil.roundedRectangle(renderX, renderY, 140, 32, 3f, ColorUtil.empathyGlowColor());
@@ -113,6 +126,13 @@ public class PotionEffect extends Module {
                         RenderUtil.rect(renderX, renderY, 140, 32, new Color(0, 0, 0, 80));
                         if (progress.enabled) {
                             RenderUtil.rect(renderX, renderY, potionEffect.getProgressAnimation().getValue(), 32, new Color(0, 0, 0, 80));
+                        }
+                        break;
+                    case "Modern":
+                        RenderUtil.roundedOutlineRectangle(renderX - 1, renderY - 1, 142, 34, 3f, 1f, colorValue.getColor());
+                        RenderUtil.roundedRectangle(renderX, renderY, 140, 32, 4f, new Color(0, 0, 0, 80));
+                        if (progress.enabled) {
+                            RenderUtil.roundedRectangle(renderX, renderY, potionEffect.getProgressAnimation().getValue(), 32, 4f, new Color(0, 0, 0, 80));
                         }
                         break;
                     case "Empathy":

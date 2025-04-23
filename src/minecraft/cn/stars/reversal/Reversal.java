@@ -197,6 +197,10 @@ public class Reversal {
                 FileUtil.createDirectory("Cache" + File.separator);
             }
 
+            if (!FileUtil.exists("Misc" + File.separator + "Dglab" + File.separator)) {
+                FileUtil.createDirectory("Misc" + File.separator + "Dglab" + File.separator);
+            }
+
             if (!FileUtil.exists("Background" + File.separator)) {
                 FileUtil.createDirectory("Background" + File.separator);
             }
@@ -330,7 +334,6 @@ public class Reversal {
             new PlayerModel(),
             new PotionEffect(),
             new DglabOverlay(),
-    //        new PotionEffects(),
             new Scoreboard(),
             new SessionInfo(),
             new TargetHUD(),

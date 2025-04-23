@@ -9,6 +9,7 @@ import cn.stars.addons.dglab.entity.Waveform.Waveform;
 import cn.stars.addons.dglab.qr.ToolQR;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.addons.Dglab;
+import lombok.SneakyThrows;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -36,6 +37,11 @@ public class DglabClient {
             webSocketServer.start();
             Dglab.serverLoaded = true;
         }
+    }
+
+    @SneakyThrows
+    public static void stop() {
+        webSocketServer.stop();
     }
 
     // 二维码

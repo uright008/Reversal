@@ -89,11 +89,11 @@ public class MainGui extends AtomicGui {
             RenderUtils.drawLoadingCircle3(width / 2f, height / 2f - 25, 30, ColorUtil.whiteAnimation.getOutput());
         }, 2, 2);
 
-        psm18.drawString(Reversal.NAME + " " + Reversal.VERSION, 2, height - 30, Color.WHITE.getRGB());
-        psm18.drawString("Minecraft " + Reversal.MINECRAFT_VERSION, 2, height - 20, Color.WHITE.getRGB());
-        psm18.drawString("OptiFine_1.8.9_HD_U_M6_pre2", 2, height - 10, Color.WHITE.getRGB());
+        regular16.drawString(Reversal.NAME + " " + Reversal.VERSION, 2, height - 30, Color.WHITE.getRGB());
+        regular16.drawString("Minecraft " + Reversal.MINECRAFT_VERSION, 2, height - 20, Color.WHITE.getRGB());
+        regular16.drawString("OptiFine_1.8.9_HD_U_M6_pre2", 2, height - 10, Color.WHITE.getRGB());
 
         String license = "© 2025 Aerolite Society. 保留部分权利. Co-developed by Stars.";
-        psm18.drawString(license, width - psm18.width(license), height - 10, Color.WHITE.getRGB());
+        regular16.drawString(license, width - regular16.width(license), height - 10, Color.WHITE.getRGB());
     }
 }

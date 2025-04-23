@@ -1,5 +1,6 @@
 package cn.stars.addons.dglab.qr;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import net.minecraft.client.Minecraft;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 
 public class ToolQR {
@@ -45,13 +47,19 @@ public class ToolQR {
                     }
                 }
 
-                File qrCodeFile = new File(Minecraft.getMinecraft().mcDataDir, "Reversal/Misc/Dglab/QR.png");
+                File dir = new File(Minecraft.getMinecraft().mcDataDir, "Reversal/Misc/Dglab");
+                File qrCodeFile = new File(dir, "QR.png");
+
+                if (!qrCodeFile.exists()) {
+                    qrCodeFile.createNewFile();
+                }
+
                 ImageIO.write(image, "png", qrCodeFile);
 
-
-                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", "", "\"" + qrCodeFile.getAbsolutePath() + "\"");
-                pb.start();
-
+                try {
+                    Desktop.getDesktop().open(qrCodeFile);
+                } catch (Exception ex) {
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

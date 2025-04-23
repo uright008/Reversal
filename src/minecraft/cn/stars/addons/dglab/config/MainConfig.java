@@ -119,7 +119,7 @@ public class MainConfig {
         Gson gson = new Gson();
         File file = new File(Minecraft.getMinecraft().mcDataDir, "Reversal/Misc/Dglab/MainConfig.json");
         if (!file.exists()) {
-            return new MainConfig(true); // 默认的对象，可以根据需求初始化
+            return new MainConfig(false); // 默认的对象，可以根据需求初始化
         }
         try (Reader reader = new FileReader(file)) {
             NetworkAdapter networkInterface = new NetworkAdapter();

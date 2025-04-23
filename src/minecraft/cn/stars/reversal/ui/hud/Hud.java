@@ -108,6 +108,7 @@ public class Hud implements GameInstance {
                     return Float.compare(psm17.getWidth(name2), psm17.getWidth(name));
                 }
 
+                case "Shader":
                 case "Simple":
                 default: {
                     return Float.compare(regular16.getWidth(name2), regular16.getWidth(name));
@@ -159,6 +160,36 @@ public class Hud implements GameInstance {
 
                     break;
                 }
+
+                case "Shader": {
+                    final int offsetY = 2;
+                    final int offsetX = 1;
+
+                    final double stringWidth = regular16.getWidth(name);
+
+                    RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, new Color(0, 0, 0, 60));
+                    RenderUtil.rect(renderX - offsetX + stringWidth + offsetX * 1.5 + 1, renderY - offsetY + 0.4, 1, 8.8 + offsetY, arraylist.colorValue.getColor(moduleCount));
+
+                    finalX = arraylistX - regular16.getWidth(name);
+
+                    regular16.drawString(name, renderX, renderY + 2, arraylist.colorValue.getColor(moduleCount).getRGB());
+
+                    final int mC = moduleCount;
+                    if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
+                        MODERN_BLOOM_RUNNABLES.add(() -> {
+                            RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, arraylist.colorValue.getColor(mC));
+                            RenderUtil.rect(renderX - offsetX + stringWidth + offsetX * 1.5 + 1, renderY - offsetY + 0.4, 1, 8.8 + offsetY, arraylist.colorValue.getColor(mC));
+                        });
+                    }
+
+                    if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
+                        MODERN_BLUR_RUNNABLES.add(() -> {
+                            RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, Color.BLACK);
+                        });
+
+                    }
+                }
+                break;
 
                 case "Simple": {
                     final int offsetY = 2;
@@ -448,6 +479,81 @@ public class Hud implements GameInstance {
                     if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
                         MODERN_BLUR_RUNNABLES.add(() -> {
                             RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 8, psb20.height() + 1.5, Color.BLACK);
+                        });
+                    }
+                }
+                break;
+            }
+
+            case "Shader": {
+                float roundStrength = ModuleInstance.getModule(ClientSettings.class).shaderRoundStrength.getFloat();
+                if (useDefaultName) {
+                    final String clientName = "Reversal";
+
+                    textGui.setWidth(100);
+                    int x = textGui.getX() + 5;
+                    int y = textGui.getY();
+                    float off = 0;
+
+                //    RenderUtil.rect(x, y, psb20.getWidth(clientName), psb20.height() + 1.5, new Color(0, 0, 0, 80));
+                    FontManager.getAtomic(16).drawString("2", x + 5, y + 5.5, textGui.colorValue.getColor().getRGB());
+
+                    for (int i = 0; i < clientName.length(); i++) {
+                        final String character = String.valueOf(clientName.charAt(i));
+
+                        final float off1 = off;
+                        regular18Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
+                        int finalI = i;
+                        MODERN_POST_BLOOM_RUNNABLES.add(() -> {
+                            regular18Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
+                        });
+                        off += regular18Bold.getWidth(character);
+                    }
+
+                    float finalOff = off;
+                    if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
+                        MODERN_BLOOM_RUNNABLES.add(() -> {
+                            RenderUtil.roundedRectangle(x, y, finalOff + 20.5, regular18Bold.height() + 1.5, roundStrength, textGui.colorValue.getColor());
+                        });
+                    }
+
+                    if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
+                        MODERN_BLUR_RUNNABLES.add(() -> {
+                            RenderUtil.roundedRectangle(x, y, finalOff + 20.5, regular18Bold.height() + 1.5, roundStrength, Color.BLACK);
+                        });
+                    }
+
+                } else {
+                    textGui.setWidth(20 + regular18Bold.getWidth(customName));
+                    int x = textGui.getX() + 5;
+                    int y = textGui.getY();
+                    float off = 0;
+
+                //    RenderUtil.rect(x, y, psb20.getWidth(clientName) + 8, psb20.height() + 1.5, new Color(0, 0, 0, 80));
+                    FontManager.getAtomic(16).drawString("2", x + 5, y + 5.5, textGui.colorValue.getColor().getRGB());
+
+                    for (int i = 0; i < customName.length(); i++) {
+                        final String character = String.valueOf(customName.charAt(i));
+
+                        final float off1 = off;
+                        regular18Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
+                        int finalI = i;
+                        MODERN_POST_BLOOM_RUNNABLES.add(() -> {
+                            regular18Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
+                        });
+                        off += regular18Bold.getWidth(character);
+                    }
+
+                    float finalOff = off;
+                    if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
+                        MODERN_BLOOM_RUNNABLES.add(() -> {
+                            RenderUtil.roundedRectangle(x, y, finalOff + 20.5, regular18Bold.height() + 1.5, roundStrength, textGui.colorValue.getColor());
+                        });
+                    }
+
+                    if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
+                        MODERN_BLUR_RUNNABLES.add(() -> {
+                            RenderUtil.roundedRectangle(x, y, finalOff + 20.5, regular18Bold.height() + 1.5, roundStrength, Color.BLACK);
                         });
                     }
                 }

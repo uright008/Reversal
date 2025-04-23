@@ -18,7 +18,7 @@ import java.awt.*;
 public final class ClientSettings extends Module {
     public final NoteValue note1 = new NoteValue("< Color Settings >", "value.ClientSettings.note1", this);
     public final ModeValue theme = new ModeValue("Theme", "value.ClientSettings.theme", this, "Simple",
-            "Minecraft", "Reversal", "Modern", "Simple", "Empathy", "ThunderHack");
+            "Minecraft", "Reversal", "Modern", "Simple", "Empathy", "ThunderHack", "Shader");
     public final ModeValue colorType = new ModeValue("Color Type", "value.ClientSettings.colorType", this, "Rainbow", "Rainbow", "Double", "Fade", "Static");
     public final ColorValue color1 = new ColorValue("Color 1", "value.ClientSettings.color1", this, new Color(20,250,255), true);
     public final ColorValue color2 = new ColorValue("Color 2", "value.ClientSettings.color2", this, new Color(20,250,255), true);
@@ -30,6 +30,8 @@ public final class ClientSettings extends Module {
     public final NoteValue note2 = new NoteValue("< Specific Settings >", "value.ClientSettings.note2", this);
     public final ModeValue listAnimation = new ModeValue("List Animation", "value.ClientSettings.listAnimation", this, "Reversal", "Reversal", "Slide");
     public final BoolValue empathyGlow = new BoolValue("Empathy Glow", "value.ClientSettings.empathyGlow", this, false);
+    public final NumberValue shaderRoundStrength = new NumberValue("Shader Round Strength", this, 4f, 1f, 8f, 1f);
+    public final BoolValue shaderTextColored = new BoolValue("Shader Text Colored", this, true);
 
     public final NoteValue note3 = new NoteValue("< Client Settings >", "value.ClientSettings.note3", this);
     public final BoolValue localization = new BoolValue("Localization", "value.ClientSettings.localization", this, true);

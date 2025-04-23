@@ -1,5 +1,6 @@
 package cn.stars.reversal;
 
+import cn.stars.addons.dglab.DglabClient;
 import cn.stars.reversal.font.FontUtil;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import lombok.SneakyThrows;
@@ -107,6 +108,7 @@ public class HopeEngine {
         if (RainyAPI.ircUser != null) {
             RainyAPI.ircUser.stop();
         }
+        DglabClient.stop();
 
         // Minecraft Termination
         if (crashReport != null) {

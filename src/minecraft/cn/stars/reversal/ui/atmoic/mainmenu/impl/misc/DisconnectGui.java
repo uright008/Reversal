@@ -9,11 +9,15 @@ import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IChatComponent;
 
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,12 +28,14 @@ public class DisconnectGui extends MiscGui {
     private int totalHeight;
     private TextButton reconnectButton, cancelButton;
     private TextButton[] buttons;
+    private LocalDateTime initialTime;
 
     public DisconnectGui(String reasonLocalizationKey, IChatComponent chatComp)
     {
         super("disconnected");
         this.reason = I18n.format(reasonLocalizationKey);
         this.message = chatComp;
+        this.initialTime = LocalDateTime.now();
     }
 
     @Override
@@ -92,5 +98,8 @@ public class DisconnectGui extends MiscGui {
                 i += regular16.height();
             }
         }
+
+        regular16.drawString("Initial Time: " + initialTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss")),2, height - 10, Color.WHITE.getRGB());
+        regular16.drawString("Protocol: " + ViaLoadingBase.getInstance().getTargetVersion().getName(), 2, height - 20, Color.WHITE.getRGB());
     }
 }
