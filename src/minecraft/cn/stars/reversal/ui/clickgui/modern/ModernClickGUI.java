@@ -11,7 +11,7 @@ import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
-import cn.stars.reversal.ui.modern.TextField;
+import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.math.TimeUtil;
@@ -193,7 +193,8 @@ public class ModernClickGUI extends GuiScreen {
                                 TextValue textValue = (TextValue) setting;
                                 psr18.drawString(settingName, setting.guiX, setting.yAnimation.getValue() - 15, new Color(200, 200, 200, 200).getRGB());
                                 if (selectedText == setting) {
-                                    textField.draw(setting.guiX + 5 + psr18.width(settingName), (float) setting.yAnimation.getValue() - 18, mouseX, mouseY);
+                                    textField.draw(setting.guiX + 5 + psr18.width(settingName), (float) setting.yAnimation.getValue() - 17.5f, mouseX, mouseY);
+                                    new ValueChangedEvent(m, setting).call();
                                 } else {
                                     psr18.drawString(textValue.text, setting.guiX + 5 + psr18.width(settingName), setting.yAnimation.getValue() - 15 + addY, new Color(240, 240, 240, 240).getRGB());
                                 }
@@ -598,7 +599,7 @@ public class ModernClickGUI extends GuiScreen {
                                 if (RenderUtil.isHovered(setting.guiX + psr18.width(settingName), setting.guiY - 15, 300, 12, mouseX, mouseY)) {
                                     if (selectedText != setting) {
                                         selectedText = (TextValue) setting;
-                                        textField = new TextField(100, 12, GameInstance.regular16, backgroundColor, new Color(100, 100, 100, 100));
+                                        textField = new TextField(370 - psr18.width(settingName), 12, GameInstance.regular16, backgroundColor, new Color(100, 100, 100, 100));
                                         textField.setText(((TextValue) setting).text);
                                         textField.setFocused(true);
                                         textField.setSelectedLine(true);
@@ -680,7 +681,6 @@ public class ModernClickGUI extends GuiScreen {
             } else {
                 textField.keyTyped(typedChar, keyCode);
             }
-            new ValueChangedEvent(null, selectedText).call();
         }
         if (keyCode == Keyboard.KEY_ESCAPE && scaleAnimation.getDestinationValue() == 1d) {
             scaleAnimation.run(0);

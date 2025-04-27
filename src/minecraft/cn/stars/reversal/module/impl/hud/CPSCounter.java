@@ -42,13 +42,11 @@ public class CPSCounter extends Module {
         String cpsString = Lclicks.size() + " CPS | " + Rclicks.size() + " CPS";
         if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) cpsString = "[" + Lclicks.size() + " CPS | " + Rclicks.size() + " CPS]";
 
-        Color color = colorValue.getColor();
-
         if (background.isEnabled()) {
             switch (mode.getMode()) {
                 case "Modern":
                     if (event.isBloom())
-                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(cpsString), psm18.getHeight() + 3, 4, color);
+                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(cpsString), psm18.getHeight() + 3, 4, colorValue.getColor());
                     else
                         RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(cpsString), psm18.getHeight() + 3, 4, Color.BLACK);
                     break;
@@ -64,13 +62,13 @@ public class CPSCounter extends Module {
                     break;
                 case "Shader":
                     if (event.isBloom())
-                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 21 + regular18.getWidth(cpsString), regular18.getHeight() + 1.5, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), color);
+                        RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 21 + regular18.getWidth(cpsString), regular18.getHeight() + 1.5, colorValue);
                     else
                         RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 21 + regular18.getWidth(cpsString), regular18.getHeight() + 1.5, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm18.getWidth(cpsString), psm18.getHeight() + 3, 3f, ColorUtil.empathyGlowColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, color);
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, colorValue.getColor());
                     break;
             }
         }
@@ -81,13 +79,12 @@ public class CPSCounter extends Module {
         if (displayOnClick.isEnabled() && (Lclicks.isEmpty() && Rclicks.isEmpty())) return;
         String cpsString = Lclicks.size() + " CPS | " + Rclicks.size() + " CPS";
         if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) cpsString = "[" + Lclicks.size() + " CPS | " + Rclicks.size() + " CPS]";
-        Color color = colorValue.getColor();
 
         if (background.isEnabled()) {
             switch (mode.getMode()) {
                 case "Modern":
                     RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(cpsString), psm18.getHeight() + 3, 4, new Color(0, 0, 0, 80));
-                    RenderUtil.roundedOutlineRectangle(getX() + 1, getY() - 2, 21 + psm18.getWidth(cpsString), psm18.getHeight() + 5, 3, 1, color);
+                    RenderUtil.roundedOutlineRectangle(getX() + 1, getY() - 2, 21 + psm18.getWidth(cpsString), psm18.getHeight() + 5, 3, 1, colorValue.getColor());
                     break;
                 case "ThunderHack":
                     RoundedUtil.drawGradientRound(getX() + 0.5f, getY() - 2.5f, 22 + psm18.getWidth(cpsString), psm18.getHeight() + 6, 4,
@@ -102,7 +99,7 @@ public class CPSCounter extends Module {
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm18.getWidth(cpsString), psm18.getHeight() + 3, 3f, ColorUtil.empathyColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, color);
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, colorValue.getColor());
                     break;
                 case "Minecraft":
                     RenderUtil.rect(getX() - 0.5, getY() - 0.5, mc.fontRendererObj.getStringWidth(cpsString) + 4, mc.fontRendererObj.FONT_HEIGHT + 3, new Color(0,0,0,100));
@@ -111,7 +108,7 @@ public class CPSCounter extends Module {
         if (mode.getMode().equals("Minecraft")) {
             mc.fontRendererObj.drawStringWithShadow(cpsString, getX() + 2, getY() + 2, Color.WHITE.getRGB());
         } else if (mode.getMode().equals("Shader")) {
-            FontManager.getIcon(20).drawString("P", getX() + 5.5, getY() + 3.5, color.getRGB());
+            FontManager.getIcon(20).drawString("P", getX() + 5.5, getY() + 3.5, colorValue.getColor().getRGB());
             regular18.drawString(cpsString, getX() + 18, getY() + 2.5f, new Color(250, 250, 250, 200).getRGB());
         } else {
             FontManager.getIcon(24).drawString("P", getX() + 3.5, getY() + 2, new Color(250, 250, 250, 200).getRGB());

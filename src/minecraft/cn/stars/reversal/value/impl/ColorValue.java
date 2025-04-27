@@ -30,6 +30,15 @@ public class ColorValue extends Value {
         this.setColor(new Color(20,250,255, 255));
     }
 
+    public ColorValue(final String name, final Module parent, Color defaultColor) {
+        this.name = name;
+        this.localizedName = name;
+        this.dontShowThemeColor = false;
+        parent.settings.add(this);
+        parent.settingsMap.put(name.toLowerCase(), this);
+        this.setColor(defaultColor);
+    }
+
     public ColorValue(final String name, final Module parent, Color defaultColor, final boolean dontShowThemeColor) {
         this.name = name;
         this.localizedName = name;
@@ -46,6 +55,11 @@ public class ColorValue extends Value {
         parent.settings.add(this);
         parent.settingsMap.put(name.toLowerCase(), this);
         this.setColor(defaultColor);
+    }
+
+    public ColorValue defaultThemeColorEnabled(boolean enabled) {
+        this.themeColor = enabled;
+        return this;
     }
 
     public Color getColor() {

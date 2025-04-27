@@ -1,7 +1,7 @@
 package net.minecraft.client;
 
 import cn.stars.addons.rawinput.RawInput;
-import cn.stars.reversal.HopeEngine;
+import cn.stars.reversal.engine.HopeEngine;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
@@ -818,7 +818,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         if (guiScreenIn == null && this.theWorld == null)
         {
-            guiScreenIn = Transformer.transformMainMenu();
+            guiScreenIn = Reversal.atomicMenu;
         }
         else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F)
         {

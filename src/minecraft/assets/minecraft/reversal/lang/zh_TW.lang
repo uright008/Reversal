@@ -17,7 +17,6 @@ command.ClientTitle.success=成功設定客戶端標題: '%s'。
 command.Config.emptyName=配置名為空。
 command.Config.invalidConfig=未知配置: '%s'。
 command.Help.1=所有可用的指令:
-command.Name.success=成功設定玩家名稱: '%s'。
 command.SetText.success=成功設定自訂文字: '%s'。
 command.Toggle.success=成功將功能 '%s' 狀態切換至 '%b'。
 command.Online.current=當前IRC在線的用戶 (%s):

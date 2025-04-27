@@ -4,7 +4,6 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.TeleportEvent;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.DisconnectGui;
-import cn.stars.reversal.util.Transformer;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -1417,7 +1416,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     {
         if (!this.netManager.isLocalChannel())
         {
-            this.netManager.setCompressionTreshold(packetIn.getThreshold());
+            this.netManager.setCompressionThreshold(packetIn.getThreshold());
         }
     }
 

@@ -67,7 +67,7 @@ public class Reversal {
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
-    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(2);
+    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(8);
 
     public static String customName = "";
     public static String customText = ".setText <text>";
@@ -122,6 +122,7 @@ public class Reversal {
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§7[§b§l" + NAME + "§r§7] §f" + msg));
         }
     }
+
     public static void showCustomMsg(Object msg) {
         if (Minecraft.getMinecraft().thePlayer != null) {
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText((String) msg));
@@ -214,9 +215,6 @@ public class Reversal {
             VideoUtil.stop();
             BackgroundManager.loadBackground();
 
-            // Enable HUD
-            if (firstBoot) ModuleInstance.getModule(HUD.class).enabled = true;
-
             // Init it here because it causes crashes if it's initialized before the client is fully loaded.
             // Who knows why?
             FBP.init();
@@ -254,7 +252,6 @@ public class Reversal {
             new ClientTitle(),
             new Config(),
             new Help(),
-            new Name(),
             new Online(),
             new Say(),
             new SetText(),

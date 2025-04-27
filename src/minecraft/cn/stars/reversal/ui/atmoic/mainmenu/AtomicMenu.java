@@ -2,6 +2,7 @@ package cn.stars.reversal.ui.atmoic.mainmenu;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.impl.client.PostProcessing;
@@ -10,6 +11,7 @@ import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.*;
 import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
 import cn.stars.reversal.ui.notification.NotificationManager;
+import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.advanced.composed.CustomAnimation;
 import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.stars.reversal.util.animation.rise.Animation;
@@ -22,6 +24,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import org.lwjgl.input.Keyboard;
@@ -342,13 +346,15 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         setMiscGui(new MiscGui());
 
         try {
-            headImage = SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf(GameInstance.mc.session.getUsername()), 15);
+            headImage = SkinUtil.getResourceLocation(SkinUtil.uuidOf(GameInstance.mc.session.getUsername()));
 
             if (headImage == null) {
-                headImage = SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf("Steve"), 15);
+                headImage = DefaultPlayerSkin.getDefaultSkinLegacy();
             }
+
+            ReversalLogger.info("###### UUID: {}" , SkinUtil.uuidOf(GameInstance.mc.session.getUsername()));
         } catch (Exception e) {
-            headImage = SkinUtil.getResourceLocation(SkinUtil.SkinType.AVATAR, SkinUtil.uuidOf("Steve"), 15);
+            headImage = DefaultPlayerSkin.getDefaultSkinLegacy();
         }
     }
 

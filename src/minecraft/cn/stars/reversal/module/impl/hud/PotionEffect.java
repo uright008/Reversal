@@ -8,6 +8,7 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
@@ -77,7 +78,7 @@ public class PotionEffect extends Module {
                         break;
                     case "Shader":
                         if (event.isBloom())
-                            RenderUtil.roundedRectangle(renderX, renderY, 140, 32, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), colorValue.getColor());
+                            RenderUtil.rectForShaderTheme(renderX, renderY, 140, 32, colorValue);
                         else
                             RenderUtil.roundedRectangle(renderX, renderY, 140, 32, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
                         break;

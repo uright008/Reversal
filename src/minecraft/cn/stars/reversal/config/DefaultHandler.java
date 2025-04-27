@@ -4,6 +4,8 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
+import cn.stars.reversal.module.impl.hud.HUD;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.value.Value;
 import cn.stars.reversal.value.impl.*;
 import cn.stars.reversal.ui.notification.NotificationType;
@@ -126,6 +128,10 @@ public class DefaultHandler {
             Reversal.notificationManager.registerNotification(
                     "This config was made in a different version of Reversal.", NotificationType.WARNING
             );
+        }
+
+        if (Reversal.firstBoot) {
+            ModuleInstance.getModule(HUD.class).setEnabled(true);
         }
 
         for (Module module : Reversal.moduleManager.moduleList) {

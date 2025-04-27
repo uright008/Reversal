@@ -1,7 +1,6 @@
-package cn.stars.reversal.ui.modern;
+package cn.stars.reversal.ui.atmoic.misc.component;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.util.ReversalLogger;
@@ -20,8 +19,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.system.MemoryUtil;
 
 import java.awt.*;
-import java.awt.datatransfer.*;
-import java.io.IOException;
 
 @Getter
 @Setter

@@ -6,18 +6,19 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.util.math.MathUtil;
-import cn.stars.reversal.value.impl.BoolValue;
-import cn.stars.reversal.value.impl.ModeValue;
-import cn.stars.reversal.value.impl.NoteValue;
-import cn.stars.reversal.value.impl.NumberValue;
+import cn.stars.reversal.value.impl.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import java.awt.*;
+
 @ModuleInfo(name = "AtomicIsland", localizedName = "module.AtomicIsland.name", description = "Display an island-like bar", localizedDescription = "module.AtomicIsland.desc", category = Category.HUD)
 public class AtomicIsland extends Module {
     public final NoteValue note1 = new NoteValue("< Settings >", this);
+    public final ColorValue barColor = new ColorValue("Bar Color", this, new Color(255,255,255,255)).defaultThemeColorEnabled(false);
+    public final ColorValue shadowColor = new ColorValue("Shadow Color", this, Color.BLACK).defaultThemeColorEnabled(false);
     public final NumberValue yOffset = new NumberValue("Y Offset", this, 0.0, -50.0, 50.0, 0.1);
     public final BoolValue percentBar = new BoolValue("Percent Bar", this, false);
     public final BoolValue allowRepeat = new BoolValue("Allow Repeat", this, false);

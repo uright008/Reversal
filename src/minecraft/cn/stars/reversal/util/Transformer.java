@@ -5,16 +5,11 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.misc.CustomName;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import net.minecraft.client.gui.GuiScreen;
 
 public class Transformer implements GameInstance {
-    public static GuiScreen transformMainMenu() {
-        return Reversal.atomicMenu;
-    }
-
     public static String constructString(String string) {
         String result = string;
-        if (ModuleInstance.getModule(CustomName.class).isEnabled() && Reversal.customName != null) {
+        if (ModuleInstance.getModule(CustomName.class).isEnabled() && Reversal.customName != null && !Reversal.customName.isEmpty()) {
             result = result.replace(mc.session.getUsername(), Reversal.customName.replace("&", "§"));
         }
         return result;

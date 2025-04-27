@@ -34,13 +34,11 @@ public class BPSCounter extends Module {
         String bpsString = "Speed: " + MathUtil.round(mc.thePlayer.getSpeed(), 2);
         if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) bpsString = "[Speed: " + MathUtil.round(mc.thePlayer.getSpeed(), 2) + "]";
 
-        Color color = colorValue.getColor();
-
         if (background.isEnabled()) {
             switch (mode.getMode()) {
                 case "Modern":
                     if (event.isBloom())
-                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(bpsString), psm18.getHeight() + 3, 4, color);
+                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(bpsString), psm18.getHeight() + 3, 4, colorValue.getColor());
                     else
                         RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(bpsString), psm18.getHeight() + 3, 4, Color.BLACK);
                     break;
@@ -56,13 +54,13 @@ public class BPSCounter extends Module {
                     break;
                 case "Shader":
                     if (event.isBloom())
-                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 21 + regular18.getWidth(bpsString), regular18.getHeight() + 1.5, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), color);
+                        RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 21 + regular18.getWidth(bpsString), regular18.getHeight() + 1.5, colorValue);
                     else
                         RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 21 + regular18.getWidth(bpsString), regular18.getHeight() + 1.5, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm18.getWidth(bpsString), psm18.getHeight() + 3, 3f, ColorUtil.empathyGlowColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, color);
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, colorValue.getColor());
                     break;
             }
         }
@@ -72,13 +70,12 @@ public class BPSCounter extends Module {
     public void onRender2D(Render2DEvent event) {
         String bpsString = "Speed: " + MathUtil.round(mc.thePlayer.getSpeed(), 2);
         if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) bpsString = "[Speed: " + MathUtil.round(mc.thePlayer.getSpeed(), 2) + "]";
-        Color color = colorValue.getColor();
 
         if (background.isEnabled()) {
             switch (mode.getMode()) {
                 case "Modern":
                     RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(bpsString), psm18.getHeight() + 3, 4, new Color(0, 0, 0, 80));
-                    RenderUtil.roundedOutlineRectangle(getX() + 1, getY() - 2, 21 + psm18.getWidth(bpsString), psm18.getHeight() + 5, 3, 1, color);
+                    RenderUtil.roundedOutlineRectangle(getX() + 1, getY() - 2, 21 + psm18.getWidth(bpsString), psm18.getHeight() + 5, 3, 1, colorValue.getColor());
                     break;
                 case "ThunderHack":
                     RoundedUtil.drawGradientRound(getX() + 0.5f, getY() - 2.5f, 22 + psm18.getWidth(bpsString), psm18.getHeight() + 6, 4,
@@ -93,7 +90,7 @@ public class BPSCounter extends Module {
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm18.getWidth(bpsString), psm18.getHeight() + 3, 3f, ColorUtil.empathyColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, color);
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, colorValue.getColor());
                     break;
                 case "Minecraft":
                     RenderUtil.rect(getX() - 0.5, getY() - 0.5, mc.fontRendererObj.getStringWidth(bpsString) + 4, mc.fontRendererObj.FONT_HEIGHT + 3, new Color(0,0,0,100));
@@ -102,7 +99,7 @@ public class BPSCounter extends Module {
         if (mode.getMode().equals("Minecraft")) {
             mc.fontRendererObj.drawStringWithShadow(bpsString, getX() + 2, getY() + 2, Color.WHITE.getRGB());
         } else if (mode.getMode().equals("Shader")) {
-            FontManager.getSpecialIcon(18).drawString("d", getX() + 6, getY() + 3.5, color.getRGB());
+            FontManager.getSpecialIcon(18).drawString("d", getX() + 6, getY() + 3.5, colorValue.getColor().getRGB());
             regular18.drawString(bpsString, getX() + 18, getY() + 2f, new Color(250, 250, 250, 200).getRGB());
         } else {
             FontManager.getSpecialIcon(20).drawString("d", getX() + 4, getY() + 4, new Color(250, 250, 250, 200).getRGB());

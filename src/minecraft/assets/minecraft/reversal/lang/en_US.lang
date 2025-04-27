@@ -17,15 +17,24 @@ command.ClientTitle.success=Successfully set the client title: '%s'.
 command.Config.emptyName=Config name is empty.
 command.Config.invalidConfig=Invalid config name: '%s'.
 command.Help.1=All available commands:
-command.Name.success=Successfully set the name: '%s'.
 command.SetText.success=Successfully set the custom text: '%s'.
 command.Toggle.success=Successfully toggled module '%s' to '%b'.
 command.Online.current=Current IRC online users (%s):
 
+# Info
 message.FreeLook.keyBind=Bind FreeLook to a key to use!
 message.MoBends.conflict=WaveyCapes and RealFirstPerson are not supported by MoBends.
 message.MusicPlayer.error=JavaFX is not found on your current java version. Music Player is disabled.
 message.IRC.tip=Tip: Use ".chat <message>" to chat in the irc channel!
+
+info.killed=Killed
+info.hurtTime=Hurt Time
+info.speed=Speed
+info.hp=Health
+
+info.SessionInfo.title=Session Info
+info.SessionInfo.playtime=Play Time
+info.SessionInfo.playtimeValue=%sh %sm %ss
 
 # Categories
 category.title=CATEGORIES
@@ -68,12 +77,17 @@ value.ClientSettings.theme=Theme
 value.ClientSettings.colorType=Color Type
 value.ClientSettings.color1=Color 1
 value.ClientSettings.color2=Color 2
+value.ClientSettings.customAlpha=Custom Alpha
+value.ClientSettings.alpha=Alpha
 value.ClientSettings.indexTimes=Index Times
 value.ClientSettings.indexSpeed=Index Speed
 value.ClientSettings.note2=< Specific Settings >
 value.ClientSettings.listAnimation=List Animation
 value.ClientSettings.empathyGlow=Empathy Glow
+value.ClientSettings.shaderRoundStrength=Shader Round Strength
+value.ClientSettings.shaderGradient=Shader Gradient
 value.ClientSettings.note3=< Client Settings >
+value.ClientSettings.customName=Custom Name
 value.ClientSettings.localization=Localization
 value.ClientSettings.language=Language
 value.ClientSettings.showNotifications=Show Notifications

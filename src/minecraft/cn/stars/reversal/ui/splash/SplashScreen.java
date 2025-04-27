@@ -1,6 +1,6 @@
 package cn.stars.reversal.ui.splash;
 
-import cn.stars.reversal.HopeEngine;
+import cn.stars.reversal.engine.HopeEngine;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.notification.NotificationType;

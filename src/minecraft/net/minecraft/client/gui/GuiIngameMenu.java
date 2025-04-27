@@ -2,6 +2,8 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
+import cn.stars.reversal.Reversal;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.util.Transformer;
 import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
@@ -48,11 +50,10 @@ public class GuiIngameMenu extends GuiScreen
                 this.mc.theWorld.sendQuittingDisconnectingPacket();
                 this.mc.loadWorld(null);
 
-                if (flag)
-                {
-                    this.mc.displayGuiScreen(Transformer.transformMainMenu());
-                } else {
-                    this.mc.displayGuiScreen(new GuiMultiplayer(Transformer.transformMainMenu()));
+                this.mc.displayGuiScreen(Reversal.atomicMenu);
+
+                if (!flag) {
+                    AtomicMenu.switchGui(2);
                 }
 
             case 2:

@@ -1,7 +1,7 @@
 package cn.stars.reversal.util.render;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
 import cn.stars.reversal.util.shader.RiseShaders;
 import cn.stars.reversal.util.shader.base.ShaderRenderType;
 import lombok.Getter;

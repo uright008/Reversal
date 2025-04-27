@@ -2,25 +2,18 @@ package net.minecraft.client.gui;
 
 import java.awt.*;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.notification.NotificationManager;
-import cn.stars.reversal.util.Transformer;
-import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
-import cn.stars.reversal.util.shader.RiseShaders;
-import cn.stars.reversal.util.shader.base.ShaderRenderType;
 import net.minecraft.client.multiplayer.GuiConnecting;
-import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IChatComponent;
 

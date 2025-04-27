@@ -1,6 +1,8 @@
-package cn.stars.reversal;
+package cn.stars.reversal.engine;
 
 import cn.stars.addons.dglab.DglabClient;
+import cn.stars.reversal.RainyAPI;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontUtil;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import lombok.SneakyThrows;
@@ -31,7 +33,7 @@ import static net.minecraft.client.Minecraft.*;
  */
 @SuppressWarnings("all")
 public class HopeEngine {
-    public static final String version = "1.0.7";
+    public static final String version = "1.0.8";
     private static final Minecraft mc = Minecraft.getMinecraft();
 
     @SneakyThrows

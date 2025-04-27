@@ -48,7 +48,7 @@ class MotionBlur : Module() {
         GlStateManager.enableTexture2D()
         GL11.glTexParameteri(3553, 10241, filter)
         GL11.glTexParameteri(3553, 10240, filter)
-        val tessellator = Tessellator.getInstance()
+        val tessellator = Tessellator.instance
         val worldrenderer = WrapperBufferBuilder(tessellator)
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX)
         worldrenderer.pos(x, y + height, 0.0).tex(uMin.toDouble(), vMax.toDouble()).endVertex()

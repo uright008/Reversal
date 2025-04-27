@@ -1,4 +1,4 @@
-package cn.stars.reversal.ui.atmoic.mainmenu.util;
+package cn.stars.reversal.engine.impl;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
@@ -16,10 +16,8 @@ import net.minecraft.util.ChatComponentTranslation;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ServerConnector implements GameInstance {
-    private static final AtomicInteger CONNECTION_ID = new AtomicInteger(0);
     private boolean cancel;
     private NetworkManager networkManager;
 
@@ -30,7 +28,7 @@ public class ServerConnector implements GameInstance {
 
     public void connect(ServerData serverData) {
         this.cancel = false;
-        Reversal.threadPoolExecutor.submit(this.createConnectorThread(serverData));
+        Reversal.threadPoolExecutor.execute(createConnectorThread(serverData));
     }
 
     public void update() {
@@ -53,7 +51,7 @@ public class ServerConnector implements GameInstance {
     
     public Thread createConnectorThread(ServerData serverData)
     {
-        return new Thread("Server Connector #" + CONNECTION_ID.incrementAndGet())
+        Thread connectorThread = new Thread("Server Connector")
         {
             public void run()
             {
@@ -61,7 +59,7 @@ public class ServerConnector implements GameInstance {
                 String ip = serveraddress.getIP();
                 int port = serveraddress.getPort();
 
-                Reversal.getLogger().info("Connecting to {}, {}", ip, port);
+                Reversal.getLogger().info("连接至 {}, {}", ip, port);
 
                 InetAddress inetaddress;
 
@@ -83,9 +81,9 @@ public class ServerConnector implements GameInstance {
                         return;
                     }
 
-                    Reversal.getLogger().error("Couldn't connect to server", unknownhostexception);
+                    Reversal.getLogger().error("无法连接至服务器", unknownhostexception);
                     mc.addScheduledTask(() -> {
-                        AtomicMenu.setMiscGui(new DisconnectGui("connect.failed", new ChatComponentTranslation("disconnect.genericReason", "Unknown host")));
+                        AtomicMenu.setMiscGui(new DisconnectGui("connect.failed", new ChatComponentTranslation("disconnect.genericReason", "未知的主机")));
                         AtomicMenu.switchGui(8);
                         mc.displayGuiScreen(Reversal.atomicMenu);
                     });
@@ -96,7 +94,7 @@ public class ServerConnector implements GameInstance {
                         return;
                     }
 
-                    Reversal.getLogger().error("Couldn't connect to server", exception);
+                    Reversal.getLogger().error("无法连接至服务器", exception);
                     mc.addScheduledTask(() -> {
                         AtomicMenu.setMiscGui(new DisconnectGui("connect.failed", new ChatComponentTranslation("disconnect.genericReason", exception.toString())));
                         AtomicMenu.switchGui(8);
@@ -105,5 +103,7 @@ public class ServerConnector implements GameInstance {
                 }
             }
         };
+        connectorThread.setPriority(10);
+        return connectorThread;
     }
 }

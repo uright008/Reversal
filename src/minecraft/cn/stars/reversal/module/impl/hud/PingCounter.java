@@ -19,7 +19,7 @@ import java.awt.*;
 @ModuleInfo(name = "PingCounter", localizedName = "module.PingCounter.name", description = "Show your ping on screen",
         localizedDescription = "module.PingCounter.desc", category = Category.HUD)
 public class PingCounter extends Module {
-    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
+    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft", "Shader");
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final BoolValue background = new BoolValue("Background", this, true);
     public PingCounter() {
@@ -33,13 +33,12 @@ public class PingCounter extends Module {
 
     @Override
     public void onShader3D(Shader3DEvent event) {
-        Color color = colorValue.getColor();
 
         if (background.isEnabled()) {
             switch (mode.getMode()) {
                 case "Modern":
                     if (event.isBloom())
-                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, 4, color);
+                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, 4, colorValue.getColor());
                     else
                         RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, 4, Color.BLACK);
                     break;
@@ -53,9 +52,15 @@ public class PingCounter extends Module {
                 case "Simple":
                     RenderUtil.rect(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, Color.BLACK);
                     break;
+                case "Shader":
+                    if (event.isBloom())
+                        RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, colorValue);
+                    else
+                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
+                    break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm.getWidth(pingString), psm.getHeight() + 3, 3f, ColorUtil.empathyGlowColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm.getHeight() - 2.5, 1f, color);
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm.getHeight() - 2.5, 1f, colorValue.getColor());
                     break;
             }
         }
@@ -67,14 +72,17 @@ public class PingCounter extends Module {
             pingString = mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID()).getResponseTime() + " ms";
             if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled)
                 pingString = "[" + mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID()).getResponseTime() + " ms]";
+        } else {
+            pingString = "0 ms";
+            if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled)
+                pingString = "[0 ms]";
         }
-        Color color = colorValue.getColor();
 
         if (background.isEnabled()) {
             switch (mode.getMode()) {
                 case "Modern":
                     RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, 4, new Color(0, 0, 0, 80));
-                    RenderUtil.roundedOutlineRectangle(getX() + 1, getY() - 2, 21 + psm.getWidth(pingString), psm.getHeight() + 5, 3, 1, color);
+                    RenderUtil.roundedOutlineRectangle(getX() + 1, getY() - 2, 21 + psm.getWidth(pingString), psm.getHeight() + 5, 3, 1, colorValue.getColor());
                     break;
                 case "ThunderHack":
                     RoundedUtil.drawGradientRound(getX() + 0.5f, getY() - 2.5f, 22 + psm.getWidth(pingString), psm.getHeight() + 6, 4,
@@ -89,7 +97,7 @@ public class PingCounter extends Module {
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm.getWidth(pingString), psm.getHeight() + 3, 3f, ColorUtil.empathyColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm.getHeight() - 2.5, 1f, color);
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm.getHeight() - 2.5, 1f, colorValue.getColor());
                     break;
                 case "Minecraft":
                     RenderUtil.rect(getX() - 0.5, getY() - 0.5, mc.fontRendererObj.getStringWidth(pingString) + 4, mc.fontRendererObj.FONT_HEIGHT + 3, new Color(0,0,0,100));

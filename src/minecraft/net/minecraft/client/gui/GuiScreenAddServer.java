@@ -1,9 +1,8 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.ui.modern.TextField;
-import cn.stars.reversal.music.ui.ThemeColor;
-import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextField;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;

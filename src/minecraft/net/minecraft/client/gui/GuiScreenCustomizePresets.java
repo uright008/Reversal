@@ -1,7 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.ui.modern.TextField;
+import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.music.ui.ThemeColor;
 import com.google.common.collect.Lists;
 import java.io.IOException;

@@ -17,15 +17,24 @@ command.ClientTitle.success=成功设置客户端标题: '%s'.
 command.Config.emptyName=配置名为空.
 command.Config.invalidConfig=未知配置: '%s'.
 command.Help.1=所有可用的指令:
-command.Name.success=成功设置玩家名称: '%s'.
 command.SetText.success=成功设置自定义文本: '%s'.
 command.Toggle.success=成功将功能 '%s' 状态切换至 '%b'.
 command.Online.current=当前IRC在线的用户 (%s):
 
+# Info
 message.FreeLook.keyBind=绑定自由视角至一个按键即可使用!
 message.MoBends.conflict=飘扬皮肤和真实第一人称与更多动作冲突.
 message.MusicPlayer.error=未在运行游戏的Java版本上找到JavaFX.音乐播放器已禁用.
 message.IRC.tip=Tip: 使用 ".chat <信息>" 可以在IRC频道内聊天!
+
+info.killed=击杀
+info.hurtTime=受伤刻
+info.speed=速度
+info.hp=血量
+
+info.SessionInfo.title=游戏信息
+info.SessionInfo.playtime=游玩时间
+info.SessionInfo.playtimeValue=%s时 %s分 %s秒
 
 # Categories
 category.title=分类
@@ -68,12 +77,17 @@ value.ClientSettings.theme=主题
 value.ClientSettings.colorType=颜色类型
 value.ClientSettings.color1=颜色1
 value.ClientSettings.color2=颜色2
+value.ClientSettings.customAlpha=自定义透明度
+value.ClientSettings.alpha=透明度
 value.ClientSettings.indexTimes=变化次数
 value.ClientSettings.indexSpeed=变化速度
 value.ClientSettings.note2=< 特定设置 >
 value.ClientSettings.listAnimation=功能列表动画
 value.ClientSettings.empathyGlow=Empathy 发光
+value.ClientSettings.shaderRoundStrength=Shader 圆角程度
+value.ClientSettings.shaderGradient=Shader 渐变外框
 value.ClientSettings.note3=< 客户端设置 >
+value.ClientSettings.customName=自定义名称
 value.ClientSettings.localization=本地化
 value.ClientSettings.language=语言
 value.ClientSettings.showNotifications=展示通知

@@ -2,31 +2,29 @@ package cn.stars.reversal.ui.atmoic.mainmenu.impl;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.font.FontManager;
+import cn.stars.reversal.engine.impl.ServerPinger;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.AddServerGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.ConnectingGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.DirectConnectGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.YesNoGui;
+import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerListEntryLanDetected;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerListEntryLanScan;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerListEntryNormal;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerSelectionList;
-import cn.stars.reversal.ui.modern.TextButton;
-import cn.stars.reversal.ui.modern.TextField;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
 import net.minecraft.client.gui.*;
-import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.LanServerDetector;
-import net.minecraft.client.network.OldServerPinger;
 import net.minecraft.client.resources.I18n;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,7 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultiPlayerGui extends AtomicGui {
     private static final Logger logger = LogManager.getLogger();
-    private final OldServerPinger oldServerPinger = new OldServerPinger();
+    public final ServerPinger serverPinger = new ServerPinger();
     public ServerSelectionList serverListSelector;
     private ServerList savedServerList;
     public boolean deletingServer;
@@ -191,7 +189,7 @@ public class MultiPlayerGui extends AtomicGui {
             this.serverListSelector.loadLanServerList(list);
         }
 
-        this.oldServerPinger.pingPendingNetworks();
+        this.serverPinger.pingPendingNetworks();
 
         if (Display.wasResized()) {
             this.initialized = false;
@@ -210,7 +208,7 @@ public class MultiPlayerGui extends AtomicGui {
             this.lanServerDetector = null;
         }
 
-        this.oldServerPinger.clearPendingNetworks();
+        this.serverPinger.clearPendingNetworks();
     }
 
     private void refreshServerList()
@@ -470,9 +468,9 @@ public class MultiPlayerGui extends AtomicGui {
         }
     }
 
-    public OldServerPinger getOldServerPinger()
+    public ServerPinger getServerPinger()
     {
-        return this.oldServerPinger;
+        return this.serverPinger;
     }
 
     public void setHoveringText(String p_146793_1_)
