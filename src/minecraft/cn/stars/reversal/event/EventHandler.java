@@ -270,7 +270,8 @@ public final class EventHandler {
             final ValueChangedEvent event = ((ValueChangedEvent) e);
 
             for (final Module module : modules) {
-                module.onValueChanged(event);
+                if (event.getModule().equals(module))
+                    module.onValueChanged(event);
             }
 
             residentProcessor.onValueChanged(event);
