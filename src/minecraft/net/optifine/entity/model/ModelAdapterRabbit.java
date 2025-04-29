@@ -1,5 +1,6 @@
 package net.optifine.entity.model;
 
+import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRabbit;
@@ -7,7 +8,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderRabbit;
 import net.minecraft.entity.passive.EntityRabbit;
-import net.optifine.reflect.Reflector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,7 @@ public class ModelAdapterRabbit extends ModelAdapter
         return new ModelRabbit();
     }
 
+    @SneakyThrows
     public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
     {
         if (!(model instanceof ModelRabbit))
@@ -39,8 +40,7 @@ public class ModelAdapterRabbit extends ModelAdapter
 
             if (map.containsKey(modelPart))
             {
-                int i = ((Integer)map.get(modelPart)).intValue();
-                return (ModelRenderer)Reflector.getFieldValue(modelrabbit, Reflector.ModelRabbit_renderers, i);
+                return (ModelRenderer) modelrabbit.getClass().getField(modelPart).get(modelrabbit);
             }
             else
             {
@@ -51,32 +51,27 @@ public class ModelAdapterRabbit extends ModelAdapter
 
     public String[] getModelRendererNames()
     {
-        return new String[] {"left_foot", "right_foot", "left_thigh", "right_thigh", "body", "left_arm", "right_arm", "head", "right_ear", "left_ear", "tail", "nose"};
+        return new String[] {"rabbitLeftFoot", "rabbitRightFoot", "rabbitLeftThigh", "rabbitRightThigh", "rabbitBody", "rabbitLeftArm", "rabbitRightArm", "rabbitHead", "rabbitRightEar", "rabbitLeftEar", "rabbitTail", "rabbitNose"};
     }
 
     private static Map<String, Integer> getMapPartFields()
     {
-        if (mapPartFields != null)
-        {
-            return mapPartFields;
-        }
-        else
-        {
+        if (mapPartFields == null) {
             mapPartFields = new HashMap();
-            mapPartFields.put("left_foot", Integer.valueOf(0));
-            mapPartFields.put("right_foot", Integer.valueOf(1));
-            mapPartFields.put("left_thigh", Integer.valueOf(2));
-            mapPartFields.put("right_thigh", Integer.valueOf(3));
-            mapPartFields.put("body", Integer.valueOf(4));
-            mapPartFields.put("left_arm", Integer.valueOf(5));
-            mapPartFields.put("right_arm", Integer.valueOf(6));
-            mapPartFields.put("head", Integer.valueOf(7));
-            mapPartFields.put("right_ear", Integer.valueOf(8));
-            mapPartFields.put("left_ear", Integer.valueOf(9));
-            mapPartFields.put("tail", Integer.valueOf(10));
-            mapPartFields.put("nose", Integer.valueOf(11));
-            return mapPartFields;
+            mapPartFields.put("rabbitLeftFoot", 0);
+            mapPartFields.put("rabbitRightFoot", 1);
+            mapPartFields.put("rabbitLeftThigh", 2);
+            mapPartFields.put("rabbitRightThigh", 3);
+            mapPartFields.put("rabbitBody", 4);
+            mapPartFields.put("rabbitLeftArm", 5);
+            mapPartFields.put("rabbitRightArm", 6);
+            mapPartFields.put("rabbitHead", 7);
+            mapPartFields.put("rabbitRightEar", 8);
+            mapPartFields.put("rabbitLeftEar", 9);
+            mapPartFields.put("rabbitTail", 10);
+            mapPartFields.put("rabbitNose", 11);
         }
+        return mapPartFields;
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

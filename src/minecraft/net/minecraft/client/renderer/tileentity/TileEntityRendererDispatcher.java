@@ -31,7 +31,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
 import net.optifine.EmissiveTextures;
-import net.optifine.reflect.Reflector;
 
 public class TileEntityRendererDispatcher
 {
@@ -113,11 +112,6 @@ public class TileEntityRendererDispatcher
         {
             boolean flag = true;
 
-            if (Reflector.ForgeTileEntity_hasFastRenderer.exists())
-            {
-                flag = !this.drawingBatch || !Reflector.callBoolean(tileentityIn, Reflector.ForgeTileEntity_hasFastRenderer, new Object[0]);
-            }
-
             if (flag)
             {
                 int i = this.worldObj.getCombinedLight(tileentityIn.getPos(), 0);
@@ -175,16 +169,7 @@ public class TileEntityRendererDispatcher
             try
             {
                 this.tileEntityRendered = tileEntityIn;
-
-                if (this.drawingBatch && Reflector.callBoolean(tileEntityIn, Reflector.ForgeTileEntity_hasFastRenderer, new Object[0]))
-                {
-                    tileentityspecialrenderer.renderTileEntityFast(tileEntityIn, x, y, z, partialTicks, destroyStage, this.batchBuffer.getWorldRenderer());
-                }
-                else
-                {
-                    tileentityspecialrenderer.renderTileEntityAt(tileEntityIn, x, y, z, partialTicks, destroyStage);
-                }
-
+                tileentityspecialrenderer.renderTileEntityAt(tileEntityIn, x, y, z, partialTicks, destroyStage);
                 this.tileEntityRendered = null;
             }
             catch (Throwable throwable)

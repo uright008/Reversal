@@ -31,8 +31,6 @@ import net.optifine.ConnectedTextures;
 import net.optifine.CustomItems;
 import net.optifine.EmissiveTextures;
 import net.optifine.SmartAnimations;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 import net.optifine.shaders.ShadersTex;
 import net.optifine.util.CounterInt;
 import net.optifine.util.TextureUtils;
@@ -460,7 +458,6 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                 Config.getMinecraft().getTextureManager().bindTexture(locationBlocksTexture);
             }
 
-            Reflector.callVoid(Reflector.ForgeHooksClient_onTextureStitchedPost, new Object[] {this});
             this.updateIconGrid(stitcher.getCurrentWidth(), stitcher.getCurrentHeight());
 
             if (Config.equals(System.getProperty("saveTextureMap"), "true"))
@@ -730,12 +727,12 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
     public TextureAtlasSprite getSpriteSafe(String p_getSpriteSafe_1_)
     {
         ResourceLocation resourcelocation = new ResourceLocation(p_getSpriteSafe_1_);
-        return (TextureAtlasSprite)this.mapRegisteredSprites.get(resourcelocation.toString());
+        return this.mapRegisteredSprites.get(resourcelocation.toString());
     }
 
     public TextureAtlasSprite getRegisteredSprite(ResourceLocation p_getRegisteredSprite_1_)
     {
-        return (TextureAtlasSprite)this.mapRegisteredSprites.get(p_getRegisteredSprite_1_.toString());
+        return this.mapRegisteredSprites.get(p_getRegisteredSprite_1_.toString());
     }
 
     private boolean isTerrainAnimationActive(TextureAtlasSprite p_isTerrainAnimationActive_1_)

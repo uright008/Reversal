@@ -1,5 +1,6 @@
 package net.optifine.entity.model;
 
+import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelOcelot;
@@ -7,7 +8,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderOcelot;
 import net.minecraft.entity.passive.EntityOcelot;
-import net.optifine.reflect.Reflector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,7 @@ public class ModelAdapterOcelot extends ModelAdapter
         return new ModelOcelot();
     }
 
+    @SneakyThrows
     public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
     {
         if (!(model instanceof ModelOcelot))
@@ -39,8 +40,7 @@ public class ModelAdapterOcelot extends ModelAdapter
 
             if (map.containsKey(modelPart))
             {
-                int i = ((Integer)map.get(modelPart)).intValue();
-                return (ModelRenderer)Reflector.getFieldValue(modelocelot, Reflector.ModelOcelot_ModelRenderers, i);
+                return (ModelRenderer) modelocelot.getClass().getField(modelPart).get(modelocelot);
             }
             else
             {
@@ -51,28 +51,23 @@ public class ModelAdapterOcelot extends ModelAdapter
 
     public String[] getModelRendererNames()
     {
-        return new String[] {"back_left_leg", "back_right_leg", "front_left_leg", "front_right_leg", "tail", "tail2", "head", "body"};
+        return new String[] {"ocelotBackLeftLeg", "ocelotBackRightLeg", "ocelotFrontLeftLeg", "ocelotFrontRightLeg", "ocelotTail", "ocelotTail2", "ocelotHead", "ocelotBody"};
     }
 
     private static Map<String, Integer> getMapPartFields()
     {
-        if (mapPartFields != null)
-        {
-            return mapPartFields;
-        }
-        else
-        {
+        if (mapPartFields == null) {
             mapPartFields = new HashMap();
-            mapPartFields.put("back_left_leg", Integer.valueOf(0));
-            mapPartFields.put("back_right_leg", Integer.valueOf(1));
-            mapPartFields.put("front_left_leg", Integer.valueOf(2));
-            mapPartFields.put("front_right_leg", Integer.valueOf(3));
-            mapPartFields.put("tail", Integer.valueOf(4));
-            mapPartFields.put("tail2", Integer.valueOf(5));
-            mapPartFields.put("head", Integer.valueOf(6));
-            mapPartFields.put("body", Integer.valueOf(7));
-            return mapPartFields;
+            mapPartFields.put("ocelotBackLeftLeg", 0);
+            mapPartFields.put("ocelotBackRightLeg", 1);
+            mapPartFields.put("ocelotFrontLeftLeg", 2);
+            mapPartFields.put("ocelotFrontRightLeg", 3);
+            mapPartFields.put("ocelotTail", 4);
+            mapPartFields.put("ocelotTail2", 5);
+            mapPartFields.put("ocelotHead", 6);
+            mapPartFields.put("ocelotBody", 7);
         }
+        return mapPartFields;
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

@@ -98,8 +98,6 @@ public class Reversal {
 
             initialize();
 
-            DefaultHandler.loadConfigs();
-
             ReversalLogger.info("Client loaded successfully.");
             ReversalLogger.info(NAME + " " + VERSION + " (Minecraft " + MINECRAFT_VERSION + "), made with love by " + AUTHOR + ".");
         } catch (Exception e) {
@@ -145,8 +143,6 @@ public class Reversal {
             // Reversal Initialize
             moduleManager = new ModuleManager();
             moduleManager.registerModules(modules);
-
-            Minecraft.latch.countDown();
 
             // Preload module resources
             Preloader preloader = new Preloader();
@@ -212,6 +208,8 @@ public class Reversal {
 
     public static void postInitialize() {
         try {
+            DefaultHandler.loadConfigs();
+
             VideoUtil.stop();
             BackgroundManager.loadBackground();
 
@@ -300,6 +298,7 @@ public class Reversal {
             new DamageParticle(),
             new EnvironmentEffect(),
             new Fullbright(),
+            new Hitbox(),
             new HitEffect(),
             new ItemPhysics(),
             new JumpCircle(),

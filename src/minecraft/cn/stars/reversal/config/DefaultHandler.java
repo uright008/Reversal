@@ -17,20 +17,12 @@ import java.awt.*;
 public class DefaultHandler {
     public static void loadConfigs() {
         final String config = FileUtil.loadFile("settings.txt");
-        if (config == null) saveConfig(true);
+        if (config == null) {
+            saveConfig(true);
+            loadConfigs();
+            return;
+        }
         final String[] configLines = config.split("\r\n");
-
-        for (final Module m : Reversal.moduleManager.getModuleList()) {
-            if (m.isEnabled()) {
-                m.toggleNoEvent();
-            }
-        }
-
-        for (final Module m : Reversal.moduleManager.getModuleList()) {
-            if (m.isEnabled()) {
-                m.toggleNoEvent();
-            }
-        }
 
         boolean gotConfigVersion = false;
         for (final String line : configLines) {
@@ -114,9 +106,13 @@ public class DefaultHandler {
                 if (split[0].contains("ModeValue") && setting instanceof ModeValue)
                     ((ModeValue) setting).set(split[3]);
 
-                if (split[0].contains("TextValue") && setting instanceof TextValue)
-                    ((TextValue) setting).setText(split[3]);
-
+                if (split[0].contains("TextValue") && setting instanceof TextValue) {
+                    try {
+                        ((TextValue) setting).setText(split[3]);
+                    } catch (IndexOutOfBoundsException e) {
+                        ((TextValue) setting).setText("");
+                    }
+                }
 
                 if (split[0].contains("Bind")) {
                     module.setKeyBind(Integer.parseInt(split[2]));
@@ -130,11 +126,10 @@ public class DefaultHandler {
             );
         }
 
-        if (Reversal.firstBoot) {
-            ModuleInstance.getModule(HUD.class).setEnabled(true);
-        }
-
         for (Module module : Reversal.moduleManager.moduleList) {
+            if (Reversal.firstBoot) {
+                if (module.getModuleInfo().defaultEnabled()) module.setEnabled(true);
+            }
             module.onLoad();
         }
     }

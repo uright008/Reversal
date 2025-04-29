@@ -33,8 +33,6 @@ import net.optifine.config.Matches;
 import net.optifine.config.NbtTagValue;
 import net.optifine.config.RangeListInt;
 import net.optifine.config.VillagerProfession;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorField;
 import net.optifine.util.StrUtils;
 import net.optifine.util.TextureUtils;
 
@@ -389,13 +387,7 @@ public class CustomGuiProperties
 
     private static IWorldNameable getWorldNameable(GuiScreen screen)
     {
-        return (IWorldNameable)(screen instanceof GuiBeacon ? getWorldNameable(screen, Reflector.GuiBeacon_tileBeacon) : (screen instanceof GuiBrewingStand ? getWorldNameable(screen, Reflector.GuiBrewingStand_tileBrewingStand) : (screen instanceof GuiChest ? getWorldNameable(screen, Reflector.GuiChest_lowerChestInventory) : (screen instanceof GuiDispenser ? ((GuiDispenser)screen).dispenserInventory : (screen instanceof GuiEnchantment ? getWorldNameable(screen, Reflector.GuiEnchantment_nameable) : (screen instanceof GuiFurnace ? getWorldNameable(screen, Reflector.GuiFurnace_tileFurnace) : (screen instanceof GuiHopper ? getWorldNameable(screen, Reflector.GuiHopper_hopperInventory) : null)))))));
-    }
-
-    private static IWorldNameable getWorldNameable(GuiScreen screen, ReflectorField fieldInventory)
-    {
-        Object object = Reflector.getFieldValue(screen, fieldInventory);
-        return !(object instanceof IWorldNameable) ? null : (IWorldNameable)object;
+        return screen instanceof GuiBeacon ? (IWorldNameable) screen : (screen instanceof GuiBrewingStand ? (IWorldNameable) screen : (screen instanceof GuiChest ? (IWorldNameable) screen : (screen instanceof GuiDispenser ? ((GuiDispenser)screen).dispenserInventory : (screen instanceof GuiEnchantment ? (IWorldNameable) screen : (screen instanceof GuiFurnace ? (IWorldNameable) screen : (screen instanceof GuiHopper ? (IWorldNameable) screen : null))))));
     }
 
     private boolean matchesBeacon(BlockPos pos, IBlockAccess blockAccess)
@@ -541,7 +533,7 @@ public class CustomGuiProperties
             if (this.professions != null)
             {
                 int i = entityvillager.getProfession();
-                int j = Reflector.getFieldValueInt(entityvillager, Reflector.EntityVillager_careerId, -1);
+                int j = entityvillager.careerId;
 
                 if (j < 0)
                 {

@@ -10,10 +10,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.Config;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ISmartItemModel;
 import net.optifine.CustomItems;
-import net.optifine.reflect.Reflector;
 
 public class ItemModelMesher
 {
@@ -50,11 +47,6 @@ public class ItemModelMesher
             {
                 ibakedmodel = this.modelManager.getModel(itemmeshdefinition.getModelLocation(stack));
             }
-        }
-
-        if (Reflector.ForgeHooksClient.exists() && ibakedmodel instanceof ISmartItemModel)
-        {
-            ibakedmodel = ((ISmartItemModel)ibakedmodel).handleItemState(stack);
         }
 
         if (ibakedmodel == null)

@@ -10,11 +10,11 @@ import java.util.Set;
 
 public class CustomModelRegistry
 {
-    private static Map<String, ModelAdapter> mapModelAdapters = makeMapModelAdapters();
+    private static final Map<String, ModelAdapter> mapModelAdapters = makeMapModelAdapters();
 
     private static Map<String, ModelAdapter> makeMapModelAdapters()
     {
-        Map<String, ModelAdapter> map = new LinkedHashMap();
+        Map<String, ModelAdapter> map = new LinkedHashMap<>();
         addModelAdapter(map, new ModelAdapterArmorStand());
         addModelAdapter(map, new ModelAdapterBat());
         addModelAdapter(map, new ModelAdapterBlaze());
@@ -73,9 +73,7 @@ public class CustomModelRegistry
 
         if (astring != null)
         {
-            for (int i = 0; i < astring.length; ++i)
-            {
-                String s = astring[i];
+            for (String s : astring) {
                 addModelAdapter(map, modelAdapter, s);
             }
         }
@@ -83,13 +81,10 @@ public class CustomModelRegistry
         ModelBase modelbase = modelAdapter.makeModel();
         String[] astring1 = modelAdapter.getModelRendererNames();
 
-        for (int j = 0; j < astring1.length; ++j)
-        {
-            String s1 = astring1[j];
+        for (String s1 : astring1) {
             ModelRenderer modelrenderer = modelAdapter.getModelRenderer(modelbase, s1);
 
-            if (modelrenderer == null)
-            {
+            if (modelrenderer == null) {
                 Config.warn("Model renderer not found, model: " + modelAdapter.getName() + ", name: " + s1);
             }
         }
@@ -113,7 +108,6 @@ public class CustomModelRegistry
     public static String[] getModelNames()
     {
         Set<String> set = mapModelAdapters.keySet();
-        String[] astring = (String[])((String[])set.toArray(new String[set.size()]));
-        return astring;
+        return set.toArray(new String[0]);
     }
 }

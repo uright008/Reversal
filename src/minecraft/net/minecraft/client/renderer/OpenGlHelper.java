@@ -120,7 +120,7 @@ public class OpenGlHelper
 
         if (!vboRegions)
         {
-            List<String> list = new ArrayList();
+            List<String> list = new ArrayList<>();
 
             if (!flag)
             {
@@ -333,7 +333,7 @@ public class OpenGlHelper
         try
         {
             Processor[] aprocessor = (new SystemInfo()).getHardware().getProcessors();
-            cpu = String.format("%dx %s", new Object[] {Integer.valueOf(aprocessor.length), aprocessor[0]}).replaceAll("\\s+", " ");
+            cpu = String.format("%dx %s", new Object[] {aprocessor.length, aprocessor[0]}).replaceAll("\\s+", " ");
         }
         catch (Throwable ignored)
         {
@@ -975,6 +975,6 @@ public class OpenGlHelper
 
     public static String getCpu()
     {
-        return cpu == null ? "<unknown>" : cpu;
+        return cpu == null ? "<未知>" : cpu;
     }
 }

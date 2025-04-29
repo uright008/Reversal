@@ -7,8 +7,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderBoat;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.src.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterBoat extends ModelAdapter
 {
@@ -40,21 +38,12 @@ public class ModelAdapterBoat extends ModelAdapter
         return new String[] {"bottom", "back", "front", "right", "left"};
     }
 
-    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
-    {
+    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize) {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         RenderBoat renderboat = new RenderBoat(rendermanager);
 
-        if (!Reflector.RenderBoat_modelBoat.exists())
-        {
-            Config.warn("Field not found: RenderBoat.modelBoat");
-            return null;
-        }
-        else
-        {
-            Reflector.setFieldValue(renderboat, Reflector.RenderBoat_modelBoat, modelBase);
-            renderboat.shadowSize = shadowSize;
-            return renderboat;
-        }
+        renderboat.modelBoat = modelBase;
+        renderboat.shadowSize = shadowSize;
+        return renderboat;
     }
 }

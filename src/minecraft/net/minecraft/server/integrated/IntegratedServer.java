@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
-import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ThreadLanServerPing;
 import net.minecraft.command.ServerCommandManager;
@@ -17,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketThreadUtil;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
-import net.minecraft.profiler.PlayerUsageSnooper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.Config;
 import net.minecraft.util.BlockPos;
@@ -36,7 +33,6 @@ import net.minecraft.world.demo.DemoWorldServer;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
 import net.optifine.ClearWater;
-import net.optifine.reflect.Reflector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,7 +62,7 @@ public class IntegratedServer extends MinecraftServer
         this.setServerOwner(mcIn.getSession().getUsername());
         this.setFolderName(folderName);
         this.setWorldName(worldName);
-        this.setDemo(mcIn.isDemo());
+        this.setDemo(false);
         this.canCreateBonusChest(settings.isBonusChestEnabled());
         this.setBuildLimit(256);
         this.setConfigManager(new IntegratedPlayerList(this));
@@ -289,30 +285,7 @@ public class IntegratedServer extends MinecraftServer
     public CrashReport addServerInfoToCrashReport(CrashReport report)
     {
         report = super.addServerInfoToCrashReport(report);
-        report.getCategory().addCrashSectionCallable("Type", new Callable<String>()
-        {
-            public String call() throws Exception
-            {
-                return "Integrated Server (map_client.txt)";
-            }
-        });
-        report.getCategory().addCrashSectionCallable("Is Modded", new Callable<String>()
-        {
-            public String call() throws Exception
-            {
-                String s = ClientBrandRetriever.getClientModName();
-
-                if (!s.equals("vanilla"))
-                {
-                    return "Definitely; Client brand changed to \'" + s + "\'";
-                }
-                else
-                {
-                    s = IntegratedServer.this.getServerModName();
-                    return !s.equals("vanilla") ? "Definitely; Server brand changed to \'" + s + "\'" : (Minecraft.class.getSigners() == null ? "Very likely; Jar signature invalidated" : "Probably not. Jar signature remains and both client + server brands are untouched.");
-                }
-            }
-        });
+        report.getCategory().addCrashSection("类型", "Server");
         return report;
     }
 
@@ -326,17 +299,6 @@ public class IntegratedServer extends MinecraftServer
         }
     }
 
-    public void addServerStatsToSnooper(PlayerUsageSnooper playerSnooper)
-    {
-        super.addServerStatsToSnooper(playerSnooper);
-        playerSnooper.addClientStat("snooper_partner", this.mc.getPlayerUsageSnooper().getUniqueID());
-    }
-
-    public boolean isSnooperEnabled()
-    {
-        return Minecraft.getMinecraft().isSnooperEnabled();
-    }
-
     public String shareToLAN(WorldSettings.GameType type, boolean allowCheats)
     {
         try
@@ -347,9 +309,8 @@ public class IntegratedServer extends MinecraftServer
             {
                 i = HttpUtil.getSuitableLanPort();
             }
-            catch (IOException var5)
+            catch (IOException ignored)
             {
-                ;
             }
 
             if (i <= 0)
@@ -385,7 +346,7 @@ public class IntegratedServer extends MinecraftServer
 
     public void initiateShutdown()
     {
-        if (!Reflector.MinecraftForge.exists() || this.isServerRunning())
+        if (this.isServerRunning())
         {
             Futures.getUnchecked(this.addScheduledTask(new Runnable()
             {

@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.RenderEnderCrystal;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.src.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterEnderCrystal extends ModelAdapter
 {
@@ -37,7 +36,7 @@ public class ModelAdapterEnderCrystal extends ModelAdapter
         else
         {
             ModelEnderCrystal modelendercrystal = (ModelEnderCrystal)model;
-            return modelPart.equals("cube") ? (ModelRenderer)Reflector.getFieldValue(modelendercrystal, Reflector.ModelEnderCrystal_ModelRenderers, 0) : (modelPart.equals("glass") ? (ModelRenderer)Reflector.getFieldValue(modelendercrystal, Reflector.ModelEnderCrystal_ModelRenderers, 1) : (modelPart.equals("base") ? (ModelRenderer)Reflector.getFieldValue(modelendercrystal, Reflector.ModelEnderCrystal_ModelRenderers, 2) : null));
+            return modelPart.equals("cube") ? modelendercrystal.cube : (modelPart.equals("glass") ? modelendercrystal.glass : (modelPart.equals("base") ? modelendercrystal.base : null));
         }
     }
 
@@ -49,28 +48,19 @@ public class ModelAdapterEnderCrystal extends ModelAdapter
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
-        Render render = (Render)rendermanager.getEntityRenderMap().get(EntityEnderCrystal.class);
+        Render render = rendermanager.getEntityRenderMap().get(EntityEnderCrystal.class);
 
         if (!(render instanceof RenderEnderCrystal))
         {
             Config.warn("Not an instance of RenderEnderCrystal: " + render);
             return null;
         }
-        else
-        {
-            RenderEnderCrystal renderendercrystal = (RenderEnderCrystal)render;
+        else {
+            RenderEnderCrystal renderendercrystal = (RenderEnderCrystal) render;
 
-            if (!Reflector.RenderEnderCrystal_modelEnderCrystal.exists())
-            {
-                Config.warn("Field not found: RenderEnderCrystal.modelEnderCrystal");
-                return null;
-            }
-            else
-            {
-                Reflector.setFieldValue(renderendercrystal, Reflector.RenderEnderCrystal_modelEnderCrystal, modelBase);
-                renderendercrystal.shadowSize = shadowSize;
-                return renderendercrystal;
-            }
+            renderendercrystal.modelEnderCrystal = modelBase;
+            renderendercrystal.shadowSize = shadowSize;
+            return renderendercrystal;
         }
     }
 }

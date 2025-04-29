@@ -1,7 +1,6 @@
 package net.optifine;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,7 +36,6 @@ import net.optifine.config.NbtTagValue;
 import net.optifine.config.ParserEnchantmentId;
 import net.optifine.config.RangeInt;
 import net.optifine.config.RangeListInt;
-import net.optifine.reflect.Reflector;
 import net.optifine.render.Blender;
 import net.optifine.util.StrUtils;
 import net.optifine.util.TextureUtils;
@@ -1188,49 +1186,15 @@ public class CustomItemProperties
         }
     }
 
-    private static void loadItemModel(ModelBakery modelBakery, String model)
-    {
+    private static void loadItemModel(ModelBakery modelBakery, String model) {
         ResourceLocation resourcelocation = getModelLocation(model);
         ModelResourceLocation modelresourcelocation = new ModelResourceLocation(resourcelocation, "inventory");
 
-        if (Reflector.ModelLoader.exists())
-        {
-            try
-            {
-                Object object = Reflector.ModelLoader_VanillaLoader_INSTANCE.getValue();
-                checkNull(object, "vanillaLoader is null");
-                Object object1 = Reflector.call(object, Reflector.ModelLoader_VanillaLoader_loadModel, new Object[] {modelresourcelocation});
-                checkNull(object1, "iModel is null");
-                Map map = (Map)Reflector.getFieldValue(modelBakery, Reflector.ModelLoader_stateModels);
-                checkNull(map, "stateModels is null");
-                map.put(modelresourcelocation, object1);
-                Set set = (Set)Reflector.getFieldValue(modelBakery, Reflector.ModelLoader_textures);
-                checkNull(set, "registryTextures is null");
-                Collection collection = (Collection)Reflector.call(object1, Reflector.IModel_getTextures, new Object[0]);
-                checkNull(collection, "modelTextures is null");
-                set.addAll(collection);
-            }
-            catch (Exception exception)
-            {
-                Config.warn("Error registering model with ModelLoader: " + modelresourcelocation + ", " + exception.getClass().getName() + ": " + exception.getMessage());
-            }
-        }
-        else
-        {
-            modelBakery.loadItemModel(resourcelocation.toString(), modelresourcelocation, resourcelocation);
-        }
-    }
-
-    private static void checkNull(Object obj, String msg) throws NullPointerException
-    {
-        if (obj == null)
-        {
-            throw new NullPointerException(msg);
-        }
+        modelBakery.loadItemModel(resourcelocation.toString(), modelresourcelocation, resourcelocation);
     }
 
     private static ResourceLocation getModelLocation(String modelName)
     {
-        return Reflector.ModelLoader.exists() && !modelName.startsWith("mcpatcher/") && !modelName.startsWith("optifine/") ? new ResourceLocation("models/" + modelName) : new ResourceLocation(modelName);
+        return new ResourceLocation(modelName);
     }
 }

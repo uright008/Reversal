@@ -13,7 +13,6 @@ import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import net.minecraft.block.material.Material;
@@ -21,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -183,10 +181,6 @@ public class GuiIngame extends Gui {
             this.renderSelectedItem(scaledresolution);
         } else if (this.mc.thePlayer.isSpectator()) {
             this.spectatorGui.renderSelectedItem(scaledresolution);
-        }
-
-        if (this.mc.isDemo()) {
-            this.renderDemo(scaledresolution);
         }
 
         if (this.mc.gameSettings.showDebugInfo) {
@@ -416,21 +410,6 @@ public class GuiIngame extends Gui {
             }
         }
 
-        this.mc.mcProfiler.endSection();
-    }
-
-    public void renderDemo(ScaledResolution scaledRes) {
-        this.mc.mcProfiler.startSection("demo");
-        String s = "";
-
-        if (this.mc.theWorld.getTotalWorldTime() >= 120500L) {
-            s = I18n.format("demo.demoExpired");
-        } else {
-            s = I18n.format("demo.remainingTime", StringUtils.ticksToElapsedTime((int) (120500L - this.mc.theWorld.getTotalWorldTime())));
-        }
-
-        int i = this.getFontRenderer().getStringWidth(s);
-        this.getFontRenderer().drawStringWithShadow(s, (float) (scaledRes.getScaledWidth() - i - 10), 5.0F, 16777215);
         this.mc.mcProfiler.endSection();
     }
 

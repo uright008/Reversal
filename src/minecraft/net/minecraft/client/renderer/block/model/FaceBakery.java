@@ -2,7 +2,6 @@ package net.minecraft.client.renderer.block.model;
 
 import net.minecraftforge.client.model.ITransformation;
 import net.optifine.model.BlockModelUtils;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -39,11 +38,6 @@ public class FaceBakery
         if (p_makeBakedQuad_7_ == null)
         {
             this.applyFacing(aint, enumfacing);
-        }
-
-        if (Reflector.ForgeHooksClient_fillNormal.exists())
-        {
-            Reflector.call(Reflector.ForgeHooksClient_fillNormal, new Object[] {aint, enumfacing});
         }
 
         return new BakedQuad(aint, p_makeBakedQuad_3_.tintIndex, enumfacing);
@@ -208,14 +202,7 @@ public class FaceBakery
         }
         else
         {
-            if (Reflector.ForgeHooksClient_transform.exists())
-            {
-                Reflector.call(Reflector.ForgeHooksClient_transform, new Object[] {p_rotateVertex_1_, p_rotateVertex_4_.getMatrix()});
-            }
-            else
-            {
-                this.rotateScale(p_rotateVertex_1_, new Vector3f(0.5F, 0.5F, 0.5F), ((ModelRotation)p_rotateVertex_4_).getMatrix4d(), new Vector3f(1.0F, 1.0F, 1.0F));
-            }
+            this.rotateScale(p_rotateVertex_1_, new Vector3f(0.5F, 0.5F, 0.5F), ((ModelRotation)p_rotateVertex_4_).getMatrix4d(), new Vector3f(1.0F, 1.0F, 1.0F));
 
             return p_rotateVertex_4_.rotate(p_rotateVertex_2_, p_rotateVertex_3_);
         }

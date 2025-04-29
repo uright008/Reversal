@@ -50,6 +50,7 @@ public class DirectConnectGui extends MiscGui {
         Keyboard.enableRepeatEvents(false);
         mc.gameSettings.lastServer = this.field_146302_g.getText();
         mc.gameSettings.saveOptions();
+        super.onGuiClosed();
     }
 
     public void keyTyped(char typedChar, int keyCode)

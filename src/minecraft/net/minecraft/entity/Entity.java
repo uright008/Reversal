@@ -1418,9 +1418,9 @@ public abstract class Entity implements ICommandSender, Cullable
     {
         try
         {
-            tagCompund.setTag("Pos", this.newDoubleNBTList(new double[] {this.posX, this.posY, this.posZ}));
-            tagCompund.setTag("Motion", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
-            tagCompund.setTag("Rotation", this.newFloatNBTList(new float[] {this.rotationYaw, this.rotationPitch}));
+            tagCompund.setTag("Pos", this.newDoubleNBTList(this.posX, this.posY, this.posZ));
+            tagCompund.setTag("Motion", this.newDoubleNBTList(this.motionX, this.motionY, this.motionZ));
+            tagCompund.setTag("Rotation", this.newFloatNBTList(this.rotationYaw, this.rotationPitch));
             tagCompund.setFloat("FallDistance", this.fallDistance);
             tagCompund.setShort("Fire", (short)this.fire);
             tagCompund.setShort("Air", (short)this.getAir());
@@ -1431,7 +1431,7 @@ public abstract class Entity implements ICommandSender, Cullable
             tagCompund.setLong("UUIDMost", this.getUniqueID().getMostSignificantBits());
             tagCompund.setLong("UUIDLeast", this.getUniqueID().getLeastSignificantBits());
 
-            if (this.getCustomNameTag() != null && this.getCustomNameTag().length() > 0)
+            if (this.getCustomNameTag() != null && !this.getCustomNameTag().isEmpty())
             {
                 tagCompund.setString("CustomName", this.getCustomNameTag());
                 tagCompund.setBoolean("CustomNameVisible", this.getAlwaysRenderNameTag());
@@ -1905,7 +1905,7 @@ public abstract class Entity implements ICommandSender, Cullable
 
     public boolean isInvisibleToPlayer(EntityPlayer player)
     {
-        return player.isSpectator() ? false : this.isInvisible();
+        return !player.isSpectator() && this.isInvisible();
     }
 
     public void setInvisible(boolean invisible)

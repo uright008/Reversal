@@ -50,11 +50,6 @@ public class SplashScreen {
 
     public static long subWindow;
 
-    /**
-     * choose a loading screen randomly.
-     *
-     * @return loading screen's instance
-     */
     @SneakyThrows
     private static LoadingScreenRenderer getLoadingScreen() {
         return new VideoLoadingScreen();

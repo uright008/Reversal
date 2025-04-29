@@ -5,7 +5,6 @@ import net.minecraft.tileentity.*;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IWorldNameable;
-import net.optifine.reflect.Reflector;
 
 public class TileEntityUtils
 {
@@ -52,19 +51,19 @@ public class TileEntityUtils
     {
         if (te instanceof TileEntityBeacon)
         {
-            return (String)Reflector.getFieldValue(te, Reflector.TileEntityBeacon_customName);
+            return ((TileEntityBeacon) te).customName;
         }
         else if (te instanceof TileEntityBrewingStand)
         {
-            return (String)Reflector.getFieldValue(te, Reflector.TileEntityBrewingStand_customName);
+            return ((TileEntityBrewingStand) te).customName;
         }
         else if (te instanceof TileEntityEnchantmentTable)
         {
-            return (String)Reflector.getFieldValue(te, Reflector.TileEntityEnchantmentTable_customName);
+            return ((TileEntityEnchantmentTable) te).customName;
         }
         else if (te instanceof TileEntityFurnace)
         {
-            return (String)Reflector.getFieldValue(te, Reflector.TileEntityFurnace_customName);
+            return ((TileEntityFurnace) te).customName;
         }
         else
         {
@@ -86,19 +85,23 @@ public class TileEntityUtils
     {
         if (te instanceof TileEntityBeacon)
         {
-            return Reflector.setFieldValue(te, Reflector.TileEntityBeacon_customName, name);
+            ((TileEntityBeacon) te).customName = name;
+            return true;
         }
         else if (te instanceof TileEntityBrewingStand)
         {
-            return Reflector.setFieldValue(te, Reflector.TileEntityBrewingStand_customName, name);
+            ((TileEntityBrewingStand) te).customName = name;
+            return true;
         }
         else if (te instanceof TileEntityEnchantmentTable)
         {
-            return Reflector.setFieldValue(te, Reflector.TileEntityEnchantmentTable_customName, name);
+            ((TileEntityEnchantmentTable) te).customName = name;
+            return true;
         }
         else if (te instanceof TileEntityFurnace)
         {
-            return Reflector.setFieldValue(te, Reflector.TileEntityFurnace_customName, name);
+            ((TileEntityFurnace) te).customName = name;
+            return true;
         }
         else if (te instanceof TileEntityChest)
         {

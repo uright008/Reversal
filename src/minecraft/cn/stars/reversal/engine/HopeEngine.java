@@ -34,10 +34,11 @@ import static net.minecraft.client.Minecraft.*;
 @SuppressWarnings("all")
 public class HopeEngine {
     public static final String version = "1.0.8";
-    private static final Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getMinecraft();
+    private boolean terminationErrorFlag;
 
     @SneakyThrows
-    public static void initializeDisplay() {
+    public void initializeDisplay() {
         info("[HopeEngine] Handling display initialization!");
         Util.EnumOS os = Util.getOSType();
 
@@ -94,23 +95,34 @@ public class HopeEngine {
     }
 
     @SneakyThrows
-    public static void terminateSafely(CrashReport crashReport) {
+    public void terminateSafely(CrashReport crashReport) {
         if (terminated) {
             warn("[HopeEngine] terminateSafely() called twice!");
             return;
         }
-        terminated = true;
 
         // Reversal Termination
         info("[HopeEngine] Handling termination!");
         Display.setTitle("Reversal Termination Progress | HopeEngine " + version);
 
-        VideoUtil.stop();
-        Reversal.stop();
-        if (RainyAPI.ircUser != null) {
-            RainyAPI.ircUser.stop();
+        stopClientServices:
+        {
+            try {
+                if (terminationErrorFlag) break stopClientServices;
+                VideoUtil.stop();
+                Reversal.stop();
+                if (RainyAPI.ircUser != null) {
+                    RainyAPI.ircUser.stop();
+                }
+                DglabClient.stop();
+            } catch (Exception e) {
+                error("Couldn't stop some elements. Unexpected result may happen. Retrying!", e);
+                terminationErrorFlag = true;
+                terminateSafely(crashReport);
+            }
         }
-        DglabClient.stop();
+
+        terminated = true;
 
         // Minecraft Termination
         if (crashReport != null) {
@@ -152,7 +164,7 @@ public class HopeEngine {
         }
     }
 
-    public static void terminateSafely() {
+    public void terminateSafely() {
         terminateSafely(null);
     }
 

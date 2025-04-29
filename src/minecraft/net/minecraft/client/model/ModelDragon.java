@@ -7,18 +7,18 @@ import net.minecraft.entity.boss.EntityDragon;
 
 public class ModelDragon extends ModelBase
 {
-    private ModelRenderer head;
-    private ModelRenderer spine;
-    private ModelRenderer jaw;
-    private ModelRenderer body;
-    private ModelRenderer rearLeg;
-    private ModelRenderer frontLeg;
-    private ModelRenderer rearLegTip;
-    private ModelRenderer frontLegTip;
-    private ModelRenderer rearFoot;
-    private ModelRenderer frontFoot;
-    private ModelRenderer wing;
-    private ModelRenderer wingTip;
+    public ModelRenderer head;
+    public ModelRenderer spine;
+    public ModelRenderer jaw;
+    public ModelRenderer body;
+    public ModelRenderer rearLeg;
+    public ModelRenderer frontLeg;
+    public ModelRenderer rearLegTip;
+    public ModelRenderer frontLegTip;
+    public ModelRenderer rearFoot;
+    public ModelRenderer frontFoot;
+    public ModelRenderer wing;
+    public ModelRenderer wingTip;
     private float partialTicks;
 
     public ModelDragon(float p_i46360_1_)

@@ -1,10 +1,11 @@
 package net.minecraft.client.renderer.entity;
 
-import cn.stars.addons.optimization.entityculling.Cullable;
 import cn.stars.addons.optimization.entityculling.EntityCullingModBase;
 import cn.stars.addons.optimization.entityculling.EntityRendererInter;
 import cn.stars.addons.rfp.EntityPlayerDummy;
 import cn.stars.addons.rfp.RenderPlayerDummy;
+import cn.stars.reversal.module.impl.render.Hitbox;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.collect.Maps;
 import java.util.Collections;
 import java.util.Map;
@@ -29,7 +30,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.RenderEnderCrystal;
@@ -103,13 +103,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.optifine.entity.model.CustomEntityModels;
 import net.optifine.player.PlayerItemsLayer;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 
 public class RenderManager
@@ -203,11 +201,6 @@ public class RenderManager
         this.skinMap.put("default", this.playerRenderer);
         this.skinMap.put("slim", new RenderPlayer(this, true));
         PlayerItemsLayer.register(this.skinMap);
-
-        if (Reflector.RenderingRegistry_loadEntityRenderers.exists())
-        {
-            Reflector.call(Reflector.RenderingRegistry_loadEntityRenderers, this, this.entityRenderMap);
-        }
     }
 
     public void setRenderPosition(double renderPosXIn, double renderPosYIn, double renderPosZIn)
@@ -368,7 +361,7 @@ public class RenderManager
 
     public boolean doRenderEntity(Entity entity, double x, double y, double z, float entityYaw, float partialTicks, boolean hideDebugBox)
     {
-        if (!((Cullable) entity).isForcedVisible() && ((Cullable) entity).isCulled()) {
+        if (!entity.isForcedVisible() && entity.isCulled()) {
             EntityRendererInter<Entity> entityRenderer = getEntityRenderObject(entity);
             if (entityRenderer.shadowShouldShowName(entity)) {
                 entityRenderer.shadowRenderNameTag(entity, x, y, z);
@@ -378,7 +371,7 @@ public class RenderManager
             return false;
         }
         EntityCullingModBase.instance.renderedEntities++;
-        ((Cullable) entity).setOutOfCamera(false);
+        entity.setOutOfCamera(false);
 
         Render<Entity> render = null;
 
@@ -423,7 +416,7 @@ public class RenderManager
                 {
                     try
                     {
-                        this.renderDebugBoundingBox(entity, x, y, z, partialTicks);
+                        ModuleInstance.getModule(Hitbox.class).renderBoundingBox(entity, x, y, z, partialTicks);
                     }
                     catch (Throwable throwable)
                     {
@@ -431,10 +424,7 @@ public class RenderManager
                     }
                 }
             }
-            else if (this.renderEngine != null)
-            {
-                return false;
-            }
+            else return this.renderEngine == null;
 
             return true;
         }

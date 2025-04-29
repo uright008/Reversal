@@ -420,10 +420,10 @@ public class MultiPlayerGui extends AtomicGui {
            final float[] maxWidth = {0};
            arrayList.forEach(i -> {
                h.addAndGet(10);
-               psm16.drawString(i, mouseX + 10, mouseY + h.get(), Color.WHITE.getRGB());
+               AtomicMenu.UI_BLOOM_RUNNABLES.add(() -> psm16.drawString(i, mouseX + 10, mouseY + h.get(), Color.WHITE.getRGB()));
                maxWidth[0] = Math.max(maxWidth[0], psm16.getStringWidth(i));
            });
-           RenderUtil.roundedRectangle(mouseX + 5, mouseY + 5, maxWidth[0] + 10, h.get() + 5, 2, new Color(30, 30, 30, 100));
+           RenderUtil.roundedRectangle(mouseX + 5, mouseY + 5, maxWidth[0] + 10, h.get() + 5, 2, new Color(20, 20, 20, 160));
         }
     }
 

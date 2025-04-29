@@ -1,5 +1,6 @@
 package net.optifine.entity.model;
 
+import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelHorse;
@@ -7,7 +8,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderHorse;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.passive.EntityHorse;
-import net.optifine.reflect.Reflector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +31,7 @@ public class ModelAdapterHorse extends ModelAdapter
         return new ModelHorse();
     }
 
+    @SneakyThrows
     public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
     {
         if (!(model instanceof ModelHorse))
@@ -44,8 +45,7 @@ public class ModelAdapterHorse extends ModelAdapter
 
             if (map.containsKey(modelPart))
             {
-                int i = ((Integer)map.get(modelPart)).intValue();
-                return (ModelRenderer)Reflector.getFieldValue(modelhorse, Reflector.ModelHorse_ModelRenderers, i);
+                return (ModelRenderer) modelhorse.getClass().getField(modelPart).get(modelhorse);
             }
             else
             {
@@ -56,59 +56,54 @@ public class ModelAdapterHorse extends ModelAdapter
 
     public String[] getModelRendererNames()
     {
-        return new String[] {"head", "upper_mouth", "lower_mouth", "horse_left_ear", "horse_right_ear", "mule_left_ear", "mule_right_ear", "neck", "horse_face_ropes", "mane", "body", "tail_base", "tail_middle", "tail_tip", "back_left_leg", "back_left_shin", "back_left_hoof", "back_right_leg", "back_right_shin", "back_right_hoof", "front_left_leg", "front_left_shin", "front_left_hoof", "front_right_leg", "front_right_shin", "front_right_hoof", "mule_left_chest", "mule_right_chest", "horse_saddle_bottom", "horse_saddle_front", "horse_saddle_back", "horse_left_saddle_rope", "horse_left_saddle_metal", "horse_right_saddle_rope", "horse_right_saddle_metal", "horse_left_face_metal", "horse_right_face_metal", "horse_left_rein", "horse_right_rein"};
+        return new String[] {"head", "upperMouth", "lowerMouth", "horseLeftEar", "horseRightEar", "muleLeftEar", "muleRightEar", "neck", "horseFaceRopes", "mane", "body", "tailBase", "tailMiddle", "tailTip", "backLeftLeg", "backLeftShin", "backLeftHoof", "backRightLeg", "backRightShin", "backRightHoof", "frontLeftLeg", "frontLeftShin", "frontLeftHoof", "frontRightLeg", "frontRightShin", "frontRightHoof", "muleLeftChest", "muleRightChest", "horseSaddleBottom", "horseSaddleFront", "horseSaddleBack", "horseLeftSaddleRope", "horseLeftSaddleMetal", "horseRightSaddleRope", "horseRightSaddleMetal", "horseLeftFaceMetal", "horseRightFaceMetal", "horseLeftRein", "horseRightRein"};
     }
 
     private static Map<String, Integer> getMapPartFields()
     {
-        if (mapPartFields != null)
-        {
-            return mapPartFields;
-        }
-        else
-        {
+        if (mapPartFields == null) {
             mapPartFields = new HashMap();
-            mapPartFields.put("head", Integer.valueOf(0));
-            mapPartFields.put("upper_mouth", Integer.valueOf(1));
-            mapPartFields.put("lower_mouth", Integer.valueOf(2));
-            mapPartFields.put("horse_left_ear", Integer.valueOf(3));
-            mapPartFields.put("horse_right_ear", Integer.valueOf(4));
-            mapPartFields.put("mule_left_ear", Integer.valueOf(5));
-            mapPartFields.put("mule_right_ear", Integer.valueOf(6));
-            mapPartFields.put("neck", Integer.valueOf(7));
-            mapPartFields.put("horse_face_ropes", Integer.valueOf(8));
-            mapPartFields.put("mane", Integer.valueOf(9));
-            mapPartFields.put("body", Integer.valueOf(10));
-            mapPartFields.put("tail_base", Integer.valueOf(11));
-            mapPartFields.put("tail_middle", Integer.valueOf(12));
-            mapPartFields.put("tail_tip", Integer.valueOf(13));
-            mapPartFields.put("back_left_leg", Integer.valueOf(14));
-            mapPartFields.put("back_left_shin", Integer.valueOf(15));
-            mapPartFields.put("back_left_hoof", Integer.valueOf(16));
-            mapPartFields.put("back_right_leg", Integer.valueOf(17));
-            mapPartFields.put("back_right_shin", Integer.valueOf(18));
-            mapPartFields.put("back_right_hoof", Integer.valueOf(19));
-            mapPartFields.put("front_left_leg", Integer.valueOf(20));
-            mapPartFields.put("front_left_shin", Integer.valueOf(21));
-            mapPartFields.put("front_left_hoof", Integer.valueOf(22));
-            mapPartFields.put("front_right_leg", Integer.valueOf(23));
-            mapPartFields.put("front_right_shin", Integer.valueOf(24));
-            mapPartFields.put("front_right_hoof", Integer.valueOf(25));
-            mapPartFields.put("mule_left_chest", Integer.valueOf(26));
-            mapPartFields.put("mule_right_chest", Integer.valueOf(27));
-            mapPartFields.put("horse_saddle_bottom", Integer.valueOf(28));
-            mapPartFields.put("horse_saddle_front", Integer.valueOf(29));
-            mapPartFields.put("horse_saddle_back", Integer.valueOf(30));
-            mapPartFields.put("horse_left_saddle_rope", Integer.valueOf(31));
-            mapPartFields.put("horse_left_saddle_metal", Integer.valueOf(32));
-            mapPartFields.put("horse_right_saddle_rope", Integer.valueOf(33));
-            mapPartFields.put("horse_right_saddle_metal", Integer.valueOf(34));
-            mapPartFields.put("horse_left_face_metal", Integer.valueOf(35));
-            mapPartFields.put("horse_right_face_metal", Integer.valueOf(36));
-            mapPartFields.put("horse_left_rein", Integer.valueOf(37));
-            mapPartFields.put("horse_right_rein", Integer.valueOf(38));
-            return mapPartFields;
+            mapPartFields.put("head", 0);
+            mapPartFields.put("upperMouth", 1);
+            mapPartFields.put("lowerMouth", 2);
+            mapPartFields.put("horseLeftEar", 3);
+            mapPartFields.put("horseRightEar", 4);
+            mapPartFields.put("muleLeftEar", 5);
+            mapPartFields.put("muleRightEar", 6);
+            mapPartFields.put("neck", 7);
+            mapPartFields.put("horseFaceRopes", 8);
+            mapPartFields.put("mane", 9);
+            mapPartFields.put("body", 10);
+            mapPartFields.put("tailBase", 11);
+            mapPartFields.put("tailMiddle", 12);
+            mapPartFields.put("tailTip", 13);
+            mapPartFields.put("backLeftLeg", 14);
+            mapPartFields.put("backLeftShin", 15);
+            mapPartFields.put("backLeftHoof", 16);
+            mapPartFields.put("backRightLeg", 17);
+            mapPartFields.put("backRightShin", 18);
+            mapPartFields.put("backRightHoof", 19);
+            mapPartFields.put("frontLeftLeg", 20);
+            mapPartFields.put("frontLeftShin", 21);
+            mapPartFields.put("frontLeftHoof", 22);
+            mapPartFields.put("frontRightLeg", 23);
+            mapPartFields.put("frontRightShin", 24);
+            mapPartFields.put("frontRightHoof", 25);
+            mapPartFields.put("muleLeftChest", 26);
+            mapPartFields.put("muleRightChest", 27);
+            mapPartFields.put("horseSaddleBottom", 28);
+            mapPartFields.put("horseSaddleFront", 29);
+            mapPartFields.put("horseSaddleBack", 30);
+            mapPartFields.put("horseLeftSaddleRope", 31);
+            mapPartFields.put("horseLeftSaddleMetal", 32);
+            mapPartFields.put("horseRightSaddleRope", 33);
+            mapPartFields.put("horseRightSaddleMetal", 34);
+            mapPartFields.put("horseLeftFaceMetal", 35);
+            mapPartFields.put("horseRightFaceMetal", 36);
+            mapPartFields.put("horseLeftRein", 37);
+            mapPartFields.put("horseRightRein", 38);
         }
+        return mapPartFields;
     }
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)

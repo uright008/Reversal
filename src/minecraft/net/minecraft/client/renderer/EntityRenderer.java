@@ -11,10 +11,7 @@ import cn.stars.reversal.module.impl.misc.Protocol;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.module.impl.client.HurtCam;
 import cn.stars.reversal.module.impl.world.TimeTraveller;
-import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.blur.KawaseBloom;
 import cn.stars.reversal.util.render.particle.ParticleManager;
 import cn.stars.reversal.util.wrapper.WrapperFreeLook;
 import com.google.common.base.Predicates;
@@ -50,7 +47,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.client.shader.ShaderLinkHelper;
 import net.minecraft.crash.CrashReport;
@@ -84,7 +80,6 @@ import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.optifine.CustomColors;
@@ -92,9 +87,6 @@ import net.optifine.GlErrors;
 import net.optifine.Lagometer;
 import net.optifine.RandomEntities;
 import net.optifine.gui.GuiChatOF;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
-import net.optifine.reflect.ReflectorResolver;
 import net.optifine.shaders.Shaders;
 import net.optifine.shaders.ShadersRender;
 import net.optifine.util.MemoryMonitor;
@@ -575,7 +567,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 f = f * 60.0F / 70.0F;
             }
 
-            return Reflector.ForgeHooksClient_getFOVModifier.exists() ? Reflector.callFloat(Reflector.ForgeHooksClient_getFOVModifier, this, entity, block, partialTicks, f): f;
+            return f;
         }
     }
 
@@ -659,11 +651,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 IBlockState iblockstate = this.mc.theWorld.getBlockState(blockpos);
                 Block block = iblockstate.getBlock();
 
-                if (Reflector.ForgeHooksClient_orientBedCamera.exists())
-                {
-                    Reflector.callVoid(Reflector.ForgeHooksClient_orientBedCamera, this.mc.theWorld, blockpos, iblockstate, entity);
-                }
-                else if (block == Blocks.bed)
+                if (block == Blocks.bed)
                 {
                     int j = iblockstate.getValue(BlockBed.FACING).getHorizontalIndex();
                     GlStateManager.rotate((float)(j * 90), 0.0F, 1.0F, 0.0F);
@@ -910,9 +898,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 }
 
                 flag = this.mc.getRenderViewEntity() instanceof EntityLivingBase && ((EntityLivingBase)this.mc.getRenderViewEntity()).isPlayerSleeping();
-                boolean flag1 = !ReflectorForge.renderFirstPersonHand(this.mc.renderGlobal, p_renderHand_1_, p_renderHand_2_);
 
-                if (flag1 && this.mc.gameSettings.thirdPersonView == 0 && !flag && !this.mc.gameSettings.hideGUI && !this.mc.playerController.isSpectator())
+                if (this.mc.gameSettings.thirdPersonView == 0 && !flag && !this.mc.gameSettings.hideGUI && !this.mc.playerController.isSpectator())
                 {
                     this.enableLightmap();
 
@@ -1725,15 +1712,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
             Shaders.endWater();
         }
 
-        if (Reflector.ForgeHooksClient_setRenderPass.exists() && !this.debugView)
-        {
-            RenderHelper.enableStandardItemLighting();
-            this.mc.mcProfiler.endStartSection("entities");
-            this.mc.renderGlobal.renderEntities(entity, icamera, partialTicks);
-            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-            RenderHelper.disableStandardItemLighting();
-        }
-
         GlStateManager.shadeModel(7424);
         GlStateManager.depthMask(true);
         GlStateManager.enableCull();
@@ -1745,12 +1723,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("aboveClouds");
             this.renderCloudsCheck(renderglobal, partialTicks, pass);
         }
-
-        if (Reflector.ForgeHooksClient_dispatchRenderLast.exists())
-        {
-            this.mc.mcProfiler.endStartSection("forge_render_last");
-        }
-
 
         this.mc.mcProfiler.endStartSection("hand");
 
@@ -2270,18 +2242,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
         GL11.glNormal3f(0.0F, -1.0F, 0.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         Block block = ActiveRenderInfo.getBlockAtEntityViewpoint(this.mc.theWorld, entity, partialTicks);
-        float f = -1.0F;
 
-        if (Reflector.ForgeHooksClient_getFogDensity.exists())
-        {
-            f = Reflector.callFloat(Reflector.ForgeHooksClient_getFogDensity, this, entity, block, partialTicks, 0.1F);
-        }
-
-        if (f >= 0.0F)
-        {
-            GlStateManager.setFogDensity(f);
-        }
-        else if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPotionActive(Potion.blindness))
+        if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPotionActive(Potion.blindness))
         {
             float f4 = 5.0F;
             int i = ((EntityLivingBase)entity).getActivePotionEffect(Potion.blindness).getDuration();
@@ -2368,11 +2330,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
             {
                 GlStateManager.setFogStart(f3 * 0.05F);
                 GlStateManager.setFogEnd(f3);
-            }
-
-            if (Reflector.ForgeHooksClient_onFogRender.exists())
-            {
-                Reflector.callVoid(Reflector.ForgeHooksClient_onFogRender, this, entity, block, partialTicks, startCoords, f3);
             }
         }
 
@@ -2489,7 +2446,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         if (!this.initialized)
         {
-            ReflectorResolver.resolve();
             TextureUtils.registerResourceListener();
 
             if (Config.getBitsOs() == 64 && Config.getBitsJre() == 32)

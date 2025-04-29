@@ -6,9 +6,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityEnchantmentTableRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntityEnchantmentTable;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterBook extends ModelAdapter
 {
@@ -49,24 +47,15 @@ public class ModelAdapterBook extends ModelAdapter
         {
             return null;
         }
-        else
-        {
-            if (tileentityspecialrenderer.getEntityClass() == null)
-            {
+        else {
+            if (tileentityspecialrenderer.getEntityClass() == null) {
                 tileentityspecialrenderer = new TileEntityEnchantmentTableRenderer();
                 tileentityspecialrenderer.setRendererDispatcher(tileentityrendererdispatcher);
             }
 
-            if (!Reflector.TileEntityEnchantmentTableRenderer_modelBook.exists())
-            {
-                Config.warn("Field not found: TileEntityEnchantmentTableRenderer.modelBook");
-                return null;
-            }
-            else
-            {
-                Reflector.setFieldValue(tileentityspecialrenderer, Reflector.TileEntityEnchantmentTableRenderer_modelBook, modelBase);
-                return tileentityspecialrenderer;
-            }
+            ((TileEntityEnchantmentTableRenderer) tileentityspecialrenderer).field_147541_c = (ModelBook) modelBase;
+            return tileentityspecialrenderer;
+
         }
     }
 }

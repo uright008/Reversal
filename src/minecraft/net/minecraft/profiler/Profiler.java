@@ -14,11 +14,11 @@ import org.apache.logging.log4j.Logger;
 public class Profiler
 {
     private static final Logger logger = LogManager.getLogger();
-    private final List<String> sectionList = Lists.<String>newArrayList();
-    private final List<Long> timestampList = Lists.<Long>newArrayList();
+    private final List<String> sectionList = Lists.newArrayList();
+    private final List<Long> timestampList = Lists.newArrayList();
     public boolean profilingEnabled;
     private String profilingSection = "";
-    private final Map<String, Long> profilingMap = Maps.<String, Long>newHashMap();
+    private final Map<String, Long> profilingMap = Maps.newHashMap();
     public boolean profilerGlobalEnabled = true;
     private boolean profilerLocalEnabled;
     private static final int HASH_SCHEDULED_EXECUTABLES = "scheduledExecutables".hashCode();
@@ -29,7 +29,7 @@ public class Profiler
 
     public Profiler()
     {
-        this.profilerLocalEnabled = this.profilerGlobalEnabled;
+        this.profilerLocalEnabled = true;
     }
 
     public void clearProfiling()
@@ -79,14 +79,14 @@ public class Profiler
         {
             if (this.profilingEnabled)
             {
-                if (this.profilingSection.length() > 0)
+                if (!this.profilingSection.isEmpty())
                 {
                     this.profilingSection = this.profilingSection + ".";
                 }
 
                 this.profilingSection = this.profilingSection + name;
                 this.sectionList.add(this.profilingSection);
-                this.timestampList.add(Long.valueOf(System.nanoTime()));
+                this.timestampList.add(System.nanoTime());
             }
         }
     }
@@ -98,25 +98,25 @@ public class Profiler
             if (this.profilingEnabled)
             {
                 long i = System.nanoTime();
-                long j = ((Long)this.timestampList.remove(this.timestampList.size() - 1)).longValue();
+                long j = this.timestampList.remove(this.timestampList.size() - 1);
                 this.sectionList.remove(this.sectionList.size() - 1);
                 long k = i - j;
 
                 if (this.profilingMap.containsKey(this.profilingSection))
                 {
-                    this.profilingMap.put(this.profilingSection, Long.valueOf(((Long)this.profilingMap.get(this.profilingSection)).longValue() + k));
+                    this.profilingMap.put(this.profilingSection, this.profilingMap.get(this.profilingSection) + k);
                 }
                 else
                 {
-                    this.profilingMap.put(this.profilingSection, Long.valueOf(k));
+                    this.profilingMap.put(this.profilingSection, k);
                 }
 
                 if (k > 100000000L)
                 {
-                    logger.warn("Something\'s taking too long! \'" + this.profilingSection + "\' took aprox " + (double)k / 1000000.0D + " ms");
+                    logger.warn("Something's taking too long! '{}' took aprox {} ms", this.profilingSection, (double) k / 1000000.0D);
                 }
 
-                this.profilingSection = !this.sectionList.isEmpty() ? (String)this.sectionList.get(this.sectionList.size() - 1) : "";
+                this.profilingSection = !this.sectionList.isEmpty() ? this.sectionList.get(this.sectionList.size() - 1) : "";
             }
         }
     }
@@ -129,11 +129,11 @@ public class Profiler
         }
         else
         {
-            long i = this.profilingMap.containsKey("root") ? ((Long)this.profilingMap.get("root")).longValue() : 0L;
-            long j = this.profilingMap.containsKey(profilerName) ? ((Long)this.profilingMap.get(profilerName)).longValue() : -1L;
-            List<Profiler.Result> list = Lists.<Profiler.Result>newArrayList();
+            long i = this.profilingMap.getOrDefault("root", 0L);
+            long j = this.profilingMap.getOrDefault(profilerName, -1L);
+            List<Profiler.Result> list = Lists.newArrayList();
 
-            if (profilerName.length() > 0)
+            if (!profilerName.isEmpty())
             {
                 profilerName = profilerName + ".";
             }
@@ -144,7 +144,7 @@ public class Profiler
             {
                 if (s.length() > profilerName.length() && s.startsWith(profilerName) && s.indexOf(".", profilerName.length() + 1) < 0)
                 {
-                    k += ((Long)this.profilingMap.get(s)).longValue();
+                    k += this.profilingMap.get(s);
                 }
             }
 
@@ -164,7 +164,7 @@ public class Profiler
             {
                 if (s1.length() > profilerName.length() && s1.startsWith(profilerName) && s1.indexOf(".", profilerName.length() + 1) < 0)
                 {
-                    long l = ((Long)this.profilingMap.get(s1)).longValue();
+                    long l = this.profilingMap.get(s1);
                     double d0 = (double)l * 100.0D / (double)k;
                     double d1 = (double)l * 100.0D / (double)i;
                     String s2 = s1.substring(profilerName.length());
@@ -172,10 +172,7 @@ public class Profiler
                 }
             }
 
-            for (String s3 : this.profilingMap.keySet())
-            {
-                this.profilingMap.put(s3, Long.valueOf(((Long)this.profilingMap.get(s3)).longValue() * 950L / 1000L));
-            }
+            this.profilingMap.replaceAll((s, v) -> this.profilingMap.get(s) * 950L / 1000L);
 
             if ((float)k > f)
             {
@@ -199,7 +196,7 @@ public class Profiler
 
     public String getNameOfLastSection()
     {
-        return this.sectionList.size() == 0 ? "[UNKNOWN]" : (String)this.sectionList.get(this.sectionList.size() - 1);
+        return this.sectionList.isEmpty() ? "[UNKNOWN]" : this.sectionList.get(this.sectionList.size() - 1);
     }
 
     public void startSection(Class<?> p_startSection_1_)

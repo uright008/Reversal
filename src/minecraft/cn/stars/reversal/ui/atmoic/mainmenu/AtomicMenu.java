@@ -256,6 +256,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         for (AtomicGui atomicGui : atomicGuis) {
             if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) {
                 lastGuiIndex = atomicGuis.indexOf(currentGui);
+                currentGui.onGuiClosed();
                 currentGui = atomicGui;
                 currentGui.initGui();
                 uiClick();

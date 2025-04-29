@@ -7,6 +7,7 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.impl.hud.AtomicIsland;
 import cn.stars.reversal.music.api.player.MusicPlayer;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.math.TimeUtil;
@@ -87,7 +88,8 @@ public class AtomicIslandRenderer implements GameInstance {
                 if (atomicIsland.percentBar.enabled) {
                     RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) + 0.5f), Atomic.width - 12, 5f, 2.5f, new Color(255, 255, 255, 80));
                     RenderUtil.roundedGradientRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) + 0.5f), (musicPlayer.getCurrentTime() * ((Atomic.width - 12) / musicPlayer.getMusic().getDuration())), 5f, 2.5f, atomicIsland.barColor.getColor(0), atomicIsland.barColor.getColor(ThemeUtil.getCustomClientName().length()), false);
-                    MODERN_POST_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) + 0.5f), (musicPlayer.getCurrentTime() * ((Atomic.width - 12) / musicPlayer.getMusic().getDuration())), 5f, 2.5f, new Color(255, 255, 255, 255)));
+                    if (mc.currentScreen == Reversal.atomicMenu) AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) + 0.5f), (musicPlayer.getCurrentTime() * ((Atomic.width - 12) / musicPlayer.getMusic().getDuration())), 5f, 2.5f, new Color(255, 255, 255, 255)));
+                    else MODERN_POST_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2) + 0.5f), (musicPlayer.getCurrentTime() * ((Atomic.width - 12) / musicPlayer.getMusic().getDuration())), 5f, 2.5f, new Color(255, 255, 255, 255)));
                 }
 
                 RoundedUtil.drawRoundTextured((float) x.getValue() + 5, (float) y.getValue() + 5, 30, 30, 5, 255);
@@ -125,7 +127,8 @@ public class AtomicIslandRenderer implements GameInstance {
             if (atomicIsland.percentBar.enabled) {
                 RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2)), Atomic.width - 12, 5f, 2.5f, new Color(255, 255, 255, 80));
                 RenderUtil.roundedGradientRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2)), ((System.currentTimeMillis() - startTime) * ((Atomic.width - 12) / task.getDelay())), 5f, 2.5f, atomicIsland.barColor.getColor(0), atomicIsland.barColor.getColor(ThemeUtil.getCustomClientName().length()), false);
-                MODERN_POST_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2)), ((System.currentTimeMillis() - startTime) * ((Atomic.width - 12) / task.getDelay())), 5f, 2.5f, new Color(255, 255, 255, 255)));
+                if (mc.currentScreen == Reversal.atomicMenu) AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2)), ((System.currentTimeMillis() - startTime) * ((Atomic.width - 12) / task.getDelay())), 5f, 2.5f, new Color(255, 255, 255, 255)));
+                else MODERN_POST_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue() + 6, (float) (y.getValue() + ((Atomic.y - y.getValue()) * 2)), ((System.currentTimeMillis() - startTime) * ((Atomic.width - 12) / task.getDelay())), 5f, 2.5f, new Color(255, 255, 255, 255)));
             }
             task.getTask().run();
 
@@ -158,8 +161,12 @@ public class AtomicIslandRenderer implements GameInstance {
 
         if (!atomicIsland.runningLight.enabled) {
             RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, ColorUtil.empathyColor());
-            MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, atomicIsland.shadowColor.getColor()));
-            MODERN_BLUR_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, Color.BLACK));
+            if (mc.currentScreen == Reversal.atomicMenu) {
+                AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, atomicIsland.shadowColor.getColor()));
+            } else {
+                MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, atomicIsland.shadowColor.getColor()));
+                MODERN_BLUR_RUNNABLES.add(() -> RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, Color.BLACK));
+            }
         } else {
             RoundedUtil.drawGradientRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 8,
                     ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, ColorUtil.transparent, true),
@@ -167,11 +174,21 @@ public class AtomicIslandRenderer implements GameInstance {
                     ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, ColorUtil.transparent, true),
                     ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, ColorUtil.transparent, true));
             RenderUtil.roundedRectangle((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 7, ColorUtil.empathyColor());
-            MODERN_BLOOM_RUNNABLES.add(() -> RoundedUtil.drawGradientRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 8,
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, ColorUtil.transparent, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, ColorUtil.transparent, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, ColorUtil.transparent, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, ColorUtil.transparent, true)));
+            if (mc.currentScreen == Reversal.atomicMenu) {
+                AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> {
+                    RoundedUtil.drawGradientRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 8,
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, ColorUtil.transparent, true),
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, ColorUtil.transparent, true),
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, ColorUtil.transparent, true),
+                            ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, ColorUtil.transparent, true));
+                });
+            } else {
+                MODERN_BLOOM_RUNNABLES.add(() -> RoundedUtil.drawGradientRound((float) x.getValue(), (float) y.getValue(), (float) ((Atomic.x - x.getValue()) * 2), renderHeight, 8,
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, ColorUtil.transparent, true),
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, ColorUtil.transparent, true),
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, ColorUtil.transparent, true),
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, ColorUtil.transparent, true)));
+            }
         }
     }
 

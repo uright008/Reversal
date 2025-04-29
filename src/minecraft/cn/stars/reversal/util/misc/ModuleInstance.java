@@ -23,7 +23,6 @@ public class ModuleInstance {
     }
     @SneakyThrows
     public static <T extends Module> T getModule(Class<T> clazz) {
-        if (Minecraft.latch.getCount() > 1) Minecraft.latch.await();
         return (T) Reversal.moduleManager.getByClass(clazz);
     }
     public static ModeValue getMode(String moduleName, String settingName) throws ClassCastException {

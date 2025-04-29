@@ -8,7 +8,7 @@ import cn.stars.reversal.ui.hud.Hud;
 import cn.stars.reversal.value.impl.BoolValue;
 
 @ModuleInfo(name = "HUD", localizedName = "module.HUD.name", description = "Show a hud on your screen",
-        localizedDescription = "module.HUD.desc", category = Category.HUD)
+        localizedDescription = "module.HUD.desc", category = Category.HUD, defaultEnabled = true)
 public class HUD extends Module {
     public final BoolValue display_when_debugging = new BoolValue("Display when debugging", this, false);
     public HUD() {

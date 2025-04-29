@@ -39,8 +39,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.optifine.BlockPosM;
 import net.optifine.CustomBlockLayers;
 import net.optifine.override.ChunkCacheOF;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 import net.optifine.render.AabbFrame;
 import net.optifine.render.RenderEnv;
 import net.optifine.shaders.SVertexBuilder;
