@@ -53,8 +53,6 @@ import java.util.concurrent.ScheduledExecutorService;
  * Copyright (c) 2025 Aerolite Society, Some rights reserved.
  * A Hack-visual PVP Client.
  */
-@NativeObfuscation
-@StringEncryption
 @Getter
 public class Reversal {
     // Client Info
@@ -217,10 +215,8 @@ public class Reversal {
             // Who knows why?
             FBP.init();
 
-        //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
             setWindowTitle();
-            //    Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH));
-            //    Display.setTitle(NAME + " (" + VERSION + "/" + BRANCH.name() + "/RainyAPI/LWJGL " + Sys.getVersion() + ")");
+
             ReversalLogger.info("Client finalized.");
         } catch (final Exception e) {
             ReversalLogger.error("An error has occurred while loading Reversal: ", e);

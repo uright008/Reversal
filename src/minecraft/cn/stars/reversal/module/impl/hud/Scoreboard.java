@@ -3,8 +3,10 @@ package cn.stars.reversal.module.impl.hud;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import net.minecraft.scoreboard.Score;
@@ -21,6 +23,7 @@ import static net.minecraft.client.gui.Gui.drawRect;
 @ModuleInfo(name = "Scoreboard", localizedName = "module.Scoreboard.name", description = "Show the scoreboard",
         localizedDescription = "module.Scoreboard.desc", category = Category.HUD)
 public class Scoreboard extends Module {
+    public final ColorValue shaderColor = new ColorValue("Shader Color", this, Color.BLACK);
     public final BoolValue background = new BoolValue("Background", this, true);
     public final BoolValue rounded = new BoolValue("Rounded", this, false);
     public final BoolValue postProcessing = new BoolValue("Post Processing", this, false);
@@ -68,7 +71,10 @@ public class Scoreboard extends Module {
                     RenderUtil.roundedRectangle(scoreboardStartX, scoreboardStartY - fontHeight() - scoreboardHeight, finalMaxStringWidth + horizontalMargin, fontHeight() + scoreboardHeight, 4, new Color(0, 0, 0, 80));
                 });
                 if (postProcessing.enabled) {
-                    MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle(scoreboardStartX, scoreboardStartY - fontHeight() - scoreboardHeight, finalMaxStringWidth + horizontalMargin, fontHeight() + scoreboardHeight, 4, Color.BLACK));
+                    MODERN_BLOOM_RUNNABLES.add(() -> {
+                        if (!ModuleInstance.getClientSettings().theme.getMode().equals("Shader"))
+                            RenderUtil.roundedRectangle(scoreboardStartX, scoreboardStartY - fontHeight() - scoreboardHeight, finalMaxStringWidth + horizontalMargin, fontHeight() + scoreboardHeight, 4, shaderColor.getColor());
+                    });
                     MODERN_BLUR_RUNNABLES.add(() -> RenderUtil.roundedRectangle(scoreboardStartX, scoreboardStartY - fontHeight() - scoreboardHeight, finalMaxStringWidth + horizontalMargin, fontHeight() + scoreboardHeight, 4, Color.BLACK));
                 }
             } else {
@@ -77,10 +83,16 @@ public class Scoreboard extends Module {
                     RenderUtil.rect(scoreboardStartX, scoreboardStartY - fontHeight() - scoreboardHeight, finalMaxStringWidth + horizontalMargin, fontHeight() + scoreboardHeight, new Color(0, 0, 0, 80));
                 });
                 if (postProcessing.enabled) {
-                    MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.rect(scoreboardStartX, scoreboardStartY - fontHeight() - scoreboardHeight, finalMaxStringWidth + horizontalMargin, fontHeight() + scoreboardHeight, Color.BLACK));
+                    MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.rect(scoreboardStartX, scoreboardStartY - fontHeight() - scoreboardHeight, finalMaxStringWidth + horizontalMargin, fontHeight() + scoreboardHeight, shaderColor.getColor()));
                     MODERN_BLUR_RUNNABLES.add(() -> RenderUtil.rect(scoreboardStartX, scoreboardStartY - fontHeight() - scoreboardHeight, finalMaxStringWidth + horizontalMargin, fontHeight() + scoreboardHeight, Color.BLACK));
                 }
             }
+        } else {
+
+            MODERN_BLOOM_RUNNABLES.add(() -> {
+                if (ModuleInstance.getClientSettings().theme.getMode().equals("Shader"))
+                    RenderUtil.rectForShaderTheme(scoreboardStartX, scoreboardStartY - fontHeight() - scoreboardHeight, finalMaxStringWidth + horizontalMargin, fontHeight() + scoreboardHeight, shaderColor);
+            });
         }
 
         for (Score score1 : scoreCollection)

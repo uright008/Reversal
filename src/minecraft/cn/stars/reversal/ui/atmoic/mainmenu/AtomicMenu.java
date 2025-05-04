@@ -5,13 +5,10 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
-import cn.stars.reversal.module.impl.client.PostProcessing;
-import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.*;
 import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
 import cn.stars.reversal.ui.notification.NotificationManager;
-import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.advanced.composed.CustomAnimation;
 import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.stars.reversal.util.animation.rise.Animation;
@@ -19,15 +16,10 @@ import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.player.SkinUtil;
 import cn.stars.reversal.util.render.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Session;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -50,7 +42,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     private ResourceLocation headImage;
 
     private final Animation upperSelectionAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
-    private final Animation initAnimation = new Animation(Easing.LINEAR, 200);
+    private final Animation alphaAnimation = new Animation(Easing.LINEAR, 200);
     private final Animation subHoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation subPosAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation displayNameAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
@@ -75,8 +67,8 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         ColorUtil.updateColorAnimation();
 
         // Background Blur
-        initAnimation.run(currentGui == atomicGuis.get(0) ? 0 : 255);
-        ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(0,0,0, (int) initAnimation.getValue())), 2, 2);
+        alphaAnimation.run(currentGui == atomicGuis.get(0) ? 0 : 255);
+        ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(0,0,0, (int) alphaAnimation.getValue())), 2, 2);
 
         if (RainyAPI.menuBubble) {
             try {
@@ -346,17 +338,18 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         lastGuiIndex = 0;
         setMiscGui(new MiscGui());
 
-        try {
-            headImage = SkinUtil.getResourceLocation(SkinUtil.uuidOf(GameInstance.mc.session.getUsername()));
+        Reversal.threadPoolExecutor.execute(() -> {
+            try {
+                headImage = SkinUtil.getResourceLocation(SkinUtil.uuidOf(GameInstance.mc.session.getUsername()));
 
-            if (headImage == null) {
-                headImage = DefaultPlayerSkin.getDefaultSkinLegacy();
+                if (headImage == null || SkinUtil.uuidOf(GameInstance.mc.session.getUsername()).isEmpty()) {
+                    headImage = SkinUtil.getResourceLocation(SkinUtil.uuidOf("Steve"));
+                }
+
+            } catch (Exception e) {
+                headImage = SkinUtil.getResourceLocation(SkinUtil.uuidOf("Steve"));
             }
-
-            ReversalLogger.info("###### UUID: {}" , SkinUtil.uuidOf(GameInstance.mc.session.getUsername()));
-        } catch (Exception e) {
-            headImage = DefaultPlayerSkin.getDefaultSkinLegacy();
-        }
+        });
     }
 
     public static void switchGui(int index) {
