@@ -97,7 +97,7 @@ public class SponsorGui extends AtomicGui {
     // Only edit when necessary.
     private void addSponsors() {
         sponsors.clear();
-        String s = "小逸 # A_su # 酚酞 # 西瓜 # Prodee163 # Valor#1337 # SmokeKing_ # INK_qwp # failure # Juice_awa # Tianlol # Petey # 雫 # Chsy # 尘埃杰瑞 # Realonker # MaceAura";
+        String s = "小逸 # A_su # 酚酞 # 西瓜 # Prodee163 # Valor#1337 # SmokeKing_ # INK_qwp # failure # Juice_awa # Tianlol # Petey # 雫 # Chsy # 尘埃杰瑞 # Realonker # MaceAura # zhangjh";
         String[] result = s.split(" # ");
         sponsors.addAll(Arrays.asList(result));
     }

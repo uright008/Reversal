@@ -167,13 +167,12 @@ public class Hud implements GameInstance {
 
                     final double stringWidth = regular16.getWidth(name);
 
-                    RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, new Color(0, 0, 0, 60));
+                //    RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, new Color(0, 0, 0, 60));
                     RenderUtil.rect(renderX - offsetX + stringWidth + offsetX * 1.5 + 1, renderY - offsetY + 0.4, 1, 8.8 + offsetY, arraylist.colorValue.getColor(moduleCount));
 
                     finalX = arraylistX - regular16.getWidth(name);
 
                     regular16.drawString(name, renderX, renderY + 2, arraylist.colorValue.getColor(moduleCount).getRGB());
-
 
                     final int mC = moduleCount;
                     MODERN_POST_BLOOM_RUNNABLES.add(() -> regular16.drawString(name, renderX, renderY + 2, arraylist.colorValue.getColor(mC).getRGB()));
