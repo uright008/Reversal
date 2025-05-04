@@ -13,7 +13,7 @@ import cn.stars.reversal.music.ui.component.slider.VolumeSlider;
 import cn.stars.reversal.music.ui.gui.MusicPlayerGUI;
 import cn.stars.reversal.music.ui.gui.impl.PlayListGUI;
 import cn.stars.reversal.music.ui.gui.impl.PlayListListGUI;
-import cn.stars.reversal.ui.modern.TextField;
+import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.util.animation.advanced.Animation;
 import cn.stars.reversal.util.animation.advanced.Direction;
 import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
@@ -54,7 +54,7 @@ public class MusicPlayerScreen extends GuiScreen {
     public final List<CategoryButton> categoryButtons = new ArrayList<>();
     private final UserButton userButton = new UserButton();
     @Getter
-    private final cn.stars.reversal.ui.modern.TextField searchField = new TextField(150, 10, GameInstance.regular16, ThemeColor.bgColor, ThemeColor.outlineColor);
+    private final TextField searchField = new TextField(150, 10, GameInstance.regular16, ThemeColor.bgColor, ThemeColor.outlineColor);
     @Getter
     private MusicPlayerGUI currentGUI;
 

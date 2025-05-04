@@ -1,6 +1,7 @@
 package cn.stars.reversal.module.impl.client;
 
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.value.impl.*;
 import cn.stars.addons.rawinput.RawMouseHelper;
 import cn.stars.reversal.event.impl.ValueChangedEvent;
@@ -18,20 +19,23 @@ import java.awt.*;
 public final class ClientSettings extends Module {
     public final NoteValue note1 = new NoteValue("< Color Settings >", "value.ClientSettings.note1", this);
     public final ModeValue theme = new ModeValue("Theme", "value.ClientSettings.theme", this, "Simple",
-            "Minecraft", "Reversal", "Modern", "Simple", "Empathy", "ThunderHack");
+            "Minecraft", "Reversal", "Modern", "Simple", "Empathy", "ThunderHack", "Shader");
     public final ModeValue colorType = new ModeValue("Color Type", "value.ClientSettings.colorType", this, "Rainbow", "Rainbow", "Double", "Fade", "Static");
     public final ColorValue color1 = new ColorValue("Color 1", "value.ClientSettings.color1", this, new Color(20,250,255), true);
     public final ColorValue color2 = new ColorValue("Color 2", "value.ClientSettings.color2", this, new Color(20,250,255), true);
-    public final BoolValue customAlpha = new BoolValue("Custom Alpha", this, false);
-    public final NumberValue alpha = new NumberValue("Alpha", this, 255, 0, 255, 1);
+    public final BoolValue customAlpha = new BoolValue("Custom Alpha", "value.ClientSettings.customAlpha", this, false);
+    public final NumberValue alpha = new NumberValue("Alpha", "value.ClientSettings.alpha", this, 255, 0, 255, 1);
     public final NumberValue indexTimes = new NumberValue("Index Times",  "value.ClientSettings.indexTimes",this, 1, 1, 10, 0.1);
     public final NumberValue indexSpeed = new NumberValue("Index Speed", "value.ClientSettings.indexSpeed",this, 1, 1, 5, 0.1);
 
     public final NoteValue note2 = new NoteValue("< Specific Settings >", "value.ClientSettings.note2", this);
     public final ModeValue listAnimation = new ModeValue("List Animation", "value.ClientSettings.listAnimation", this, "Reversal", "Reversal", "Slide");
     public final BoolValue empathyGlow = new BoolValue("Empathy Glow", "value.ClientSettings.empathyGlow", this, false);
+    public final NumberValue shaderRoundStrength = new NumberValue("Shader Round Strength", "value.ClientSettings.shaderRoundStrength", this, 4f, 1f, 10f, 1f);
+    public final BoolValue shaderGradient = new BoolValue("Shader Gradient", "value.ClientSettings.shaderGradient", this, false);
 
     public final NoteValue note3 = new NoteValue("< Client Settings >", "value.ClientSettings.note3", this);
+    public final TextValue customName = new TextValue("Custom Name", "value.ClientSettings.customName", this, "Reversal");
     public final BoolValue localization = new BoolValue("Localization", "value.ClientSettings.localization", this, true);
     public final ModeValue language = new ModeValue("Language", "value.ClientSettings.language", this, "English", "English", "Chinese", "Chinese Traditional", "Japanese");
     public final BoolValue showNotifications = new BoolValue("Show Notifications", "value.ClientSettings.showNotifications", this, true);
@@ -79,6 +83,9 @@ public final class ClientSettings extends Module {
         if (event.setting == language) {
             Lang.resourcesReloaded();
         }
+        if (event.setting == customName) {
+            ThemeUtil.setCustomClientName(customName.getText());
+        }
     }
 
     @Override
@@ -91,5 +98,6 @@ public final class ClientSettings extends Module {
             mc.mouseHelper = new MouseHelper();
             ReversalLogger.info("Switched mc.mouseHelper to MouseHelper.");
         }
+        customName.setText(ThemeUtil.getCustomClientName());
     }
 }

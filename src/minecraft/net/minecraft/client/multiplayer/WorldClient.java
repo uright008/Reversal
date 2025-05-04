@@ -6,7 +6,7 @@ import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.collect.Sets;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.Callable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -41,7 +41,6 @@ import net.minecraft.world.storage.WorldInfo;
 import net.optifine.CustomGuis;
 import net.optifine.DynamicLights;
 import net.optifine.override.PlayerControllerOF;
-import net.optifine.reflect.Reflector;
 
 public class WorldClient extends World
 {
@@ -64,7 +63,6 @@ public class WorldClient extends World
         this.mapStorage = new SaveDataMemoryStorage();
         this.calculateInitialSkylight();
         this.calculateInitialWeather();
-        Reflector.postForgeBusEvent(Reflector.WorldEvent_Load_Constructor, new Object[] {this});
 
         if (this.mc.playerController != null && this.mc.playerController.getClass() == PlayerControllerMP.class)
         {
@@ -348,34 +346,10 @@ public class WorldClient extends World
     public CrashReportCategory addWorldInfoToCrashReport(CrashReport report)
     {
         CrashReportCategory crashreportcategory = super.addWorldInfoToCrashReport(report);
-        crashreportcategory.addCrashSectionCallable("Forced entities", new Callable<String>()
-        {
-            public String call()
-            {
-                return WorldClient.this.entityList.size() + " total; " + WorldClient.this.entityList.toString();
-            }
-        });
-        crashreportcategory.addCrashSectionCallable("Retry entities", new Callable<String>()
-        {
-            public String call()
-            {
-                return WorldClient.this.entitySpawnQueue.size() + " total; " + WorldClient.this.entitySpawnQueue.toString();
-            }
-        });
-        crashreportcategory.addCrashSectionCallable("Server brand", new Callable<String>()
-        {
-            public String call() throws Exception
-            {
-                return WorldClient.this.mc.thePlayer.getClientBrand();
-            }
-        });
-        crashreportcategory.addCrashSectionCallable("Server type", new Callable<String>()
-        {
-            public String call() throws Exception
-            {
-                return WorldClient.this.mc.getIntegratedServer() == null ? "Non-integrated multiplayer server" : "Integrated singleplayer server";
-            }
-        });
+        crashreportcategory.addCrashSection("生物", "共计" + this.entityList.size() + " ; " + this.entityList);
+        crashreportcategory.addCrashSection("生成中生物", "共计" + this.entitySpawnQueue.size() + " ; " + this.entitySpawnQueue);
+        crashreportcategory.addCrashSection("服务器标识", this.mc.thePlayer.getClientBrand());
+        crashreportcategory.addCrashSection("服务器类型", this.mc.getIntegratedServer() == null ? "多人游戏服务器" : "单人游戏服务器");
         return crashreportcategory;
     }
 

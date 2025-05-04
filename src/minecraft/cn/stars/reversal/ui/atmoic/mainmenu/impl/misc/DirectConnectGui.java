@@ -1,14 +1,11 @@
 package cn.stars.reversal.ui.atmoic.mainmenu.impl.misc;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.MiscGui;
-import cn.stars.reversal.ui.modern.TextButton;
-import cn.stars.reversal.ui.modern.TextField;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.multiplayer.ServerData;
@@ -53,6 +50,7 @@ public class DirectConnectGui extends MiscGui {
         Keyboard.enableRepeatEvents(false);
         mc.gameSettings.lastServer = this.field_146302_g.getText();
         mc.gameSettings.saveOptions();
+        super.onGuiClosed();
     }
 
     public void keyTyped(char typedChar, int keyCode)

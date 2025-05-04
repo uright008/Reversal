@@ -1,10 +1,15 @@
 package net.minecraft.client.entity;
 
+import cn.stars.addons.dglab.DglabClient;
+import cn.stars.addons.dglab.WebSocketServer;
+import cn.stars.addons.dglab.config.StrengthConfig;
+import cn.stars.addons.dglab.entity.DGStrength;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.MoveEvent;
 import cn.stars.reversal.event.impl.PostMotionEvent;
 import cn.stars.reversal.event.impl.PreMotionEvent;
 import cn.stars.reversal.event.impl.UpdateEvent;
+import cn.stars.reversal.module.impl.addons.Dglab;
 import cn.stars.reversal.module.impl.movement.Sprint;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.Minecraft;
@@ -86,6 +91,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     private float horseJumpPower;
     public float timeInPortal;
     public float prevTimeInPortal;
+    public float dg_labHealth = 0f;
 
     public EntityPlayerSP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFile)
     {
@@ -259,6 +265,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         if (!this.isEntityInvulnerable(damageSrc))
         {
             this.setHealth(this.getHealth() - damageAmount);
+            updateDglabHealth(this.getHealth() - damageAmount);
         }
     }
 
@@ -303,6 +310,31 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             this.setHealth(health);
             this.hasValidHealth = true;
+        }
+
+        updateDglabHealth(health);
+    }
+
+    private void updateDglabHealth(float health) {
+        WebSocketServer server = DglabClient.getServer();
+        StrengthConfig StrengthConfig = DglabClient.getStrengthConfig();
+        if (server != null && server.getConnected() && ModuleInstance.getModule(Dglab.class).isEnabled()) {
+            float damage = dg_labHealth - health;
+
+
+            if (damage > 0.0F) {
+                server.setDelayTime(StrengthConfig.getADelayTime(), StrengthConfig.getBDelayTime());
+                if(StrengthConfig.getADamageStrength() > 0) server.sendStrengthToClient(Math.max(1, ((int) (damage * StrengthConfig.getADamageStrength()))), 1, 1);
+                if(StrengthConfig.getBDamageStrength() > 0) server.sendStrengthToClient(Math.max(1, ((int) (damage * StrengthConfig.getBDamageStrength()))), 1, 2);
+            }
+            if (health <= 0) {
+                server.setDelayTime(StrengthConfig.getADeathDelay(), StrengthConfig.getBDeathDelay());
+                DGStrength dgStrength = server.getStrength();
+                server.sendStrengthToClient((Math.min(dgStrength.getAStrength() + StrengthConfig.getADeathStrength(), dgStrength.getAMaxStrength())), 2, 1);
+                server.sendStrengthToClient((Math.min(dgStrength.getBStrength() + StrengthConfig.getBDeathStrength(), dgStrength.getBMaxStrength())), 2, 2);
+            }
+
+            dg_labHealth = health;
         }
     }
 

@@ -2,8 +2,8 @@ package cn.stars.reversal.ui.atmoic.mainmenu.impl.misc;
 
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.MiscGui;
-import cn.stars.reversal.ui.atmoic.mainmenu.util.ServerConnector;
-import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.engine.impl.ServerConnector;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RenderUtils;

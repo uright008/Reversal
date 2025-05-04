@@ -60,14 +60,14 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v2.1.2";
+    public static final String VERSION = "v3.0.0-Insider";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
-    public static final Branch BRANCH = Branch.PRODUCTION;
+    public static final Branch BRANCH = Branch.DEVELOPMENT;
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
-    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(2);
+    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(8);
 
     public static String customName = "";
     public static String customText = ".setText <text>";
@@ -98,8 +98,6 @@ public class Reversal {
 
             initialize();
 
-            DefaultHandler.loadConfigs();
-
             ReversalLogger.info("Client loaded successfully.");
             ReversalLogger.info(NAME + " " + VERSION + " (Minecraft " + MINECRAFT_VERSION + "), made with love by " + AUTHOR + ".");
         } catch (Exception e) {
@@ -122,6 +120,7 @@ public class Reversal {
                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§7[§b§l" + NAME + "§r§7] §f" + msg));
         }
     }
+
     public static void showCustomMsg(Object msg) {
         if (Minecraft.getMinecraft().thePlayer != null) {
             Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText((String) msg));
@@ -144,8 +143,6 @@ public class Reversal {
             // Reversal Initialize
             moduleManager = new ModuleManager();
             moduleManager.registerModules(modules);
-
-            Minecraft.latch.countDown();
 
             // Preload module resources
             Preloader preloader = new Preloader();
@@ -197,6 +194,10 @@ public class Reversal {
                 FileUtil.createDirectory("Cache" + File.separator);
             }
 
+            if (!FileUtil.exists("Misc" + File.separator + "Dglab" + File.separator)) {
+                FileUtil.createDirectory("Misc" + File.separator + "Dglab" + File.separator);
+            }
+
             if (!FileUtil.exists("Background" + File.separator)) {
                 FileUtil.createDirectory("Background" + File.separator);
             }
@@ -207,11 +208,10 @@ public class Reversal {
 
     public static void postInitialize() {
         try {
+            DefaultHandler.loadConfigs();
+
             VideoUtil.stop();
             BackgroundManager.loadBackground();
-
-            // Enable HUD
-            if (firstBoot) ModuleInstance.getModule(HUD.class).enabled = true;
 
             // Init it here because it causes crashes if it's initialized before the client is fully loaded.
             // Who knows why?
@@ -250,7 +250,6 @@ public class Reversal {
             new ClientTitle(),
             new Config(),
             new Help(),
-            new Name(),
             new Online(),
             new Say(),
             new SetText(),
@@ -266,6 +265,7 @@ public class Reversal {
             new RealFirstPerson(),
             new SkinLayers3D(),
             new WaveyCapes(),
+            new Dglab(),
             // Combat
             new ClickSound(),
             new NoClickDelay(),
@@ -298,6 +298,7 @@ public class Reversal {
             new DamageParticle(),
             new EnvironmentEffect(),
             new Fullbright(),
+            new Hitbox(),
             new HitEffect(),
             new ItemPhysics(),
             new JumpCircle(),
@@ -328,7 +329,7 @@ public class Reversal {
             new PlayerList(),
             new PlayerModel(),
             new PotionEffect(),
-    //        new PotionEffects(),
+            new DglabOverlay(),
             new Scoreboard(),
             new SessionInfo(),
             new TargetHUD(),

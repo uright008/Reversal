@@ -8,6 +8,7 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.math.MathUtil;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.ColorUtils;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -20,7 +21,7 @@ import java.awt.*;
 
 @ModuleInfo(name = "PlayerList", localizedName = "module.PlayerList.name", description = "Show the info of players around you", localizedDescription = "module.PlayerList.desc", category = Category.HUD)
 public class PlayerList extends Module {
-    public final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy");
+    public final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Shader");
     public final ColorValue colorValue = new ColorValue("Color", this);
     MFont psb = FontManager.getPSB(20);
 
@@ -49,6 +50,12 @@ public class PlayerList extends Module {
                 break;
             case "Simple":
                 RenderUtil.rect(x, y, 148, 18 + mc.theWorld.playerEntities.size() * psm18.height(), Color.BLACK);
+                break;
+            case "Shader":
+                if (event.isBloom())
+                    RenderUtil.roundedRectangle(x, y, 148, 18 + mc.theWorld.playerEntities.size() * psm18.height(), ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), colorValue.getColor());
+                else
+                    RenderUtil.roundedRectangle(x, y, 148, 18 + mc.theWorld.playerEntities.size() * psm18.height(), ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
                 break;
             case "Empathy":
                 RenderUtil.roundedRectangle(x, y, 150, 18 + mc.theWorld.playerEntities.size() * psm18.height(), 3f, ColorUtil.empathyGlowColor());
@@ -85,23 +92,29 @@ public class PlayerList extends Module {
                 break;
         }
 
-        // 顶部
-        psb.drawString("Player Info", x + 17, y + 4, new Color(250, 250, 250, 200).getRGB());
-        FontManager.getIcon(24).drawString("d", x + 2, y + 4.4f, new Color(250, 250, 250, 200).getRGB());
+        MFont font = mode.getMode().equals("Shader") ? regular18 : psm18;
+
+        if (mode.getMode().equals("Shader")) {
+            regular18Bold.drawString("Player List", x + 16, y + 4.5f, new Color(250, 250, 250, 200).getRGB());
+            FontManager.getIcon(20).drawString("d", x + 3, y + 5.5f, colorValue.getColor().getRGB());
+        } else {
+            psb20.drawString("Player List", x + 17, y + 4f, new Color(250, 250, 250, 200).getRGB());
+            FontManager.getIcon(24).drawString("d", x + 2, y + 4.4f, new Color(250, 250, 250, 200).getRGB());
+        }
 
         float posY = y + 18;
         for (EntityPlayer entityPlayer : mc.theWorld.playerEntities) {
-            psm18.drawString(entityPlayer.getName(), x + 4, posY, new Color(250, 250, 250, 200).getRGB());
+            font.drawString(entityPlayer.getName(), x + 4, posY, new Color(250, 250, 250, 200).getRGB());
             String hp;
             try {
                 hp = MathUtil.round(entityPlayer.getHealth(), 1) + "";
-                psm18.drawString(hp, x + 138 - psm18.width(hp), posY, new Color(250, 250, 250, 200).getRGB());
+                font.drawString(hp, x + 138 - psm18.width(hp), posY, new Color(250, 250, 250, 200).getRGB());
                 FontManager.getIcon(12).drawString("s", x + 140, posY + 2, new Color(250, 250, 250, 200).getRGB());
             } catch (Exception e) {
                 hp = "Unknown";
-                psm18.drawString(hp, x + 145 - psm18.width(hp), posY, new Color(250, 250, 250, 200).getRGB());
+                font.drawString(hp, x + 145 - psm18.width(hp), posY, new Color(250, 250, 250, 200).getRGB());
             }
-            posY += psm18.height();
+            posY += font.height();
         }
 
         setWidth(180);

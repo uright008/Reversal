@@ -145,7 +145,7 @@ class BlockOverlay : Module() {
     }
 
     fun drawBoundingBoxOutline(boundingBox: WrapperAxisAlignedBB) {
-        val tessellator = Tessellator.getInstance()
+        val tessellator = Tessellator.instance
         val bufferBuilder = WrapperBufferBuilder(tessellator)
         bufferBuilder.begin(3, DefaultVertexFormats.POSITION)
         posBoundingBoxHalf(boundingBox, bufferBuilder)
@@ -181,7 +181,7 @@ class BlockOverlay : Module() {
         tessellator.draw()
     }
     fun drawBoundingBox(boundingBox: WrapperAxisAlignedBB) {
-        val tessellator = Tessellator.getInstance()
+        val tessellator = Tessellator.instance
         val bufferBuilder = WrapperBufferBuilder(tessellator)
         bufferBuilder.begin(7, DefaultVertexFormats.POSITION)
         posBoundingBoxSquare(boundingBox, tessellator, bufferBuilder)

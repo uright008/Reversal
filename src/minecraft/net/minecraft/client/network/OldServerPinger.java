@@ -1,5 +1,6 @@
 package net.minecraft.client.network;
 
+import cn.stars.reversal.Reversal;
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
@@ -47,7 +48,7 @@ public class OldServerPinger
 {
     private static final Splitter PING_RESPONSE_SPLITTER = Splitter.on('\u0000').limit(6);
     private static final Logger logger = LogManager.getLogger();
-    private final List<NetworkManager> pingDestinations = Collections.<NetworkManager>synchronizedList(Lists.<NetworkManager>newArrayList());
+    private final List<NetworkManager> pingDestinations = Collections.synchronizedList(Lists.newArrayList());
 
     public void ping(final ServerData server) throws UnknownHostException
     {
@@ -139,12 +140,12 @@ public class OldServerPinger
                         }
                         else
                         {
-                            OldServerPinger.logger.error("Invalid server icon (unknown format)");
+                            logger.error("Invalid server icon (unknown format)");
                         }
                     }
                     else
                     {
-                        server.setBase64EncodedIconData((String)null);
+                        server.setBase64EncodedIconData(null);
                     }
 
                     this.field_175092_e = Minecraft.getSystemTime();
@@ -163,10 +164,10 @@ public class OldServerPinger
             {
                 if (!this.field_147403_d)
                 {
-                    OldServerPinger.logger.error("Can't ping " + server.serverIP + ": " + reason.getUnformattedText());
+                    logger.error("Can't ping {}: {}", server.serverIP, reason.getUnformattedText());
                     server.serverMOTD = EnumChatFormatting.DARK_RED + "Can't connect to server.";
                     server.populationInfo = "";
-                    OldServerPinger.this.tryCompatibilityPing(server);
+                    Reversal.threadPoolExecutor.submit(() -> tryCompatibilityPing(server));
                 }
             }
         });
@@ -178,27 +179,26 @@ public class OldServerPinger
         }
         catch (Throwable throwable)
         {
-            logger.error((Object)throwable);
+            logger.error(throwable);
         }
     }
 
     private void tryCompatibilityPing(final ServerData server)
     {
         final ServerAddress serveraddress = ServerAddress.fromString(server.serverIP);
-        ((Bootstrap)((Bootstrap)((Bootstrap)(new Bootstrap()).group((EventLoopGroup)NetworkManager.CLIENT_NIO_EVENTLOOP.getValue())).handler(new ChannelInitializer<Channel>()
+        (new Bootstrap()).group(NetworkManager.CLIENT_NIO_EVENTLOOP.getValue()).handler(new ChannelInitializer<Channel>()
         {
             protected void initChannel(Channel p_initChannel_1_) throws Exception
             {
                 try
                 {
-                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.valueOf(true));
+                    p_initChannel_1_.config().setOption(ChannelOption.TCP_NODELAY, Boolean.TRUE);
                 }
-                catch (ChannelException var3)
+                catch (ChannelException ignored)
                 {
-                    ;
                 }
 
-                p_initChannel_1_.pipeline().addLast(new ChannelHandler[] {new SimpleChannelInboundHandler<ByteBuf>()
+                p_initChannel_1_.pipeline().addLast(new SimpleChannelInboundHandler<ByteBuf>()
                     {
                         public void channelActive(ChannelHandlerContext p_channelActive_1_) throws Exception
                         {
@@ -243,11 +243,10 @@ public class OldServerPinger
                             if (short1 == 255)
                             {
                                 String s = new String(p_channelRead0_2_.readBytes(p_channelRead0_2_.readShort() * 2).array(), Charsets.UTF_16BE);
-                                String[] astring = (String[])Iterables.toArray(OldServerPinger.PING_RESPONSE_SPLITTER.split(s), String.class);
+                                String[] astring = Iterables.toArray(OldServerPinger.PING_RESPONSE_SPLITTER.split(s), String.class);
 
-                                if ("\u00a71".equals(astring[0]))
+                                if ("§1".equals(astring[0]))
                                 {
-                                    int i = MathHelper.parseIntWithDefault(astring[1], 0);
                                     String s1 = astring[2];
                                     String s2 = astring[3];
                                     int j = MathHelper.parseIntWithDefault(astring[4], -1);
@@ -255,20 +254,18 @@ public class OldServerPinger
                                     server.version = -1;
                                     server.gameVersion = s1;
                                     server.serverMOTD = s2;
-                                    server.populationInfo = EnumChatFormatting.GRAY + "" + j + "" + EnumChatFormatting.DARK_GRAY + "/" + EnumChatFormatting.GRAY + k;
+                                    server.populationInfo = EnumChatFormatting.GRAY + "" + j + EnumChatFormatting.DARK_GRAY + "/" + EnumChatFormatting.GRAY + k;
                                 }
                             }
 
                             p_channelRead0_1_.close();
                         }
-                        public void exceptionCaught(ChannelHandlerContext p_exceptionCaught_1_, Throwable p_exceptionCaught_2_) throws Exception
-                        {
+                        public void exceptionCaught(ChannelHandlerContext p_exceptionCaught_1_, Throwable p_exceptionCaught_2_) {
                             p_exceptionCaught_1_.close();
                         }
-                    }
-                });
+                    });
             }
-        })).channel(NioSocketChannel.class)).connect(serveraddress.getIP(), serveraddress.getPort());
+        }).channel(NioSocketChannel.class).connect(serveraddress.getIP(), serveraddress.getPort());
     }
 
     public void pingPendingNetworks()
@@ -279,7 +276,7 @@ public class OldServerPinger
 
             while (iterator.hasNext())
             {
-                NetworkManager networkmanager = (NetworkManager)iterator.next();
+                NetworkManager networkmanager = iterator.next();
 
                 if (networkmanager.isChannelOpen())
                 {
@@ -302,7 +299,7 @@ public class OldServerPinger
 
             while (iterator.hasNext())
             {
-                NetworkManager networkmanager = (NetworkManager)iterator.next();
+                NetworkManager networkmanager = iterator.next();
 
                 if (networkmanager.isChannelOpen())
                 {

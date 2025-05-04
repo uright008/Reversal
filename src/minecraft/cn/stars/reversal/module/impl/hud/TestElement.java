@@ -1,14 +1,13 @@
 package cn.stars.reversal.module.impl.hud;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.value.impl.BoolValue;
-import cn.stars.reversal.value.impl.ColorValue;
-import cn.stars.reversal.value.impl.NoteValue;
+import cn.stars.reversal.value.impl.*;
 import net.minecraft.client.resources.I18n;
 import net.optifine.Lang;
 
@@ -18,6 +17,8 @@ import java.awt.*;
         localizedDescription = "module.TestElement.desc", category = Category.HUD)
 public class TestElement extends Module {
     private final NoteValue note = new NoteValue("测试功能,请勿开启!", this);
+    private final TextValue textValue = new TextValue("TextValue", this, "123");
+    private final CustomValue customValue = new CustomValue("CustomValue", this, () -> Reversal.showMsg("好好好"));
     private final ColorValue colorValue = new ColorValue("Color", this);
     private final BoolValue bg = new BoolValue("Bg", this, false);
     public TestElement() {
@@ -40,6 +41,7 @@ public class TestElement extends Module {
         FontManager.getRegular(32).drawString(I18n.format("reversal.test"), x, y, colorValue.getColor().getRGB());
         MODERN_POST_BLOOM_RUNNABLES.add(() -> FontManager.getRegular(32).drawString(I18n.format("reversal.test"), x, y, colorValue.getColor().getRGB()));
 
+        Reversal.showMsg(textValue.getText());
     //    RenderUtil.roundedRectangle(x, y + 20, 32, 32, 4, colorValue.getColor());
     }
 

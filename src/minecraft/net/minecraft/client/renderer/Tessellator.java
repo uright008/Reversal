@@ -9,7 +9,7 @@ public class Tessellator
     private final WorldRenderer worldRenderer;
     private final WorldVertexBufferUploader vboUploader = new WorldVertexBufferUploader();
     @Getter
-    private static final Tessellator instance = new Tessellator(2097152);
+    public static final Tessellator instance = new Tessellator(2097152);
 
     public Tessellator(int bufferSize)
     {

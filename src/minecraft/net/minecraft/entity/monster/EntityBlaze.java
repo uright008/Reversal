@@ -171,7 +171,7 @@ public class EntityBlaze extends EntityMob
             b0 = (byte)(b0 & -2);
         }
 
-        this.dataWatcher.updateObject(16, Byte.valueOf(b0));
+        this.dataWatcher.updateObject(16, b0);
     }
 
     protected boolean isValidLightLevel()

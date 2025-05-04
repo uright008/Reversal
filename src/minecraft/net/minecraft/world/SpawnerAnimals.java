@@ -1,17 +1,13 @@
 package net.minecraft.world;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EnumCreatureType;
@@ -24,8 +20,6 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.optifine.BlockPosM;
-import net.optifine.reflect.Reflector;
-import net.optifine.reflect.ReflectorForge;
 
 public final class SpawnerAnimals
 {
@@ -109,23 +103,15 @@ public final class SpawnerAnimals
             {
                 if ((!enumcreaturetype.getPeacefulCreature() || spawnPeacefulMobs) && (enumcreaturetype.getPeacefulCreature() || spawnHostileMobs) && (!enumcreaturetype.getAnimal() || p_77192_4_))
                 {
-                    int k4 = Reflector.ForgeWorld_countEntities.exists() ? Reflector.callInt(worldServerIn, Reflector.ForgeWorld_countEntities, new Object[] {enumcreaturetype, Boolean.valueOf(true)}): worldServerIn.countEntities(enumcreaturetype.getCreatureClass());
+                    int k4 = worldServerIn.countEntities(enumcreaturetype.getCreatureClass());
                     int l4 = enumcreaturetype.getMaxNumberOfCreature() * this.countChunkPos / MOB_COUNT_DIV;
 
                     if (k4 <= l4)
                     {
-                        Collection<ChunkCoordIntPair> collection = this.eligibleChunksForSpawning;
-
-                        if (Reflector.ForgeHooksClient.exists())
-                        {
-                            ArrayList<ChunkCoordIntPair> arraylist = Lists.newArrayList(collection);
-                            Collections.shuffle(arraylist);
-                            collection = arraylist;
-                        }
 
                         label561:
 
-                        for (ChunkCoordIntPair chunkcoordintpair1 : collection)
+                        for (ChunkCoordIntPair chunkcoordintpair1 : this.eligibleChunksForSpawning)
                         {
                             BlockPos blockpos = getRandomChunkPosition(worldServerIn, chunkcoordintpair1.chunkXPos, chunkcoordintpair1.chunkZPos, blockposm);
                             int k1 = blockpos.getX();
@@ -149,7 +135,6 @@ public final class SpawnerAnimals
                                     for (int l3 = 0; l3 < 4; ++l3)
                                     {
                                         l2 += worldServerIn.rand.nextInt(k3) - worldServerIn.rand.nextInt(k3);
-                                        i3 += worldServerIn.rand.nextInt(1) - worldServerIn.rand.nextInt(1);
                                         j3 += worldServerIn.rand.nextInt(k3) - worldServerIn.rand.nextInt(k3);
                                         BlockPos blockpos1 = new BlockPos(l2, i3, j3);
                                         float f = (float)l2 + 0.5F;
@@ -167,48 +152,33 @@ public final class SpawnerAnimals
                                                 }
                                             }
 
-                                            if (worldServerIn.canCreatureTypeSpawnHere(enumcreaturetype, biomegenbase$spawnlistentry, blockpos1) && canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.getPlacementForEntity(biomegenbase$spawnlistentry.entityClass), worldServerIn, blockpos1))
-                                            {
+                                            if (worldServerIn.canCreatureTypeSpawnHere(enumcreaturetype, biomegenbase$spawnlistentry, blockpos1) && canCreatureTypeSpawnAtLocation(EntitySpawnPlacementRegistry.getPlacementForEntity(biomegenbase$spawnlistentry.entityClass), worldServerIn, blockpos1)) {
                                                 EntityLiving entityliving;
 
-                                                try
-                                                {
-                                                    entityliving = (EntityLiving)this.mapSampleEntitiesByClass.get(biomegenbase$spawnlistentry.entityClass);
+                                                try {
+                                                    entityliving = (EntityLiving) this.mapSampleEntitiesByClass.get(biomegenbase$spawnlistentry.entityClass);
 
-                                                    if (entityliving == null)
-                                                    {
-                                                        entityliving = (EntityLiving)biomegenbase$spawnlistentry.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {worldServerIn});
+                                                    if (entityliving == null) {
+                                                        entityliving = (EntityLiving) biomegenbase$spawnlistentry.entityClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{worldServerIn});
                                                         this.mapSampleEntitiesByClass.put(biomegenbase$spawnlistentry.entityClass, entityliving);
                                                     }
-                                                }
-                                                catch (Exception exception1)
-                                                {
-                                                    exception1.printStackTrace();
+                                                } catch (Exception exception1) {
                                                     return j4;
                                                 }
 
-                                                entityliving.setLocationAndAngles((double)f, (double)i3, (double)f1, worldServerIn.rand.nextFloat() * 360.0F, 0.0F);
-                                                boolean flag2 = Reflector.ForgeEventFactory_canEntitySpawn.exists() ? ReflectorForge.canEntitySpawn(entityliving, worldServerIn, f, (float)i3, f1) : entityliving.getCanSpawnHere() && entityliving.isNotColliding();
+                                                entityliving.setLocationAndAngles((double) f, (double) i3, (double) f1, worldServerIn.rand.nextFloat() * 360.0F, 0.0F);
 
-                                                if (flag2)
-                                                {
+                                                if (entityliving.getCanSpawnHere() && entityliving.isNotColliding()) {
                                                     this.mapSampleEntitiesByClass.remove(biomegenbase$spawnlistentry.entityClass);
 
-                                                    if (!ReflectorForge.doSpecialSpawn(entityliving, worldServerIn, f, i3, f1))
-                                                    {
-                                                        ientitylivingdata = entityliving.onInitialSpawn(worldServerIn.getDifficultyForLocation(new BlockPos(entityliving)), ientitylivingdata);
-                                                    }
+                                                    ientitylivingdata = entityliving.onInitialSpawn(worldServerIn.getDifficultyForLocation(new BlockPos(entityliving)), ientitylivingdata);
 
-                                                    if (entityliving.isNotColliding())
-                                                    {
+                                                    if (entityliving.isNotColliding()) {
                                                         ++j2;
                                                         worldServerIn.spawnEntityInWorld(entityliving);
                                                     }
 
-                                                    int i4 = Reflector.ForgeEventFactory_getMaxSpawnPackSize.exists() ? Reflector.callInt(Reflector.ForgeEventFactory_getMaxSpawnPackSize, new Object[] {entityliving}): entityliving.getMaxSpawnedInChunk();
-
-                                                    if (j2 >= i4)
-                                                    {
+                                                    if (j2 >= entityliving.getMaxSpawnedInChunk()) {
                                                         continue label561;
                                                     }
                                                 }
@@ -228,7 +198,7 @@ public final class SpawnerAnimals
         }
     }
 
-    protected static BlockPos getRandomChunkPosition(World worldIn, int x, int z)
+    private static BlockPos getRandomChunkPosition(World worldIn, int x, int z)
     {
         Chunk chunk = worldIn.getChunkFromChunkCoords(x, z);
         int i = x * 16 + worldIn.rand.nextInt(16);
@@ -293,7 +263,7 @@ public final class SpawnerAnimals
         {
             while (randomIn.nextFloat() < biomeIn.getSpawningChance())
             {
-                BiomeGenBase.SpawnListEntry biomegenbase$spawnlistentry = (BiomeGenBase.SpawnListEntry)WeightedRandom.getRandomItem(worldIn.rand, list);
+                BiomeGenBase.SpawnListEntry biomegenbase$spawnlistentry = WeightedRandom.getRandomItem(worldIn.rand, list);
                 int i = biomegenbase$spawnlistentry.minGroupCount + randomIn.nextInt(1 + biomegenbase$spawnlistentry.maxGroupCount - biomegenbase$spawnlistentry.minGroupCount);
                 IEntityLivingData ientitylivingdata = null;
                 int j = p_77191_2_ + randomIn.nextInt(p_77191_4_);
@@ -315,25 +285,14 @@ public final class SpawnerAnimals
 
                             try
                             {
-                                entityliving = (EntityLiving)biomegenbase$spawnlistentry.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {worldIn});
+                                entityliving = biomegenbase$spawnlistentry.entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {worldIn});
                             }
                             catch (Exception exception1)
                             {
-                                exception1.printStackTrace();
                                 continue;
                             }
 
-                            if (Reflector.ForgeEventFactory_canEntitySpawn.exists())
-                            {
-                                Object object = Reflector.call(Reflector.ForgeEventFactory_canEntitySpawn, new Object[] {entityliving, worldIn, Float.valueOf((float)j + 0.5F), Integer.valueOf(blockpos.getY()), Float.valueOf((float)k + 0.5F)});
-
-                                if (object == ReflectorForge.EVENT_RESULT_DENY)
-                                {
-                                    continue;
-                                }
-                            }
-
-                            entityliving.setLocationAndAngles((double)((float)j + 0.5F), (double)blockpos.getY(), (double)((float)k + 0.5F), randomIn.nextFloat() * 360.0F, 0.0F);
+                            entityliving.setLocationAndAngles((float)j + 0.5F, blockpos.getY(), (float)k + 0.5F, randomIn.nextFloat() * 360.0F, 0.0F);
                             worldIn.spawnEntityInWorld(entityliving);
                             ientitylivingdata = entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), ientitylivingdata);
                             flag = true;

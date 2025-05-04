@@ -39,7 +39,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry, GameInstance
 {
     private static final Logger logger = LogManager.getLogger();
-    private static final ThreadPoolExecutor field_148302_b = new ScheduledThreadPoolExecutor(5, (new ThreadFactoryBuilder()).setNameFormat("Server Pinger #%d").setDaemon(true).build());
     private static final ResourceLocation UNKNOWN_SERVER = new ResourceLocation("textures/misc/unknown_server.png");
     private static final ResourceLocation SERVER_SELECTION_BUTTONS = new ResourceLocation("textures/gui/server_selection.png");
     private final MultiPlayerGui owner;
@@ -72,22 +71,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry, Gam
             this.server.pingToServer = -2L;
             this.server.serverMOTD = "";
             this.server.populationInfo = "";
-            field_148302_b.submit(() -> {
-                try
-                {
-                    ServerListEntryNormal.this.owner.getOldServerPinger().ping(ServerListEntryNormal.this.server);
-                }
-                catch (UnknownHostException var2)
-                {
-                    ServerListEntryNormal.this.server.pingToServer = -1L;
-                    ServerListEntryNormal.this.server.serverMOTD = EnumChatFormatting.DARK_RED + "Can't resolve hostname";
-                }
-                catch (Exception var3)
-                {
-                    ServerListEntryNormal.this.server.pingToServer = -1L;
-                    ServerListEntryNormal.this.server.serverMOTD = EnumChatFormatting.DARK_RED + "Can't connect to server.";
-                }
-            });
+            this.owner.serverPinger.ping(this.server);
         }
 
         hoverAnimation.run(RenderUtil.isHovered(x - 2, y - 2 , listWidth, slotHeight + 4, mouseX, mouseY) ? 100 : 0);

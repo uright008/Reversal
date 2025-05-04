@@ -290,7 +290,7 @@ public class ModernFontRenderer extends MFont {
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text);
 
         if (!this.international && this.requiresInternationalFont(text)) {
-            return FontManager.getRegular(this.font.getSize() - 1).drawString(text, x, y + 1, color);
+            return FontManager.getRegular(this.font.getSize() - 1).drawString(text, x, y + 1.5, color);
         }
 
         final FontCharacter[] characterSet = this.international ? internationalCharacters : defaultCharacters;

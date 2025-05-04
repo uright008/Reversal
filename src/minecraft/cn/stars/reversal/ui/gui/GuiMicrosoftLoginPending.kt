@@ -5,7 +5,7 @@ import cn.stars.elixir.account.MinecraftAccount
 import cn.stars.elixir.compat.OAuthServer
 import cn.stars.reversal.GameInstance
 import cn.stars.reversal.font.FontManager
-import cn.stars.reversal.ui.modern.TextButton
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton
 import cn.stars.reversal.util.ReversalLogger
 import cn.stars.reversal.util.math.TimeUtil
 import cn.stars.reversal.util.shader.RiseShaders
@@ -30,7 +30,8 @@ class GuiMicrosoftLoginPending(private val prevGui: GuiScreen) : GuiScreen() {
     override fun initGui() {
         GameInstance.clearRunnables()
         cancelButton =
-            TextButton(width / 2 - 40.0, height / 2 + 100.0, 80.0, 30.0,
+            TextButton(
+                width / 2 - 40.0, height / 2 + 100.0, 80.0, 30.0,
                 {
                     server.stop(true)
                     mc.displayGuiScreen(prevGui);

@@ -17,7 +17,6 @@ command.ClientTitle.success=クライアントタイトルを '%s' に設定し�
 command.Config.emptyName=設定名が空です
 command.Config.invalidConfig=未知の設定: '%s'
 command.Help.1=利用可能なコマンド一覧:
-command.Name.success=プレイヤー名を '%s' に設定しました
 command.SetText.success=カスタムテキストを '%s' に設定しました
 command.Toggle.success=機能 '%s' を %b に切り替えました
 command.Online.current=IRCオンラインユーザー (%s):

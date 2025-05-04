@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.MathHelper;
 
 public class CustomCapeRenderLayer implements LayerRenderer<AbstractClientPlayer>, GameInstance {
-    private Module waveyCapes = ModuleInstance.getModule(WaveyCapes.class);
     private ModelRenderer[] customCape;
     private final RenderPlayer playerRenderer;
     private final SmoothCapeRenderer smoothCapeRenderer;
@@ -40,6 +39,7 @@ public class CustomCapeRenderLayer implements LayerRenderer<AbstractClientPlayer
 
     @Override
     public void doRenderLayer(AbstractClientPlayer abstractClientPlayer, final float nameFloat1, final float nameFloat2, final float deltaTick, final float animationTick, final float nameFloat5, final float nameFloat6, final float nameFloat7) {
+        WaveyCapes waveyCapes = ModuleInstance.getModule(WaveyCapes.class);
         if (waveyCapes == null || !waveyCapes.isEnabled() || abstractClientPlayer.isInvisible() || !abstractClientPlayer.hasPlayerInfo() || !abstractClientPlayer.isWearing(EnumPlayerModelParts.CAPE) || abstractClientPlayer.getLocationCape() == null) {
             return;
         }

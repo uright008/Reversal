@@ -35,7 +35,7 @@ public class TileEntityFurnace extends TileEntityLockable implements ITickable, 
     private int currentItemBurnTime;
     private int cookTime;
     private int totalCookTime;
-    private String furnaceCustomName;
+    public String customName;
 
     public int getSizeInventory()
     {
@@ -109,17 +109,17 @@ public class TileEntityFurnace extends TileEntityLockable implements ITickable, 
 
     public String getName()
     {
-        return this.hasCustomName() ? this.furnaceCustomName : "container.furnace";
+        return this.hasCustomName() ? this.customName : "container.furnace";
     }
 
     public boolean hasCustomName()
     {
-        return this.furnaceCustomName != null && this.furnaceCustomName.length() > 0;
+        return this.customName != null && this.customName.length() > 0;
     }
 
     public void setCustomInventoryName(String p_145951_1_)
     {
-        this.furnaceCustomName = p_145951_1_;
+        this.customName = p_145951_1_;
     }
 
     public void readFromNBT(NBTTagCompound compound)
@@ -146,7 +146,7 @@ public class TileEntityFurnace extends TileEntityLockable implements ITickable, 
 
         if (compound.hasKey("CustomName", 8))
         {
-            this.furnaceCustomName = compound.getString("CustomName");
+            this.customName = compound.getString("CustomName");
         }
     }
 
@@ -173,7 +173,7 @@ public class TileEntityFurnace extends TileEntityLockable implements ITickable, 
 
         if (this.hasCustomName())
         {
-            compound.setString("CustomName", this.furnaceCustomName);
+            compound.setString("CustomName", this.customName);
         }
     }
 

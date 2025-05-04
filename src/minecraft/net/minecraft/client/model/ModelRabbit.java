@@ -8,20 +8,18 @@ import net.minecraft.util.MathHelper;
 
 public class ModelRabbit extends ModelBase
 {
-    ModelRenderer rabbitLeftFoot;
-    ModelRenderer rabbitRightFoot;
-    ModelRenderer rabbitLeftThigh;
-    ModelRenderer rabbitRightThigh;
-    ModelRenderer rabbitBody;
-    ModelRenderer rabbitLeftArm;
-    ModelRenderer rabbitRightArm;
-    ModelRenderer rabbitHead;
-    ModelRenderer rabbitRightEar;
-    ModelRenderer rabbitLeftEar;
-    ModelRenderer rabbitTail;
-    ModelRenderer rabbitNose;
-    private float field_178701_m = 0.0F;
-    private float field_178699_n = 0.0F;
+    public ModelRenderer rabbitLeftFoot;
+    public ModelRenderer rabbitRightFoot;
+    public ModelRenderer rabbitLeftThigh;
+    public ModelRenderer rabbitRightThigh;
+    public ModelRenderer rabbitBody;
+    public ModelRenderer rabbitLeftArm;
+    public ModelRenderer rabbitRightArm;
+    public ModelRenderer rabbitHead;
+    public ModelRenderer rabbitRightEar;
+    public ModelRenderer rabbitLeftEar;
+    public ModelRenderer rabbitTail;
+    public ModelRenderer rabbitNose;
 
     public ModelRabbit()
     {
@@ -150,10 +148,10 @@ public class ModelRabbit extends ModelBase
         this.rabbitNose.rotateAngleY = this.rabbitHead.rotateAngleY = netHeadYaw * 0.017453292F;
         this.rabbitRightEar.rotateAngleY = this.rabbitNose.rotateAngleY - 0.2617994F;
         this.rabbitLeftEar.rotateAngleY = this.rabbitNose.rotateAngleY + 0.2617994F;
-        this.field_178701_m = MathHelper.sin(entityrabbit.func_175521_o(f) * (float)Math.PI);
-        this.rabbitLeftThigh.rotateAngleX = this.rabbitRightThigh.rotateAngleX = (this.field_178701_m * 50.0F - 21.0F) * 0.017453292F;
-        this.rabbitLeftFoot.rotateAngleX = this.rabbitRightFoot.rotateAngleX = this.field_178701_m * 50.0F * 0.017453292F;
-        this.rabbitLeftArm.rotateAngleX = this.rabbitRightArm.rotateAngleX = (this.field_178701_m * -40.0F - 11.0F) * 0.017453292F;
+        float field_178701_m = MathHelper.sin(entityrabbit.func_175521_o(f) * (float) Math.PI);
+        this.rabbitLeftThigh.rotateAngleX = this.rabbitRightThigh.rotateAngleX = (field_178701_m * 50.0F - 21.0F) * 0.017453292F;
+        this.rabbitLeftFoot.rotateAngleX = this.rabbitRightFoot.rotateAngleX = field_178701_m * 50.0F * 0.017453292F;
+        this.rabbitLeftArm.rotateAngleX = this.rabbitRightArm.rotateAngleX = (field_178701_m * -40.0F - 11.0F) * 0.017453292F;
     }
 
     public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float p_78086_2_, float p_78086_3_, float partialTickTime)

@@ -7,8 +7,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.src.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterMinecart extends ModelAdapter
 {
@@ -45,21 +43,12 @@ public class ModelAdapterMinecart extends ModelAdapter
         return new String[] {"bottom", "back", "front", "right", "left", "dirt"};
     }
 
-    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
-    {
+    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize) {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         RenderMinecart renderminecart = new RenderMinecart(rendermanager);
 
-        if (!Reflector.RenderMinecart_modelMinecart.exists())
-        {
-            Config.warn("Field not found: RenderMinecart.modelMinecart");
-            return null;
-        }
-        else
-        {
-            Reflector.setFieldValue(renderminecart, Reflector.RenderMinecart_modelMinecart, modelBase);
-            renderminecart.shadowSize = shadowSize;
-            return renderminecart;
-        }
+        renderminecart.modelMinecart = modelBase;
+        renderminecart.shadowSize = shadowSize;
+        return renderminecart;
     }
 }

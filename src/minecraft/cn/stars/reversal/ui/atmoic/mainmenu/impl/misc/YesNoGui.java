@@ -1,17 +1,12 @@
 package cn.stars.reversal.ui.atmoic.mainmenu.impl.misc;
 
-import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.MiscGui;
-import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import com.google.common.collect.Lists;
-import net.minecraft.client.gui.GuiOptionButton;
 
 import java.awt.*;
 import java.util.Arrays;

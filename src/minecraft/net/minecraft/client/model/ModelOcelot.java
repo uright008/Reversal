@@ -8,14 +8,14 @@ import net.minecraft.util.MathHelper;
 
 public class ModelOcelot extends ModelBase
 {
-    ModelRenderer ocelotBackLeftLeg;
-    ModelRenderer ocelotBackRightLeg;
-    ModelRenderer ocelotFrontLeftLeg;
-    ModelRenderer ocelotFrontRightLeg;
-    ModelRenderer ocelotTail;
-    ModelRenderer ocelotTail2;
-    ModelRenderer ocelotHead;
-    ModelRenderer ocelotBody;
+    public ModelRenderer ocelotBackLeftLeg;
+    public ModelRenderer ocelotBackRightLeg;
+    public ModelRenderer ocelotFrontLeftLeg;
+    public ModelRenderer ocelotFrontRightLeg;
+    public ModelRenderer ocelotTail;
+    public ModelRenderer ocelotTail2;
+    public ModelRenderer ocelotHead;
+    public ModelRenderer ocelotBody;
     int field_78163_i = 1;
 
     public ModelOcelot()

@@ -9,37 +9,21 @@ import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import java.io.*;
 import java.util.Objects;
 
-/**
- * Utilities for accessing and using files in the Rise directory.
- *
- * @author Strikeless
- * @since 08/06/2021
- */
-@NativeObfuscation
-@UtilityClass
+@SuppressWarnings("all")
 public class FileUtil {
 
-    private final Minecraft mc = Minecraft.getMinecraft();
+    private static final Minecraft mc = Minecraft.getMinecraft();
 
-    private final String SEPARATOR = File.separator;
+    private static final String SEPARATOR = File.separator;
 
-    private final String REVERSAL_PATH = mc.mcDataDir.getAbsolutePath() + SEPARATOR + "Reversal" + SEPARATOR;
+    private static final String REVERSAL_PATH = mc.mcDataDir.getAbsolutePath() + SEPARATOR + "Reversal" + SEPARATOR;
 
-    public boolean exists(final String fileName) {
-        return getFileOrPath(fileName).exists();
-    }
-
-    public boolean exists(final File file) {
-        return file.exists();
-    }
-
-    /**
-     * Checks if the Rise directory exists.
-     *
-     * @return whether or not the Rise directory exists.
-     */
-    public boolean coreDirectoryExists() {
+    public static boolean coreDirectoryExists() {
         return new File(REVERSAL_PATH).exists();
+    }
+
+    public static boolean exists(final String fileName) {
+        return getFileOrPath(fileName).exists();
     }
 
     public static void unpackFile(File file, String name) throws IOException {
@@ -48,24 +32,15 @@ public class FileUtil {
         fos.close();
     }
 
-    /**
-     * Saves a string into the specified file.
-     * If the file does not exist this will create it automatically.
-     *
-     * @param fileName the file name inside the Rise directory
-     * @param override whether or not we should override the file if it exists already
-     * @param content  the string to write into the file
-     * @return whether or not the file was saved successfully, this will also return false if it wasn't overridden.
-     */
-    public boolean saveFile(final String fileName, final boolean override, final String content) {
+    public static void saveFile(final String fileName, final boolean override, final String content) {
         BufferedWriter writer = null;
         try {
             final File file = getFileOrPath(fileName);
-            if (!exists(file)) {
+            if (!file.exists()) {
                 createCoreDirectory();
-                createFile(file);
+                file.createNewFile();
             } else if (!override) {
-                return false;
+                return;
             }
 
             writer = new BufferedWriter(new FileWriter(file));
@@ -73,30 +48,20 @@ public class FileUtil {
             writer.flush();
         } catch (final Throwable t) {
             t.printStackTrace();
-            return false;
         } finally {
             try {
                 if (writer != null) writer.close();
             } catch (final Throwable t) {
                 t.printStackTrace();
-                throw new IllegalStateException("Failed to close writer!");
             }
         }
 
-        return true;
     }
 
-    /**
-     * Loads a string from the specified file.
-     * If the file does not exist this will return null.
-     *
-     * @param fileName the file name inside the Rise directory
-     * @return the string loaded from the file.
-     */
-    public String loadFile(final String fileName) {
+    public static String loadFile(final String fileName) {
         try {
             final File file = getFileOrPath(fileName);
-            if (!exists(file)) return null;
+            if (!file.exists()) return null;
 
             final BufferedReader reader = new BufferedReader(new FileReader(file));
             String content = reader.readLine();
@@ -115,18 +80,15 @@ public class FileUtil {
         }
     }
 
-    /**
-     * Creates the Rise directory if absent.
-     */
-    public void createCoreDirectory() {
+    public static void createCoreDirectory() {
         new File(REVERSAL_PATH).mkdirs();
     }
 
-    public void createDirectory(final String directoryName) {
+    public static void createDirectory(final String directoryName) {
         getFileOrPath(directoryName.replace("\\", SEPARATOR)).mkdirs();
     }
 
-    public void createFile(final String fileName) {
+    public static void createFile(final String fileName) {
         try {
             getFileOrPath(fileName).mkdirs();
             getFileOrPath(fileName).createNewFile();
@@ -135,56 +97,27 @@ public class FileUtil {
         }
     }
 
-    public File[] listFiles(final String path) {
+    public static File[] listFiles(final String path) {
         return getFileOrPath(path).listFiles();
     }
 
-    public File[] listFiles(final File file) {
+    public static File[] listFiles(final File file) {
         return file.listFiles();
     }
 
-    /**
-     * Get a file object from the file name.
-     *
-     * @param fileName the file name inside the Rise directory
-     * @return the file. duh.
-     */
-    public File getFileOrPath(final String fileName) {
+    public static File getFileOrPath(final String fileName) {
         return new File(REVERSAL_PATH + fileName.replace("\\", SEPARATOR));
     }
 
-    /**
-     * Deletes the specified file if absent.
-     *
-     * @param fileName the file name inside the Rise directory
-     */
-    public void delete(final String fileName) {
-        if (exists(fileName)) {
+    public static void delete(final String fileName) {
+        if (getFileOrPath(fileName).exists()) {
             if (!getFileOrPath(fileName).delete()) throw new IllegalStateException("Unable to delete file!");
         }
     }
 
-    /**
-     * Deletes the specified file if absent.
-     *
-     * @param file the file to delete
-     */
-    public void delete(final File file) {
-        if (exists(file)) {
+    public static void delete(final File file) {
+        if (file.exists()) {
             if (!file.delete()) throw new IllegalStateException("Unable to delete file!");
-        }
-    }
-
-    /**
-     * Creates the specified file if absent.
-     *
-     * @param file the file to create
-     */
-    private void createFile(final File file) {
-        try {
-            file.createNewFile();
-        } catch (final Throwable t) {
-            throw new IllegalStateException("Unable to create file!", t);
         }
     }
 }

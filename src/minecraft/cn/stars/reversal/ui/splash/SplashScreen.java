@@ -1,6 +1,6 @@
 package cn.stars.reversal.ui.splash;
 
-import cn.stars.reversal.HopeEngine;
+import cn.stars.reversal.engine.HopeEngine;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.notification.NotificationType;
@@ -50,11 +50,6 @@ public class SplashScreen {
 
     public static long subWindow;
 
-    /**
-     * choose a loading screen randomly.
-     *
-     * @return loading screen's instance
-     */
     @SneakyThrows
     private static LoadingScreenRenderer getLoadingScreen() {
         return new VideoLoadingScreen();

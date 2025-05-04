@@ -5,8 +5,8 @@ import net.minecraft.util.MathHelper;
 
 public class ModelBlaze extends ModelBase
 {
-    private ModelRenderer[] blazeSticks = new ModelRenderer[12];
-    private ModelRenderer blazeHead;
+    public ModelRenderer[] blazeSticks = new ModelRenderer[12];
+    public ModelRenderer blazeHead;
 
     public ModelBlaze()
     {

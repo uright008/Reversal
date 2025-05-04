@@ -5,20 +5,17 @@
 package cn.stars.reversal.ui.atmoic.mainmenu.impl;
 
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.util.Announcement;
-import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -71,8 +68,8 @@ public class AnnouncementGui extends AtomicGui {
 
             atomic24.drawString("1", anPosX + 5, anPosY + 10, Color.WHITE.getRGB());
             psm24.drawString(announcement.title, anPosX + 20, anPosY + 9, Color.WHITE.getRGB());
-            for (String line : announcement.content) {
-                psm18.drawString(line, anPosX + 10, anPosY + 25 + announcement.content.indexOf(line) * 10, new Color(220,220,220,240).getRGB());
+            for (Announcement.Content line : announcement.content) {
+                psm18.drawString(line.content, anPosX + 10, anPosY + 25 + announcement.content.indexOf(line) * 10, line.isMarked ? new Color(250,50,50,250).getRGB() : new Color(220,220,220,250).getRGB());
             }
 
             psm16.drawString(announcement.date, anPosX + announcement.maxWidth - psm16.width(announcement.date) + 15, anPosY + 28 + announcement.content.size() * 10, new Color(220,220,220,240).getRGB());
@@ -154,63 +151,28 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利.")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Reversal 2.1.2", "2025/4/18", 1)
-                .addContent("[+] 主题系统配色 新增更改Alpha值")
-                .addContent("[+] 新增随机标题")
-                .addContent("[/] 优化主题系统")
-                .addContent("[*] 修复网易云音乐API")
-                .addContent("[*] 修复输入框粘贴崩溃")
-                .addContent("[*] 修复计分板字体位置异常")
-                .addContent("[*] (修复Kotlin导致的构建错误)")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("一些重要的事情...", "2025/4/20", 2)
-                .addContent("大家好,我是Stars,客户端的主要开发者.")
-                .addContent("非常遗憾告诉大家,从今天起,Reversal客户端将暂停更新一段时间,直到大约暑假开始.")
-                .addContent("")
-                .addContent("这个客户端是我在探索MCP时的第一个练手项目(StarX),在我于B站发布了一个视频以后得到了许多人的支持.这一次偶然的机会,我决定投入心血到这个客户端中.")
-                .addContent("在开发过程中,确实遇到了许多困难.由于在项目初期我了解的知识并不多,因此我使用了Rise5的部分代码作为底层(如ModuleManager).")
-                .addContent("与某些人口中的'Rise5 base'不同,这个项目由1.8.9原版代码写起,而不是Rise5删除了黑客功能,因此我们可以保证该客户端完全合法.")
-                .addContent("虽然在宣传上略有成效,然而客户端的使用情况并不理想.因此我也在努力编写新的功能,听取大家的建议,希望能给大家更好的体验,让更多人使用这个客户端.")
-                .addContent("当初打着'黑客视觉PVP端'的旗号,我们在此基础上不断发展,逐渐将客户端改造成了美观性和实用性兼具的一款适合玩家日常使用的PVP客户端.")
-                .addContent("一年时光,说长不长,说短不短.在此期间,客户端的开发过程十分坎坷.期间遭到了许多人的诋毁谩骂,将我贬成'抄袭狗'.")
-                .addContent("不过我也认识了许多新的朋友,我们一起陪伴度过了许多难忘的时光.非常感谢你们,对我的开发工作一直保持支持.")
-                .addContent("")
-                .addContent("我本人在2023年由于多方面原因患上心理疾病,并在步入高中后由于忽视而严重恶化.现在患有重度抑郁,重度焦虑,躯体化,双相等疾病.")
-                .addContent("关系的稀缺,父母的不理解,学业的压迫,无端的谩骂......我被折磨得痛不欲生.")
-                .addContent("我曾3次尝试过自杀:跳楼,割腕,吞药.世界一次又一次地把我推向深渊,又一次又一次地把我带回来.为什么要这么熬我呢?")
-                .addContent("客户端自开始以来,长时间都是只有我一个开发者,基本上所有东西都是我在搞,只有我的几个朋友提供过一些帮助.")
-                .addContent("再加上客户端使用效果不理想,甚至还招骂,我已经失去了创作热情.")
-                .addContent("沉重的生活,我再也无法继续忍受.我想,应该歇一下了.")
-                .addContent("")
-                .addContent("这个项目并没有停止更新,而只是暂时停止开发新的功能.作为开发者也是Aerolite Society的群主,我仍会与大家保持日常沟通,异常bug的修复也将继续进行.")
-                .addContent("恳请大家给我一段休息的时间,在学业暂时结束后,我会重新投入开发.对不起!")
-                .addContent("暂停时间大约持续两个月,期间仍会进行小型修复类更新,宣传工作也将继续.")
-                .addContent("非常感谢屏幕前的你,对本人开发工作的支持,对本客户端的支持,对本人的支持.")
-                .addContent("")
-                .addContent("")
-                .addContent("")
-                .addContent("本客户端由于一直保持免费开源状态,因此并没有渠道盈利.并且我们还需开设IRC服务器和维护一些相关内容,可以说是亏损的生意.")
-                .addContent("项目的进行与否,其实完全都看大家的使用状况.有好几次因为没人用,我差点停止更新.")
-                .addContent("在2.0.0版本后,我们开始接受赞助.至今已经得到了约1000元的,来自各个网友的赞赏.非常感谢你们,给了我们继续开发下去的动力.")
-                .addContent("然而或许你曾发现,我总是在请求赞助后不久就又一贫如洗.难道是我挥金如土?")
-                .addContent("事实上,在这笔费用中,我将大部分的收入都捐赠给了公益项目...")
-                .addContent("")
-                .addContent("从2025年至今,本人共计在帮助贫困地区学生的公益项目中捐赠200元,在帮助抑郁症等心理疾病的公益项目中捐赠500元.")
-                .addContent("写下公告的今天,我又在BiliBili的抑郁症心理咨询陪伴项目中捐赠200元.")
-                .addContent("Stars是我从接触互联网开始,从未修改过一次的网名.我从小向往太空,我希望做一个活泼开朗的人,可惜我最终活成了自己讨厌的模样.")
-                .addContent("医者可以自医吗?我不知道.我只希望每个陷入困境中的孩子,每当你们仰望星空的时候,都能看到,我还在天空闪耀,你的前路一片光明.")
-                .addContent("What I've called: Stars.")
-                .addContent("")
-                .addContent("")
-                .addContent("")
-                .addContent("以上仅是简述我个人的想法和经历. 我没有任何别的想法!!! 特么的别以为我要死了.(流汗)")
-                .addContent("任何客户端问题,或者想聊天的话,随时可以在群里找我.")
-                .addContent("如果有异常问题,或者新功能建议,请前往该链接进行报告: https://github.com/RinoRika/Reversal/issues")
+        Announcement announcement2 = new Announcement("Reversal 3.0.0-Insider", "2025/4/27", 1)
+                .addContent("[+] 新增Shader设计")
+                .addContent("[+] 新增Dglab & DglabOverlay - 受伤系统")
+                .addContent("[+] AtomicIsland新增自定义进度条和发光颜色")
+                .addContent("[+] ClientSettings新增Shader渐变边框, 新增编辑自定义名称选项")
+                .addContent("[+] 新增TextValue - 编辑文本")
+                .addContent("[+] 新增CustomValue - 执行自定义代码")
+                .addContent("[+] 新增随机标题").mark()
+                .addContent("[/] 优化ServerConnector")
+                .addContent("[/] 优化ServerPinger")
+                .addContent("[/] 优化CustomName")
+                .addContent("[/] 掉线界面显示时间和当前跨版本")
+                .addContent("[/] 第一次启动时自动开启HUD")
+                .addContent("[/] 优化日志系统")
+                .addContent("[*] 修复部分Kotlin导致的问题")
+                .addContent("[*] 修复主菜单头像无法获取")
+                .addContent("[*] 修复ClickGUI严重卡顿问题").mark()
+                .addContent("[-] 删除.name指令")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);
         announcements.add(announcement2);
-        announcements.add(announcement3);
 
         updateAnnouncementIndex(announcementIndex);
     }

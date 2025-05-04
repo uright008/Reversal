@@ -9,7 +9,6 @@ import net.minecraftforge.client.model.IModelPart;
 import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ITransformation;
 import net.minecraftforge.client.model.TRSRTransformation;
-import net.optifine.reflect.Reflector;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -109,17 +108,12 @@ public enum ModelRotation implements IModelState, ITransformation
 
     public static ModelRotation getModelRotation(int p_177524_0_, int p_177524_1_)
     {
-        return (ModelRotation)mapRotations.get(Integer.valueOf(combineXY(MathHelper.normalizeAngle(p_177524_0_, 360), MathHelper.normalizeAngle(p_177524_1_, 360))));
-    }
-
-    public Optional<TRSRTransformation> apply(Optional <? extends IModelPart > p_apply_1_)
-    {
-        return (Optional)Reflector.call(Reflector.ForgeHooksClient_applyTransform, new Object[] {this.getMatrix(), p_apply_1_});
+        return mapRotations.get(combineXY(MathHelper.normalizeAngle(p_177524_0_, 360), MathHelper.normalizeAngle(p_177524_1_, 360)));
     }
 
     public Matrix4f getMatrix()
     {
-        return Reflector.ForgeHooksClient_getMatrix.exists() ? (Matrix4f) Reflector.call(Reflector.ForgeHooksClient_getMatrix, new Object[] {this}) : this.getMatrix4d();
+        return this.getMatrix4d();
     }
 
     public EnumFacing rotate(EnumFacing p_rotate_1_)
@@ -135,7 +129,12 @@ public enum ModelRotation implements IModelState, ITransformation
     static {
         for (ModelRotation modelrotation : values())
         {
-            mapRotations.put(Integer.valueOf(modelrotation.combinedXY), modelrotation);
+            mapRotations.put(modelrotation.combinedXY, modelrotation);
         }
+    }
+
+    @Override
+    public Optional<TRSRTransformation> apply(Optional<? extends IModelPart> var1) {
+        return Optional.absent();
     }
 }

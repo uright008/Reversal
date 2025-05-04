@@ -90,7 +90,7 @@ public class Hud implements GameInstance {
 //            final String name = o1 instanceof Module ? ((Module) o1).getModuleInfo().name() : ((Script) o1).getName();
 //            final String name2 = o2 instanceof Module ? ((Module) o2).getModuleInfo().name() : ((Script) o2).getName();
 
-            boolean canLocalize = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy")) && ModuleInstance.getModule(ClientSettings.class).localization.isEnabled();
+            boolean canLocalize = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy") || mode.equals("Shader")) && ModuleInstance.getModule(ClientSettings.class).localization.isEnabled();
             final String name = canLocalize ? I18n.format(((Module) o1).getModuleInfo().localizedName()) : ((Module) o1).getModuleInfo().name();
             final String name2 = canLocalize ? I18n.format(((Module) o2).getModuleInfo().localizedName()) : ((Module) o2).getModuleInfo().name();
 
@@ -108,6 +108,7 @@ public class Hud implements GameInstance {
                     return Float.compare(psm17.getWidth(name2), psm17.getWidth(name));
                 }
 
+                case "Shader":
                 case "Simple":
                 default: {
                     return Float.compare(regular16.getWidth(name2), regular16.getWidth(name));
@@ -135,7 +136,7 @@ public class Hud implements GameInstance {
 
             float posOnArraylist = offset + moduleCount * 10.8f * (mode.equals("Empathy") ? 1.25f : 1f);
             
-            final String name = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy")) && ModuleInstance.getModule(ClientSettings.class).localization.enabled ? I18n.format(module.getModuleInfo().localizedName()) : module.getModuleInfo().name();
+            final String name = (mode.equals("Simple") || mode.equals("Minecraft") || mode.equals("Empathy") || mode.equals("Shader")) && ModuleInstance.getModule(ClientSettings.class).localization.enabled ? I18n.format(module.getModuleInfo().localizedName()) : module.getModuleInfo().name();
 
             float finalX = 0;
             final float speed = 6;
@@ -159,6 +160,35 @@ public class Hud implements GameInstance {
 
                     break;
                 }
+
+                case "Shader": {
+                    final int offsetY = 2;
+                    final int offsetX = 1;
+
+                    final double stringWidth = regular16.getWidth(name);
+
+                    RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, new Color(0, 0, 0, 60));
+                    RenderUtil.rect(renderX - offsetX + stringWidth + offsetX * 1.5 + 1, renderY - offsetY + 0.4, 1, 8.8 + offsetY, arraylist.colorValue.getColor(moduleCount));
+
+                    finalX = arraylistX - regular16.getWidth(name);
+
+                    regular16.drawString(name, renderX, renderY + 2, arraylist.colorValue.getColor(moduleCount).getRGB());
+
+
+                    final int mC = moduleCount;
+                    MODERN_POST_BLOOM_RUNNABLES.add(() -> regular16.drawString(name, renderX, renderY + 2, arraylist.colorValue.getColor(mC).getRGB()));
+
+                    MODERN_BLOOM_RUNNABLES.add(() -> {
+                        RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, arraylist.colorValue.getColor(mC));
+                        RenderUtil.rect(renderX - offsetX + stringWidth + offsetX * 1.5 + 1, renderY - offsetY + 0.4, 1, 8.8 + offsetY, arraylist.colorValue.getColor(mC));
+                    });
+
+                    MODERN_BLUR_RUNNABLES.add(() -> {
+                        RenderUtil.rect(renderX - offsetX, renderY - offsetY + 0.5, stringWidth + offsetX * 1.5 + 1, 8.8 + offsetY, Color.BLACK);
+                    });
+
+                }
+                break;
 
                 case "Simple": {
                     final int offsetY = 2;
@@ -400,20 +430,16 @@ public class Hud implements GameInstance {
                         });
                         off += psb20.getWidth(character);
                     }
-                    
-                    psm18.drawString(extraText, x + 3.5 + psb20.getWidth(clientName), y + 4,  new Color(250, 250, 250, 200).getRGB());
 
-                    if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
-                        MODERN_BLOOM_RUNNABLES.add(() -> {
-                            RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 7, psb20.height() + 1.5, Color.BLACK);
-                        });
-                    }
+                    psm18.drawString(extraText, x + 3.5 + psb20.getWidth(clientName), y + 4, new Color(250, 250, 250, 200).getRGB());
 
-                    if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
-                        MODERN_BLUR_RUNNABLES.add(() -> {
-                            RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 7, psb20.height() + 1.5, Color.BLACK);
-                        });
-                    }
+                    MODERN_BLOOM_RUNNABLES.add(() -> {
+                        RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 7, psb20.height() + 1.5, Color.BLACK);
+                    });
+
+                    MODERN_BLUR_RUNNABLES.add(() -> {
+                        RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 7, psb20.height() + 1.5, Color.BLACK);
+                    });
 
                 } else {
                     final String clientName = customName;
@@ -439,17 +465,80 @@ public class Hud implements GameInstance {
 
                     psm18.drawString(extraText, x + 4.5 + off, y + 4, new Color(250, 250, 250, 200).getRGB());
 
-                    if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
-                        MODERN_BLOOM_RUNNABLES.add(() -> {
-                            RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 8, psb20.height() + 1.5, Color.BLACK);
+                    MODERN_BLOOM_RUNNABLES.add(() -> {
+                        RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 8, psb20.height() + 1.5, Color.BLACK);
+                    });
+
+                    MODERN_BLUR_RUNNABLES.add(() -> {
+                        RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 8, psb20.height() + 1.5, Color.BLACK);
+                    });
+                }
+                break;
+            }
+
+            case "Shader": {
+                float roundStrength = ModuleInstance.getModule(ClientSettings.class).shaderRoundStrength.getFloat();
+                if (useDefaultName) {
+                    final String clientName = "Reversal";
+
+                    textGui.setWidth(100);
+                    int x = textGui.getX() + 5;
+                    int y = textGui.getY();
+                    float off = 0;
+
+                    //    RenderUtil.rect(x, y, psb20.getWidth(clientName), psb20.height() + 1.5, new Color(0, 0, 0, 80));
+                    FontManager.getAtomic(16).drawString("2", x + 5, y + 5.5, textGui.colorValue.getColor().getRGB());
+
+                    for (int i = 0; i < clientName.length(); i++) {
+                        final String character = String.valueOf(clientName.charAt(i));
+
+                        final float off1 = off;
+                        regular18Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
+                        int finalI = i;
+                        MODERN_POST_BLOOM_RUNNABLES.add(() -> {
+                            regular18Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
                         });
+                        off += regular18Bold.getWidth(character);
                     }
 
-                    if (ModuleInstance.getModule(PostProcessing.class).blur.enabled) {
-                        MODERN_BLUR_RUNNABLES.add(() -> {
-                            RenderUtil.rect(x, y, psb20.getWidth(clientName) + psm18.getWidth(extraText) + 8, psb20.height() + 1.5, Color.BLACK);
+                    float finalOff = off;
+                    MODERN_BLOOM_RUNNABLES.add(() -> {
+                        RenderUtil.roundedRectangle(x, y, finalOff + 20.5, regular18Bold.height() + 1.5, roundStrength, textGui.colorValue.getColor());
+                    });
+
+                    MODERN_BLUR_RUNNABLES.add(() -> {
+                        RenderUtil.roundedRectangle(x, y, finalOff + 20.5, regular18Bold.height() + 1.5, roundStrength, Color.BLACK);
+                    });
+
+                } else {
+                    textGui.setWidth(20 + regular18Bold.getWidth(customName));
+                    int x = textGui.getX() + 5;
+                    int y = textGui.getY();
+                    float off = 0;
+
+                    //    RenderUtil.rect(x, y, psb20.getWidth(clientName) + 8, psb20.height() + 1.5, new Color(0, 0, 0, 80));
+                    FontManager.getAtomic(16).drawString("2", x + 5, y + 5.5, textGui.colorValue.getColor().getRGB());
+
+                    for (int i = 0; i < customName.length(); i++) {
+                        final String character = String.valueOf(customName.charAt(i));
+
+                        final float off1 = off;
+                        regular18Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(i).getRGB());
+                        int finalI = i;
+                        MODERN_POST_BLOOM_RUNNABLES.add(() -> {
+                            regular18Bold.drawString(character, x + 16 + off1, y + 3.5, textGui.colorValue.getColor(finalI).getRGB());
                         });
+                        off += regular18Bold.getWidth(character);
                     }
+
+                    float finalOff = off;
+                    MODERN_BLOOM_RUNNABLES.add(() -> {
+                        RenderUtil.rectForShaderTheme(x, y, finalOff + 20.5, regular18Bold.height() + 1.5, textGui.colorValue);
+                    });
+
+                    MODERN_BLUR_RUNNABLES.add(() -> {
+                        RenderUtil.roundedRectangle(x, y, finalOff + 20.5, regular18Bold.height() + 1.5, roundStrength, Color.BLACK);
+                    });
                 }
                 break;
             }

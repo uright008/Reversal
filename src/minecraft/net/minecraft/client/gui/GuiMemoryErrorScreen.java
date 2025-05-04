@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.util.Transformer;
 import net.minecraft.client.resources.I18n;
 
@@ -18,7 +19,7 @@ public class GuiMemoryErrorScreen extends GuiScreen
     {
         if (button.id == 0)
         {
-            this.mc.displayGuiScreen(Transformer.transformMainMenu());
+            this.mc.displayGuiScreen(Reversal.atomicMenu);
         }
         else if (button.id == 1)
         {

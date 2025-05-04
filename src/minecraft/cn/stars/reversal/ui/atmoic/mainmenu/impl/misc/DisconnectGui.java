@@ -1,19 +1,19 @@
 package cn.stars.reversal.ui.atmoic.mainmenu.impl.misc;
 
-import cn.stars.reversal.Reversal;
-import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.MiscGui;
-import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
-import net.minecraft.client.multiplayer.GuiConnecting;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IChatComponent;
 
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,12 +24,16 @@ public class DisconnectGui extends MiscGui {
     private int totalHeight;
     private TextButton reconnectButton, cancelButton;
     private TextButton[] buttons;
+    private final LocalDateTime initialTime;
+    private final ProtocolVersion initialVersion;
 
     public DisconnectGui(String reasonLocalizationKey, IChatComponent chatComp)
     {
         super("disconnected");
         this.reason = I18n.format(reasonLocalizationKey);
         this.message = chatComp;
+        this.initialTime = LocalDateTime.now();
+        this.initialVersion = ViaLoadingBase.getInstance().getTargetVersion();
     }
 
     @Override
@@ -92,5 +96,8 @@ public class DisconnectGui extends MiscGui {
                 i += regular16.height();
             }
         }
+
+        regular16.drawString("Initial Time: " + initialTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss")),2, height - 10, Color.WHITE.getRGB());
+        regular16.drawString("Protocol: " + initialVersion.getName(), 2, height - 20, Color.WHITE.getRGB());
     }
 }

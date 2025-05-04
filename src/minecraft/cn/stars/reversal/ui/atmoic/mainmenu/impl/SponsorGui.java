@@ -4,13 +4,11 @@
  */
 package cn.stars.reversal.ui.atmoic.mainmenu.impl;
 
-import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
-import cn.stars.reversal.ui.modern.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.gui.GuiScreen;
@@ -19,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SponsorGui extends AtomicGui {
     public GuiScreen parent;
@@ -98,16 +97,8 @@ public class SponsorGui extends AtomicGui {
     // Only edit when necessary.
     private void addSponsors() {
         sponsors.clear();
-        sponsors.add("小逸");
-        sponsors.add("A_su");
-        sponsors.add("酚酞");
-        sponsors.add("西瓜");
-        sponsors.add("Prodee163");
-        sponsors.add("Valor#1337");
-        sponsors.add("SmokeKing_");
-        sponsors.add("INK_qwp");
-        sponsors.add("failure");
-        sponsors.add("Juice_awa");
-        sponsors.add("Tianlol");
+        String s = "小逸 # A_su # 酚酞 # 西瓜 # Prodee163 # Valor#1337 # SmokeKing_ # INK_qwp # failure # Juice_awa # Tianlol # Petey # 雫 # Chsy # 尘埃杰瑞 # Realonker # MaceAura";
+        String[] result = s.split(" # ");
+        sponsors.addAll(Arrays.asList(result));
     }
 }

@@ -50,14 +50,6 @@ public final class ColorUtil {
         return color >> 24 & 0xFF;
     }
 
-    public static int reAlpha(int color, float alpha) {
-        Color c = new Color(color);
-        float r = 0.003921569f * (float)c.getRed();
-        float g = 0.003921569f * (float)c.getGreen();
-        float b = 0.003921569f * (float)c.getBlue();
-        return new Color(r, g, b, alpha).getRGB();
-    }
-
     public static int swapAlpha(int color, float alpha) {
         int f = color >> 16 & 0xFF;
         int f1 = color >> 8 & 0xFF;
@@ -67,6 +59,14 @@ public final class ColorUtil {
 
     public static Color reAlpha(final Color color, final int alpha) {
         return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) MathUtil.clamp(0, 255, alpha));
+    }
+
+    public static int reAlpha(int color, float alpha) {
+        Color c = new Color(color);
+        float r = 0.003921569f * (float)c.getRed();
+        float g = 0.003921569f * (float)c.getGreen();
+        float b = 0.003921569f * (float)c.getBlue();
+        return new Color(r, g, b, alpha).getRGB();
     }
 
     public static Color empathyGlowColor() {
@@ -281,7 +281,7 @@ public final class ColorUtil {
     }
 
     public static int getColor(final float hueoffset, final float saturation, final float brightness) {
-        final float speed = 4500;
+        final float speed = 4500 / ModuleInstance.getClientSettings().indexSpeed.getFloat();
         final float hue = (System.currentTimeMillis() % (int) speed) / speed;
 
         return Color.HSBtoRGB(hue - hueoffset / 54, saturation, brightness);

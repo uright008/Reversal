@@ -1,6 +1,8 @@
 package net.minecraft.client.renderer;
 
 import com.google.common.primitives.Floats;
+
+import java.awt.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -495,6 +497,11 @@ public class WorldRenderer
     public WorldRenderer color(float red, float green, float blue, float alpha)
     {
         return this.color((int)(red * 255.0F), (int)(green * 255.0F), (int)(blue * 255.0F), (int)(alpha * 255.0F));
+    }
+
+    public WorldRenderer color(Color color)
+    {
+        return this.color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
     }
 
     public WorldRenderer color(int colorHex) {

@@ -5,6 +5,7 @@ import cn.stars.reversal.module.impl.render.Particles;
 import cn.stars.reversal.module.impl.render.TargetESP;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.shader.RiseShaders;
+import cn.stars.reversal.value.impl.ColorValue;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -935,8 +936,6 @@ public final class RenderUtil implements GameInstance {
     }
 
     public void image(final ResourceLocation imageLocation, final float x, final float y, final float width, final float height, float alpha) {
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         enable(GL11.GL_BLEND);
         GlStateManager.enableAlpha();
         GlStateManager.color(1.0f, 1.0f, 1.0f, alpha);
@@ -950,6 +949,14 @@ public final class RenderUtil implements GameInstance {
         x -= width / 2f;
         y -= height / 2f;
         image(imageLocation, x, y, width, height);
+    }
+
+    public static void rectForShaderTheme(double x, double y, double width, double height, ColorValue colorValue) {
+        if (ModuleInstance.getClientSettings().shaderGradient.enabled) {
+            roundedGradientRectangle(x, y, width, height, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), colorValue.getColor(0), colorValue.getColor(ThemeUtil.getCustomClientName().length() + 1), false);
+        } else {
+            roundedRectangle(x, y, width, height, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), colorValue.getColor());
+        }
     }
 
     public void roundedRectangle(double x, double y, double width, double height, double radius, Color color) {

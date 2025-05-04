@@ -6,11 +6,13 @@ import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.render.*;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 @ModuleInfo(name = "SessionInfo", localizedName = "module.SessionInfo.name", description = "Show your game stats",
         localizedDescription = "module.SessionInfo.desc", category = Category.HUD)
 public class SessionInfo extends Module {
-    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy");
+    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Shader");
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final TimeUtil timer = new TimeUtil();
     int second = 0;
@@ -29,8 +31,6 @@ public class SessionInfo extends Module {
     int killed = 0;
     ArrayList<EntityLivingBase> attackedEntityList = new ArrayList<>();
     ArrayList<EntityLivingBase> attackedEntityListToRemove = new ArrayList<>();
-    MFont psb = FontManager.getPSB(20);
-    MFont icon = FontManager.getIcon(24);
     MFont iconSmall = FontManager.getIcon(18);
 
     public SessionInfo() {
@@ -58,9 +58,14 @@ public class SessionInfo extends Module {
                     ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true));
         } else if (mode.getMode().equals("Simple")) {
             RenderUtil.rect(x - 2, y - 4, 148, 64, Color.BLACK);
+        } else if (mode.getMode().equals("Shader")) {
+            if (event.isBloom())
+                RenderUtil.rectForShaderTheme(x - 2, y - 4, 148, 64, colorValue);
+            else 
+                RenderUtil.roundedRectangle(x - 2, y - 4, 148, 64, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
         } else if (mode.getMode().equals("Empathy")) {
             RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyGlowColor());
-            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb.height() - 2.5, 3f, color);
+            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb20.height() - 2.5, 3f, color);
         }
     }
 
@@ -71,7 +76,7 @@ public class SessionInfo extends Module {
         Color color = colorValue.getColor();
 
         updatePlayTime();
-        String playtime = hour + "h " + minute + "m " + second + "s";
+        String playtime = I18n.format("info.SessionInfo.playtimeValue", hour, minute, second);
         String kills = String.valueOf(killed);
         String hurtTime = String.valueOf(mc.thePlayer.hurtTime);
         String speed = String.valueOf(MathUtil.round(mc.thePlayer.getSpeed(), 1));
@@ -92,37 +97,44 @@ public class SessionInfo extends Module {
             RenderUtil.rect(x - 2, y - 4, 148, 64, new Color(0, 0, 0, 80));
         } else if (mode.getMode().equals("Empathy")) {
             RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyColor());
-            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb.height() - 2.5, 1f, color);
+            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb20.height() - 2.5, 1f, color);
         }
 
         // 顶部
-        psb.drawString("Session Info", x + 15, y - 0.7f, new Color(250, 250, 250, 200).getRGB());
-        icon.drawString("I", x, y - 0.3f, new Color(250, 250, 250, 200).getRGB());
+        if (mode.getMode().equals("Shader")) {
+            regular18Bold.drawString(I18n.format("info.SessionInfo.title"), x + 14, y, new Color(250, 250, 250, 200).getRGB());
+            FontManager.getIcon(20).drawString("I", x + 1, y + 1f, color.getRGB());
+        } else {
+            psb20.drawString(I18n.format("info.SessionInfo.title"), x + 15, y - 0.7f, new Color(250, 250, 250, 200).getRGB());
+            FontManager.getIcon(24).drawString("I", x, y - 0.3f, new Color(250, 250, 250, 200).getRGB());
+        }
+        
+        MFont font = mode.getMode().equals("Shader") ? regular18 : psm18;
 
         // 第一行 游玩时间
         iconSmall.drawString("e", x, y + 12, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString("Play Time", x + 12, y + 11, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString(playtime, x + 145 - psm18.getWidth(playtime), y + 11, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(I18n.format("info.SessionInfo.playtime"), x + 12, y + 11, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(playtime, x + 145 - font.getWidth(playtime), y + 11, new Color(250, 250, 250, 200).getRGB());
 
         // 第二行 击杀数量
         iconSmall.drawString("a", x, y + 22, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString("Killed", x + 12, y + 21, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString(kills, x + 145 - psm18.getWidth(kills), y + 21, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(I18n.format("info.killed"), x + 12, y + 21, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(kills, x + 145 - font.getWidth(kills), y + 21, new Color(250, 250, 250, 200).getRGB());
 
         // 第三行 HurtTime
         iconSmall.drawString("c", x, y + 32, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString("HurtTime", x + 12, y + 31, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString(hurtTime, x + 145 - psm18.getWidth(hurtTime), y + 31, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(I18n.format("info.hurtTime"), x + 12, y + 31, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(hurtTime, x + 145 - font.getWidth(hurtTime), y + 31, new Color(250, 250, 250, 200).getRGB());
 
         // 第四行 速度
         iconSmall.drawString("b", x, y + 42, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString("Speed", x + 12, y + 41, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString(speed, x + 145 - psm18.getWidth(speed), y + 41, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(I18n.format("info.speed"), x + 12, y + 41, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(speed, x + 145 - font.getWidth(speed), y + 41, new Color(250, 250, 250, 200).getRGB());
 
         // 第五行 血量
         iconSmall.drawString("s", x, y + 52, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString("HP", x + 12, y + 51, new Color(250, 250, 250, 200).getRGB());
-        psm18.drawString(health, x + 145 - psm18.getWidth(health), y + 51, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(I18n.format("info.hp"), x + 12, y + 51, new Color(250, 250, 250, 200).getRGB());
+        font.drawString(health, x + 145 - font.getWidth(health), y + 51, new Color(250, 250, 250, 200).getRGB());
 
     }
 
