@@ -20,7 +20,6 @@ import cn.stars.reversal.module.impl.addons.*;
 import cn.stars.reversal.module.impl.world.*;
 import cn.stars.reversal.music.MusicManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
-import cn.stars.reversal.ui.clickgui.modern.MMTClickGUI;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
@@ -40,14 +39,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.ChatComponentText;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.Display;
-import tech.skidonion.obfuscator.annotations.NativeObfuscation;
-import tech.skidonion.obfuscator.annotations.StringEncryption;
 
 import java.awt.*;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Copyright (c) 2025 Aerolite Society, Some rights reserved.
@@ -76,11 +72,11 @@ public class Reversal {
     public static MusicManager musicManager;
 
     public static ModernClickGUI modernClickGUI;
-    public static MMTClickGUI mmtClickGUI;
     public static AtomicMenu atomicMenu;
 
     public static GuiTheme guiTheme;
     public static CreativeTabs creativeTab;
+    
     public static boolean firstBoot;
 
     // Core

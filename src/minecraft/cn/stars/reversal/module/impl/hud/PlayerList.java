@@ -53,9 +53,9 @@ public class PlayerList extends Module {
                 break;
             case "Shader":
                 if (event.isBloom())
-                    RenderUtil.roundedRectangle(x, y, 148, 18 + mc.theWorld.playerEntities.size() * psm18.height(), ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), colorValue.getColor());
+                    RenderUtil.roundedRectangle(x, y, 148, 18 + mc.theWorld.playerEntities.size() * psm18.height(), ModuleInstance.getClientSettings().roundStrength.getFloat(), colorValue.getColor());
                 else
-                    RenderUtil.roundedRectangle(x, y, 148, 18 + mc.theWorld.playerEntities.size() * psm18.height(), ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
+                    RenderUtil.roundedRectangle(x, y, 148, 18 + mc.theWorld.playerEntities.size() * psm18.height(), ModuleInstance.getClientSettings().roundStrength.getFloat(), Color.BLACK);
                 break;
             case "Empathy":
                 RenderUtil.roundedRectangle(x, y, 150, 18 + mc.theWorld.playerEntities.size() * psm18.height(), 3f, ColorUtil.empathyGlowColor());

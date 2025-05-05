@@ -3,7 +3,6 @@ package cn.stars.reversal.module.impl.hud;
 import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.event.impl.Shader3DEvent;
 import cn.stars.reversal.font.FontManager;
-import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
@@ -54,9 +53,9 @@ public class BPSCounter extends Module {
                     break;
                 case "Shader":
                     if (event.isBloom())
-                        RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 21 + regular18.getWidth(bpsString), regular18.getHeight() + 1.5, colorValue);
+                        RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 21 + regular18.getWidth(bpsString), regular18.getHeight() + 1.5, colorValue, true);
                     else
-                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 21 + regular18.getWidth(bpsString), regular18.getHeight() + 1.5, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
+                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 21 + regular18.getWidth(bpsString), regular18.getHeight() + 1.5, ModuleInstance.getClientSettings().roundStrength.getFloat(), Color.BLACK);
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm18.getWidth(bpsString), psm18.getHeight() + 3, 3f, ColorUtil.empathyGlowColor());
@@ -87,6 +86,9 @@ public class BPSCounter extends Module {
                     break;
                 case "Simple":
                     RenderUtil.rect(getX() + 2, getY() - 1, 19 + psm18.getWidth(bpsString), psm18.getHeight() + 3, new Color(0, 0, 0, 80));
+                    break;
+                case "Shader":
+                    RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 21 + regular18.getWidth(bpsString), regular18.getHeight() + 1.5, colorValue, false);
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm18.getWidth(bpsString), psm18.getHeight() + 3, 3f, ColorUtil.empathyColor());

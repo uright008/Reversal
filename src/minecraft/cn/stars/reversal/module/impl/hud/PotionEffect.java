@@ -8,7 +8,6 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
@@ -21,8 +20,6 @@ import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 
 @ModuleInfo(name = "PotionEffect", localizedName = "module.PotionEffect.name", description = "Draw potion effect stats", localizedDescription = "module.PotionEffect.desc",category = Category.HUD)
@@ -78,9 +75,9 @@ public class PotionEffect extends Module {
                         break;
                     case "Shader":
                         if (event.isBloom())
-                            RenderUtil.rectForShaderTheme(renderX, renderY, 140, 32, colorValue);
+                            RenderUtil.rectForShaderTheme(renderX, renderY, 140, 32, colorValue, true);
                         else
-                            RenderUtil.roundedRectangle(renderX, renderY, 140, 32, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
+                            RenderUtil.roundedRectangle(renderX, renderY, 140, 32, ModuleInstance.getClientSettings().roundStrength.getFloat(), Color.BLACK);
                         break;
                     case "Empathy":
                         RenderUtil.roundedRectangle(renderX, renderY, 140, 32, 3f, ColorUtil.empathyGlowColor());
@@ -127,6 +124,12 @@ public class PotionEffect extends Module {
                         RenderUtil.rect(renderX, renderY, 140, 32, new Color(0, 0, 0, 80));
                         if (progress.enabled) {
                             RenderUtil.rect(renderX, renderY, potionEffect.getProgressAnimation().getValue(), 32, new Color(0, 0, 0, 80));
+                        }
+                        break;
+                    case "Shader":
+                        RenderUtil.rectForShaderTheme(renderX, renderY, 140, 32, colorValue, false);
+                        if (progress.enabled) {
+                            RenderUtil.rectForShaderTheme(renderX, renderY, potionEffect.getProgressAnimation().getValue(), 32, colorValue, false);
                         }
                         break;
                     case "Modern":

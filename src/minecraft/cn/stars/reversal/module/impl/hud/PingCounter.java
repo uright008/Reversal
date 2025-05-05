@@ -54,9 +54,9 @@ public class PingCounter extends Module {
                     break;
                 case "Shader":
                     if (event.isBloom())
-                        RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, colorValue);
+                        RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, colorValue, true);
                     else
-                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
+                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, ModuleInstance.getClientSettings().roundStrength.getFloat(), Color.BLACK);
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm.getWidth(pingString), psm.getHeight() + 3, 3f, ColorUtil.empathyGlowColor());
@@ -94,6 +94,9 @@ public class PingCounter extends Module {
                     break;
                 case "Simple":
                     RenderUtil.rect(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, new Color(0, 0, 0, 80));
+                    break;
+                case "Shader":
+                    RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 19 + psm.getWidth(pingString), psm.getHeight() + 3, colorValue, false);
                     break;
                 case "Empathy":
                     RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm.getWidth(pingString), psm.getHeight() + 3, 3f, ColorUtil.empathyColor());

@@ -1,6 +1,5 @@
 package cn.stars.reversal.module.impl.client;
 
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.value.impl.*;
 import cn.stars.addons.rawinput.RawMouseHelper;
@@ -31,7 +30,7 @@ public final class ClientSettings extends Module {
     public final NoteValue note2 = new NoteValue("< Specific Settings >", "value.ClientSettings.note2", this);
     public final ModeValue listAnimation = new ModeValue("List Animation", "value.ClientSettings.listAnimation", this, "Reversal", "Reversal", "Slide");
     public final BoolValue empathyGlow = new BoolValue("Empathy Glow", "value.ClientSettings.empathyGlow", this, false);
-    public final NumberValue shaderRoundStrength = new NumberValue("Shader Round Strength", "value.ClientSettings.shaderRoundStrength", this, 4f, 1f, 10f, 1f);
+    public final NumberValue roundStrength = new NumberValue("Round Strength", "value.ClientSettings.roundStrength", this, 4f, 1f, 10f, 1f);
     public final BoolValue shaderGradient = new BoolValue("Shader Gradient", "value.ClientSettings.shaderGradient", this, false);
 
     public final NoteValue note3 = new NoteValue("< Client Settings >", "value.ClientSettings.note3", this);
@@ -62,6 +61,9 @@ public final class ClientSettings extends Module {
         color2.hidden = theme.getMode().equals("ThunderHack");
 
         empathyGlow.hidden = !theme.getMode().equals("Empathy");
+        roundStrength.hidden = !theme.getMode().equals("Shader") && !theme.getMode().equals("ThunderHack") && !theme.getMode().equals("Modern");
+        shaderGradient.hidden = !theme.getMode().equals("Shader");
+
         language.hidden = !localization.enabled;
 
         if (this.enabled) this.enabled = false;

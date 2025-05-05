@@ -47,25 +47,31 @@ public class SessionInfo extends Module {
         int y = getY() + 4;
         Color color = colorValue.getColor();
 
-        if (mode.getMode().equals("Modern")) {
-            if (event.isBloom()) RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, color);
-            else RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, Color.BLACK);
-        } else if (mode.getMode().equals("ThunderHack")) {
-            RoundedUtil.drawGradientRound(x - 3.5f, y - 5.5f, 151, 67, 4,
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true));
-        } else if (mode.getMode().equals("Simple")) {
-            RenderUtil.rect(x - 2, y - 4, 148, 64, Color.BLACK);
-        } else if (mode.getMode().equals("Shader")) {
-            if (event.isBloom())
-                RenderUtil.rectForShaderTheme(x - 2, y - 4, 148, 64, colorValue);
-            else 
-                RenderUtil.roundedRectangle(x - 2, y - 4, 148, 64, ModuleInstance.getClientSettings().shaderRoundStrength.getFloat(), Color.BLACK);
-        } else if (mode.getMode().equals("Empathy")) {
-            RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyGlowColor());
-            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb20.height() - 2.5, 3f, color);
+        switch (mode.getMode()) {
+            case "Modern":
+                if (event.isBloom()) RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, color);
+                else RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, Color.BLACK);
+                break;
+            case "ThunderHack":
+                RoundedUtil.drawGradientRound(x - 3.5f, y - 5.5f, 151, 67, 4,
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true));
+                break;
+            case "Simple":
+                RenderUtil.rect(x - 2, y - 4, 148, 64, Color.BLACK);
+                break;
+            case "Shader":
+                if (event.isBloom())
+                    RenderUtil.rectForShaderTheme(x - 2, y - 4, 148, 64, colorValue, true);
+                else
+                    RenderUtil.roundedRectangle(x - 2, y - 4, 148, 64, ModuleInstance.getClientSettings().roundStrength.getFloat(), Color.BLACK);
+                break;
+            case "Empathy":
+                RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyGlowColor());
+                RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb20.height() - 2.5, 3f, color);
+                break;
         }
     }
 
@@ -83,21 +89,29 @@ public class SessionInfo extends Module {
         String health = String.valueOf(MathUtil.round(mc.thePlayer.getHealth(), 1));
 
         // 背景
-        if (mode.getMode().equals("Modern")) {
-            RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, new Color(0, 0, 0, 80));
-            RenderUtil.roundedOutlineRectangle(x - 3, y - 5, 150, 66, 3, 1, color);
-        } else if (mode.getMode().equals("ThunderHack")) {
-            RoundedUtil.drawGradientRound(x - 3.5f, y - 5.5f, 151, 67, 4,
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
-                    ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true));
-            RoundedUtil.drawRound(x - 3, y - 5, 150, 66, 4, new Color(0, 0, 0, 220));
-        } else if (mode.getMode().equals("Simple")) {
-            RenderUtil.rect(x - 2, y - 4, 148, 64, new Color(0, 0, 0, 80));
-        } else if (mode.getMode().equals("Empathy")) {
-            RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyColor());
-            RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb20.height() - 2.5, 1f, color);
+        switch (mode.getMode()) {
+            case "Modern":
+                RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, new Color(0, 0, 0, 80));
+                RenderUtil.roundedOutlineRectangle(x - 3, y - 5, 150, 66, 3, 1, color);
+                break;
+            case "ThunderHack":
+                RoundedUtil.drawGradientRound(x - 3.5f, y - 5.5f, 151, 67, 4,
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
+                        ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true));
+                RoundedUtil.drawRound(x - 3, y - 5, 150, 66, 4, new Color(0, 0, 0, 220));
+                break;
+            case "Simple":
+                RenderUtil.rect(x - 2, y - 4, 148, 64, new Color(0, 0, 0, 80));
+                break;
+            case "Shader":
+                RenderUtil.rectForShaderTheme(x - 2, y - 4, 148, 64, colorValue, false);
+                break;
+            case "Empathy":
+                RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyColor());
+                RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb20.height() - 2.5, 1f, color);
+                break;
         }
 
         // 顶部
