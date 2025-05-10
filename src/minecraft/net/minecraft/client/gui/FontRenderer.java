@@ -13,11 +13,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -67,6 +65,7 @@ public class FontRenderer implements IResourceManagerReloadListener
     private float[] charWidthFloat = new float[256];
     private boolean blend = false;
     private GlBlendState oldBlendState = new GlBlendState();
+    private final Map<String, Integer> cachedWidth = new HashMap<>();
 
     public FontRenderer(GameSettings gameSettingsIn, ResourceLocation location, TextureManager textureManagerIn, boolean unicode)
     {
@@ -517,10 +516,10 @@ public class FontRenderer implements IResourceManagerReloadListener
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             GlStateManager.disableTexture2D();
             worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-            worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
-            worldrenderer.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
-            worldrenderer.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
-            worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
+            worldrenderer.pos(this.posX, (this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
+            worldrenderer.pos((this.posX + p_doDraw_1_), (this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
+            worldrenderer.pos((this.posX + p_doDraw_1_), (this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
+            worldrenderer.pos(this.posX, (this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
             tessellator.draw();
             GlStateManager.enableTexture2D();
         }
@@ -532,10 +531,10 @@ public class FontRenderer implements IResourceManagerReloadListener
             GlStateManager.disableTexture2D();
             worldrenderer1.begin(7, DefaultVertexFormats.POSITION);
             int i = this.underlineStyle ? -1 : 0;
-            worldrenderer1.pos((double)(this.posX + (float)i), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D).endVertex();
-            worldrenderer1.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D).endVertex();
-            worldrenderer1.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).endVertex();
-            worldrenderer1.pos((double)(this.posX + (float)i), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).endVertex();
+            worldrenderer1.pos((this.posX + (float)i), (this.posY + (float)this.FONT_HEIGHT), 0.0D).endVertex();
+            worldrenderer1.pos((this.posX + p_doDraw_1_), (this.posY + (float)this.FONT_HEIGHT), 0.0D).endVertex();
+            worldrenderer1.pos((this.posX + p_doDraw_1_), (this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).endVertex();
+            worldrenderer1.pos((this.posX + (float)i), (this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).endVertex();
             tessellator1.draw();
             GlStateManager.enableTexture2D();
         }
@@ -598,9 +597,11 @@ public class FontRenderer implements IResourceManagerReloadListener
         else
         {
             if (ModuleInstance.getModule(BetterFont.class).isEnabled()) {
-                return MathHelper.ceiling_float_int(GameInstance.regular18.width(text));
+                return GameInstance.regular18.width(text);
             }
             if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text);
+            if (cachedWidth.containsKey(text)) return cachedWidth.get(text);
+
             float f = 0.0F;
             boolean flag = false;
 
@@ -637,6 +638,7 @@ public class FontRenderer implements IResourceManagerReloadListener
                 }
             }
 
+            cachedWidth.put(text, Math.round(f));
             return Math.round(f);
         }
     }

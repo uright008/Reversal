@@ -32,6 +32,7 @@ public final class ClientSettings extends Module {
     public final BoolValue empathyGlow = new BoolValue("Empathy Glow", "value.ClientSettings.empathyGlow", this, false);
     public final NumberValue roundStrength = new NumberValue("Round Strength", "value.ClientSettings.roundStrength", this, 4f, 1f, 10f, 1f);
     public final BoolValue shaderGradient = new BoolValue("Shader Gradient", "value.ClientSettings.shaderGradient", this, false);
+    public final BoolValue shaderBackground = new BoolValue("Shader Background", "value.ClientSettings.shaderBackground", this, false);
 
     public final NoteValue note3 = new NoteValue("< Client Settings >", "value.ClientSettings.note3", this);
     public final TextValue customName = new TextValue("Custom Name", "value.ClientSettings.customName", this, "Reversal");

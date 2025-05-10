@@ -59,7 +59,6 @@ public class PostProcessing extends Module
 
             stencilFramebuffer.unbindFramebuffer();
 
-
             KawaseBlur.renderBlur(stencilFramebuffer.framebufferTexture, (int) iterations.getValue(), (int) offset.getValue());
 
         }

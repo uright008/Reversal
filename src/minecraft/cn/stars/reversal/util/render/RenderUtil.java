@@ -953,7 +953,7 @@ public final class RenderUtil implements GameInstance {
 
     public static void rectForShaderTheme(double x, double y, double width, double height, ColorValue colorValue, boolean isPp) {
         if (!isPp) {
-            roundedRectangle(x, y, width, height, ModuleInstance.getClientSettings().roundStrength.getFloat(), new Color(0, 0, 0, 60));
+            if (ModuleInstance.getClientSettings().shaderBackground.enabled) roundedRectangle(x, y, width, height, ModuleInstance.getClientSettings().roundStrength.getFloat(), new Color(0, 0, 0, 60));
         }
         else if (ModuleInstance.getClientSettings().shaderGradient.enabled) {
             roundedGradientRectangle(x, y, width, height, ModuleInstance.getClientSettings().roundStrength.getFloat(), colorValue.getColor(0), colorValue.getColor(ThemeUtil.getCustomClientName().length() + 1), false);

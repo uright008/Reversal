@@ -1,5 +1,6 @@
 package net.minecraft.client.main;
 
+import cn.stars.reversal.util.ReversalLogger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.authlib.properties.PropertyMap;
@@ -101,13 +102,7 @@ public class Main
         Integer integer = optionset.valueOf(optionspec1);
         Session session = new Session(optionspec9.value(optionset), s4, optionspec11.value(optionset), optionspec18.value(optionset));
         GameConfiguration gameconfiguration = new GameConfiguration(new GameConfiguration.UserInformation(session, propertymap, propertymap1, proxy), new GameConfiguration.DisplayInformation(i, j, flag, flag1), new GameConfiguration.FolderInformation(file1, file3, file2, s5), new GameConfiguration.GameInformation(flag2, s3), new GameConfiguration.ServerInformation(s6, integer));
-        Runtime.getRuntime().addShutdownHook(new Thread("Client Shutdown Thread")
-        {
-            public void run()
-            {
-                Minecraft.stopIntegratedServer();
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(getShutdownThread());
         Thread.currentThread().setName("Client thread");
         (new Minecraft(gameconfiguration)).run();
     }
@@ -115,5 +110,24 @@ public class Main
     private static boolean isNullOrEmpty(String str)
     {
         return str != null && !str.isEmpty();
+    }
+
+    private static Thread getShutdownThread() {
+        Thread shutdownThread = new Thread("Client Shutdown Thread")
+        {
+            @Override
+            public void run()
+            {
+                Minecraft.stopIntegratedServer();
+                if (!Minecraft.terminated) {
+                    Minecraft.getMinecraft().hopeEngine.terminateSafely();
+                }
+            }
+        };
+        shutdownThread.setPriority(10);
+        shutdownThread.setUncaughtExceptionHandler((t, e) -> {
+            ReversalLogger.error("Error while shutting down", e);
+        });
+        return shutdownThread;
     }
 }

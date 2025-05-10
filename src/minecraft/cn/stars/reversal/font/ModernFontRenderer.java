@@ -17,7 +17,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Patrick, Hazsi
@@ -43,6 +45,7 @@ public class ModernFontRenderer extends MFont {
     private final FontCharacter[] boldCharacters = new FontCharacter[LATIN_MAX_AMOUNT];
     private final boolean antialiasing;
     private final boolean international;
+    private final Map<String, Float> cachedWidth = new HashMap<>();
 
     public ModernFontRenderer(java.awt.Font font, boolean fractionalMetrics, boolean antialiasing, boolean international) {
         this.antialiasing = antialiasing;
@@ -383,7 +386,8 @@ public class ModernFontRenderer extends MFont {
 
     public int width(String text) {
         if (text == null || text.isEmpty()) return 0;
-        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");;
+        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");
+        if (cachedWidth.containsKey(text)) { return cachedWidth.get(text).intValue(); }
 
         if (!this.international && this.requiresInternationalFont(text)) {
             return FontManager.getRegular(this.font.getSize() - 1).width(text);
@@ -420,12 +424,14 @@ public class ModernFontRenderer extends MFont {
             }
         }
 
+        cachedWidth.put(text, width / 2);
         return (int) (width / 2);
     }
 
     public float getWidth(String text) {
         if (text == null || text.isEmpty()) return 0;
-        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");;
+        if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");
+        if (cachedWidth.containsKey(text)) { return cachedWidth.get(text); }
 
         if (!this.international && this.requiresInternationalFont(text)) {
             return FontManager.getRegular(this.font.getSize() - 1).width(text);
@@ -462,6 +468,7 @@ public class ModernFontRenderer extends MFont {
             }
         }
 
+        cachedWidth.put(text, width / 2);
         return width / 2;
     }
 

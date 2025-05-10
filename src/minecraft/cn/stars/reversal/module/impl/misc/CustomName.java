@@ -15,11 +15,4 @@ import cn.stars.reversal.value.impl.TextValue;
 @ModuleInfo(name = "CustomName", localizedName = "module.CustomName.name", description = "Customize your minecraft name", localizedDescription = "module.CustomName.desc", category = Category.MISC)
 public class CustomName extends Module {
     public final TextValue textValue = new TextValue("Name", this, "Reversal User");
-
-    @Override
-    public void onValueChanged(ValueChangedEvent event) {
-        if (event.setting == textValue) {
-            Reversal.customName = textValue.getText();
-        }
-    }
 }

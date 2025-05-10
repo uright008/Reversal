@@ -206,7 +206,7 @@ public class ViaVersionGui extends AtomicGui {
             GameInstance.psm24.drawCenteredString(protocols.get(entryID).getName(), width / 2f, p_180791_3_ + 5, Color.WHITE.getRGB());
             if (protocols.get(entryID).getName().equalsIgnoreCase("1.8.x"))
                 GameInstance.psm16.drawString("(native version)", p_180791_2_ + getListWidth() - 60, p_180791_3_ + 7, Color.GRAY.getRGB());
-            else if (protocols.get(entryID).getName().equalsIgnoreCase("1.21.4"))
+            else if (protocols.get(entryID).getName().equalsIgnoreCase("1.21.5"))
                 GameInstance.psm16.drawString("(latest version)", p_180791_2_ + getListWidth() - 60, p_180791_3_ + 7, Color.GRAY.getRGB());
 
             GameInstance.atomic24.drawString("A", width / 2f + GameInstance.psm24.width(protocols.get(entryID).getName()) / 2f + 20, p_180791_3_ + p_180791_4_ / 2f - atomic24.height() / 2f, new Color(255,255,255, (int)(pva.getSelectAnimation().getValue() * 1.6)).getRGB());

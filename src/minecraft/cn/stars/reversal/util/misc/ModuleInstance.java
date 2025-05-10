@@ -2,6 +2,7 @@ package cn.stars.reversal.util.misc;
 
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.impl.client.*;
 import cn.stars.reversal.module.impl.addons.SkinLayers3D;
@@ -63,6 +64,6 @@ public class ModuleInstance {
      * 客户端特殊功能
      */
     public static boolean isSpecialModule(Module module) {
-        return module instanceof ClickGui || module instanceof PostProcessing || module instanceof ClientSettings || module instanceof SkinLayers3D || module instanceof HurtCam || module instanceof Optimization;
+        return module.getModuleInfo().category().equals(Category.CLIENT);
     }
 }

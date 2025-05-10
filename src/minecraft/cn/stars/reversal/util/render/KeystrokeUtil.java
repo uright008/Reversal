@@ -79,8 +79,8 @@ public class KeystrokeUtil implements GameInstance {
 
     public void drawButtonForMouse(final double x, final double y, final double width) {
         final Color color = ModuleInstance.getModule(Keystrokes.class).colorValue.getColor();
-        final int leftCps = ModuleInstance.getModule(CPSCounter.class).Lclicks.size();
-        final int rightCps = ModuleInstance.getModule(CPSCounter.class).Rclicks.size();
+        final int leftCps = ModuleInstance.getModule(CPSCounter.class).leftClicks.size();
+        final int rightCps = ModuleInstance.getModule(CPSCounter.class).rightClicks.size();
 
         if (ModuleInstance.getModule(Keystrokes.class).modeValue.getMode().equals("Minecraft")) {
             RenderUtil.rect(x, y, width + 15, width, new Color(ticksSinceLastPress, ticksSinceLastPress, ticksSinceLastPress, 100));

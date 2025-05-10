@@ -37,7 +37,7 @@ public final class TimeUtil {
     }
 
     /***
-     * Gets the current amount of time that has passed since last reset
+     * Gets the current amount of time that has passed since last release
      */
     public long getDelay() {
         return System.currentTimeMillis() - lastMS;

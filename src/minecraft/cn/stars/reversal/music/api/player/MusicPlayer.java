@@ -55,7 +55,7 @@ public class MusicPlayer {
     public void setCurrentTime(double time) {
         mediaPlayer.seek(Duration.millis(time));
     //    MusicLyricWidget widget = (MusicLyricWidget) Client.instance.uiManager.getWidget(MusicLyricWidget.class);
-    //    widget.reset();
+    //    widget.release();
         music.getLyrics().forEach(LyricLine::reset);
         music.getTranslatedLyrics().forEach(LyricLine::reset);
     }
@@ -123,7 +123,7 @@ public class MusicPlayer {
         });
         mediaPlayer.setVolume(volume);
         music.getLyrics().forEach(LyricLine::reset);
-    //    ((MusicLyricWidget) Client.instance.uiManager.getWidget(MusicLyricWidget.class)).reset();
+    //    ((MusicLyricWidget) Client.instance.uiManager.getWidget(MusicLyricWidget.class)).release();
         ModuleInstance.getModule(MusicInfo.class).reset();
         Atomic.INSTANCE.reset();
 

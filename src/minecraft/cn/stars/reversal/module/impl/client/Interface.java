@@ -20,6 +20,7 @@ public class Interface extends Module {
 
     public final NoteValue note3 = new NoteValue("< Inventory >", this);
     public final BoolValue moveWhenPotionActive = new BoolValue("Move when potion active", this, true);
+    public final BoolValue guiBackground = new BoolValue("Background (GUI)", this, true);
 
     @Override
     public void onUpdateAlways() {

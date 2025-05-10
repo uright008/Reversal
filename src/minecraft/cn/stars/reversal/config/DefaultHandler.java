@@ -50,11 +50,6 @@ public class DefaultHandler {
                 continue;
             }
 
-            if (split[0].contains("CustomPlayerName")) {
-                Reversal.customName = split.length > 1 ? split[1] : "";
-                continue;
-            }
-
             if (split[0].contains("MainMenuBackground")) {
                 RainyAPI.backgroundId = Integer.parseInt(split[1]);
                 continue;
@@ -65,7 +60,14 @@ public class DefaultHandler {
             //        continue;
             //    }
 
-            Module module = Reversal.moduleManager.getModule(split[1]);
+            Module module;
+
+            try {
+                module = Reversal.moduleManager.getModule(split[1]);
+            } catch (IndexOutOfBoundsException e) {
+                continue;
+            }
+
             if (module != null) {
 
                 if (split[0].contains("Toggle")) {
@@ -138,7 +140,6 @@ public class DefaultHandler {
         final StringBuilder configBuilder = new StringBuilder();
         configBuilder.append("Reversal_Version_").append(Reversal.VERSION).append("\r\n");
         configBuilder.append("ClientName_").append(ThemeUtil.getCustomClientName()).append("\r\n");
-        configBuilder.append("CustomPlayerName_").append(Reversal.customName).append("\r\n");
         configBuilder.append("MainMenuBackground_").append(RainyAPI.backgroundId).append("\r\n");
         configBuilder.append("DisableShader_").append(false).append("\r\n");
 

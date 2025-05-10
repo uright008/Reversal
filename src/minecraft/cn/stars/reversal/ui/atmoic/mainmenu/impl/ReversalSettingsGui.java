@@ -19,7 +19,7 @@ import java.awt.*;
 
 public class ReversalSettingsGui extends AtomicGui {
     public GuiScreen parent;
-    private TextButton exitButton, shaderButton, guiSnowButton, backgroundBlurButton, imageScreenButton;
+    private TextButton exitButton, shaderButton, guiSnowButton, backgroundBlurButton, imageScreenButton, asyncLoadingButton;
     private TextButton[] buttons;
 
     public ReversalSettingsGui() {
@@ -57,7 +57,11 @@ public class ReversalSettingsGui extends AtomicGui {
 
         // Image Screen
         regular20Bold.drawString("Image Screen", 60, 290, new Color(220, 220, 220, 240).getRGB());
-        regular16.drawString("在游戏窗口出现时显示一个Hoshino Shield的界面。\n纯属整活。（不会拖慢加载速度）", 60, 305, new Color(220, 220, 220, 240).getRGB());
+        regular16.drawString("在游戏窗口出现时显示一个Hoshino Shield的界面。\n纯属整活，不会拖慢加载速度。", 60, 305, new Color(220, 220, 220, 240).getRGB());
+
+        // Async Loading
+        regular20Bold.drawString("Async Loading", 60, 360, new Color(220, 220, 220, 240).getRGB());
+        regular16.drawString("使用多线程加载客户端。\n部分情况下多线程可能导致问题，此时可选择关闭。", 60, 375, new Color(220, 220, 220, 240).getRGB());
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
@@ -73,14 +77,14 @@ public class ReversalSettingsGui extends AtomicGui {
         super.initGui();
         createButton();
 
-        buttons = new TextButton[]{exitButton, shaderButton, guiSnowButton, backgroundBlurButton, imageScreenButton};
+        buttons = new TextButton[]{exitButton, shaderButton, guiSnowButton, backgroundBlurButton, imageScreenButton, asyncLoadingButton};
     }
 
     private void switchOption(Runnable runnable) {
         runnable.run();
         createButton();
-        RainyAPI.processAPI(true);
-        buttons = new TextButton[]{exitButton, shaderButton, guiSnowButton, backgroundBlurButton, imageScreenButton};
+        RainyAPI.processAPI();
+        buttons = new TextButton[]{exitButton, shaderButton, guiSnowButton, backgroundBlurButton, imageScreenButton, asyncLoadingButton};
     }
 
     private void createButton() {
@@ -112,6 +116,13 @@ public class ReversalSettingsGui extends AtomicGui {
                     "开", "9", true, 10, 34, 7);
         } else {
             this.imageScreenButton = new TextButton(60, 325, 60, 25, () -> switchOption(() -> RainyAPI.imageScreen = !RainyAPI.imageScreen),
+                    "关", "0", true, 10, 34, 7);
+        }
+        if (RainyAPI.asyncLoading) {
+            this.asyncLoadingButton = new TextButton(60, 395, 60, 25, () -> switchOption(() -> RainyAPI.asyncLoading = !RainyAPI.asyncLoading),
+                    "开", "9", true, 10, 34, 7);
+        } else {
+            this.asyncLoadingButton = new TextButton(60, 395, 60, 25, () -> switchOption(() -> RainyAPI.asyncLoading = !RainyAPI.asyncLoading),
                     "关", "0", true, 10, 34, 7);
         }
     }

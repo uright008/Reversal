@@ -53,6 +53,7 @@ public class RainyAPI {
     public static boolean backgroundBlur = false;
     public static boolean imageScreen = false;
     public static boolean menuBubble = false;
+    public static boolean asyncLoading = true;
 
     /**
      * 崩溃报告上面的字
@@ -152,14 +153,15 @@ public class RainyAPI {
     /**
      * 加载客户端设置
      */
-    public static void loadAPI(boolean post) {
+    public static void loadAPI() {
         ReversalLogger.info("Loading RainyAPI...");
         readProperties();
         final String client = FileUtil.loadFile("client.txt");
 
         // re-save if not available on start.
-        if (client == null || !client.contains("DisableShader") || !client.contains("DisableSplashScreen")) {
-            processAPI(false);
+        if (client == null || !client.contains("DisableShader") || !client.contains("DisableSplashScreen") || !client.contains("AsyncLoading")) {
+            processAPI();
+            loadAPI();
             return;
         }
 
@@ -188,8 +190,8 @@ public class RainyAPI {
             if (split[0].contains("MenuBubble")) {
                 menuBubble = Boolean.parseBoolean(split[1]);
             }
-            if (split[0].contains("CustomText") && post) {
-                Reversal.customText = split[1];
+            if (split[0].contains("AsyncLoading")) {
+                asyncLoading = Boolean.parseBoolean(split[1]);
             }
         }
     }
@@ -197,7 +199,7 @@ public class RainyAPI {
     /**
      * 保存客户端设置
      */
-    public static void processAPI(boolean post) {
+    public static void processAPI() {
         final StringBuilder clientBuilder = new StringBuilder();
         clientBuilder.append("DisableShader_").append(isShaderCompatibility).append("\r\n");
         clientBuilder.append("DisableSplashScreen_").append(isSplashScreenDisabled).append("\r\n");
@@ -205,7 +207,7 @@ public class RainyAPI {
         clientBuilder.append("BackgroundBlur_").append(backgroundBlur).append("\r\n");
         clientBuilder.append("ImageScreen_").append(imageScreen).append("\r\n");
         clientBuilder.append("MenuBubble_").append(menuBubble).append("\r\n");
-        if (post) clientBuilder.append("CustomText_").append(Reversal.customText).append("\r\n");
+        clientBuilder.append("AsyncLoading_").append(asyncLoading).append("\r\n");
 
         FileUtil.saveFile("client.txt", true, clientBuilder.toString());
     }

@@ -31,7 +31,6 @@ public final class ConfigHandler {
         final StringBuilder configBuilder = new StringBuilder();
         configBuilder.append("Reversal_Version_").append(Reversal.VERSION).append("\r\n");
         configBuilder.append("ClientName_").append(ThemeUtil.getCustomClientName()).append("\r\n");
-        configBuilder.append("CustomPlayerName_").append(Reversal.customName).append("\r\n");
         configBuilder.append("MainMenuBackground_").append(RainyAPI.backgroundId).append("\r\n");
         configBuilder.append("DisableShader_").append(false).append("\r\n");
 
@@ -115,11 +114,6 @@ public final class ConfigHandler {
 
             if (split[0].contains("ClientName")) {
                 ThemeUtil.setCustomClientName(split.length > 1 ? split[1] : "");
-                continue;
-            }
-
-            if (split[0].contains("CustomPlayerName")) {
-                Reversal.customName = split.length > 1 ? split[1] : "";
                 continue;
             }
 

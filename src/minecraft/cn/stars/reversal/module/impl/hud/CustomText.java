@@ -11,16 +11,13 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.value.impl.BoolValue;
-import cn.stars.reversal.value.impl.ColorValue;
-import cn.stars.reversal.value.impl.NoteValue;
-import cn.stars.reversal.value.impl.NumberValue;
+import cn.stars.reversal.value.impl.*;
 
 import java.awt.*;
 
 @ModuleInfo(name = "CustomText", localizedName = "module.CustomText.name", description = "Show a custom text on screen", localizedDescription = "module.CustomText.desc", category = Category.HUD)
 public class CustomText extends Module {
-    private final NoteValue note = new NoteValue("使用指令 '.setText <文字>' 来设置自定义文字!", this);
+    public final TextValue textValue = new TextValue("Text", this, "Example Custom Text;<r>Use the flag to return;");
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final NumberValue size = new NumberValue("Size", this, 16, 4, 64, 1);
     private final BoolValue bloom = new BoolValue("Bloom", this, false);
@@ -43,49 +40,62 @@ public class CustomText extends Module {
     public void onShader3D(Shader3DEvent event) {
         if (bloom.enabled && event.isBloom()) drawText();
     }
+    
+    private String[] getAnalysedText() {
+        String text = textValue.getText();
+        return text.split("<r>");
+    }
 
     private void drawText() {
-        int x = getX() + 1;
-        int y = getY() + 1;
-        if (bold.isEnabled()) {
-            if (gradient.isEnabled()) {
-                float off = 0;
-                for (int i = 0; i < Reversal.customText.length(); i++) {
-                    final Color c = colorValue.getColor(i);
+        float x = getX() + 1;
+        float y = getY() + 1;
+        for (String s : this.getAnalysedText()) {
+            if (bold.isEnabled()) {
+                if (gradient.isEnabled()) {
+                    float off = 0;
+                    for (int i = 0; i < s.length(); i++) {
+                        final Color c = colorValue.getColor(i);
 
-                    final String character = String.valueOf(Reversal.customText.charAt(i));
-                    FontManager.getRegularBold((int)size.getValue()).drawString(character, x + off, y, c.getRGB());
-                    off += FontManager.getRegularBold((int)size.getValue()).width(character);
+                        final String character = String.valueOf(s.charAt(i));
+                        FontManager.getRegularBold((int) size.getValue()).drawString(character, x + off, y, c.getRGB());
+                        off += FontManager.getRegularBold((int) size.getValue()).width(character);
+                    }
+                } else {
+                    final Color c = colorValue.getColor();
+                    FontManager.getRegularBold((int) size.getValue()).drawString(s, x, y, c.getRGB());
                 }
             } else {
-                final Color c = colorValue.getColor();
-                FontManager.getRegularBold((int)size.getValue()).drawString(Reversal.customText, x, y, c.getRGB());
-            }
-        } else {
-            if (gradient.isEnabled()) {
-                float off = 0;
-                for (int i = 0; i < Reversal.customText.length(); i++) {
-                    final Color c = colorValue.getColor(i);
+                if (gradient.isEnabled()) {
+                    float off = 0;
+                    for (int i = 0; i < s.length(); i++) {
+                        final Color c = colorValue.getColor(i);
 
-                    final String character = String.valueOf(Reversal.customText.charAt(i));
-                    FontManager.getRegularBold((int)size.getValue()).drawString(character, x + off, y, c.getRGB());
-                    off += FontManager.getRegular((int)size.getValue()).width(character);
+                        final String character = String.valueOf(s.charAt(i));
+                        FontManager.getRegularBold((int) size.getValue()).drawString(character, x + off, y, c.getRGB());
+                        off += FontManager.getRegular((int) size.getValue()).width(character);
+                    }
+                } else {
+                    final Color c = colorValue.getColor();
+                    FontManager.getRegular((int) size.getValue()).drawString(s, x, y, c.getRGB());
                 }
-            } else {
-                final Color c = colorValue.getColor();
-                FontManager.getRegular((int)size.getValue()).drawString(Reversal.customText, x, y, c.getRGB());
             }
+            y += FontManager.getRegular((int)size.getValue()).height();
         }
     }
 
     private void setWidthAndHeight() {
+        float maxWidth = 0;
         if (bold.isEnabled()) {
-            setWidth(FontManager.getRegularBold((int)size.getValue()).width(Reversal.customText) + 5);
-            setHeight((int) (FontManager.getRegularBold((int)size.getValue()).height() + 5));
+            for (String s : getAnalysedText()) {
+                maxWidth = Math.max(maxWidth, FontManager.getRegularBold((int)size.getValue()).width(s) + 5);
+            }
         } else {
-            setWidth(FontManager.getRegular((int)size.getValue()).width(Reversal.customText) + 5);
-            setHeight((int) (FontManager.getRegular((int)size.getValue()).height() + 5));
+            for (String s : getAnalysedText()) {
+                maxWidth = Math.max(maxWidth, FontManager.getRegular((int)size.getValue()).width(s) + 5);
+            }
         }
+        setWidth(maxWidth);
+        setHeight(FontManager.getRegular((int)size.getValue()).height() * getAnalysedText().length + 5);
     }
 
 }

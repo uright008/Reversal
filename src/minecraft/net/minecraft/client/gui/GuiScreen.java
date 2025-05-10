@@ -5,6 +5,7 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.video.BackgroundManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -562,14 +563,13 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         if (this.mc.theWorld != null)
         {
-            this.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
+            if (ModuleInstance.getInterface().guiBackground.enabled) this.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
         }
         else {
             try {
                 drawMenuBackground(screenPartialTicks, this.width, this.height);
                 if (RainyAPI.backgroundBlur) {
-                    NORMAL_BLUR_RUNNABLES.add(() -> RenderUtil.rect(0,0, this.width, this.height, Color.BLACK));
-                    RiseShaders.GAUSSIAN_BLUR_SHADER.run(ShaderRenderType.OVERLAY, screenPartialTicks, NORMAL_BLUR_RUNNABLES);
+                    ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0, this.width, this.height, Color.BLACK), 2, 2);
                 }
             } catch (Exception e) {
                 ReversalLogger.error("(GuiScreen) Error while loading background");

@@ -118,6 +118,7 @@ public final class EventHandler {
                 }
 
                 module.onUpdateAlways();
+                residentProcessor.onUpdateAlways();
             }
         } else if (e instanceof TickEvent) {
             final TickEvent event = (TickEvent) e;

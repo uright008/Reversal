@@ -56,7 +56,10 @@ public abstract class Module implements GameInstance {
     public SimpleAnimation editOpacityAnimation = new SimpleAnimation(0.0F);
     public SimpleAnimation boxAnimation = new SimpleAnimation(0.0F);
 
-    //Module Settings
+    // Value
+    public static float roundStrength;
+
+    // Module Settings
     public List<Value> settings = new ArrayList<>();
     public Map<String, Value> settingsMap = new HashMap<>();
 

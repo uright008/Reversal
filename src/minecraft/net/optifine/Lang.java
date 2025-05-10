@@ -21,7 +21,7 @@ import org.apache.commons.io.IOUtils;
 public class Lang
 {
     private static final Splitter splitter = Splitter.on('=').limit(2);
-    private static final Pattern pattern = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
+    private static final Pattern pattern = Pattern.compile("%(\\d+\\$)?[\\d.]*[df]");
 
     public static void resourcesReloaded()
     {

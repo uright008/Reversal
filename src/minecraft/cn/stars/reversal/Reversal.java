@@ -32,6 +32,11 @@ import cn.stars.reversal.util.render.video.BackgroundManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.reversal.Branch;
 import cn.stars.reversal.util.reversal.Preloader;
+import cn.stars.reversal.util.reversal.pool.ObjectPool;
+import cn.stars.reversal.util.reversal.pool.TrackablePooledObject;
+import cn.stars.reversal.util.reversal.pool.TrackingObjectPool;
+import cn.stars.reversal.util.reversal.pool.impl.PooledRunnable;
+import cn.stars.reversal.util.reversal.pool.impl.TrackableRunnable;
 import de.florianmichael.viamcp.ViaMCP;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -61,10 +66,9 @@ public class Reversal {
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
-    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(8);
-
-    public static String customName = "";
-    public static String customText = ".setText <text>";
+    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(6);
+    public static final ObjectPool<PooledRunnable> runnablePool = new ObjectPool<>(PooledRunnable::new, 2048);
+    public static final TrackingObjectPool<TrackableRunnable> trackableRunnablePool = new TrackingObjectPool<>(TrackableRunnable::new, 2048);
 
     public static ModuleManager moduleManager;
     public static NotificationManager notificationManager;
@@ -82,9 +86,11 @@ public class Reversal {
     // Core
     public static void start() {
         try {
-            ReversalLogger.info("Loading client...");
-
-            RainyAPI.loadAPI(true);
+            if (Thread.currentThread().getName().equals("Client thread")) {
+                ReversalLogger.info("Loading client normally...");
+            } else {
+                ReversalLogger.info("Loading client asynchronously...");
+            }
 
             // ViaMCP init
             ViaMCP.create();
@@ -124,7 +130,7 @@ public class Reversal {
     // run required
     public static void saveAll() {
         DefaultHandler.saveConfig(false);
-        RainyAPI.processAPI(true);
+        RainyAPI.processAPI();
     }
 
 
@@ -224,7 +230,7 @@ public class Reversal {
     }
 
     public static boolean onSendChatMessage(final String s) {
-        if (s.startsWith(".") && !s.startsWith("./")) {
+        if (s.startsWith(".") && !s.startsWith("./") && !s.startsWith(".l") && !s.startsWith(".reg")) {
             cmdManager.callCommand(s.substring(1));
             return false;
         }
@@ -244,7 +250,6 @@ public class Reversal {
             new Help(),
             new Online(),
             new Say(),
-            new SetText(),
             new Toggle()
     };
 

@@ -49,11 +49,11 @@ public class SessionInfo extends Module {
 
         switch (mode.getMode()) {
             case "Modern":
-                if (event.isBloom()) RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, color);
-                else RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, Color.BLACK);
+                if (event.isBloom()) RenderUtil.roundedRectangle(x - 2, y - 4, 148, 64, roundStrength, color);
+                else RenderUtil.roundedRectangle(x - 2, y - 4, 148, 64, roundStrength, Color.BLACK);
                 break;
             case "ThunderHack":
-                RoundedUtil.drawGradientRound(x - 3.5f, y - 5.5f, 151, 67, 4,
+                RoundedUtil.drawGradientRound(x - 3.5f, y - 5.5f, 151, 67, roundStrength,
                         ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
                         ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
                         ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
@@ -66,11 +66,11 @@ public class SessionInfo extends Module {
                 if (event.isBloom())
                     RenderUtil.rectForShaderTheme(x - 2, y - 4, 148, 64, colorValue, true);
                 else
-                    RenderUtil.roundedRectangle(x - 2, y - 4, 148, 64, ModuleInstance.getClientSettings().roundStrength.getFloat(), Color.BLACK);
+                    RenderUtil.roundedRectangle(x - 2, y - 4, 148, 64, roundStrength, Color.BLACK);
                 break;
             case "Empathy":
                 RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyGlowColor());
-                RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb20.height() - 2.5, 3f, color);
+                RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, regular18Bold.height() - 2.5, 3f, color);
                 break;
         }
     }
@@ -91,16 +91,16 @@ public class SessionInfo extends Module {
         // 背景
         switch (mode.getMode()) {
             case "Modern":
-                RoundedUtil.drawRound(x - 2, y - 4, 148, 64, 4, new Color(0, 0, 0, 80));
-                RenderUtil.roundedOutlineRectangle(x - 3, y - 5, 150, 66, 3, 1, color);
+                RenderUtil.roundedRectangle(x - 2, y - 4, 148, 64, roundStrength, new Color(0, 0, 0, 80));
+                RenderUtil.roundedOutlineRectangle(x - 3, y - 5, 150, 66, roundStrength, 1, color);
                 break;
             case "ThunderHack":
-                RoundedUtil.drawGradientRound(x - 3.5f, y - 5.5f, 151, 67, 4,
+                RoundedUtil.drawGradientRound(x - 3.5f, y - 5.5f, 151, 67, roundStrength,
                         ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
                         ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
                         ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
                         ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true));
-                RoundedUtil.drawRound(x - 3, y - 5, 150, 66, 4, new Color(0, 0, 0, 220));
+                RoundedUtil.drawRound(x - 3, y - 5, 150, 66, roundStrength, new Color(0, 0, 0, 220));
                 break;
             case "Simple":
                 RenderUtil.rect(x - 2, y - 4, 148, 64, new Color(0, 0, 0, 80));
@@ -110,45 +110,38 @@ public class SessionInfo extends Module {
                 break;
             case "Empathy":
                 RenderUtil.roundedRectangle(x - 4, y - 4, 150, 64, 3f, ColorUtil.empathyColor());
-                RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, psb20.height() - 2.5, 1f, color);
+                RenderUtil.roundedRectangle(x - 4.5, y - 1.5, 1.5, regular18Bold.height() - 2.5, 1f, color);
                 break;
         }
 
         // 顶部
-        if (mode.getMode().equals("Shader")) {
-            regular18Bold.drawString(I18n.format("info.SessionInfo.title"), x + 14, y, new Color(250, 250, 250, 200).getRGB());
-            FontManager.getIcon(20).drawString("I", x + 1, y + 1f, color.getRGB());
-        } else {
-            psb20.drawString(I18n.format("info.SessionInfo.title"), x + 15, y - 0.7f, new Color(250, 250, 250, 200).getRGB());
-            FontManager.getIcon(24).drawString("I", x, y - 0.3f, new Color(250, 250, 250, 200).getRGB());
-        }
-        
-        MFont font = mode.getMode().equals("Shader") ? regular18 : psm18;
+        regular18Bold.drawString(I18n.format("info.SessionInfo.title"), x + 14, y, new Color(250, 250, 250, 200).getRGB());
+        FontManager.getIcon(20).drawString("I", x + 1, y + 1f, color.getRGB());
 
         // 第一行 游玩时间
         iconSmall.drawString("e", x, y + 12, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(I18n.format("info.SessionInfo.playtime"), x + 12, y + 11, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(playtime, x + 145 - font.getWidth(playtime), y + 11, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(I18n.format("info.SessionInfo.playtime"), x + 12, y + 11, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(playtime, x + 145 - regular18.getWidth(playtime), y + 11, new Color(250, 250, 250, 200).getRGB());
 
         // 第二行 击杀数量
         iconSmall.drawString("a", x, y + 22, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(I18n.format("info.killed"), x + 12, y + 21, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(kills, x + 145 - font.getWidth(kills), y + 21, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(I18n.format("info.killed"), x + 12, y + 21, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(kills, x + 145 - regular18.getWidth(kills), y + 21, new Color(250, 250, 250, 200).getRGB());
 
         // 第三行 HurtTime
         iconSmall.drawString("c", x, y + 32, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(I18n.format("info.hurtTime"), x + 12, y + 31, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(hurtTime, x + 145 - font.getWidth(hurtTime), y + 31, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(I18n.format("info.hurtTime"), x + 12, y + 31, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(hurtTime, x + 145 - regular18.getWidth(hurtTime), y + 31, new Color(250, 250, 250, 200).getRGB());
 
         // 第四行 速度
         iconSmall.drawString("b", x, y + 42, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(I18n.format("info.speed"), x + 12, y + 41, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(speed, x + 145 - font.getWidth(speed), y + 41, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(I18n.format("info.speed"), x + 12, y + 41, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(speed, x + 145 - regular18.getWidth(speed), y + 41, new Color(250, 250, 250, 200).getRGB());
 
         // 第五行 血量
         iconSmall.drawString("s", x, y + 52, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(I18n.format("info.hp"), x + 12, y + 51, new Color(250, 250, 250, 200).getRGB());
-        font.drawString(health, x + 145 - font.getWidth(health), y + 51, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(I18n.format("info.hp"), x + 12, y + 51, new Color(250, 250, 250, 200).getRGB());
+        regular18.drawString(health, x + 145 - regular18.getWidth(health), y + 51, new Color(250, 250, 250, 200).getRGB());
 
     }
 

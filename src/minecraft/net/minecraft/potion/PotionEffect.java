@@ -24,9 +24,9 @@ public class PotionEffect
     private boolean isPotionDurationMax;
     private boolean showParticles;
 
-    private final Animation xAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
-    private final Animation yAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
-    private final Animation progressAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
+    private final Animation yAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation xAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    private final Animation progressAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private double progress;
     private final TimeUtil progressTimer = new TimeUtil();
 

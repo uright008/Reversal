@@ -712,6 +712,7 @@ public class ModernClickGUI extends GuiScreen {
         selectedSlider = null;
         selectedColor = null;
         selectedText = null;
+        Reversal.saveAll();
         super.onGuiClosed();
     }
 

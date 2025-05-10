@@ -9,8 +9,8 @@ import cn.stars.reversal.util.misc.ModuleInstance;
 public class Transformer implements GameInstance {
     public static String constructString(String string) {
         String result = string;
-        if (ModuleInstance.getModule(CustomName.class).isEnabled() && Reversal.customName != null && !Reversal.customName.isEmpty()) {
-            result = result.replace(mc.session.getUsername(), Reversal.customName.replace("&", "§"));
+        if (ModuleInstance.getModule(CustomName.class).isEnabled() && ModuleInstance.getModule(CustomName.class).textValue.getText() != null && !ModuleInstance.getModule(CustomName.class).textValue.getText().isEmpty()) {
+            result = result.replace(mc.session.getUsername(), ModuleInstance.getModule(CustomName.class).textValue.getText().replace("&", "§"));
         }
         return result;
     }

@@ -1,7 +1,6 @@
 package cn.stars.reversal.module;
 
 import cn.stars.reversal.RainyAPI;
-import cn.stars.addons.optimization.util.FastTrig;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.module.impl.client.Hotbar;
@@ -20,20 +19,21 @@ public class ResidentProcessor {
     private final Minecraft mc = Minecraft.getMinecraft();
 
     public void onUpdateAlways() {
+        Module.roundStrength = ModuleInstance.getClientSettings().roundStrength.getFloat();
     }
 
     public void onClick(ClickEvent event) {
         if (event.getType() == ClickEvent.ClickType.LEFT) {
-            ModuleInstance.getModule(CPSCounter.class).Lclicks.add(System.currentTimeMillis());
+            ModuleInstance.getModule(CPSCounter.class).leftClicks.add(System.currentTimeMillis());
         }
         if (event.getType() == ClickEvent.ClickType.RIGHT) {
-            ModuleInstance.getModule(CPSCounter.class).Rclicks.add(System.currentTimeMillis());
+            ModuleInstance.getModule(CPSCounter.class).rightClicks.add(System.currentTimeMillis());
         }
     }
 
     public void onTick(TickEvent event) {
-        ModuleInstance.getModule(CPSCounter.class).Lclicks.removeIf(l -> l < System.currentTimeMillis() - 1000L);
-        ModuleInstance.getModule(CPSCounter.class).Rclicks.removeIf(t -> t < System.currentTimeMillis() - 1000L);
+        ModuleInstance.getModule(CPSCounter.class).leftClicks.removeIf(l -> l < System.currentTimeMillis() - 1000L);
+        ModuleInstance.getModule(CPSCounter.class).rightClicks.removeIf(t -> t < System.currentTimeMillis() - 1000L);
 
         // Process optifine performance tick
         if (mc.thePlayer != null) {

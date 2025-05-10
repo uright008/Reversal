@@ -186,8 +186,7 @@ import org.lwjgl.util.glu.GLU;
 public class Minecraft implements IThreadListener
 {
     public static CountDownLatch latch = new CountDownLatch(1);
-    @Getter
-    private HopeEngine hopeEngine;
+    public HopeEngine hopeEngine;
     public static boolean terminated;
     public StopWatch timeScreen = new StopWatch();
     public long startMillisTime = System.currentTimeMillis();
@@ -395,7 +394,7 @@ public class Minecraft implements IThreadListener
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
-        RainyAPI.loadAPI(false);
+        RainyAPI.loadAPI();
         BackgroundManager.loadFiles();
 
         if (RainyAPI.imageScreen) ImageScreen.load();
@@ -456,7 +455,11 @@ public class Minecraft implements IThreadListener
         this.mouseHelper = new MouseHelper();
         RawInput.startRawInputThread();
         SplashScreen.setProgress(40, "Reversal - Client Loading");
-        AsyncGLContentLoader.loadGLContentAsync(Reversal::start);
+        if (RainyAPI.asyncLoading) {
+            AsyncGLContentLoader.loadGLContentAsync(Reversal::start);
+        } else {
+            Reversal.start();
+        }
         SplashScreen.setProgress(60, "Minecraft - GL Startup");
         this.checkGLError("Pre startup");
         GlStateManager.enableTexture2D();

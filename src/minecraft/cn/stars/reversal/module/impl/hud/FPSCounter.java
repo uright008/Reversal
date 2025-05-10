@@ -7,6 +7,8 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.util.animation.rise.Animation;
+import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
@@ -27,39 +29,37 @@ public class FPSCounter extends Module {
         setWidth(100);
         setHeight(20);
     }
+    private final Animation rectAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
 
     @Override
     public void onShader3D(Shader3DEvent event) {
-        String fpsString = Minecraft.getDebugFPS() + " fps";
-        if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) fpsString = "[" + Minecraft.getDebugFPS() + " fps]";
-
         if (background.isEnabled()) {
             switch (mode.getMode()) {
                 case "Modern":
                     if (event.isBloom())
-                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(fpsString), psm18.getHeight() + 3, 4, colorValue.getColor());
+                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 20 + rectAnimation.getValue(), regular18.getHeight() + 3, roundStrength, colorValue.getColor());
                     else
-                        RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(fpsString), psm18.getHeight() + 3, 4, Color.BLACK);
+                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 20 + rectAnimation.getValue(), regular18.getHeight() + 3, roundStrength, Color.BLACK);
                     break;
                 case "ThunderHack":
-                    RoundedUtil.drawGradientRound(getX() + 0.5f, getY() - 2.5f, 22 + psm18.getWidth(fpsString), psm18.getHeight() + 6, 4,
+                    RoundedUtil.drawGradientRound(getX() + 0.5f, getY() - 2.5f, 22 + (float)rectAnimation.getValue(), regular18.getHeight() + 6, roundStrength,
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true));
                     break;
                 case "Simple":
-                    RenderUtil.rect(getX() + 2, getY() - 1, 19 + psm18.getWidth(fpsString), psm18.getHeight() + 3, Color.BLACK);
+                    RenderUtil.rect(getX() + 2, getY() - 1, 19 + rectAnimation.getValue(), regular18.getHeight() + 3, Color.BLACK);
                     break;
                 case "Shader":
                     if (event.isBloom())
-                        RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 21 + regular18.getWidth(fpsString), regular18.getHeight() + 1.5, colorValue, true);
+                        RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 21 + rectAnimation.getValue(), regular18.getHeight() + 1.5, colorValue, true);
                     else
-                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 21 + regular18.getWidth(fpsString), regular18.getHeight() + 1.5, ModuleInstance.getClientSettings().roundStrength.getFloat(), Color.BLACK);
+                        RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 21 + rectAnimation.getValue(), regular18.getHeight() + 1.5, roundStrength, Color.BLACK);
                     break;
                 case "Empathy":
-                    RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm18.getWidth(fpsString), psm18.getHeight() + 3, 3f, ColorUtil.empathyGlowColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, colorValue.getColor());
+                    RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + rectAnimation.getValue(), regular18.getHeight() + 3, 3f, ColorUtil.empathyGlowColor());
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, regular18.getHeight() - 2.5, 1f, colorValue.getColor());
                     break;
             }
         }
@@ -67,33 +67,39 @@ public class FPSCounter extends Module {
 
     @Override
     public void onRender2D(Render2DEvent event) {
-        String fpsString = Minecraft.getDebugFPS() + " fps";
-        if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) fpsString = "[" + Minecraft.getDebugFPS() + " fps]";
+        String fpsString = Minecraft.getDebugFPS() + " FPS";
+        if (ModuleInstance.getModule(ClientSettings.class).hudTextWithBracket.enabled) fpsString = "[" + Minecraft.getDebugFPS() + " FPS]";
         Color color = colorValue.getColor();
 
+        int offsetX = 0;
+        int offsetY = 0;
+
         if (background.isEnabled()) {
+            rectAnimation.run(regular18.getWidth(fpsString));
             switch (mode.getMode()) {
                 case "Modern":
-                    RoundedUtil.drawRound(getX() + 2, getY() - 1, 19 + psm18.getWidth(fpsString), psm18.getHeight() + 3, 4, new Color(0, 0, 0, 80));
-                    RenderUtil.roundedOutlineRectangle(getX() + 1, getY() - 2, 21 + psm18.getWidth(fpsString), psm18.getHeight() + 5, 3, 1, color);
+                    RenderUtil.roundedRectangle(getX() + 2, getY() - 1, 20 + rectAnimation.getValue(), regular18.getHeight() + 3, roundStrength, new Color(0, 0, 0, 80));
+                    RenderUtil.roundedOutlineRectangle(getX() + 1, getY() - 2, 22 + rectAnimation.getValue(), regular18.getHeight() + 5, roundStrength, 1, color);
                     break;
                 case "ThunderHack":
-                    RoundedUtil.drawGradientRound(getX() + 0.5f, getY() - 2.5f, 22 + psm18.getWidth(fpsString), psm18.getHeight() + 6, 4,
+                    RoundedUtil.drawGradientRound(getX() + 0.5f, getY() - 2.5f, 22 + (float)rectAnimation.getValue(), regular18.getHeight() + 6, roundStrength,
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 1000, Color.WHITE, Color.BLACK, true),
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 2000, Color.WHITE, Color.BLACK, true),
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 4000, Color.WHITE, Color.BLACK, true),
                             ColorUtils.INSTANCE.interpolateColorsBackAndForth(3, 3000, Color.WHITE, Color.BLACK, true));
-                    RoundedUtil.drawRound(getX() + 1, getY() - 2, 21 + psm18.getWidth(fpsString), psm18.getHeight() + 5, 4, new Color(0, 0, 0, 220));
+                    RoundedUtil.drawRound(getX() + 1, getY() - 2, 21 + (float)rectAnimation.getValue(), regular18.getHeight() + 5, roundStrength, new Color(0, 0, 0, 220));
                     break;
                 case "Simple":
-                    RenderUtil.rect(getX() + 2, getY() - 1, 19 + psm18.getWidth(fpsString), psm18.getHeight() + 3, new Color(0, 0, 0, 80));
+                    RenderUtil.rect(getX() + 2, getY() - 1, 19 + rectAnimation.getValue(), regular18.getHeight() + 3, new Color(0, 0, 0, 80));
                     break;
                 case "Shader":
-                    RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 21 + regular18.getWidth(fpsString), regular18.getHeight() + 1.5, colorValue, false);
+                    RenderUtil.rectForShaderTheme(getX() + 2, getY() - 1, 21 + rectAnimation.getValue(), regular18.getHeight() + 1.5, colorValue, false);
+                    offsetY = -1;
                     break;
                 case "Empathy":
-                    RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + psm18.getWidth(fpsString), psm18.getHeight() + 3, 3f, ColorUtil.empathyColor());
-                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, psm18.getHeight() - 2.5, 1f, color);
+                    RenderUtil.roundedRectangle(getX(), getY() - 1, 21 + rectAnimation.getValue(), regular18.getHeight() + 3, 3f, ColorUtil.empathyColor());
+                    RenderUtil.roundedRectangle(getX() - 0.5, getY() + 1.5, 1.5, regular18.getHeight() - 2.5, 1f, color);
+                    offsetX = -1;
                     break;
                 case "Minecraft":
                     RenderUtil.rect(getX() - 0.5, getY() - 0.5, mc.fontRendererObj.getStringWidth(fpsString) + 4, mc.fontRendererObj.FONT_HEIGHT + 3, new Color(0,0,0,100));
@@ -101,12 +107,9 @@ public class FPSCounter extends Module {
         }
         if (mode.getMode().equals("Minecraft")) {
             mc.fontRendererObj.drawStringWithShadow(fpsString, getX() + 2, getY() + 2, Color.WHITE.getRGB());
-        } else if (mode.getMode().equals("Shader")) {
-            FontManager.getSpecialIcon(16).drawString("e", getX() + 6, getY() + 5, color.getRGB());
-            regular18.drawString(fpsString, getX() + 18, getY() + 2.5f, new Color(250, 250, 250, 200).getRGB());
         } else {
-            FontManager.getSpecialIcon(20).drawString("e", getX() + 4, getY() + 4, new Color(250, 250, 250, 200).getRGB());
-            psm18.drawString(fpsString, getX() + 17, getY() + 2.5f, new Color(250, 250, 250, 200).getRGB());
+            FontManager.getSpecialIcon(16).drawString("e", getX() + 6 + offsetX, getY() + 6 + offsetY, color.getRGB());
+            regular18.drawString(fpsString, getX() + 18 + offsetX, getY() + 3.5f + offsetY, new Color(250, 250, 250, 200).getRGB());
         }
     }
 }
