@@ -5,7 +5,6 @@
 package cn.stars.reversal.util;
 
 import lombok.experimental.UtilityClass;
-import org.lwjgl.input.Mouse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

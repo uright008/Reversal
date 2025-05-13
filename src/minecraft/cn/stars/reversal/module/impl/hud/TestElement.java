@@ -7,10 +7,10 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.math.TimeUtil;
-import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.reversal.pool.impl.PooledRunnable;
-import cn.stars.reversal.util.reversal.pool.impl.TrackableRunnable;
-import cn.stars.reversal.value.impl.*;
+import cn.stars.reversal.value.impl.ColorValue;
+import cn.stars.reversal.value.impl.CustomValue;
+import cn.stars.reversal.value.impl.NoteValue;
+import cn.stars.reversal.value.impl.TextValue;
 
 @ModuleInfo(name = "TestElement", localizedName = "module.TestElement.name", description = "Only for test",
         localizedDescription = "module.TestElement.desc", category = Category.HUD)
@@ -34,6 +34,5 @@ public class TestElement extends Module {
 
     @Override
     public void onUpdate(UpdateEvent event) {
-    //    Reversal.showMsg(Reversal.runnablePool.toString());
     }
 }

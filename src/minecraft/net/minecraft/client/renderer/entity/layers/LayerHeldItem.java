@@ -1,6 +1,5 @@
 package net.minecraft.client.renderer.entity.layers;
 
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.block.Block;

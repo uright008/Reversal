@@ -2,7 +2,6 @@ package cn.stars.reversal.event;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.client.Minecraft;
 
 @Getter
 @Setter

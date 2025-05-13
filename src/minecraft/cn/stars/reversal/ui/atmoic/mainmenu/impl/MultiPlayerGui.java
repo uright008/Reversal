@@ -21,7 +21,8 @@ import cn.stars.reversal.util.render.RoundedUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import lombok.SneakyThrows;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiListExtended;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.LanServerDetector;
@@ -281,6 +282,9 @@ public class MultiPlayerGui extends AtomicGui {
                 this.serverListSelector.loadInternetServerList(this.savedServerList);
             }
 
+            AtomicMenu.switchGui(2);
+            mc.displayGuiScreen(Reversal.atomicMenu);
+        } else {
             AtomicMenu.switchGui(2);
             mc.displayGuiScreen(Reversal.atomicMenu);
         }

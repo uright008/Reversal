@@ -1,18 +1,18 @@
 package cn.stars.reversal.module.impl.render;
 
 import cn.stars.reversal.event.impl.PreBlurEvent
-import cn.stars.reversal.module.Category;
-import cn.stars.reversal.module.Module;
-import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.value.impl.NumberValue
+import cn.stars.reversal.module.Category
+import cn.stars.reversal.module.Module
+import cn.stars.reversal.module.ModuleInfo
 import cn.stars.reversal.util.wrapper.WrapperBufferBuilder
+import cn.stars.reversal.value.impl.NumberValue
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.ScaledResolution
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.OpenGlHelper
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.client.shader.Framebuffer
 import org.lwjgl.opengl.GL11
 
 @ModuleInfo(name = "MotionBlur", localizedName = "module.MotionBlur.name", description = "Render blur on your view", localizedDescription = "module.MotionBlur.desc", category = Category.RENDER)

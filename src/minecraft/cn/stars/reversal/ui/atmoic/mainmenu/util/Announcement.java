@@ -35,9 +35,9 @@ public class Announcement {
 
     public Announcement calcMaxWidth() {
         for (Content line : content) {
-            maxWidth = Math.max(maxWidth, GameInstance.psm18.width(line.content));
+            maxWidth = Math.max(maxWidth, GameInstance.regular18.width(line.content));
         }
-        maxWidth = Math.max(maxWidth, GameInstance.psm24.width(title) + 15);
+        maxWidth = Math.max(maxWidth, GameInstance.regular24Bold.width(title) + 15);
         return this;
     }
 

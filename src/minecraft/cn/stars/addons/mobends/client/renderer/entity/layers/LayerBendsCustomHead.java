@@ -5,21 +5,26 @@
 package cn.stars.addons.mobends.client.renderer.entity.layers;
 
 import cn.stars.addons.mobends.client.model.entity.ModelBendsPlayer;
-import net.minecraft.client.renderer.entity.layers.*;
-import net.minecraft.entity.*;
-import net.minecraft.client.*;
-import net.minecraft.client.renderer.*;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.init.*;
-import java.util.*;
-import com.mojang.authlib.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.nbt.*;
-import net.minecraft.client.renderer.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.item.*;
+import com.mojang.authlib.GameProfile;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.util.EnumFacing;
+
+import java.util.UUID;
 
 public class LayerBendsCustomHead implements LayerRenderer<EntityLivingBase>
 {

@@ -1,11 +1,11 @@
 package cn.stars.elixir.account
 
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import cn.stars.elixir.compat.OAuthServer
 import cn.stars.elixir.compat.Session
 import cn.stars.elixir.exception.LoginException
 import cn.stars.elixir.utils.*
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 
 class MicrosoftAccount : MinecraftAccount("Microsoft") {
     override var name = "UNKNOWN"

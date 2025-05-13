@@ -5,7 +5,6 @@ import cn.stars.reversal.command.Command;
 import cn.stars.reversal.command.CommandManager;
 import cn.stars.reversal.command.api.CommandInfo;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
 
 @CommandInfo(name = "Help", description = "Sends all of the commands that currently exists in chat", syntax = ".help", aliases = "help")
 public final class Help extends Command {

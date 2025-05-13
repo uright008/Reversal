@@ -58,7 +58,7 @@ public class AnnouncementGui extends AtomicGui {
             Announcement announcement = announcements.get(announcementIndex);
             hoverAnimation.run(RenderUtil.isHovered(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, mouseX, mouseY) ? 150 : 100);
 
-            psm24.drawCenteredString("[" + announcement.id + "] - " + announcement.getDate(), width / 2f, 73, Color.WHITE.getRGB());
+            regular24Bold.drawCenteredString("[" + announcement.id + "] - " + announcement.getDate(), width / 2f, 73, Color.WHITE.getRGB());
 
             ModuleInstance.getPostProcessing().drawElementWithBloom(() -> RoundedUtil.drawRound(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, 3, Color.BLACK), 2, 2);
 
@@ -67,12 +67,12 @@ public class AnnouncementGui extends AtomicGui {
             RoundedUtil.drawRound(anPosX, anPosY, announcement.maxWidth + 20, 35 + announcement.content.size() * 10, 3, new Color(30,30,30, (int) hoverAnimation.getValue()));
 
             atomic24.drawString("1", anPosX + 5, anPosY + 10, Color.WHITE.getRGB());
-            psm24.drawString(announcement.title, anPosX + 20, anPosY + 9, Color.WHITE.getRGB());
+            regular24Bold.drawString(announcement.title, anPosX + 20, anPosY + 8.5, Color.WHITE.getRGB());
             for (Announcement.Content line : announcement.content) {
-                psm18.drawString(line.content, anPosX + 10, anPosY + 25 + announcement.content.indexOf(line) * 10, line.isMarked ? new Color(250,50,50,250).getRGB() : new Color(220,220,220,250).getRGB());
+                regular18.drawString(line.content, anPosX + 10, anPosY + 25 + announcement.content.indexOf(line) * 10, line.isMarked ? new Color(250,50,50,250).getRGB() : new Color(220,220,220,250).getRGB());
             }
 
-            psm16.drawString(announcement.date, anPosX + announcement.maxWidth - psm16.width(announcement.date) + 15, anPosY + 28 + announcement.content.size() * 10, new Color(220,220,220,240).getRGB());
+            regular16.drawString(announcement.date, anPosX + announcement.maxWidth - regular16.width(announcement.date) + 15, anPosY + 28 + announcement.content.size() * 10, new Color(220,220,220,240).getRGB());
 
             // Update Position
             if (isDragging) {

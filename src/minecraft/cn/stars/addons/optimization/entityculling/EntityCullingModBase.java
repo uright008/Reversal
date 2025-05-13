@@ -1,18 +1,17 @@
 package cn.stars.addons.optimization.entityculling;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.HashSet;
-
+import cn.stars.addons.culling.OcclusionCullingInstance;
 import cn.stars.reversal.util.ReversalLogger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import cn.stars.addons.culling.OcclusionCullingInstance;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.HashSet;
 
 public abstract class EntityCullingModBase {
 

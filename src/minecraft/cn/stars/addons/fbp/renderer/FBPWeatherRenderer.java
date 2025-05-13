@@ -1,15 +1,10 @@
 package cn.stars.addons.fbp.renderer;
 
-import java.awt.*;
-import java.util.Random;
-
 import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.fbp.particle.FBPParticleRain;
 import cn.stars.addons.fbp.particle.FBPParticleSnow;
 import cn.stars.reversal.module.impl.world.TimeTraveller;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GlStateManager;
@@ -22,6 +17,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
+import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
+import java.util.Random;
 
 public class FBPWeatherRenderer {
 

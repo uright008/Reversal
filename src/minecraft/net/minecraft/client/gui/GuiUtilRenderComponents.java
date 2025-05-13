@@ -3,11 +3,12 @@ package net.minecraft.client.gui;
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.collect.Lists;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+
+import java.util.List;
 
 public class GuiUtilRenderComponents
 {

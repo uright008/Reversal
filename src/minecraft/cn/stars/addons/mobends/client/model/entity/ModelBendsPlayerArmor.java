@@ -9,12 +9,14 @@ import cn.stars.addons.mobends.client.model.ModelRendererBends_SeperatedChild;
 import cn.stars.addons.mobends.client.renderer.SwordTrail;
 import cn.stars.addons.mobends.data.Data_Player;
 import cn.stars.addons.mobends.util.SmoothVector3f;
-import net.minecraft.client.model.*;
-import net.minecraft.entity.*;
-import org.lwjgl.opengl.*;
-import net.minecraft.client.*;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.entity.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 
 public class ModelBendsPlayerArmor extends ModelBiped
 {

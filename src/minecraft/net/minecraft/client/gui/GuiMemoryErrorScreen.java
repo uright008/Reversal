@@ -1,10 +1,9 @@
 package net.minecraft.client.gui;
 
-import java.io.IOException;
-
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.util.Transformer;
 import net.minecraft.client.resources.I18n;
+
+import java.io.IOException;
 
 public class GuiMemoryErrorScreen extends GuiScreen
 {

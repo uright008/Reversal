@@ -10,12 +10,9 @@ import cn.stars.addons.mobends.client.model.ModelRendererBends;
 import cn.stars.addons.mobends.client.model.ModelRendererBends_SeperatedChild;
 import cn.stars.addons.mobends.client.renderer.SwordTrail;
 import cn.stars.addons.mobends.data.Data_Player;
-import cn.stars.addons.mobends.data.EntityData;
 import cn.stars.addons.mobends.pack.BendsPack;
 import cn.stars.addons.mobends.pack.BendsVar;
 import cn.stars.addons.mobends.util.SmoothVector3f;
-import cn.stars.addons.skinlayers3d.PlayerEntityModelAccessor;
-import cn.stars.reversal.Reversal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
@@ -28,9 +25,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import org.lwjgl.opengl.GL11;
-
 import org.lwjgl.compatibility.util.vector.Vector3f;
+import org.lwjgl.opengl.GL11;
 
 public class ModelBendsPlayer extends ModelPlayer
 {

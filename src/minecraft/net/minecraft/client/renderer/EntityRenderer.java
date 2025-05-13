@@ -7,22 +7,15 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render3DEvent;
 import cn.stars.reversal.module.impl.addons.FancyBlockParticles;
 import cn.stars.reversal.module.impl.addons.FreeLook;
+import cn.stars.reversal.module.impl.client.HurtCam;
 import cn.stars.reversal.module.impl.misc.Protocol;
 import cn.stars.reversal.module.impl.render.Animations;
-import cn.stars.reversal.module.impl.client.HurtCam;
 import cn.stars.reversal.module.impl.world.TimeTraveller;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.particle.ParticleManager;
 import cn.stars.reversal.util.wrapper.WrapperFreeLook;
 import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
-
-import java.awt.*;
-import java.io.IOException;
-import java.nio.FloatBuffer;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -67,18 +60,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.src.Config;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EntitySelectors;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MouseFilter;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -101,6 +83,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
+
+import java.awt.*;
+import java.io.IOException;
+import java.nio.FloatBuffer;
+import java.util.List;
+import java.util.Random;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {

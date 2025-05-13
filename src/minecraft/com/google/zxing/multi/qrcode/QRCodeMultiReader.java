@@ -16,14 +16,7 @@
 
 package com.google.zxing.multi.qrcode;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.ReaderException;
-import com.google.zxing.Result;
-import com.google.zxing.ResultMetadataType;
-import com.google.zxing.ResultPoint;
+import com.google.zxing.*;
 import com.google.zxing.common.DecoderResult;
 import com.google.zxing.common.DetectorResult;
 import com.google.zxing.multi.MultipleBarcodeReader;
@@ -33,11 +26,7 @@ import com.google.zxing.qrcode.decoder.QRCodeDecoderMetaData;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 /**
  * This implementation can detect and decode multiple QR Codes in an image.

@@ -1,8 +1,6 @@
 package cn.stars.reversal.util.render;
 
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.client.ClientSettings;
-import cn.stars.reversal.ui.theme.Theme;
 import cn.stars.reversal.util.animation.advanced.composed.ColorAnimation;
 import cn.stars.reversal.util.animation.simple.SimpleAnimation;
 import cn.stars.reversal.util.math.MathUtil;
@@ -15,8 +13,27 @@ import java.util.regex.Pattern;
 
 @UtilityClass
 public final class ColorUtil {
-    public static Color transparent = new Color(0, 0, 0, 0);
+    public static final Color transparent = new Color(0, 0, 0, 0);
     public static ColorAnimation whiteAnimation = new ColorAnimation(Color.WHITE, new Color(255, 255, 255, 0), 1000);
+    public static final int[] COLOR_CODES = new int[32];
+
+    static {
+        for (int i = 0; i < 32; ++i) {
+            final int amplifier = (i >> 3 & 1) * 85;
+            int red = (i >> 2 & 1) * 170 + amplifier;
+            int green = (i >> 1 & 1) * 170 + amplifier;
+            int blue = (i & 1) * 170 + amplifier;
+            if (i == 6) {
+                red += 85;
+            }
+            if (i >= 16) {
+                red /= 4;
+                green /= 4;
+                blue /= 4;
+            }
+            COLOR_CODES[i] = (red & 255) << 16 | (green & 255) << 8 | blue & 255;
+        }
+    }
 
     public static void updateColorAnimation() {
         if (whiteAnimation.isFinished()) {
@@ -131,138 +148,6 @@ public final class ColorUtil {
                 Math.min((int) (g / factor), 255),
                 Math.min((int) (b / factor), 255),
                 alpha);
-    }
-
-    public static Color getFontColor(int id, int alpha) {
-        Color rawColor = getRawFontColor(id);
-        int speed = 12;
-
-        if(id == 1) {
-            animation[12].setAnimation(rawColor.getRed(), speed);
-            animation[13].setAnimation(rawColor.getGreen(), speed);
-            animation[14].setAnimation(rawColor.getBlue(), speed);
-
-            return new Color((int) animation[12].getValue(), (int) animation[13].getValue(), (int) animation[14].getValue(), alpha);
-        }
-
-        if(id == 2) {
-            animation[15].setAnimation(rawColor.getRed(), speed);
-            animation[16].setAnimation(rawColor.getGreen(), speed);
-            animation[17].setAnimation(rawColor.getBlue(), speed);
-
-            return new Color((int) animation[15].getValue(), (int) animation[16].getValue(), (int) animation[17].getValue(), alpha);
-        }
-
-        return rawColor;
-    }
-
-    private static Color getRawFontColor(int id) {
-        Color color = new Color(0, 0, 255);
-        boolean dark = Reversal.guiTheme.currentTheme == Theme.DARKMODE;
-
-        switch(id) {
-            case 1:
-                if(dark) {
-                    color = new Color(255, 255, 255);
-                }else {
-                    color = new Color(27, 27, 27);
-                }
-                break;
-            case 2:
-                if(dark) {
-                    color = new Color(207, 209, 210);
-                }else {
-                    color = new Color(96, 97, 97);
-                }
-                break;
-        }
-
-        return color;
-    }
-
-    public static Color getFontColor(int id) {
-        return getFontColor(id, 255);
-    }
-
-    private static Color getRawBackgroundColor(int id) {
-        Color color = new Color(255, 0, 0);
-        boolean dark = Reversal.guiTheme.currentTheme == Theme.DARKMODE;
-
-        switch(id) {
-            case 1:
-                if(dark) {
-                    color = new Color(26, 33, 42);
-                }else {
-                    color = new Color(232, 234, 240);
-                }
-                break;
-            case 2:
-                if(dark) {
-                    color = new Color(35, 40, 46);
-                }else {
-                    color = new Color(239, 244, 249);
-                }
-                break;
-            case 3:
-                if(dark) {
-                    color = new Color(46, 51, 57);
-                }else {
-                    color = new Color(247, 250, 252);
-                }
-                break;
-            case 4:
-                if(dark) {
-                    color = new Color(57, 61, 67);
-                }else {
-                    color = new Color(253, 254, 254);
-                }
-                break;
-        }
-        return color;
-    }
-
-    public static Color getBackgroundColor(int id, int alpha) {
-
-        int speed = 12;
-        Color rawColor = getRawBackgroundColor(id);
-
-        if(id == 1) {
-            animation[0].setAnimation(rawColor.getRed(), speed);
-            animation[1].setAnimation(rawColor.getGreen(), speed);
-            animation[2].setAnimation(rawColor.getBlue(), speed);
-
-            return new Color((int) animation[0].getValue(), (int) animation[1].getValue(), (int) animation[2].getValue(), alpha);
-        }
-
-        if(id == 2) {
-            animation[3].setAnimation(rawColor.getRed(), speed);
-            animation[4].setAnimation(rawColor.getGreen(), speed);
-            animation[5].setAnimation(rawColor.getBlue(), speed);
-
-            return new Color((int) animation[3].getValue(), (int) animation[4].getValue(), (int) animation[5].getValue(), alpha);
-        }
-
-        if(id == 3) {
-            animation[6].setAnimation(rawColor.getRed(), speed);
-            animation[7].setAnimation(rawColor.getGreen(), speed);
-            animation[8].setAnimation(rawColor.getBlue(), speed);
-
-            return new Color((int) animation[6].getValue(), (int) animation[7].getValue(), (int) animation[8].getValue(), alpha);
-        }
-
-        if(id == 4) {
-            animation[9].setAnimation(rawColor.getRed(), speed);
-            animation[10].setAnimation(rawColor.getGreen(), speed);
-            animation[11].setAnimation(rawColor.getBlue(), speed);
-
-            return new Color((int) animation[9].getValue(), (int) animation[10].getValue(), (int) animation[11].getValue(), alpha);
-        }
-
-        return rawColor;
-    }
-
-    public static Color getBackgroundColor(int id) {
-        return getBackgroundColor(id, 255);
     }
 
     public Color darker(final Color c, final double FACTOR) {

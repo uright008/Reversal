@@ -5,7 +5,6 @@ import cn.stars.reversal.Reversal;
 import cn.stars.reversal.command.Command;
 import cn.stars.reversal.command.api.CommandInfo;
 import cn.stars.reversal.ui.notification.NotificationType;
-import cn.stars.reversal.util.reversal.Branch;
 import net.minecraft.client.resources.I18n;
 import org.lwjgl.opengl.Display;
 

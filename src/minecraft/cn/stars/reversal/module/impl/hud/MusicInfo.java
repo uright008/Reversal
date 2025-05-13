@@ -13,12 +13,12 @@ import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.music.api.player.MusicPlayer;
 import cn.stars.reversal.music.ui.ThemeColor;
+import cn.stars.reversal.util.render.ColorUtil;
+import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import cn.stars.reversal.util.render.ColorUtil;
-import cn.stars.reversal.util.render.RenderUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 

@@ -1,6 +1,5 @@
 package cn.stars.reversal.font;
 
-import cn.stars.reversal.GameInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;

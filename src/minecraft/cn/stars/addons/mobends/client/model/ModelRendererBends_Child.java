@@ -4,8 +4,8 @@
 
 package cn.stars.addons.mobends.client.model;
 
-import net.minecraft.client.model.*;
-import org.lwjgl.opengl.*;
+import net.minecraft.client.model.ModelBase;
+import org.lwjgl.opengl.GL11;
 
 public class ModelRendererBends_Child extends ModelRendererBends
 {

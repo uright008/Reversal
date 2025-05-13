@@ -6,7 +6,6 @@ import cn.stars.reversal.module.impl.render.TargetESP;
 import cn.stars.reversal.module.impl.render.Trail;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.util.ResourceLocation;

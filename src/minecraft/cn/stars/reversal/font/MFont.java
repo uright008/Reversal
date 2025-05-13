@@ -1,7 +1,5 @@
 package cn.stars.reversal.font;
 
-import java.util.List;
-
 public abstract class MFont {
     public abstract int drawString(String text, double x, double y, int color, boolean dropShadow);
 

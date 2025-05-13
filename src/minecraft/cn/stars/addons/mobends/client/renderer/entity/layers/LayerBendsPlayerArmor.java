@@ -5,10 +5,10 @@
 package cn.stars.addons.mobends.client.renderer.entity.layers;
 
 import cn.stars.addons.mobends.client.model.entity.ModelBendsPlayerArmor;
-import net.minecraft.client.renderer.entity.layers.*;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.entity.*;
-import net.minecraft.client.model.*;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
+import net.minecraft.entity.EntityLivingBase;
 
 public class LayerBendsPlayerArmor extends LayerArmorBase<ModelBiped>
 {

@@ -8,9 +8,11 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.*;
+import cn.stars.reversal.util.render.ColorUtil;
+import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.RenderUtils;
+import cn.stars.reversal.util.render.RoundedUtil;
 import lombok.SneakyThrows;
-import net.minecraft.client.renderer.GlStateManager;
 
 import java.awt.*;
 

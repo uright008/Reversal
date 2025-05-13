@@ -1,21 +1,17 @@
 package cn.stars.reversal.util.render.video;
 
-import java.io.File;
-import java.nio.ByteBuffer;
-
 import cn.stars.reversal.RainyAPI;
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.math.TimeUtil;
-import cn.stars.reversal.util.render.GlUtils;
 import cn.stars.reversal.util.render.RenderUtil;
 import lombok.SneakyThrows;
-import net.minecraft.client.Minecraft;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
+
+import java.io.File;
+import java.nio.ByteBuffer;
 
 @NativeObfuscation
 public class VideoUtil {

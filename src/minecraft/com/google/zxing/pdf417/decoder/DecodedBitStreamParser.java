@@ -17,8 +17,8 @@
 package com.google.zxing.pdf417.decoder;
 
 import com.google.zxing.FormatException;
-import com.google.zxing.common.ECIStringBuilder;
 import com.google.zxing.common.DecoderResult;
+import com.google.zxing.common.ECIStringBuilder;
 import com.google.zxing.pdf417.PDF417ResultMetadata;
 
 import java.math.BigInteger;

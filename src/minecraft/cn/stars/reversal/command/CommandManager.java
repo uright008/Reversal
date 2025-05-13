@@ -2,12 +2,12 @@ package cn.stars.reversal.command;
 
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.Module;
+import cn.stars.reversal.ui.notification.NotificationType;
+import cn.stars.reversal.util.misc.ClassUtil;
 import cn.stars.reversal.value.Value;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import cn.stars.reversal.ui.notification.NotificationType;
-import cn.stars.reversal.util.misc.ClassUtil;
 import net.minecraft.client.resources.I18n;
 
 import java.util.Arrays;

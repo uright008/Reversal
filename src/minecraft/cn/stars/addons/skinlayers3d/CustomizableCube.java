@@ -1,7 +1,9 @@
 package cn.stars.addons.skinlayers3d;
-import net.minecraft.client.renderer.vertex.*;
-import net.minecraft.client.renderer.*;
-import org.lwjgl.util.vector.*;
+
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.util.vector.Vector3f;
 
 public class CustomizableCube
 {

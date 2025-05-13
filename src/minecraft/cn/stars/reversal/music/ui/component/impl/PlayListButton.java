@@ -1,10 +1,10 @@
 package cn.stars.reversal.music.ui.component.impl;
 
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.music.api.base.PlayList;
 import cn.stars.reversal.music.thread.FetchPlayListThread;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.music.ui.component.Button;
-import cn.stars.reversal.music.api.base.PlayList;
 import cn.stars.reversal.music.ui.gui.MusicPlayerGUI;
 import cn.stars.reversal.music.ui.gui.impl.PlayListGUI;
 import cn.stars.reversal.util.animation.advanced.Animation;

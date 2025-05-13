@@ -7,6 +7,7 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.*;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.MsLoginGui;
 import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
 import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.util.animation.advanced.composed.CustomAnimation;
@@ -36,7 +37,6 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     private final ArrayList<GUIBubble> bubbles = new ArrayList<>();
     public static AtomicGui currentGui;
     public static int lastGuiIndex;
-    private final MFont psm16 = FontManager.getPSM(16);
     private final MFont atomic24 = FontManager.getAtomic(24);
     private final LocalDateTime initTime;
     private ResourceLocation headImage;
@@ -120,21 +120,21 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) atomicGui.hoverAnimation.run(80);
             else atomicGui.hoverAnimation.run(0);
             RenderUtil.rect(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, new Color(20,20,20, (int) atomicGui.hoverAnimation.getValue()));
-            RenderUtil.roundedRectangle(60 - psm16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 27, psm16.width(atomicGui.name) + 5, psm16.height() + 2, 2, new Color(20, 20, 20, (int) atomicGui.hoverAnimation.getValue() * 2));
-            psm16.drawString(atomicGui.name, 62.5 - psm16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 30, new Color(255,255,255, (int) atomicGui.hoverAnimation.getValue() * 3).getRGB());
+            RenderUtil.roundedRectangle(60 - regular16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 27, regular16.width(atomicGui.name) + 5, regular16.height() + 2, 2, new Color(20, 20, 20, (int) atomicGui.hoverAnimation.getValue() * 2));
+            regular16.drawString(atomicGui.name, 62.5 - regular16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 30, new Color(255,255,255, (int) atomicGui.hoverAnimation.getValue() * 3).getRGB());
             atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8, Color.WHITE.getRGB());
         }
 
         // Player & Time
         this.drawPlayerImage();
-        psm18.drawString(GameInstance.mc.session.getUsername(), width - 150 - psm18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
+        regular18.drawString(GameInstance.mc.session.getUsername(), width - 150 - regular18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
         RenderUtil.rect(width - 127, 5, 1, 15, Color.WHITE);
         RenderUtil.rect(width - 30, 5, 1, 15, Color.WHITE);
 
-        psm18.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + " " + (LocalDateTime.now().getHour() > 12 ? "PM" : "AM"),
+        regular18.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + " " + (LocalDateTime.now().getHour() > 12 ? "PM" : "AM"),
                 width - 100, 6, Color.WHITE.getRGB());
         Duration duration = Duration.between(initTime, LocalDateTime.now());
-        psm16.drawString("running " + String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60), width - 100, 14, Color.WHITE.getRGB());
+        regular16.drawString("running " + String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60), width - 100, 14, Color.WHITE.getRGB());
 
         RenderUtil.clock(width - 120, 5, 15, 2.4,2,1.2, Color.WHITE);
 
@@ -168,8 +168,8 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         }
 
       /*  // Other
-        psm16.drawString(Minecraft.getDebugFPS() + " FPS", 1, 1, Color.WHITE.getRGB());
-        psm16.drawString(currentGui.name, 1, 8, Color.WHITE.getRGB()); */
+        regular16.drawString(Minecraft.getDebugFPS() + " FPS", 1, 1, Color.WHITE.getRGB());
+        regular16.drawString(currentGui.name, 1, 8, Color.WHITE.getRGB()); */
 
         // Gui Elements
         NotificationManager.onRender2D();
@@ -201,22 +201,26 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.scissor(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height);
 
-        psb20.drawString("Sub Menu", width - subPosAnimation.getValue() + 6, 10, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        regular24Bold.drawString("Sub Menu", width - subPosAnimation.getValue() + 6, 10, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
 
-        psm18.drawString("Change background", width - subPosAnimation.getValue() + 8, 30, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        regular18.drawString("Change background", width - subPosAnimation.getValue() + 8, 30, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
 
         int c1 = RenderUtil.isHovered(width - subPosAnimation.getValue() + 18, 43, 15, 15, mouseX, mouseY) ? 255 : 150;
         int c2 = RenderUtil.isHovered(width - subPosAnimation.getValue() + 63, 43, 15, 15, mouseX, mouseY) ? 255 : 150;
 
-        psm24.drawString("←", width - subPosAnimation.getValue() + 20, 45, new Color(c1,c1,c1, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
-        psm24.drawString("[" + RainyAPI.backgroundId + "]", width - subPosAnimation.getValue() + 40, 45, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
-        psm24.drawString("→", width - subPosAnimation.getValue() + 65, 45, new Color(c2,c2,c2, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        regular20Bold.drawString("←", width - subPosAnimation.getValue() + 20, 45, new Color(c1,c1,c1, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        regular20Bold.drawString("[" + RainyAPI.backgroundId + "]", width - subPosAnimation.getValue() + 40, 45, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        regular20Bold.drawString("→", width - subPosAnimation.getValue() + 65, 45, new Color(c2,c2,c2, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
 
-        psm18.drawString("Click Bubble", width - subPosAnimation.getValue() + 8, 70, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        regular18.drawString("Click Bubble", width - subPosAnimation.getValue() + 8, 70, new Color(255,255,255, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
 
-        int c3 = RenderUtil.isHovered(width - subPosAnimation.getValue() + 68, 73, 15, 15, mouseX, mouseY) ? 255 : 150;
+        int c3 = RenderUtil.isHovered(width - subPosAnimation.getValue() + 68, 70, 15, 15, mouseX, mouseY) ? 255 : 150;
 
-        psm24.drawString(RainyAPI.menuBubble ? "✓" : "×", width - subPosAnimation.getValue() + 70, 68, new Color(c3,c3,c3, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+        regular20Bold.drawString(RainyAPI.menuBubble ? "✓" : "×", width - subPosAnimation.getValue() + 70, 70, new Color(c3,c3,c3, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+
+        int c4 = RenderUtil.isHovered(width - subPosAnimation.getValue() + 8, 90, 100, 15, mouseX, mouseY) ? 255 : 150;
+
+        regular18.drawString("Microsoft Login", width - subPosAnimation.getValue() + 8, 90, new Color(c4, c4, c4, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
@@ -239,17 +243,22 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
                 changeMenuBackground(false);
                 uiClick();
             }
-            if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 68, 73, 15, 15, mouseX, mouseY)) {
+            if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 68, 70, 15, 15, mouseX, mouseY)) {
                 RainyAPI.menuBubble = !RainyAPI.menuBubble;
+                uiClick();
+            }
+            if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 8, 90, 100, 15, mouseX, mouseY)) {
+                setMiscGui(new MsLoginGui());
+                switchGui(8);
                 uiClick();
             }
             return;
         }
         for (AtomicGui atomicGui : atomicGuis) {
             if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) {
-                lastGuiIndex = atomicGuis.indexOf(currentGui);
-                currentGui.onGuiClosed();
+                lastGuiIndex = !atomicGuis.contains(currentGui) ? 0 : atomicGuis.indexOf(currentGui);
                 currentGui = atomicGui;
+                atomicGuis.get(lastGuiIndex).onGuiClosed();
                 currentGui.initGui();
                 uiClick();
             }
@@ -326,6 +335,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
     @Override
     public void onGuiClosed() {
+        Keyboard.enableRepeatEvents(false);
         currentGui.onGuiClosed();
         super.onGuiClosed();
     }
@@ -353,7 +363,9 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     }
 
     public static void switchGui(int index) {
+        lastGuiIndex = !atomicGuis.contains(currentGui) ? 0 : atomicGuis.indexOf(currentGui);
         currentGui = atomicGuis.get(index);
+        atomicGuis.get(lastGuiIndex).onGuiClosed();
         currentGui.initGui();
         if (GameInstance.mc.currentScreen instanceof AtomicMenu) uiClick();
     }

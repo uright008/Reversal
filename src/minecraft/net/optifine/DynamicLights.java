@@ -1,9 +1,5 @@
 package net.optifine;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
@@ -26,6 +22,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.optifine.config.ConnectedParser;
 import net.optifine.config.IObjectLocator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DynamicLights
 {

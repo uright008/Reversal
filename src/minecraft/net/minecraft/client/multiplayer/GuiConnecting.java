@@ -1,11 +1,5 @@
 package net.minecraft.client.multiplayer;
 
-import java.awt.*;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
@@ -33,8 +27,13 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static cn.stars.reversal.GameInstance.*;
-import static cn.stars.reversal.GameInstance.UI_BLOOM_RUNNABLES;
 
 public class GuiConnecting extends GuiScreen
 {

@@ -13,7 +13,6 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.util.MathHelper;
-
 import org.lwjgl.compatibility.util.vector.Vector3f;
 
 public class Animation_WallClimb extends Animation

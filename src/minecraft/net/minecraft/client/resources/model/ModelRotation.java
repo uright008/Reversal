@@ -2,7 +2,6 @@ package net.minecraft.client.resources.model;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
-import java.util.Map;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.model.IModelPart;
@@ -11,6 +10,8 @@ import net.minecraftforge.client.model.ITransformation;
 import net.minecraftforge.client.model.TRSRTransformation;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+
+import java.util.Map;
 
 public enum ModelRotation implements IModelState, ITransformation
 {

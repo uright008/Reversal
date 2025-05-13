@@ -1,10 +1,12 @@
 package cn.stars.reversal.util.render.particle;
+
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.math.TimerUtil;
 import lombok.Setter;
 import net.minecraft.client.gui.ScaledResolution;
+
 import java.util.ArrayList;
 import java.util.List;
 

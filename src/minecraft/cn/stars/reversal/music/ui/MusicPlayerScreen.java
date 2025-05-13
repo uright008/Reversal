@@ -1,10 +1,10 @@
 package cn.stars.reversal.music.ui;
 
-import cn.stars.reversal.music.api.base.Music;
-import cn.stars.reversal.music.ui.component.Button;
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.music.api.base.Music;
 import cn.stars.reversal.music.api.player.MusicPlayer;
 import cn.stars.reversal.music.thread.SearchMusicThread;
+import cn.stars.reversal.music.ui.component.Button;
 import cn.stars.reversal.music.ui.component.impl.CategoryButton;
 import cn.stars.reversal.music.ui.component.impl.IconButton;
 import cn.stars.reversal.music.ui.component.impl.UserButton;

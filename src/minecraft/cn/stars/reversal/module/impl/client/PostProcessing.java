@@ -5,11 +5,11 @@ import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.value.impl.BoolValue;
-import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.blur.KawaseBloom;
 import cn.stars.reversal.util.render.blur.KawaseBlur;
+import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.client.shader.Framebuffer;
 
 @ModuleInfo(name = "PostProcessing", localizedName = "module.PostProcessing.name", description = "Add blur and bloom effects", localizedDescription = "module.PostProcessing.desc", category = Category.CLIENT)

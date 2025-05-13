@@ -2,16 +2,18 @@ package cn.stars.addons.skinlayers3d;
 
 import cn.stars.reversal.module.impl.addons.SkinLayers3D;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import net.minecraft.client.renderer.entity.layers.*;
-import net.minecraft.client.entity.*;
-import java.util.*;
-import net.minecraft.client.*;
-import net.minecraft.client.renderer.entity.*;
+import com.google.common.collect.Sets;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
-import net.minecraft.init.*;
-import com.google.common.collect.*;
-import net.minecraft.item.*;
-import net.minecraft.client.renderer.*;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+import java.util.Set;
 
 public class HeadLayerFeatureRenderer implements LayerRenderer<AbstractClientPlayer>
 {

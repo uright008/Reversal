@@ -1,6 +1,5 @@
 package cn.stars.reversal.util.render;
 
-import cn.stars.reversal.util.animation.simple.AnimationUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;

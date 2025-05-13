@@ -18,7 +18,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -28,24 +27,18 @@ import java.util.Map;
 public class ModernFontRenderer extends MFont {
 
     private static final String ALPHABET = "ABCDEFGHOKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private static final Color TRANSPARENT_COLOR = new Color(255, 255, 255, 0);
-    private static final float SCALE = 0.5f;
-    private static final float SCALE_INVERSE = 1 / SCALE;
-    private static final int[] COLOR_CODES = new int[32];
     private static final int LATIN_MAX_AMOUNT = 256;
     private static final int INTERNATIONAL_MAX_AMOUNT = 65535;
-    private static final int MARGIN_WIDTH = 4;
-    private static final int MASK = 0xFF;
 
     private final java.awt.Font font;
     private final boolean fractionalMetrics;
     private final float fontHeight;
     private final FontCharacter[] defaultCharacters = new FontCharacter[LATIN_MAX_AMOUNT];
     private final FontCharacter[] internationalCharacters = new FontCharacter[INTERNATIONAL_MAX_AMOUNT];
-    private final FontCharacter[] boldCharacters = new FontCharacter[LATIN_MAX_AMOUNT];
     private final boolean antialiasing;
     private final boolean international;
     private final Map<String, Float> cachedWidth = new HashMap<>();
+    private final FontBatchRenderer fontBatchRenderer = new FontBatchRenderer();
 
     public ModernFontRenderer(java.awt.Font font, boolean fractionalMetrics, boolean antialiasing, boolean international) {
         this.antialiasing = antialiasing;
@@ -53,24 +46,7 @@ public class ModernFontRenderer extends MFont {
         this.fractionalMetrics = fractionalMetrics;
         this.fontHeight = (float) (font.getStringBounds(ALPHABET, new FontRenderContext(new AffineTransform(), antialiasing, fractionalMetrics)).getHeight() / 2f);
         this.international = international;
-    }
-
-    static {
-        for (int i = 0; i < 32; ++i) {
-            final int amplifier = (i >> 3 & 1) * 85;
-            int red = (i >> 2 & 1) * 170 + amplifier;
-            int green = (i >> 1 & 1) * 170 + amplifier;
-            int blue = (i & 1) * 170 + amplifier;
-            if (i == 6) {
-                red += 85;
-            }
-            if (i >= 16) {
-                red /= 4;
-                green /= 4;
-                blue /= 4;
-            }
-            COLOR_CODES[i] = (red & 255) << 16 | (green & 255) << 8 | blue & 255;
-        }
+        fillCharacters(defaultCharacters, java.awt.Font.PLAIN);
     }
 
     /**
@@ -106,11 +82,11 @@ public class ModernFontRenderer extends MFont {
             // Calculate the width and height of the character
             final int width = charImage.getWidth();
             final int height = charImage.getHeight();
-            charGraphics.setColor(TRANSPARENT_COLOR);
+            charGraphics.setColor(new Color(255, 255, 255, 0));
             charGraphics.fillRect(0, 0, width, height);
             setRenderHints(charGraphics);
             // Use getAscent() instead of getSize(), to fix the bottom of the character not displaying
-            charGraphics.drawString(String.valueOf(character), MARGIN_WIDTH, fontMetrics.getAscent());
+            charGraphics.drawString(String.valueOf(character), 4, fontMetrics.getAscent());
 
             // Generate a new OpenGL texture, and pass it along to uploadTexture() with the image of the character so
             // that it can be stored as a complete OpenGL texture for later use
@@ -143,11 +119,11 @@ public class ModernFontRenderer extends MFont {
         // Calculate the width and height of the character
         final int width = charImage.getWidth();
         final int height = charImage.getHeight();
-        charGraphics.setColor(TRANSPARENT_COLOR);
+        charGraphics.setColor(new Color(255, 255, 255, 0));
         charGraphics.fillRect(0, 0, width, height);
         setRenderHints(charGraphics);
         // Use getAscent() instead of font.getSize(), to fix the bottom of the character not displaying
-        charGraphics.drawString(String.valueOf(character), MARGIN_WIDTH, fontMetrics.getAscent());
+        charGraphics.drawString(String.valueOf(character), 4, fontMetrics.getAscent());
 
         // Generate a new OpenGL texture, and pass it along to uploadTexture() with the image of the character so
         // that it can be stored as a complete OpenGL texture for later use
@@ -170,14 +146,14 @@ public class ModernFontRenderer extends MFont {
 
     public void uploadTexture(final int texture, final BufferedImage image, final int width, final int height) {
         final int[] pixels = image.getRGB(0, 0, width, height, new int[width * height], 0, width);
-        final ByteBuffer byteBuffer = BufferUtils.createByteBuffer(width * height * MARGIN_WIDTH);
+        final ByteBuffer byteBuffer = BufferUtils.createByteBuffer(width * height * 4);
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width; ++x) {
                 final int pixel = pixels[x + y * width];
-                byteBuffer.put((byte) ((pixel >> 16) & MASK));
-                byteBuffer.put((byte) ((pixel >> 8) & MASK));
-                byteBuffer.put((byte) (pixel & MASK));
-                byteBuffer.put((byte) ((pixel >> 24) & MASK));
+                byteBuffer.put((byte) ((pixel >> 16) & 0xFF));
+                byteBuffer.put((byte) ((pixel >> 8) & 0xFF));
+                byteBuffer.put((byte) (pixel & 0xFF));
+                byteBuffer.put((byte) ((pixel >> 24) & 0xFF));
             }
         }
         byteBuffer.flip();
@@ -299,29 +275,30 @@ public class ModernFontRenderer extends MFont {
         final FontCharacter[] characterSet = this.international ? internationalCharacters : defaultCharacters;
 
         double givenX = x;
+        boolean flag = GlStateManager.isTexture2DEnabled();
+
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        if (!flag) GlStateManager.enableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glScalef(SCALE, SCALE, SCALE);
 
-        x -= MARGIN_WIDTH / SCALE_INVERSE;
-        y -= MARGIN_WIDTH / SCALE_INVERSE;
-        x *= SCALE_INVERSE;
-        y *= SCALE_INVERSE;
+        x -= 2;
+        y -= 2;
+        x *= 2;
+        y *= 2;
         y -= fontHeight / 5;
 
         final double startX = x;
 
-        final int length = text.length();
-        RenderUtil.color(ColorUtil.hexColor(color));
+        RenderUtil.color(color);
 
-        for (int i = 0; i < length; ++i) {
+        for (int i = 0; i < text.length(); ++i) {
             final char character = text.charAt(i);
 
             if (character == 167 && i + 1 < text.length()) {
-                int l = "0123456789abcdefklmnor".indexOf(text.toLowerCase(Locale.ENGLISH).charAt(i + 1));
+                fontBatchRenderer.flush();
+                int l = "0123456789abcdefklmnor".indexOf(Character.toLowerCase(text.charAt(i + 1)));
 
                 if (l < 16) {
                     if (l < 0) {
@@ -332,7 +309,7 @@ public class ModernFontRenderer extends MFont {
                         l += 16;
                     }
 
-                    int i1 = COLOR_CODES[l];
+                    int i1 = ColorUtil.COLOR_CODES[l];
 
                     if (Config.isCustomColors()) {
                         i1 = CustomColors.getTextColor(l, i1);
@@ -340,43 +317,34 @@ public class ModernFontRenderer extends MFont {
 
                     GlStateManager.color((float) (i1 >> 16) / 255.0F, (float) (i1 >> 8 & 255) / 255.0F, (float) (i1 & 255) / 255.0F, 1f);
                 } else if (l == 21) {
-                    int i1 = COLOR_CODES[15];
-                    if (Config.isCustomColors()) {
-                        i1 = CustomColors.getTextColor(l, i1);
-                    }
-                    GlStateManager.color((float) (i1 >> 16) / 255.0F, (float) (i1 >> 8 & 255) / 255.0F, (float) (i1 & 255) / 255.0F, 1f);
+                    RenderUtil.color(color);
                 }
 
                 ++i;
             } else {
-
                 if (this.international) {
                     if (internationalCharacters[character] == null)
                         fillCharacters(character, java.awt.Font.PLAIN);
-                } else {
-                    if (defaultCharacters[character] == null)
-                        fillCharacters(defaultCharacters, java.awt.Font.PLAIN);
                 }
 
-                try {
-                    if (character == '\n') {
-                        x = startX;
-                        y += height() * 2;
-                        continue;
-                    }
-
-                    final FontCharacter fontCharacter = characterSet[character];
-                    fontCharacter.render((float) x, (float) y);
-                    x += fontCharacter.getWidth() - MARGIN_WIDTH * 2;
-                } catch (Exception exception) {
-                    System.out.println("Character \"" + character + "\" was out of bounds " +
-                            "(" + ((int) character) + " out of bounds for " + characterSet.length + ")");
+                if (character == '\n') {
+                    x = startX;
+                    y += height() * 2;
+                    continue;
                 }
+
+                final FontCharacter fontCharacter = characterSet[character];
+                fontBatchRenderer.addCharacter(fontCharacter, (float) x, (float) y);
+
+                x += fontCharacter.getWidth() - 4 * 2;
             }
         }
 
+        fontBatchRenderer.flush();
+
+
         GlStateManager.disableBlend();
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        if (!flag) GlStateManager.disableTexture2D();
         GL11.glPopAttrib();
         GL11.glPopMatrix();
         GlStateManager.bindTexture(0);
@@ -420,7 +388,7 @@ public class ModernFontRenderer extends MFont {
 //                }
 //            }
             if (!(character == '§' && text.length() > i + 1) && !(i > 0 && text.charAt(i - 1) == '§')) {
-                width += characterSet[character].getWidth() - MARGIN_WIDTH * 2f;
+                width += characterSet[character].getWidth() - 4 * 2f;
             }
         }
 
@@ -464,7 +432,7 @@ public class ModernFontRenderer extends MFont {
 //                }
 //            }
             if (!(character == '§' && text.length() > i + 1) && !(i > 0 && text.charAt(i - 1) == '§')) {
-                width += characterSet[character].getWidth() - MARGIN_WIDTH * 2f;
+                width += characterSet[character].getWidth() - 4 * 2f;
             }
         }
 

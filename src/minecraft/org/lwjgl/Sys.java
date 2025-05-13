@@ -1,7 +1,6 @@
 package org.lwjgl;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.system.Platform;
 
 import javax.swing.*;

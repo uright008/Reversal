@@ -3,7 +3,7 @@ package cn.stars.addons.skinlayers3d;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL11C;
 
-import java.nio.*;
+import java.nio.ByteBuffer;
 
 public final class NativeImage implements AutoCloseable
 {

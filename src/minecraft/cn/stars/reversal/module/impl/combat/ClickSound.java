@@ -8,9 +8,9 @@ import cn.stars.reversal.event.impl.ClickEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.util.misc.SoundUtil;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import cn.stars.reversal.util.misc.SoundUtil;
 import org.apache.commons.lang3.RandomUtils;
 
 @ModuleInfo(name = "ClickSound", localizedName = "module.ClickSound.name", description = "Play sound when you click", localizedDescription = "module.ClickSound.desc", category = Category.COMBAT)

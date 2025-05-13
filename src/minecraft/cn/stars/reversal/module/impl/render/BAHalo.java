@@ -11,10 +11,10 @@ import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.module.impl.player.SmallPlayer;
 import cn.stars.reversal.util.animation.advanced.composed.CustomAnimation;
 import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
-import cn.stars.reversal.util.render.*;
+import cn.stars.reversal.util.misc.ModuleInstance;
+import cn.stars.reversal.util.render.GlUtils;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -22,8 +22,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
 
 /**
  * SKID?!

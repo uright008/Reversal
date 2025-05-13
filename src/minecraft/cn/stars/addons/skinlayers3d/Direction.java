@@ -1,7 +1,7 @@
 package cn.stars.addons.skinlayers3d;
 
-import net.minecraft.util.*;
-import org.lwjgl.util.vector.*;
+import net.minecraft.util.Vec3i;
+import org.lwjgl.util.vector.Vector3f;
 
 public enum Direction
 {

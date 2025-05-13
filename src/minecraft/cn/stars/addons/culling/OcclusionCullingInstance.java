@@ -1,12 +1,12 @@
 package cn.stars.addons.culling;
 
-import java.util.Arrays;
-import java.util.BitSet;
-
 import cn.stars.addons.culling.cache.ArrayOcclusionCache;
 import cn.stars.addons.culling.cache.OcclusionCache;
 import cn.stars.addons.culling.util.MathUtilities;
 import cn.stars.addons.culling.util.Vec3d;
+
+import java.util.Arrays;
+import java.util.BitSet;
 
 public class OcclusionCullingInstance {
 

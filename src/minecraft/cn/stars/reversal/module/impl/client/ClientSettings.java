@@ -1,13 +1,13 @@
 package cn.stars.reversal.module.impl.client;
 
-import cn.stars.reversal.util.render.ThemeUtil;
-import cn.stars.reversal.value.impl.*;
 import cn.stars.addons.rawinput.RawMouseHelper;
 import cn.stars.reversal.event.impl.ValueChangedEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
 import cn.stars.reversal.util.ReversalLogger;
+import cn.stars.reversal.util.render.ThemeUtil;
+import cn.stars.reversal.value.impl.*;
 import net.minecraft.util.MouseHelper;
 import net.optifine.Lang;
 

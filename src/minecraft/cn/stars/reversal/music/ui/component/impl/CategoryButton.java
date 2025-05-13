@@ -1,8 +1,8 @@
 package cn.stars.reversal.music.ui.component.impl;
 
+import cn.stars.reversal.music.ui.MusicCategory;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.music.ui.component.Button;
-import cn.stars.reversal.music.ui.MusicCategory;
 import cn.stars.reversal.music.ui.gui.MusicPlayerGUI;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;

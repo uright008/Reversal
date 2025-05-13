@@ -26,13 +26,7 @@
 
 package com.google.zxing.oned.rss.expanded;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.FormatException;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.Result;
-import com.google.zxing.ResultMetadataType;
-import com.google.zxing.ResultPoint;
+import com.google.zxing.*;
 import com.google.zxing.common.BitArray;
 import com.google.zxing.common.detector.MathUtils;
 import com.google.zxing.oned.rss.AbstractRSSReader;
@@ -41,13 +35,7 @@ import com.google.zxing.oned.rss.FinderPattern;
 import com.google.zxing.oned.rss.RSSUtils;
 import com.google.zxing.oned.rss.expanded.decoders.AbstractExpandedDecoder;
 
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * @author Pablo Orduña, University of Deusto (pablo.orduna@deusto.es)

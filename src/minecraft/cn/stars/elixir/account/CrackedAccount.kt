@@ -1,9 +1,9 @@
 package cn.stars.elixir.account
 
-import com.google.gson.JsonObject
 import cn.stars.elixir.compat.Session
 import cn.stars.elixir.utils.set
 import cn.stars.elixir.utils.string
+import com.google.gson.JsonObject
 import java.util.*
 
 class CrackedAccount : MinecraftAccount("Cracked") {

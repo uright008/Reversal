@@ -1,13 +1,8 @@
 package net.optifine;
 
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.src.Config;
-import net.optifine.http.FileUploadThread;
-import net.optifine.http.IFileUploadListener;
 import net.optifine.shaders.Shaders;
 
 public class CrashReporter

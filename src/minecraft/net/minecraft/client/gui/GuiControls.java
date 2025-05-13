@@ -1,8 +1,5 @@
 package net.minecraft.client.gui;
 
-import java.awt.*;
-import java.io.IOException;
-
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -12,6 +9,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
+import java.io.IOException;
 
 public class GuiControls extends GuiScreen
 {

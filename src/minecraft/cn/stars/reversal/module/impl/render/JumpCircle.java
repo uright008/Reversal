@@ -5,9 +5,10 @@ import cn.stars.reversal.event.impl.UpdateEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-;
 import cn.stars.reversal.util.math.MathUtil;
-import cn.stars.reversal.util.render.*;
+import cn.stars.reversal.util.render.ColorUtil;
+import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.util.render.RenderUtils;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ColorValue;
 import cn.stars.reversal.value.impl.ModeValue;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+;
 
 
 @ModuleInfo(name = "JumpCircle", localizedName = "module.JumpCircle.name", description = "Draw a circle when you jump", localizedDescription = "module.JumpCircle.desc", category = Category.RENDER)

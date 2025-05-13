@@ -5,25 +5,25 @@ import cn.stars.addons.fbp.FBP;
 import cn.stars.reversal.command.Command;
 import cn.stars.reversal.command.CommandManager;
 import cn.stars.reversal.command.impl.*;
-import cn.stars.reversal.command.impl.Chat;
 import cn.stars.reversal.config.DefaultHandler;
 import cn.stars.reversal.config.MusicHandler;
-import cn.stars.reversal.module.*;
-import cn.stars.reversal.module.impl.client.*;
-import cn.stars.reversal.module.impl.hud.*;
-import cn.stars.reversal.module.impl.render.*;
-import cn.stars.reversal.module.impl.player.*;
-import cn.stars.reversal.module.impl.combat.*;
-import cn.stars.reversal.module.impl.misc.*;
-import cn.stars.reversal.module.impl.movement.*;
+import cn.stars.reversal.module.Module;
+import cn.stars.reversal.module.ModuleManager;
 import cn.stars.reversal.module.impl.addons.*;
-import cn.stars.reversal.module.impl.world.*;
+import cn.stars.reversal.module.impl.client.*;
+import cn.stars.reversal.module.impl.combat.ClickSound;
+import cn.stars.reversal.module.impl.combat.NoClickDelay;
+import cn.stars.reversal.module.impl.hud.*;
+import cn.stars.reversal.module.impl.misc.*;
+import cn.stars.reversal.module.impl.movement.Sprint;
+import cn.stars.reversal.module.impl.player.*;
+import cn.stars.reversal.module.impl.render.*;
+import cn.stars.reversal.module.impl.world.TimeTraveller;
 import cn.stars.reversal.music.MusicManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
-import cn.stars.reversal.ui.theme.GuiTheme;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -32,11 +32,6 @@ import cn.stars.reversal.util.render.video.BackgroundManager;
 import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.reversal.Branch;
 import cn.stars.reversal.util.reversal.Preloader;
-import cn.stars.reversal.util.reversal.pool.ObjectPool;
-import cn.stars.reversal.util.reversal.pool.TrackablePooledObject;
-import cn.stars.reversal.util.reversal.pool.TrackingObjectPool;
-import cn.stars.reversal.util.reversal.pool.impl.PooledRunnable;
-import cn.stars.reversal.util.reversal.pool.impl.TrackableRunnable;
 import de.florianmichael.viamcp.ViaMCP;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -67,8 +62,6 @@ public class Reversal {
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
     public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(6);
-    public static final ObjectPool<PooledRunnable> runnablePool = new ObjectPool<>(PooledRunnable::new, 2048);
-    public static final TrackingObjectPool<TrackableRunnable> trackableRunnablePool = new TrackingObjectPool<>(TrackableRunnable::new, 2048);
 
     public static ModuleManager moduleManager;
     public static NotificationManager notificationManager;
@@ -78,7 +71,6 @@ public class Reversal {
     public static ModernClickGUI modernClickGUI;
     public static AtomicMenu atomicMenu;
 
-    public static GuiTheme guiTheme;
     public static CreativeTabs creativeTab;
     
     public static boolean firstBoot;
@@ -162,7 +154,6 @@ public class Reversal {
                 ReversalLogger.warn("No JavaFX found in the current java version! Music player is disabled.");
             }
 
-            guiTheme = new GuiTheme();
             modernClickGUI = new ModernClickGUI();
         //    mmtClickGUI = new MMTClickGUI();
             atomicMenu = new AtomicMenu();

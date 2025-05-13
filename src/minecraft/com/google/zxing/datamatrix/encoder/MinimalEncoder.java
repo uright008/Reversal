@@ -16,12 +16,12 @@
 
 package com.google.zxing.datamatrix.encoder;
 
+import com.google.zxing.common.MinimalECIInput;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.zxing.common.MinimalECIInput;
 
 /**
  * Encoder that encodes minimally

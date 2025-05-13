@@ -5,11 +5,12 @@
 package cn.stars.addons.mobends.client.renderer.entity;
 
 import cn.stars.addons.mobends.client.model.entity.ModelBendsSpider;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.entity.*;
-import net.minecraft.client.renderer.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.client.model.*;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderSpider;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySpider;
 
 public class RenderBendsSpider extends RenderSpider
 {

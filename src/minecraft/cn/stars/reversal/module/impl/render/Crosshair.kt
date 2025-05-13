@@ -5,11 +5,11 @@ import cn.stars.reversal.event.impl.Render2DEvent
 import cn.stars.reversal.module.Category
 import cn.stars.reversal.module.Module
 import cn.stars.reversal.module.ModuleInfo
-import cn.stars.reversal.value.impl.BoolValue
-import cn.stars.reversal.value.impl.NumberValue
 import cn.stars.reversal.util.player.MovementUtils
 import cn.stars.reversal.util.render.RenderUtils
+import cn.stars.reversal.value.impl.BoolValue
 import cn.stars.reversal.value.impl.ColorValue
+import cn.stars.reversal.value.impl.NumberValue
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.entity.EntityLivingBase
 import org.lwjgl.opengl.GL11

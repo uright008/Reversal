@@ -1,12 +1,8 @@
 package cn.stars.addons.optimization.entityculling;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.Set;
-
-import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.addons.culling.OcclusionCullingInstance;
 import cn.stars.addons.culling.util.Vec3d;
+import cn.stars.reversal.util.ReversalLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
@@ -14,6 +10,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
+
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.Set;
 
 public class CullTask implements Runnable {
 

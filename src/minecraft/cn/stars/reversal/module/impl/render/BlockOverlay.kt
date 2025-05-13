@@ -4,12 +4,12 @@ import cn.stars.reversal.event.impl.Render3DEvent
 import cn.stars.reversal.module.Category
 import cn.stars.reversal.module.Module
 import cn.stars.reversal.module.ModuleInfo
-import cn.stars.reversal.value.impl.BoolValue
-import cn.stars.reversal.value.impl.NumberValue
 import cn.stars.reversal.util.wrapper.WrapperAxisAlignedBB
 import cn.stars.reversal.util.wrapper.WrapperBlockPos
 import cn.stars.reversal.util.wrapper.WrapperBufferBuilder
+import cn.stars.reversal.value.impl.BoolValue
 import cn.stars.reversal.value.impl.ColorValue
+import cn.stars.reversal.value.impl.NumberValue
 import net.minecraft.block.Block
 import net.minecraft.block.BlockStairs
 import net.minecraft.block.state.IBlockState

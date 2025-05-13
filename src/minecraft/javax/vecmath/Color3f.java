@@ -26,7 +26,7 @@
 
 package javax.vecmath;
 
-import java.awt.Color;
+import java.awt.*;
 
 
 /**

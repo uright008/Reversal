@@ -1,14 +1,11 @@
 package cn.stars.reversal.module.impl.misc;
 
-import cn.stars.reversal.event.impl.TickEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.NumberValue;
-import net.minecraft.client.Minecraft;
 
 @ModuleInfo(name = "FakeFPS", localizedName = "module.FakeFPS.name", description = "Spoof your client FPS", localizedDescription = "module.FakeFPS.desc", category = Category.MISC)
 public class FakeFPS extends Module {

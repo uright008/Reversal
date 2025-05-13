@@ -1,21 +1,21 @@
 package net.minecraft.client.gui;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.atmoic.island.Atomic;
-import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
+import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IChatComponent;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import static cn.stars.reversal.GameInstance.*;
 

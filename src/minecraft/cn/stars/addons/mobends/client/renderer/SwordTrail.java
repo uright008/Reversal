@@ -4,18 +4,18 @@
 
 package cn.stars.addons.mobends.client.renderer;
 
-import java.util.*;
-
 import cn.stars.addons.mobends.client.model.ModelRendererBends;
 import cn.stars.addons.mobends.client.model.entity.ModelBendsPlayer;
 import cn.stars.addons.mobends.util.GUtil;
 import cn.stars.reversal.module.impl.addons.MoBends;
-import net.minecraft.client.*;
-import org.lwjgl.opengl.*;
-import net.minecraft.client.model.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelBase;
 import org.lwjgl.compatibility.util.vector.ReadableVector3f;
-
 import org.lwjgl.compatibility.util.vector.Vector3f;
+import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SwordTrail
 {

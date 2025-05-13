@@ -8,9 +8,8 @@ import cn.stars.addons.mobends.client.model.ModelRendererBends;
 import cn.stars.addons.mobends.client.model.entity.ModelBendsPlayer;
 import cn.stars.addons.mobends.data.Data_Player;
 import cn.stars.addons.mobends.util.GUtil;
-import net.minecraft.entity.player.*;
-import net.minecraft.item.*;
-
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemSword;
 import org.lwjgl.compatibility.util.vector.Vector3f;
 
 public class Animation_Attack_Combo0

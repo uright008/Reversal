@@ -16,7 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
 import java.awt.*;
-import java.util.*;
+import java.util.Comparator;
 import java.util.List;
 
 public class Hud implements GameInstance {

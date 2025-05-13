@@ -6,14 +6,20 @@ package cn.stars.addons.mobends.client.renderer.entity;
 
 import cn.stars.addons.mobends.client.model.entity.ModelBendsZombie;
 import cn.stars.addons.mobends.client.model.entity.ModelBendsZombieVillager;
-import net.minecraft.util.*;
-import java.util.*;
-import net.minecraft.client.renderer.entity.*;
-import com.google.common.collect.*;
+import com.google.common.collect.Lists;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.entity.layers.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.*;
-import net.minecraft.client.model.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.List;
 
 public class RenderBendsZombie extends RenderBiped
 {

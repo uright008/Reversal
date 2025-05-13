@@ -1,10 +1,10 @@
 package net.minecraft.util;
 
-import java.util.Random;
-import java.util.UUID;
-
 import cn.stars.addons.optimization.normal.CompactSineLUT;
 import net.optifine.util.MathUtils;
+
+import java.util.Random;
+import java.util.UUID;
 
 public class MathHelper
 {

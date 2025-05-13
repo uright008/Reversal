@@ -1,17 +1,17 @@
 package net.minecraft.client.gui;
 
-import java.awt.*;
-import java.io.IOException;
-
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import net.minecraft.client.multiplayer.ServerData;
 import org.lwjgl.input.Keyboard;
+
+import java.awt.*;
+import java.io.IOException;
 
 public class GuiScreenServerList extends GuiScreen
 {

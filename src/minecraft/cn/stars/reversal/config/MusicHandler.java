@@ -8,8 +8,6 @@ import cn.stars.reversal.util.misc.FileUtil;
 import com.google.gson.JsonObject;
 import lombok.experimental.UtilityClass;
 
-import java.io.File;
-
 @UtilityClass
 public final class MusicHandler {
 

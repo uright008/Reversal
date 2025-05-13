@@ -17,21 +17,6 @@ import kotlin.math.min
 object ColorUtils {
 
     private val COLOR_PATTERN = Pattern.compile("(?i)§[0-9A-FK-OR]")
-    private val startTime = System.currentTimeMillis()
-
-    val hexColors = IntArray(16)
-
-    init {
-        repeat(16) { i ->
-            val baseColor = (i shr 3 and 1) * 85
-
-            val red = (i shr 2 and 1) * 170 + baseColor + if (i == 6) 85 else 0
-            val green = (i shr 1 and 1) * 170 + baseColor
-            val blue = (i and 1) * 170 + baseColor
-
-            hexColors[i] = red and 255 shl 16 or (green and 255 shl 8) or (blue and 255)
-        }
-    }
 
     fun interpolate(oldValue: Double, newValue: Double, interpolationValue: Double): Double {
         return oldValue + (newValue - oldValue) * interpolationValue

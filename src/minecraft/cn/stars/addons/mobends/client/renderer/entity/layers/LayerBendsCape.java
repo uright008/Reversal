@@ -5,11 +5,11 @@
 package cn.stars.addons.mobends.client.renderer.entity.layers;
 
 import cn.stars.addons.mobends.client.renderer.entity.RenderBendsPlayer;
-import net.minecraft.client.renderer.entity.layers.*;
-import net.minecraft.client.entity.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.client.renderer.*;
-import net.minecraft.util.*;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.player.EnumPlayerModelParts;
+import net.minecraft.util.MathHelper;
 
 public class LayerBendsCape implements LayerRenderer<AbstractClientPlayer>
 {

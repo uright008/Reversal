@@ -5,6 +5,7 @@ import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.MiscGui;
 import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
 import cn.stars.reversal.ui.atmoic.misc.component.TextField;
+import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
@@ -53,6 +54,7 @@ public class AddServerGui extends MiscGui {
     @Override
     public void onGuiClosed()
     {
+        ReversalLogger.info("onGuiClosed");
         Keyboard.enableRepeatEvents(false);
     }
 

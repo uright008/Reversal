@@ -9,7 +9,6 @@ import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
 import static cn.stars.reversal.GameInstance.*;
-import static cn.stars.reversal.GameInstance.UI_BLOOM_RUNNABLES;
 
 @Getter
 @Setter

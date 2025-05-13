@@ -5,8 +5,8 @@
 package cn.stars.addons.mobends.animation;
 
 import cn.stars.addons.mobends.data.EntityData;
-import net.minecraft.entity.*;
-import net.minecraft.client.model.*;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.entity.EntityLivingBase;
 
 public abstract class Animation
 {

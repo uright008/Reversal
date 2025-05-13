@@ -1,13 +1,7 @@
 package cn.stars.addons.fbp.particle;
 
-import java.util.List;
-
-import javax.vecmath.Vector2f;
-
 import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.fbp.util.FBPRenderUtil;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -23,6 +17,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
+
+import javax.vecmath.Vector2f;
+import java.util.List;
 
 public class FBPParticleFlame extends EntityFlameFX {
 	Minecraft mc;

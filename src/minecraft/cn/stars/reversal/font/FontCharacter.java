@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL11;
 @Getter
 @AllArgsConstructor
 public class FontCharacter {
-
     private final int texture;
     private final float width;
     private final float height;

@@ -1,29 +1,28 @@
 package cn.stars.addons.fbp;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.SplittableRandom;
-
 import cn.stars.addons.fbp.particle.FBPParticleDigging;
 import cn.stars.addons.fbp.particle.FBPParticleManager;
 import cn.stars.addons.fbp.renderer.FBPWeatherRenderer;
 import cn.stars.reversal.module.impl.addons.FancyBlockParticles;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.world.World;
-import org.apache.commons.lang3.StringUtils;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.SplittableRandom;
 
 public class FBP {
 	public static final ResourceLocation LOCATION_PARTICLE_TEXTURE = new ResourceLocation(

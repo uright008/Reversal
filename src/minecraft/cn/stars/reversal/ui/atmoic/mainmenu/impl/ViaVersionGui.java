@@ -203,15 +203,15 @@ public class ViaVersionGui extends AtomicGui {
 
             RenderUtil.roundedRectangle(p_180791_2_ - 2, p_180791_3_ - 3, getListWidth(), slotHeight - 2, 2, new Color(20, 20, 20, (int) pva.getSelectAnimation().getValue()));
 
-            GameInstance.psm24.drawCenteredString(protocols.get(entryID).getName(), width / 2f, p_180791_3_ + 5, Color.WHITE.getRGB());
+            GameInstance.regular24Bold.drawCenteredString(protocols.get(entryID).getName(), width / 2f, p_180791_3_ + 5, Color.WHITE.getRGB());
             if (protocols.get(entryID).getName().equalsIgnoreCase("1.8.x"))
-                GameInstance.psm16.drawString("(native version)", p_180791_2_ + getListWidth() - 60, p_180791_3_ + 7, Color.GRAY.getRGB());
+                GameInstance.regular16.drawString("(native version)", p_180791_2_ + getListWidth() - 60, p_180791_3_ + 7, Color.GRAY.getRGB());
             else if (protocols.get(entryID).getName().equalsIgnoreCase("1.21.5"))
-                GameInstance.psm16.drawString("(latest version)", p_180791_2_ + getListWidth() - 60, p_180791_3_ + 7, Color.GRAY.getRGB());
+                GameInstance.regular16.drawString("(latest version)", p_180791_2_ + getListWidth() - 60, p_180791_3_ + 7, Color.GRAY.getRGB());
 
-            GameInstance.atomic24.drawString("A", width / 2f + GameInstance.psm24.width(protocols.get(entryID).getName()) / 2f + 20, p_180791_3_ + p_180791_4_ / 2f - atomic24.height() / 2f, new Color(255,255,255, (int)(pva.getSelectAnimation().getValue() * 1.6)).getRGB());
+            GameInstance.atomic24.drawString("A", width / 2f + GameInstance.regular24Bold.width(protocols.get(entryID).getName()) / 2f + 20, p_180791_3_ + p_180791_4_ / 2f - atomic24.height() / 2f, new Color(255,255,255, (int)(pva.getSelectAnimation().getValue() * 1.6)).getRGB());
 
-            AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> GameInstance.atomic24.drawString("A", width / 2f + GameInstance.psm24.width(protocols.get(entryID).getName()) / 2f + 20, p_180791_3_ + p_180791_4_ / 2f - atomic24.height() / 2f, new Color(255,255,255, (int)(pva.getSelectAnimation().getValue() * 1.6)).getRGB()));
+            AtomicMenu.POST_POSTPROCESSING_QUEUE.add(() -> GameInstance.atomic24.drawString("A", width / 2f + GameInstance.regular24Bold.width(protocols.get(entryID).getName()) / 2f + 20, p_180791_3_ + p_180791_4_ / 2f - atomic24.height() / 2f, new Color(255,255,255, (int)(pva.getSelectAnimation().getValue() * 1.6)).getRGB()));
         }
 
         @Override

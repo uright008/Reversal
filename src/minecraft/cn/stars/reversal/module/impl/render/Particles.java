@@ -11,13 +11,13 @@ import cn.stars.reversal.event.impl.Render3DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.value.impl.BoolValue;
-import cn.stars.reversal.value.impl.ColorValue;
-import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.misc.EvictingList;
 import cn.stars.reversal.util.render.HitParticleUtils;
 import cn.stars.reversal.util.render.RenderUtil;
+import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
+import cn.stars.reversal.value.impl.NumberValue;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.Vec3;
 

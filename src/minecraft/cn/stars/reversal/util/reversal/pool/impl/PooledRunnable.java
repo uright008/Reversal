@@ -34,6 +34,10 @@ public class PooledRunnable implements Runnable, PooledObject {
         }
     }
 
+    public void release() {
+        pool.release(this);
+    }
+
     @Override
     public void reset() { task = null; }
 

@@ -2,12 +2,12 @@ package cn.stars.reversal.music.ui.component.impl;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
+import cn.stars.reversal.music.api.base.Music;
+import cn.stars.reversal.music.api.base.PlayList;
 import cn.stars.reversal.music.api.player.MusicPlayer;
 import cn.stars.reversal.music.thread.ChangeMusicThread;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.music.ui.component.Button;
-import cn.stars.reversal.music.api.base.Music;
-import cn.stars.reversal.music.api.base.PlayList;
 import cn.stars.reversal.util.math.TimerUtil;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;

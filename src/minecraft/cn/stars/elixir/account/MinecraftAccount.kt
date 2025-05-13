@@ -1,7 +1,7 @@
 package cn.stars.elixir.account
 
-import com.google.gson.JsonObject
 import cn.stars.elixir.compat.Session
+import com.google.gson.JsonObject
 
 abstract class MinecraftAccount(val type: String) {
     /**

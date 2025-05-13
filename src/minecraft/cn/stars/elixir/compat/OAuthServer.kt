@@ -1,24 +1,27 @@
 package cn.stars.elixir.compat
 
+import cn.stars.elixir.account.MicrosoftAccount
+import cn.stars.reversal.Reversal
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
-import cn.stars.elixir.account.MicrosoftAccount
 import java.net.InetSocketAddress
-import java.util.concurrent.Executors
-import java.util.concurrent.ThreadPoolExecutor
 
 class OAuthServer(val handler: MicrosoftAccount.OAuthHandler) {
-    private val httpServer = HttpServer.create(InetSocketAddress("localhost", 1919), 0)
-    private val threadPoolExecutor = Executors.newFixedThreadPool(10) as ThreadPoolExecutor
+    private var httpServer = HttpServer.create(InetSocketAddress("localhost", 1919), 0)
+    private var started = false
 
     /**
      * Start the server.
      */
     fun start() {
         try {
+            if (started) {
+                httpServer.stop(0)
+                httpServer = HttpServer.create(InetSocketAddress("localhost", 1919), 0)
+            }
             httpServer.createContext("/login", OAuthHttpHandler(this))
-            httpServer.executor = threadPoolExecutor
+            httpServer.executor = Reversal.threadPoolExecutor
             httpServer.start()
             handler.openUrl(
                 MicrosoftAccount.replaceKeys(
@@ -26,7 +29,9 @@ class OAuthServer(val handler: MicrosoftAccount.OAuthHandler) {
                     MicrosoftAccount.XBOX_PRE_AUTH_URL
                 )
             )
+            started = true
         } catch (_: Exception) {
+            httpServer.stop(0)
             handler.authError("Address already bound")
         }
     }
@@ -36,7 +41,6 @@ class OAuthServer(val handler: MicrosoftAccount.OAuthHandler) {
      */
     fun stop(isInterrupt: Boolean = true) {
         httpServer.stop(0)
-        threadPoolExecutor.shutdown()
         if (isInterrupt) {
             handler.authError("Has been interrupted")
         }

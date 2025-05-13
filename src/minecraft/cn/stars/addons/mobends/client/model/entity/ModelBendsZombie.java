@@ -19,9 +19,8 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import org.lwjgl.opengl.GL11;
-
 import org.lwjgl.compatibility.util.vector.Vector3f;
+import org.lwjgl.opengl.GL11;
 
 public class ModelBendsZombie extends ModelBiped
 {

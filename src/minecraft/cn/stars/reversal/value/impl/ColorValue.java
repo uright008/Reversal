@@ -5,7 +5,6 @@ import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.ThemeType;
 import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.value.Value;
-import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 

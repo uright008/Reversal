@@ -5,10 +5,13 @@
 package cn.stars.addons.mobends.client.model;
 
 import cn.stars.addons.mobends.util.SmoothVector3f;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import org.lwjgl.compatibility.util.vector.ReadableVector3f;
-import org.lwjgl.opengl.*;
-import net.minecraft.client.model.*;
-import net.minecraft.client.renderer.*;
+import org.lwjgl.opengl.GL11;
 
 public class ModelRendererBends extends ModelRenderer
 {

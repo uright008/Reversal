@@ -20,14 +20,7 @@ import com.google.zxing.common.BitArray;
 import com.google.zxing.common.CharacterSetECI;
 
 import java.nio.charset.Charset;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * This produces nearly optimal encodings of text into the first-level of

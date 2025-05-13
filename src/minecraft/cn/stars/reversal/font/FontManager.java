@@ -1,8 +1,5 @@
 package cn.stars.reversal.font;
 
-import cn.stars.reversal.ui.splash.SplashScreen;
-import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
-import cn.stars.reversal.util.ReversalLogger;
 import net.minecraft.client.Minecraft;
 
 import java.util.HashMap;

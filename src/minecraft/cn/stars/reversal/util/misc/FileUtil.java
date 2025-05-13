@@ -1,10 +1,8 @@
 package cn.stars.reversal.util.misc;
 
 import cn.stars.reversal.Reversal;
-import lombok.experimental.UtilityClass;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.io.IOUtils;
-import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
 import java.io.*;
 import java.util.Objects;

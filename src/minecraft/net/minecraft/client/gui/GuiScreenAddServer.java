@@ -1,22 +1,20 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
-import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
+import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
 import cn.stars.reversal.util.shader.RiseShaders;
 import cn.stars.reversal.util.shader.base.ShaderRenderType;
+import net.minecraft.client.multiplayer.ServerData;
+import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.io.IOException;
 
-import net.minecraft.client.multiplayer.ServerData;
-import org.lwjgl.input.Keyboard;
-
 import static cn.stars.reversal.GameInstance.*;
-import static cn.stars.reversal.GameInstance.UI_BLOOM_RUNNABLES;
 
 public class GuiScreenAddServer extends GuiScreen
 {

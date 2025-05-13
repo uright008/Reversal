@@ -1,13 +1,13 @@
 package net.minecraft.client.gui;
 
-import java.awt.*;
-import java.util.List;
-
 import cn.stars.reversal.GameInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.ResourcePackListEntry;
 import net.minecraft.util.EnumChatFormatting;
+
+import java.awt.*;
+import java.util.List;
 
 public abstract class GuiResourcePackList extends GuiListExtended
 {

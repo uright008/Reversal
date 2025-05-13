@@ -4,12 +4,12 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
-import cn.stars.reversal.value.Value;
-import cn.stars.reversal.value.impl.*;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
 import cn.stars.reversal.util.render.ThemeUtil;
+import cn.stars.reversal.value.Value;
+import cn.stars.reversal.value.impl.*;
 import lombok.experimental.UtilityClass;
 import net.minecraft.client.resources.I18n;
 

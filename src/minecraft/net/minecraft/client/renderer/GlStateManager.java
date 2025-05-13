@@ -1,8 +1,5 @@
 package net.minecraft.client.renderer;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import net.minecraft.src.Config;
 import net.optifine.SmartAnimations;
 import net.optifine.render.GlAlphaState;
@@ -12,6 +9,10 @@ import net.optifine.util.LockCounter;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
+
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class GlStateManager
 {
@@ -431,6 +432,10 @@ public class GlStateManager
     public static void enableTexture2D()
     {
         textureState[activeTextureUnit].texture2DState.setEnabled();
+    }
+
+    public static boolean isTexture2DEnabled() {
+        return textureState[activeTextureUnit].texture2DState.getEnabled();
     }
 
     public static void disableTexture2D()
@@ -1040,6 +1045,10 @@ public class GlStateManager
         public void setEnabled()
         {
             this.setState(true);
+        }
+
+        public boolean getEnabled() {
+            return currentState;
         }
 
         public void setState(boolean state)

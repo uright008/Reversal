@@ -8,7 +8,6 @@ import cn.stars.addons.mobends.client.model.ModelRendererBends;
 import cn.stars.addons.mobends.client.model.entity.ModelBendsPlayer;
 import cn.stars.addons.mobends.data.Data_Player;
 import net.minecraft.entity.player.EntityPlayer;
-
 import org.lwjgl.compatibility.util.vector.Vector3f;
 
 public class Animation_Attack_Stance

@@ -1,12 +1,8 @@
 package cn.stars.addons.fbp.particle;
 
-import java.util.List;
-
 import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.fbp.util.FBPRenderUtil;
 import cn.stars.addons.fbp.vector.FBPVector3d;
-import org.lwjgl.util.vector.Vector2f;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityDiggingFX;
@@ -18,6 +14,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import org.lwjgl.util.vector.Vector2f;
+
+import java.util.List;
 public class FBPParticleRain extends EntityDiggingFX {
 	private final IBlockState sourceState;
 

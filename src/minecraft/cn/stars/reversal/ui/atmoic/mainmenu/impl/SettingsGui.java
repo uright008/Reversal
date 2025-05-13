@@ -1,13 +1,8 @@
 package cn.stars.reversal.ui.atmoic.mainmenu.impl;
 
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
-import cn.stars.reversal.util.misc.ModuleInstance;
-import cn.stars.reversal.util.render.RenderUtil;
-import cn.stars.reversal.util.render.RenderUtils;
-import cn.stars.reversal.util.render.RoundedUtil;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.audio.SoundEventAccessorComposite;
@@ -20,7 +15,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.EnumDifficulty;
 
-import java.awt.*;
 import java.util.ConcurrentModificationException;
 
 public class SettingsGui extends AtomicGui {

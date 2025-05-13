@@ -25,7 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static cn.stars.reversal.util.ReversalLogger.*;
-import static net.minecraft.client.Minecraft.*;
+import static net.minecraft.client.Minecraft.getMinecraft;
+import static net.minecraft.client.Minecraft.terminated;
 
 /**
  * Deliver hope to the next.

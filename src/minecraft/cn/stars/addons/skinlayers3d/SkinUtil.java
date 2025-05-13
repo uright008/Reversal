@@ -1,13 +1,13 @@
 package cn.stars.addons.skinlayers3d;
 
-import net.minecraft.client.entity.*;
-import net.minecraft.client.resources.*;
-import net.minecraft.util.*;
-import net.minecraft.client.*;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.*;
-import net.minecraft.client.model.*;
-import com.mojang.authlib.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.ModelPlayer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.texture.ITextureObject;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.util.ResourceLocation;
 
 public class SkinUtil
 {

@@ -1,6 +1,5 @@
 package net.minecraft.client.renderer.vertex;
 
-import java.lang.reflect.Field;
 import net.minecraft.src.Config;
 import net.optifine.shaders.SVertexFormat;
 

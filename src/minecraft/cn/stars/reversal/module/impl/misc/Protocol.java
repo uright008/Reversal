@@ -1,6 +1,5 @@
 package cn.stars.reversal.module.impl.misc;
 
-import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.BlockCollideEvent;
 import cn.stars.reversal.event.impl.PacketSendEvent;

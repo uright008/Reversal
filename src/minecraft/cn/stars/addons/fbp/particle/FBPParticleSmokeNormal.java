@@ -1,9 +1,5 @@
 package cn.stars.addons.fbp.particle;
 
-import java.util.List;
-
-import javax.vecmath.Vector2f;
-
 import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.fbp.util.FBPRenderUtil;
 import net.minecraft.block.Block;
@@ -19,6 +15,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
+import javax.vecmath.Vector2f;
+import java.util.List;
 
 public class FBPParticleSmokeNormal extends EntitySmokeFX {
 	Minecraft mc;

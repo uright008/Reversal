@@ -1,14 +1,6 @@
 package cn.stars.addons.fbp.particle;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import cn.stars.addons.fbp.FBP;
-
 import lombok.SneakyThrows;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -20,13 +12,11 @@ import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
+
+import java.lang.invoke.MethodHandles;
+import java.util.Map;
 
 public class FBPParticleManager extends EffectRenderer {
 	private static IBlockState blockState;

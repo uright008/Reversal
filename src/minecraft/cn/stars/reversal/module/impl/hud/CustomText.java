@@ -4,14 +4,16 @@
  */
 package cn.stars.reversal.module.impl.hud;
 
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.event.impl.Shader3DEvent;
 import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
-import cn.stars.reversal.value.impl.*;
+import cn.stars.reversal.value.impl.BoolValue;
+import cn.stars.reversal.value.impl.ColorValue;
+import cn.stars.reversal.value.impl.NumberValue;
+import cn.stars.reversal.value.impl.TextValue;
 
 import java.awt.*;
 

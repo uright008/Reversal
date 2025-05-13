@@ -1,7 +1,5 @@
 package net.minecraft.client.renderer.entity;
 
-import java.util.Random;
-
 import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+
+import java.util.Random;
 
 public class RenderEntityItem extends Render<EntityItem>
 {

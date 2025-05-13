@@ -6,9 +6,11 @@ package cn.stars.addons.mobends.client.model;
 
 import cn.stars.addons.mobends.client.model.entity.ModelBendsPlayer;
 import cn.stars.addons.mobends.util.SmoothVector3f;
-import net.minecraft.client.model.*;
-import net.minecraft.entity.*;
-import org.lwjgl.opengl.*;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 
 public class ModelCustomArmor extends ModelBiped
 {

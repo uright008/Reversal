@@ -1,8 +1,7 @@
 package cn.stars.reversal.module;
 
-import cn.stars.reversal.event.EventHandler;
-import cn.stars.reversal.value.Value;
 import cn.stars.reversal.util.misc.ClassUtil;
+import cn.stars.reversal.value.Value;
 import lombok.Getter;
 import lombok.Setter;
 

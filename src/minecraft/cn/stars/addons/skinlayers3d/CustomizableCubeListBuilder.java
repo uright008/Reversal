@@ -1,6 +1,6 @@
 package cn.stars.addons.skinlayers3d;
 
-import com.google.common.collect.*;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 

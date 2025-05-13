@@ -1,14 +1,10 @@
 package cn.stars.addons.fbp.particle;
 
-import java.util.List;
-
 import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.fbp.util.FBPRenderUtil;
 import cn.stars.addons.fbp.vector.FBPVector3d;
 import cn.stars.reversal.module.impl.world.TimeTraveller;
 import cn.stars.reversal.util.misc.ModuleInstance;
-import org.lwjgl.util.vector.Vector2f;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityDiggingFX;
@@ -21,6 +17,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import org.lwjgl.util.vector.Vector2f;
+
+import java.util.List;
 
 public class FBPParticleSnow extends EntityDiggingFX {
 	private final IBlockState sourceState;

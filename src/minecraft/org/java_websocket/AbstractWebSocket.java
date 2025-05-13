@@ -25,17 +25,17 @@
 
 package org.java_websocket;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.java_websocket.framing.CloseFrame;
+import org.java_websocket.util.NamedThreadFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.java_websocket.framing.CloseFrame;
-import org.java_websocket.util.NamedThreadFactory;
 
 
 /**

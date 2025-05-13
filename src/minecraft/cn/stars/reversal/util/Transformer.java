@@ -2,7 +2,6 @@ package cn.stars.reversal.util;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.RainyAPI;
-import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.impl.misc.CustomName;
 import cn.stars.reversal.util.misc.ModuleInstance;
 

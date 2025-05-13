@@ -2,11 +2,10 @@ package cn.stars.addons.waveycapes;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
-import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.impl.addons.WaveyCapes;
+import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
-import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

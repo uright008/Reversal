@@ -6,16 +6,16 @@ import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.Language;
 import net.minecraft.client.resources.LanguageManager;
 import net.minecraft.client.settings.GameSettings;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.Map;
 
 public class GuiLanguage extends GuiScreen
 {

@@ -4,17 +4,16 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
-import cn.stars.reversal.module.impl.client.*;
-import cn.stars.reversal.module.impl.addons.SkinLayers3D;
+import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.module.impl.client.Interface;
+import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.hud.HUD;
-import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.value.impl.BoolValue;
 import cn.stars.reversal.value.impl.ModeValue;
 import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.value.impl.TextValue;
 import lombok.NonNull;
 import lombok.SneakyThrows;
-import net.minecraft.client.Minecraft;
 
 @SuppressWarnings("all")
 @NonNull

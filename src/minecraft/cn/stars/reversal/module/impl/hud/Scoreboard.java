@@ -16,8 +16,6 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 
-import static net.minecraft.client.gui.Gui.drawRect;
-
 @ModuleInfo(name = "Scoreboard", localizedName = "module.Scoreboard.name", description = "Show the scoreboard",
         localizedDescription = "module.Scoreboard.desc", category = Category.HUD)
 public class Scoreboard extends Module {

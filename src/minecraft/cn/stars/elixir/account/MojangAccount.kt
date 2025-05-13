@@ -1,15 +1,15 @@
 package cn.stars.elixir.account
 
+import cn.stars.elixir.compat.Session
+import cn.stars.elixir.exception.LoginException
+import cn.stars.elixir.utils.set
+import cn.stars.elixir.utils.string
 import com.google.gson.JsonObject
 import com.mojang.authlib.Agent
 import com.mojang.authlib.exceptions.AuthenticationException
 import com.mojang.authlib.exceptions.AuthenticationUnavailableException
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication
-import cn.stars.elixir.compat.Session
-import cn.stars.elixir.exception.LoginException
-import cn.stars.elixir.utils.set
-import cn.stars.elixir.utils.string
 import java.net.Proxy
 
 class MojangAccount : MinecraftAccount("Mojang") {

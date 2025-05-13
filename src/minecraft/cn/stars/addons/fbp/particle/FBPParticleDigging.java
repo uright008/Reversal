@@ -1,14 +1,9 @@
 package cn.stars.addons.fbp.particle;
 
-import java.util.List;
-
-
 import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.fbp.util.FBPMathUtil;
 import cn.stars.addons.fbp.util.FBPRenderUtil;
 import cn.stars.addons.fbp.vector.FBPVector3d;
-import org.lwjgl.util.vector.Vector2f;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -24,13 +19,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import org.lwjgl.util.vector.Vector2f;
+
+import java.util.List;
 
 public class FBPParticleDigging extends EntityDiggingFX {
 	private final IBlockState sourceState;

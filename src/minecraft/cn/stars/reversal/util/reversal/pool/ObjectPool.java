@@ -1,10 +1,7 @@
 package cn.stars.reversal.util.reversal.pool;
 
-import sun.misc.Unsafe;
-
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class ObjectPool<T extends PooledObject> {
     private static final sun.misc.Unsafe UNSAFE = getUnsafe();
@@ -35,18 +32,17 @@ public class ObjectPool<T extends PooledObject> {
 
         // 直接通过UNSAFE操作内存
         final int wordIdx = nextWord & ((availabilityMap.length - 1));
-        long word = UNSAFE.getLongVolatile(availabilityMap, BASE + (wordIdx * SCALE));
+        long word = UNSAFE.getLongVolatile(availabilityMap, BASE + ((long) wordIdx * SCALE));
 
         while (true) {
             final int trailingZeros = Long.numberOfTrailingZeros(word);
             if (trailingZeros != 64) {
-                final int bitIdx = trailingZeros;
-                final int index = (wordIdx << 6) + bitIdx;
+                final int index = (wordIdx << 6) + trailingZeros;
 
                 // CAS操作更新位图
-                final long updated = word & ~(1L << bitIdx);
+                final long updated = word & ~(1L << trailingZeros);
                 if (UNSAFE.compareAndSwapLong(availabilityMap,
-                        BASE + (wordIdx * SCALE), word, updated)) {
+                        BASE + ((long) wordIdx * SCALE), word, updated)) {
 
                     remaining--;
                     nextWord = (wordIdx + 1) & (availabilityMap.length - 1);
@@ -54,11 +50,11 @@ public class ObjectPool<T extends PooledObject> {
                     factory.onBorrow(obj);
                     return obj;
                 }
-                word = UNSAFE.getLongVolatile(availabilityMap, BASE + (wordIdx * SCALE));
+                word = UNSAFE.getLongVolatile(availabilityMap, BASE + ((long) wordIdx * SCALE));
             } else {
                 nextWord = (wordIdx + 1) & (availabilityMap.length - 1);
                 word = UNSAFE.getLongVolatile(availabilityMap,
-                        BASE + (nextWord * SCALE));
+                        BASE + ((long) nextWord * SCALE));
             }
         }
     }
@@ -70,10 +66,10 @@ public class ObjectPool<T extends PooledObject> {
 
         long word;
         do {
-            word = UNSAFE.getLongVolatile(availabilityMap, BASE + (wordIdx * SCALE));
+            word = UNSAFE.getLongVolatile(availabilityMap, BASE + ((long) wordIdx * SCALE));
         } while (!UNSAFE.compareAndSwapLong(
                 availabilityMap,
-                BASE + (wordIdx * SCALE),
+                BASE + ((long) wordIdx * SCALE),
                 word,
                 word | (1L << bitIdx)
         ));

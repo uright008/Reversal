@@ -16,12 +16,12 @@
 
 package com.google.zxing.common;
 
+import com.google.zxing.DecodeHintType;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Map;
-
-import com.google.zxing.DecodeHintType;
 
 /**
  * Common string-related functions.

@@ -2,10 +2,6 @@ package cn.stars.addons.fbp.util;
 
 import cn.stars.addons.fbp.FBP;
 import cn.stars.addons.fbp.vector.FBPVector3d;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -17,6 +13,9 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 public class FBPRenderUtil {
 	public static void renderCubeShaded_S(WorldRenderer buf, Vector2f[] uvs, float f5, float f6, float f7, double scale,

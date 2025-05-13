@@ -4,8 +4,11 @@
 
 package cn.stars.addons.mobends.client.model;
 
-import net.minecraft.client.model.*;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.model.ModelBox;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.model.PositionTextureVertex;
+import net.minecraft.client.model.TexturedQuad;
+import net.minecraft.client.renderer.WorldRenderer;
 
 public class ModelBoxBends extends ModelBox
 {
