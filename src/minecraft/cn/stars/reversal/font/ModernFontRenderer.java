@@ -1,5 +1,6 @@
 package cn.stars.reversal.font;
 
+import cn.stars.reversal.module.impl.client.Debugger;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
@@ -38,6 +39,7 @@ public class ModernFontRenderer extends MFont {
     private final boolean antialiasing;
     private final boolean international;
     private final Map<String, Float> cachedWidth = new HashMap<>();
+    private final Map<String, Boolean> cachedInternationalType = new HashMap<>();
     private final FontBatchRenderer fontBatchRenderer = new FontBatchRenderer();
 
     public ModernFontRenderer(java.awt.Font font, boolean fractionalMetrics, boolean antialiasing, boolean international) {
@@ -265,6 +267,7 @@ public class ModernFontRenderer extends MFont {
     }
 
     public int drawString(String text, double x, double y, int color, final boolean shadow) {
+        Debugger.fontProfiler.start();
         if (text == null || text.isEmpty()) return 0;
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text);
 
@@ -342,17 +345,18 @@ public class ModernFontRenderer extends MFont {
 
         fontBatchRenderer.flush();
 
-
         GlStateManager.disableBlend();
         if (!flag) GlStateManager.disableTexture2D();
         GL11.glPopAttrib();
         GL11.glPopMatrix();
         GlStateManager.bindTexture(0);
 
+        Debugger.fontProfiler.stop();
         return (int) (x - givenX);
     }
 
     public int width(String text) {
+        Debugger.fontProfiler.start();
         if (text == null || text.isEmpty()) return 0;
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");
         if (cachedWidth.containsKey(text)) { return cachedWidth.get(text).intValue(); }
@@ -393,10 +397,12 @@ public class ModernFontRenderer extends MFont {
         }
 
         cachedWidth.put(text, width / 2);
+        Debugger.fontProfiler.stop();
         return (int) (width / 2);
     }
 
     public float getWidth(String text) {
+        Debugger.fontProfiler.start();
         if (text == null || text.isEmpty()) return 0;
         if (text.contains(Minecraft.getMinecraft().session.getUsername())) text = Transformer.constructString(text).replaceAll("§.", "");
         if (cachedWidth.containsKey(text)) { return cachedWidth.get(text); }
@@ -437,6 +443,7 @@ public class ModernFontRenderer extends MFont {
         }
 
         cachedWidth.put(text, width / 2);
+        Debugger.fontProfiler.stop();
         return width / 2;
     }
 
@@ -445,10 +452,17 @@ public class ModernFontRenderer extends MFont {
     }
 
     private boolean requiresInternationalFont(String text) {
+        Debugger.fontProfiler.start();
+        if (cachedInternationalType.containsKey(text)) { return cachedInternationalType.get(text); }
         for (int i = 0; i < text.length(); i++) {
-            if (text.charAt(i) >= 256) return true;
+            if (text.charAt(i) >= 256) {
+                Debugger.fontProfiler.stop();
+                cachedInternationalType.put(text, true);
+                return true;
+            }
         }
-
+        cachedInternationalType.put(text, false);
+        Debugger.fontProfiler.stop();
         return false;
     }
 }

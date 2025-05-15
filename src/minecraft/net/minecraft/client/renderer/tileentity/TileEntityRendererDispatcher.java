@@ -148,7 +148,7 @@ public class TileEntityRendererDispatcher
 
     public void renderTileEntityAt(TileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        if (!((Cullable) tileEntityIn).isForcedVisible() && ((Cullable) tileEntityIn).isCulled()) {
+        if (!tileEntityIn.isForcedVisible() && tileEntityIn.isCulled()) {
             EntityCullingModBase.instance.skippedBlockEntities++;
             return;
         }

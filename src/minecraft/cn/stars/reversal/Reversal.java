@@ -61,7 +61,7 @@ public class Reversal {
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
-    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(6);
+    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(10);
 
     public static ModuleManager moduleManager;
     public static NotificationManager notificationManager;
@@ -331,7 +331,8 @@ public class Reversal {
             new NameTag(),
             new Interface(),
             new IRC(),
-            new Optimization()
+            new Optimization(),
+            new Debugger()
     };
 
     public static Color CLIENT_THEME_COLOR = new Color(159, 24, 242);

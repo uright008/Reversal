@@ -5,6 +5,7 @@ import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ResidentProcessor;
+import cn.stars.reversal.module.impl.client.Debugger;
 import cn.stars.reversal.ui.clickgui.modern.MMTClickGUI;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.ui.notification.NotificationManager;
@@ -20,6 +21,7 @@ public final class EventHandler {
     public static ResidentProcessor residentProcessor = new ResidentProcessor();
 
     public static void handle(final Event e) {
+        Debugger.eventProfiler.start();
         final Module[] modules = Reversal.moduleManager.getModuleList();
 
         if (e instanceof Render2DEvent) {
@@ -280,5 +282,7 @@ public final class EventHandler {
         Reversal.CLIENT_THEME_COLOR_BRIGHT = new Color(Math.min(ModuleInstance.getClientSettings().color1.getColor().getRed(), 255), Math.min(ModuleInstance.getClientSettings().color1.getColor().getGreen() + 45, 255), Math.min(ModuleInstance.getClientSettings().color1.getColor().getBlue() + 13, 255));
         Reversal.CLIENT_THEME_COLOR_2 = ModuleInstance.getClientSettings().color2.getColor();
         Reversal.CLIENT_THEME_COLOR_BRIGHT_2 = new Color(Math.min(ModuleInstance.getClientSettings().color2.getColor().getRed(), 255), Math.min(ModuleInstance.getClientSettings().color2.getColor().getGreen() + 45, 255), Math.min(ModuleInstance.getClientSettings().color2.getColor().getBlue() + 13, 255));
+
+        Debugger.eventProfiler.stop();
     }
 }

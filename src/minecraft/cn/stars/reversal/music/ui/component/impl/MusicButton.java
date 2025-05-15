@@ -82,7 +82,7 @@ public class MusicButton extends Button implements GameInstance {
         if (hovering && button == 0) {
             if (!clickTimer.hasTimeElapsed(1000)) {
                 MusicPlayer.randomPlayedIndex.clear();
-                Reversal.threadPoolExecutor.submit(new ChangeMusicThread(music, playList));
+                Reversal.threadPoolExecutor.execute(new ChangeMusicThread(music, playList));
             }
             clickTimer.reset();
         }

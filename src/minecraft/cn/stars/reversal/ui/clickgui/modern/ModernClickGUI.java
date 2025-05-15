@@ -8,6 +8,7 @@ import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.module.impl.client.Debugger;
 import cn.stars.reversal.module.impl.client.PostProcessing;
 import cn.stars.reversal.module.impl.render.ClickGui;
 import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
@@ -70,6 +71,8 @@ public class ModernClickGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        Debugger.cguiProfiler.start();
+
         scaleAnimation.run(1.0);
 
         int x = width / 2 - 260 + addX;
@@ -496,6 +499,8 @@ public class ModernClickGUI extends GuiScreen {
         RenderUtil.scaleEnd();
 
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+        Debugger.cguiProfiler.stop();
     }
 
     @Override
@@ -509,6 +514,8 @@ public class ModernClickGUI extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        Debugger.cguiProfiler.start();
+
         int x = width / 2 - 260 + addX;
         int y = height / 2 - 160 + addY;
         boolean localization = ModuleInstance.getClientSettings().localization.enabled;
@@ -651,6 +658,8 @@ public class ModernClickGUI extends GuiScreen {
         }
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
+
+        Debugger.cguiProfiler.stop();
     }
 
     private void setSelectedCategory(Category category) {

@@ -75,7 +75,7 @@ public class MusicPlayer {
         Media media;
 
         if (songURL == null) {
-            Reversal.threadPoolExecutor.submit(new ChangeMusicThread(music));
+            Reversal.threadPoolExecutor.execute(new ChangeMusicThread(music));
             return;
         }
 

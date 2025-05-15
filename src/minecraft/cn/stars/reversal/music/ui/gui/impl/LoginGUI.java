@@ -39,7 +39,7 @@ public class LoginGUI extends MusicPlayerGUI {
         posY = sr.getScaledHeight() / 2f - height / 2f;
 
         thread = new LoginThread();
-        thread.start();
+        Reversal.threadPoolExecutor.execute(thread);
     }
 
     /**
@@ -91,7 +91,7 @@ public class LoginGUI extends MusicPlayerGUI {
             MusicAPI.updateUserInfo();
             user.setLoggedIn(true);
             // 另起一个线程，获取用户歌单列表
-            Reversal.threadPoolExecutor.submit(new GetPlayListsThread());
+            Reversal.threadPoolExecutor.execute(new GetPlayListsThread());
         }
 
         return state == QRCodeState.SUCCEED;

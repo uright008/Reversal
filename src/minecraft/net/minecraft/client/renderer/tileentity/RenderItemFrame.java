@@ -2,7 +2,11 @@ package net.minecraft.client.renderer.tileentity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -36,7 +40,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
     private final Minecraft mc = Minecraft.getMinecraft();
     private final ModelResourceLocation itemFrameModel = new ModelResourceLocation("item_frame", "normal");
     private final ModelResourceLocation mapModel = new ModelResourceLocation("item_frame", "map");
-    private RenderItem itemRenderer;
+    private final RenderItem itemRenderer;
     private static double itemRenderDistanceSq = 4096.0D;
 
     public RenderItemFrame(RenderManager renderManagerIn, RenderItem itemRendererIn)
@@ -83,7 +87,8 @@ public class RenderItemFrame extends Render<EntityItemFrame>
         return null;
     }
 
-    private void renderItem(EntityItemFrame itemFrame) {
+    private void renderItem(EntityItemFrame itemFrame)
+    {
         ItemStack itemstack = itemFrame.getDisplayedItem();
 
         if (itemstack != null) {
@@ -139,7 +144,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
                         double d2 = texturecompass.angleDelta;
                         texturecompass.currentAngle = 0.0D;
                         texturecompass.angleDelta = 0.0D;
-                        texturecompass.updateCompass(itemFrame.worldObj, itemFrame.posX, itemFrame.posZ, MathHelper.wrapAngleTo180_float((float) (180 + itemFrame.facingDirection.getHorizontalIndex() * 90)), false, true);
+                        texturecompass.updateCompass(itemFrame.worldObj, itemFrame.posX, itemFrame.posZ, (double) MathHelper.wrapAngleTo180_float((float) (180 + itemFrame.facingDirection.getHorizontalIndex() * 90)), false, true);
                         texturecompass.currentAngle = d1;
                         texturecompass.angleDelta = d2;
                     } else {
@@ -163,9 +168,9 @@ public class RenderItemFrame extends Render<EntityItemFrame>
                     textureatlassprite.updateAnimation();
                 }
             }
+            GlStateManager.enableLighting();
+            GlStateManager.popMatrix();
         }
-        GlStateManager.enableLighting();
-        GlStateManager.popMatrix();
     }
 
     protected void renderName(EntityItemFrame entity, double x, double y, double z)

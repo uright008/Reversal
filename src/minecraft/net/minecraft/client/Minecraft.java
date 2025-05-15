@@ -5,6 +5,7 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.engine.HopeEngine;
 import cn.stars.reversal.event.impl.*;
+import cn.stars.reversal.module.impl.client.Debugger;
 import cn.stars.reversal.module.impl.client.Optimization;
 import cn.stars.reversal.module.impl.misc.FakeFPS;
 import cn.stars.reversal.module.impl.render.Animations;
@@ -877,7 +878,9 @@ public class Minecraft implements IThreadListener
         if (!this.skipRenderWorld)
         {
             this.mcProfiler.endStartSection("gameRenderer");
+            Debugger.cameraProfiler.start();
             this.entityRenderer.updateCameraAndRender(this.timer.renderPartialTicks, i);
+            Debugger.cameraProfiler.stop();
             this.mcProfiler.endSection();
         }
 

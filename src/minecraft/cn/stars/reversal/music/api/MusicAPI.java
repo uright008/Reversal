@@ -46,8 +46,8 @@ public class MusicAPI {
             return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new NullPointerException("什么玩意这是");
         }
+        return null;
     }
 
     private static String fetch(String api) {
@@ -360,6 +360,7 @@ public class MusicAPI {
         if (lyrics.isEmpty()) {
             System.out.println(fetch);
         }
+        ReversalLogger.info("[MusicPlayer] Successfully get lyrics for " + id);
         return new LyricPair(lyrics, translatedLyrics);
     }
 

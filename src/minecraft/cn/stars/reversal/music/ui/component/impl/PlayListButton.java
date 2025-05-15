@@ -59,7 +59,7 @@ public class PlayListButton extends Button {
         if (hovering && button == 0) {
             Reversal.musicManager.screen.setCurrentGUI(gui);
             if (playList.getMusicList().isEmpty()) {
-                new FetchPlayListThread(playList, gui.buttons).start();
+                Reversal.threadPoolExecutor.execute(new FetchPlayListThread(playList, gui.buttons));
             }
         }
     }

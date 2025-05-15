@@ -32,7 +32,7 @@ public class GetPlayListsThread extends Thread {
             if (playList.getName().equalsIgnoreCase(MusicAPI.user.getNickname() + "喜欢的音乐") || playList.getName().equalsIgnoreCase("我喜欢的音乐") || playList.getName().contains("我喜欢的音乐")) {
                 PlayListGUI gui1 = (PlayListGUI) Reversal.musicManager.screen.categoryButtons.get(1).getGui();
                 gui1.setPlayList(playList);
-                Reversal.threadPoolExecutor.submit(new FetchPlayListThread(playList, gui1.buttons));
+                Reversal.threadPoolExecutor.execute(new FetchPlayListThread(playList, gui1.buttons));
                 toRemove = playList;
             }
         }

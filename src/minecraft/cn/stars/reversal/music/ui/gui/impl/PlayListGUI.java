@@ -1,5 +1,6 @@
 package cn.stars.reversal.music.ui.gui.impl;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.music.api.base.Music;
 import cn.stars.reversal.music.api.base.PlayList;
 import cn.stars.reversal.music.thread.FetchPlayListThread;
@@ -116,7 +117,7 @@ public class PlayListGUI extends MusicPlayerGUI {
                     noMore = true;
                 } else {
                     currentLoadThread = new FetchPlayListThread(playList);
-                    currentLoadThread.start();
+                    Reversal.threadPoolExecutor.execute(currentLoadThread);
                 }
             }
         }

@@ -89,7 +89,6 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
 
         for (f = par2 - par1; f < -180.0F; f += 360.0F)
         {
-            ;
         }
 
         while (f >= 180.0F)
@@ -105,17 +104,9 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     }
 
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        /*    if (entity instanceof EntityPlayer) {
-                if (KAIMyEntityRendererPlayer.GetInst() == null)
-                {
-                    KAIMyEntityRendererPlayer.Init(getRenderManager());
-                }
-                float f = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
-                KAIMyEntityRendererPlayer.GetInst().doRender((EntityPlayer) entity, entity.getPosition().getX(), entity.getPosition().getY(), entity.getPosition().getZ(), f, partialTicks);
-                return;
-            } */
+        if (entity == null) return;
 
-        if (ModuleInstance.getModule(MoBends.class).isEnabled() && entity != null) {
+        if (ModuleInstance.getModule(MoBends.class).isEnabled()) {
             if (MoBends.onRenderLivingEvent(this, entity, x, y, z, entityYaw, partialTicks)) {
                 return;
             }
@@ -348,38 +339,16 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
 
             this.mainModel.render(entitylivingbaseIn, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, scaleFactor);
 
-            if (flag1)
-            {
-                GlStateManager.disableBlend();
-                GlStateManager.alphaFunc(516, 0.1F);
-                GlStateManager.popMatrix();
-                GlStateManager.depthMask(true);
-            }
 
             // This should be different parts
-            if (!(this instanceof PlayerEntityModelAccessor) || ModuleInstance.getModule(MoBends.class).isEnabled() || !ModuleInstance.getModule(SkinLayers3D.class).isEnabled()) {
-                return;
-            }
-            if (!this.bindEntityTexture(entitylivingbaseIn)) {
-                return;
-            }
-            PlayerEntityModelAccessor playerRenderer = (PlayerEntityModelAccessor)this;
+            if (this instanceof PlayerEntityModelAccessor && !ModuleInstance.getModule(MoBends.class).isEnabled() && ModuleInstance.getModule(SkinLayers3D.class).isEnabled()) {
+                PlayerEntityModelAccessor playerRenderer = (PlayerEntityModelAccessor) this;
 
-            if (flag1)
-            {
-                GlStateManager.pushMatrix();
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 0.15F);
-                GlStateManager.depthMask(false);
-                GlStateManager.enableBlend();
-                GlStateManager.blendFunc(770, 771);
-                GlStateManager.alphaFunc(516, 0.003921569F);
+                playerRenderer.getHeadLayer().doRenderLayer((AbstractClientPlayer) entitylivingbaseIn, p_77036_2_, 0.0f, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, scaleFactor);
+                playerRenderer.getBodyLayer().doRenderLayer((AbstractClientPlayer) entitylivingbaseIn, p_77036_2_, 0.0f, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, scaleFactor);
             }
 
-            playerRenderer.getHeadLayer().doRenderLayer((AbstractClientPlayer)entitylivingbaseIn, p_77036_2_, 0.0f, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, scaleFactor);
-            playerRenderer.getBodyLayer().doRenderLayer((AbstractClientPlayer)entitylivingbaseIn, p_77036_2_, 0.0f, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, scaleFactor);
-
-            if (flag1)
-            {
+            if (flag1) {
                 GlStateManager.disableBlend();
                 GlStateManager.alphaFunc(516, 0.1F);
                 GlStateManager.popMatrix();
@@ -422,7 +391,6 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_ALPHA, OpenGlHelper.defaultTexUnit);
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_ALPHA, GL11.GL_SRC_ALPHA);
             GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-            GlStateManager.enableTexture2D();
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, OpenGlHelper.GL_COMBINE);
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_RGB, OpenGlHelper.GL_INTERPOLATE);
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_RGB, OpenGlHelper.GL_CONSTANT);
@@ -478,7 +446,6 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
             this.brightnessBuffer.flip();
             GL11.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, this.brightnessBuffer);
             GlStateManager.setActiveTexture(OpenGlHelper.GL_TEXTURE2);
-            GlStateManager.enableTexture2D();
             GlStateManager.bindTexture(textureBrightness.getGlTextureId());
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, OpenGlHelper.GL_COMBINE);
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_RGB, GL11.GL_MODULATE);
@@ -651,7 +618,6 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
 
             if (d0 < (double) (f * f)) {
                 String s = entity.getDisplayName().getFormattedText();
-                float f1 = 0.02666667F;
                 GlStateManager.alphaFunc(516, 0.1F);
 
                 if (entity.isSneaking()) {
@@ -672,10 +638,10 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                     Tessellator tessellator = Tessellator.getInstance();
                     WorldRenderer worldrenderer = tessellator.getWorldRenderer();
                     worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                    worldrenderer.pos((double) (-i - 1), -1.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-                    worldrenderer.pos((double) (-i - 1), 8.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-                    worldrenderer.pos((double) (i + 1), 8.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-                    worldrenderer.pos((double) (i + 1), -1.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    worldrenderer.pos(-i - 1, -1.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    worldrenderer.pos(-i - 1, 8.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    worldrenderer.pos(i + 1, 8.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    worldrenderer.pos(i + 1, -1.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
                     tessellator.draw();
                     GlStateManager.enableTexture2D();
                     GlStateManager.depthMask(true);

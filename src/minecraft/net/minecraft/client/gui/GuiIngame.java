@@ -4,6 +4,7 @@ import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.event.impl.PreBlurEvent;
 import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.font.FontManager;
+import cn.stars.reversal.module.impl.client.Debugger;
 import cn.stars.reversal.module.impl.client.Hotbar;
 import cn.stars.reversal.module.impl.render.AppleSkin;
 import cn.stars.reversal.module.impl.render.Crosshair;
@@ -306,15 +307,23 @@ public class GuiIngame extends Gui {
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
 
+        Debugger.postProcessingProfiler.start();
         ModuleInstance.getPostProcessing().blurScreen();
+        Debugger.postProcessingProfiler.stop();
 
+        Debugger.render2dProfiler.start();
         final Render2DEvent render2DEvent = new Render2DEvent(partialTicks, scaledresolution);
         render2DEvent.call();
+        Debugger.render2dProfiler.stop();
 
+        Debugger.postProcessingProfiler.start();
         ModuleInstance.getPostProcessing().blurScreenPost();
+        Debugger.postProcessingProfiler.stop();
 
+        Debugger.render2dProfiler.start();
         GameInstance.render2DRunnables(partialTicks, true);
         GameInstance.clearRunnables();
+        Debugger.render2dProfiler.stop();
 
         new PreBlurEvent().call();
     }

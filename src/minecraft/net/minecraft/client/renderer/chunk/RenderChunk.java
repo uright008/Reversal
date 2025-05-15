@@ -346,8 +346,7 @@ public class RenderChunk
         {
             if (this.compileTask != null && this.compileTask.getStatus() == ChunkCompileTaskGenerator.Status.PENDING)
             {
-                ChunkCompileTaskGenerator chunkcompiletaskgenerator2 = null;
-                return chunkcompiletaskgenerator2;
+                return null;
             }
 
             if (this.compileTask != null && this.compileTask.getStatus() != ChunkCompileTaskGenerator.Status.DONE)
@@ -358,8 +357,7 @@ public class RenderChunk
 
             this.compileTask = new ChunkCompileTaskGenerator(this, ChunkCompileTaskGenerator.Type.RESORT_TRANSPARENCY);
             this.compileTask.setCompiledChunk(this.compiledChunk);
-            ChunkCompileTaskGenerator chunkcompiletaskgenerator = this.compileTask;
-            chunkcompiletaskgenerator1 = chunkcompiletaskgenerator;
+            chunkcompiletaskgenerator1 = this.compileTask;
         }
         finally
         {
@@ -376,16 +374,16 @@ public class RenderChunk
         if (Config.isRenderRegions())
         {
             int i = 8;
-            int j = pos.getX() >> i << i;
+            int j;
             int k = pos.getY() >> i << i;
-            int l = pos.getZ() >> i << i;
+            int l;
             j = this.regionX;
             l = this.regionZ;
-            worldRendererIn.setTranslation((double)(-j), (double)(-k), (double)(-l));
+            worldRendererIn.setTranslation(-j, -k, -l);
         }
         else
         {
-            worldRendererIn.setTranslation((double)(-pos.getX()), (double)(-pos.getY()), (double)(-pos.getZ()));
+            worldRendererIn.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
         }
     }
 

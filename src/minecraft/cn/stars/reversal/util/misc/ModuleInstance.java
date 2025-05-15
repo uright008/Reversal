@@ -14,6 +14,7 @@ import cn.stars.reversal.value.impl.NumberValue;
 import cn.stars.reversal.value.impl.TextValue;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import net.minecraft.client.Minecraft;
 
 @SuppressWarnings("all")
 @NonNull
@@ -23,6 +24,7 @@ public class ModuleInstance {
     }
     @SneakyThrows
     public static <T extends Module> T getModule(Class<T> clazz) {
+        if (Minecraft.latch.getCount() > 1) Minecraft.latch.await();
         return (T) Reversal.moduleManager.getByClass(clazz);
     }
     public static ModeValue getMode(String moduleName, String settingName) throws ClassCastException {

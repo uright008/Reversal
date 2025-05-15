@@ -1,6 +1,7 @@
 package cn.stars.reversal.music.ui;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.music.api.base.Music;
 import cn.stars.reversal.music.api.player.MusicPlayer;
 import cn.stars.reversal.music.thread.SearchMusicThread;
@@ -237,7 +238,7 @@ public class MusicPlayerScreen extends GuiScreen {
 
         if (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER && !searchField.text.isEmpty() && (currentThread == null || !currentThread.isAlive())) {
             currentThread = new SearchMusicThread(this);
-            currentThread.start();
+            Reversal.threadPoolExecutor.execute(currentThread);
         }
 
         searchField.keyTyped(typedChar, keyCode);

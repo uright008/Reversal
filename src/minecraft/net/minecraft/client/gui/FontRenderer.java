@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.module.impl.client.Debugger;
 import cn.stars.reversal.module.impl.render.BetterFont;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -40,7 +41,7 @@ public class FontRenderer implements IResourceManagerReloadListener
     private final int[] charWidth = new int[256];
     public int FONT_HEIGHT = 9;
     public Random fontRandom = new Random();
-    private byte[] glyphWidth = new byte[65536];
+    private final byte[] glyphWidth = new byte[65536];
     private int[] colorCode = new int[32];
     private ResourceLocation locationFontTexture;
     private final TextureManager renderEngine;
@@ -61,10 +62,11 @@ public class FontRenderer implements IResourceManagerReloadListener
     public GameSettings gameSettings;
     public ResourceLocation locationFontTextureBase;
     public float offsetBold = 1.0F;
-    private float[] charWidthFloat = new float[256];
+    private final float[] charWidthFloat = new float[256];
     private boolean blend = false;
-    private GlBlendState oldBlendState = new GlBlendState();
+    private final GlBlendState oldBlendState = new GlBlendState();
     private final Map<String, Integer> cachedWidth = new HashMap<>();
+    private final Map<Character, Float> cachedCharWidth = new HashMap<>();
 
     public FontRenderer(GameSettings gameSettingsIn, ResourceLocation location, TextureManager textureManagerIn, boolean unicode)
     {
@@ -76,37 +78,7 @@ public class FontRenderer implements IResourceManagerReloadListener
         this.locationFontTexture = FontUtils.getHdFontLocation(this.locationFontTextureBase);
         this.bindTexture(this.locationFontTexture);
 
-        for (int i = 0; i < 32; ++i)
-        {
-            int j = (i >> 3 & 1) * 85;
-            int k = (i >> 2 & 1) * 170 + j;
-            int l = (i >> 1 & 1) * 170 + j;
-            int i1 = (i & 1) * 170 + j;
-
-            if (i == 6)
-            {
-                k += 85;
-            }
-
-            if (gameSettingsIn.anaglyph)
-            {
-                int j1 = (k * 30 + l * 59 + i1 * 11) / 100;
-                int k1 = (k * 30 + l * 70) / 100;
-                int l1 = (k * 30 + i1 * 70) / 100;
-                k = j1;
-                l = k1;
-                i1 = l1;
-            }
-
-            if (i >= 16)
-            {
-                k /= 4;
-                l /= 4;
-                i1 /= 4;
-            }
-
-            this.colorCode[i] = (k & 255) << 16 | (l & 255) << 8 | i1 & 255;
-        }
+        this.colorCode = ColorUtil.COLOR_CODES;
 
         this.readGlyphSizes();
     }
@@ -262,7 +234,7 @@ public class FontRenderer implements IResourceManagerReloadListener
     {
         if (unicodePageLocations[page] == null)
         {
-            unicodePageLocations[page] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", new Object[] {Integer.valueOf(page)}));
+            unicodePageLocations[page] = new ResourceLocation(String.format("textures/font/unicode_page_%02x.png", page));
             unicodePageLocations[page] = FontUtils.getHdFontLocation(unicodePageLocations[page]);
         }
 
@@ -318,6 +290,7 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     public int drawString(String text, float x, float y, int color, boolean dropShadow)
     {
+        Debugger.fontProfiler.start();
         if (ModuleInstance.getModule(BetterFont.class).isEnabled()) {
             return MathHelper.ceiling_float_int(GameInstance.regular18.drawString(text, x, y + 1, new Color(color).getRGB()));
         }
@@ -347,7 +320,7 @@ public class FontRenderer implements IResourceManagerReloadListener
         {
             GlStateManager.setBlendState(this.oldBlendState);
         }
-
+        Debugger.fontProfiler.stop();
         return i;
     }
 
@@ -589,8 +562,10 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     public int getStringWidth(String text)
     {
+        Debugger.fontProfiler.start();
         if (text == null)
         {
+            Debugger.fontProfiler.stop();
             return 0;
         }
         else
@@ -638,6 +613,7 @@ public class FontRenderer implements IResourceManagerReloadListener
             }
 
             cachedWidth.put(text, Math.round(f));
+            Debugger.fontProfiler.stop();
             return Math.round(f);
         }
     }
@@ -658,6 +634,8 @@ public class FontRenderer implements IResourceManagerReloadListener
         }
         else if (p_getCharWidthFloat_1_ != 32 && p_getCharWidthFloat_1_ != 160)
         {
+            if (cachedCharWidth.containsKey(p_getCharWidthFloat_1_)) return cachedCharWidth.get(p_getCharWidthFloat_1_);
+
             if (ModuleInstance.getModule(BetterFont.class).isEnabled()) {
                 return GameInstance.regular18.width(String.valueOf(p_getCharWidthFloat_1_));
             }
@@ -666,6 +644,7 @@ public class FontRenderer implements IResourceManagerReloadListener
 
             if (p_getCharWidthFloat_1_ > 0 && i != -1 && !this.unicodeFlag)
             {
+                cachedCharWidth.put(p_getCharWidthFloat_1_, this.charWidthFloat[i]);
                 return this.charWidthFloat[i];
             }
             else if (this.glyphWidth[p_getCharWidthFloat_1_] != 0)
@@ -680,10 +659,12 @@ public class FontRenderer implements IResourceManagerReloadListener
                 }
 
                 ++k;
+                cachedCharWidth.put(p_getCharWidthFloat_1_, (float)((k - j) / 2 + 1));
                 return (float)((k - j) / 2 + 1);
             }
             else
             {
+                cachedCharWidth.put(p_getCharWidthFloat_1_, 0.0F);
                 return 0.0F;
             }
         }

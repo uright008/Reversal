@@ -20,7 +20,7 @@ public class MusicManager {
 
         // 如果已经登录，获取歌单列表
         if (MusicAPI.user.isLoggedIn()) {
-            Reversal.threadPoolExecutor.submit(new GetPlayListsThread());
+            Reversal.threadPoolExecutor.execute(new GetPlayListsThread());
             MusicAPI.user.setAvatarTexture(new DynamicTexture(MusicUtil.downloadImage(MusicAPI.user.getAvatarUrl(), 200, 200)));
         }
     }
