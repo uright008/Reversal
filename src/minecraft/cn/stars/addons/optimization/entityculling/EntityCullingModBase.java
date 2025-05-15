@@ -24,9 +24,6 @@ public abstract class EntityCullingModBase {
     protected KeyBinding keybind = new KeyBinding("key.entityculling.toggle", -1, "EntityCulling");
     protected boolean pressed = false;
 
-    private final File settingsFile = new File("config", "entityculling.json");
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
     //stats
     public int renderedBlockEntities = 0;
     public int skippedBlockEntities = 0;

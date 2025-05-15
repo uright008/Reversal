@@ -1279,7 +1279,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
     {
         if (!this.netManager.isLocalChannel())
         {
-            this.netManager.setCompressionThreshold(packetIn.getThreshold());
+            this.netManager.setCompressionTreshold(packetIn.getThreshold());
         }
     }
 

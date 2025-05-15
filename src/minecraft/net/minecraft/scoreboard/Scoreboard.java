@@ -177,7 +177,7 @@ public class Scoreboard
 
     public Map<ScoreObjective, Score> getObjectivesForEntity(String name)
     {
-        Map<ScoreObjective, Score> map = (Map)this.entitiesScoreObjectives.get(name);
+        Map<ScoreObjective, Score> map = this.entitiesScoreObjectives.get(name);
 
         if (map == null)
         {
@@ -189,17 +189,19 @@ public class Scoreboard
 
     public void removeObjective(ScoreObjective p_96519_1_)
     {
+        if (p_96519_1_ == null) return;
+
         this.scoreObjectives.remove(p_96519_1_.getName());
 
         for (int i = 0; i < 19; ++i)
         {
             if (this.getObjectiveInDisplaySlot(i) == p_96519_1_)
             {
-                this.setObjectiveInDisplaySlot(i, (ScoreObjective)null);
+                this.setObjectiveInDisplaySlot(i, null);
             }
         }
 
-        List<ScoreObjective> list = (List)this.scoreObjectiveCriterias.get(p_96519_1_.getCriteria());
+        List<ScoreObjective> list = this.scoreObjectiveCriterias.get(p_96519_1_.getCriteria());
 
         if (list != null)
         {
@@ -255,6 +257,8 @@ public class Scoreboard
 
     public void removeTeam(ScorePlayerTeam p_96511_1_)
     {
+        if (p_96511_1_ == null) return;
+        
         this.teams.remove(p_96511_1_.getRegisteredName());
 
         for (String s : p_96511_1_.getMembershipCollection())

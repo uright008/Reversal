@@ -43,7 +43,6 @@ public final class ModuleManager {
         for (Module module : moduleList) {
             classModuleCache.put(module.getClass(), module);
             moduleCache.put(module.getModuleInfo().name().toLowerCase(), module);
-            module.onLoad();
         }
     }
 

@@ -15,16 +15,16 @@ import java.net.URI;
 
 public class MsLoginGui extends MiscGui {
     private OAuthServer server;
-    private String stage = "Initializing Login API...";
+    private String stage = "初始化Login API中...";
     private boolean finished;
 
     public MsLoginGui() {
-        super("Microsoft Login");
+        super("microsoft login");
         Reversal.threadPoolExecutor.execute(new Thread(() -> {
             server = MicrosoftAccount.Companion.buildFromOpenBrowser(new MicrosoftAccount.OAuthHandler() {
                 @Override
                 public void openUrl(String url) {
-                    stage = "Check your browser to continue...";
+                    stage = "在弹出的浏览器内完成登录操作以继续...";
                     try {
                         Thread.sleep(1000L);
                     } catch (InterruptedException ignored) {
@@ -45,7 +45,7 @@ public class MsLoginGui extends MiscGui {
 
                 @Override
                 public void authError(String error) {
-                    stage = error.contains("OpenGL") || error.contains("context") ? "Succeed." : "Error: " + error;
+                    stage = error.contains("OpenGL") || error.contains("context") ? "登陆成功." : "登录失败: " + error;
                     finished = true;
                 }
             });
@@ -73,11 +73,11 @@ public class MsLoginGui extends MiscGui {
 
     private String login(MicrosoftAccount account) {
         try {
-            mc.session = new Session(account.getSession().getUsername(), account.getSession().getUuid(), account.getSession().getUuid(), account.getSession().getType());
-            return "Succeed.";
+            mc.session = new Session(account.getSession().getUsername(), account.getSession().getUuid(), account.getSession().getToken(), account.getSession().getType());
+            return "登陆成功.";
         } catch (Exception e) {
             ReversalLogger.error("Failed to login", e);
-            return "Error: " + e.getMessage();
+            return "登录失败: " + e.getMessage();
         } finally {
             finished = true;
         }

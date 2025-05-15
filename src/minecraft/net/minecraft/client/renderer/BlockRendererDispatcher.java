@@ -163,7 +163,7 @@ public class BlockRendererDispatcher implements IResourceManagerReloadListener
         else
         {
             int i = p_175021_1_.getRenderType();
-            return i == 3 ? false : i == 2;
+            return i == 2;
         }
     }
 

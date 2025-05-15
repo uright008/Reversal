@@ -331,6 +331,7 @@ public class Reversal {
             new NameTag(),
             new Interface(),
             new IRC(),
+            new Optimization()
     };
 
     public static Color CLIENT_THEME_COLOR = new Color(159, 24, 242);

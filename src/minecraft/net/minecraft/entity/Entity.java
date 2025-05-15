@@ -123,9 +123,7 @@ public abstract class Entity implements ICommandSender, Cullable
     private long lasttime = 0;
     private boolean culled = false;
     private boolean outOfCamera = false;
-    public boolean inView;
     public double threadDistance;
-    public int outOfViewTicks;
 
     @Override
     public void setTimeout() {
