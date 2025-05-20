@@ -120,6 +120,8 @@ module.NameTag.name=Name Tag
 module.NameTag.desc=Name Tag-related features.
 module.PostProcessing.name=Post Processing
 module.PostProcessing.desc=Add bloom and blur effects.
+module.Optimization.name=Optimization
+module.Optimization.desc=Client optimization options.
 
 # Combat
 module.ClickSound.name=Click Sound
@@ -230,6 +232,8 @@ module.Hitbox.name=Hitbox
 module.Hitbox.desc=Display the bounding boxes of entities.
 module.HitEffect.name=Hit Effect
 module.HitEffect.desc=Render some custom particles when hitting.
+module.ItemIndicator.name=Item Indicator
+module.ItemIndicator.desc=Automatically indicate items which are useful in the chest.
 module.ItemPhysics.name=Item Physics
 module.ItemPhysics.desc=Make items move like in real life.
 module.JumpCircle.name=Jump Circle

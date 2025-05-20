@@ -120,6 +120,8 @@ module.NameTag.name=名称标签
 module.NameTag.desc=名称标签相关功能.
 module.PostProcessing.name=后处理
 module.PostProcessing.desc=增加模糊和发光效果.
+module.Optimization.name=优化
+module.Optimization.desc=客户端优化选项.
 
 # Combat
 module.ClickSound.name=点击音效
@@ -230,6 +232,8 @@ module.Hitbox.name=碰撞箱
 module.Hitbox.desc=显示实体的碰撞箱.
 module.HitEffect.name=攻击粒子
 module.HitEffect.desc=在攻击时绘制一些粒子效果.
+module.ItemIndicator.name=物品指示器
+module.ItemIndicator.desc=自动标记箱子内有用的物品
 module.ItemPhysics.name=物理掉落
 module.ItemPhysics.desc=让物品像真实世界一样渲染.
 module.JumpCircle.name=跳跃圆圈

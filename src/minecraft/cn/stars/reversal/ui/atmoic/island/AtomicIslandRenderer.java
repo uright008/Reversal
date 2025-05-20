@@ -47,9 +47,6 @@ public class AtomicIslandRenderer implements GameInstance {
     private TimeUtil taskTimeoutTimer = new TimeUtil();
     private long startTime;
 
-    private MFont psm20 = FontManager.getPSM(20);
-    private MFont psr18 = FontManager.getPSR(18);
-
     public AtomicIslandRenderer() {
         this.sr = new ScaledResolution(mc);
         Atomic.height = 15;
@@ -110,7 +107,7 @@ public class AtomicIslandRenderer implements GameInstance {
 
                 drawBackgroundAuto(0);
 
-                psm18.drawString(mainText, x.getValue() + 5, y.getValue() + 5, new Color(250, 250, 250, 250).getRGB());
+                regular18Bold.drawString(mainText, x.getValue() + 5, y.getValue() + 4.5, new Color(250, 250, 250, 250).getRGB());
 
                 GL11.glDisable(GL11.GL_SCISSOR_TEST);
                 GL11.glPopMatrix();
@@ -205,7 +202,7 @@ public class AtomicIslandRenderer implements GameInstance {
             this.mainText = "";
         } else {
             mainText = "Reversal | " + Minecraft.getDebugFPS() + " FPS | " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
-            Atomic.width = psm18.width(mainText) + 10;
+            Atomic.width = regular18Bold.width(mainText) + 10;
             Atomic.height = 15;
             Atomic.x = sr.getScaledWidth() / 2f;
             Atomic.y = 40 + ModuleInstance.getModule(AtomicIsland.class).yOffset.getFloat();

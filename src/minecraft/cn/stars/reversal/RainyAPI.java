@@ -73,7 +73,7 @@ public class RainyAPI {
             "当友谊成为了冰冷的符号,这段关系或许已经失衡", "放下助人情结,尊重他人命运", "Be responsible for your own life.", "如何达成理解?", "利益是人类建立关系的基础", "有时,我们注定只能成为别人生活中的配角",
             "揭开伪装你的面具,露出你真实的另一面", "人都会变,莫谈永远", "Helpfully help the helpless.", "我知道你没去,所以我也没来", "没有理由的伤害,到底谁来决定对错?", "用自己创造的麻烦来博取怜惜,最终或许只会被唾弃",
             "没想过你把我放在第一位,可惜我根本就不在列", "其一切奇怪不可迩之状,皆贫病怨恨,不得已诈而遁焉者也", "Intergration. Assimilation. Trust. Understanding.", "纵使星霜能倒转,终遗碎影落人间",
-            "Your comedy, my tragedy.", "总有人在卖着惨,总有人想利用善", "看罢了浮华万千幕,看白了沉默是迷"};
+            "Your comedy, my tragedy.", "总有人在卖着惨,总有人想利用善", "看罢了浮华万千幕,看白了沉默是迷", "「不会离开」是你的谎言"};
 
     public static String getRandomTitle() {
         return randomTitleId == -1 ? wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)] : wittyTitle[randomTitleId];

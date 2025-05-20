@@ -233,6 +233,7 @@ public class ItemIndicator extends Module {
     }
 
     public static class PlayerInventoryDatabase {
+        // Set to different values in case of wrongly flags
         public int helmetPos = -1;
         public int chestplatePos = -2;
         public int leggingsPos = -3;

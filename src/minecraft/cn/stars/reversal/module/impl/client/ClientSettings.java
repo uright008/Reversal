@@ -30,7 +30,7 @@ public final class ClientSettings extends Module {
     public final NoteValue note2 = new NoteValue("< Specific Settings >", "value.ClientSettings.note2", this);
     public final ModeValue listAnimation = new ModeValue("List Animation", "value.ClientSettings.listAnimation", this, "Reversal", "Reversal", "Slide");
     public final BoolValue empathyGlow = new BoolValue("Empathy Glow", "value.ClientSettings.empathyGlow", this, false);
-    public final NumberValue roundStrength = new NumberValue("Round Strength", "value.ClientSettings.roundStrength", this, 4f, 1f, 10f, 1f);
+    public final NumberValue roundStrength = new NumberValue("Round Strength", "value.ClientSettings.roundStrength", this, 4f, 1f, 8f, 1f);
     public final BoolValue shaderGradient = new BoolValue("Shader Gradient", "value.ClientSettings.shaderGradient", this, false);
     public final BoolValue shaderBackground = new BoolValue("Shader Background", "value.ClientSettings.shaderBackground", this, false);
 

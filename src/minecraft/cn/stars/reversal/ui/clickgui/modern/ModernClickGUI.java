@@ -746,16 +746,17 @@ public class ModernClickGUI extends GuiScreen {
         if (search.isEmpty()) return relevantModules;
 
         for (final Module module : Reversal.moduleManager.moduleList) {
+            boolean found = false;
             if (ModuleInstance.getModule(ClientSettings.class).localization.enabled) {
                 if (I18n.format(module.getModuleInfo().localizedName()).toLowerCase().replaceAll(" ", "")
                         .contains(search.toLowerCase().replaceAll(" ", ""))) {
                     relevantModules.add(module);
+                    found = true;
                 }
-            } else {
-                if (module.getModuleInfo().name().toLowerCase().replaceAll(" ", "")
-                        .contains(search.toLowerCase().replaceAll(" ", ""))) {
-                    relevantModules.add(module);
-                }
+            }
+            if (module.getModuleInfo().name().toLowerCase().replaceAll(" ", "")
+                    .contains(search.toLowerCase().replaceAll(" ", "")) && !found) {
+                relevantModules.add(module);
             }
         }
 

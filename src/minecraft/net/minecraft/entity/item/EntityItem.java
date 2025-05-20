@@ -405,7 +405,7 @@ public class EntityItem extends Entity
         {
             if (this.worldObj != null)
             {
-                logger.error("Item entity " + this.getEntityId() + " has no item?!");
+                logger.debug("Item entity {} has no item?! (High version proxy probably)", this.getEntityId());
             }
 
             return new ItemStack(Blocks.stone);

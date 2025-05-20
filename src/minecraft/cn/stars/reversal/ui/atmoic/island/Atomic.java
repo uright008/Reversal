@@ -97,19 +97,19 @@ public class Atomic implements GameInstance {
      */
     public static void registerAtomic(final String description, final String title, final long delay, final String icon, final boolean allowRepeat, final int priority) {
         submitTask(() -> {
-            Atomic.width = Math.max(psm18.width(description), psb20.width(title) + 10) + 10;
+            Atomic.width = Math.max(regular18.width(description), regular20Bold.width(title) + 10) + 10;
             Atomic.height = 30;
             FontManager.getIcon(24).drawString(icon, Atomic.INSTANCE.x.getValue() + 3, Atomic.INSTANCE.y.getValue() + 6, new Color(250, 250, 250, 250).getRGB());
-            psb20.drawString(title, Atomic.INSTANCE.x.getValue() + 16, Atomic.INSTANCE.y.getValue() + 6, new Color(250, 250, 250, 250).getRGB());
-            psm18.drawString(description, Atomic.INSTANCE.x.getValue() + 5, Atomic.INSTANCE.y.getValue() + 18, new Color(250, 250, 250, 250).getRGB());
+            regular20Bold.drawString(title, Atomic.INSTANCE.x.getValue() + 16, Atomic.INSTANCE.y.getValue() + 6, new Color(250, 250, 250, 250).getRGB());
+            regular18.drawString(description, Atomic.INSTANCE.x.getValue() + 5, Atomic.INSTANCE.y.getValue() + 18, new Color(250, 250, 250, 250).getRGB());
         }, delay, allowRepeat, priority);
     }
 
     public static void registerAtomic(final String description, final long delay) {
         submitTask(() -> {
-            Atomic.width = psm18.width(description) + 10;
+            Atomic.width = regular18.width(description) + 10;
             Atomic.height = 15;
-            psm18.drawString(description, Atomic.INSTANCE.x.getValue() + 5, Atomic.INSTANCE.y.getValue() + 5, new Color(250, 250, 250, 250).getRGB());
+            regular18.drawString(description, Atomic.INSTANCE.x.getValue() + 5, Atomic.INSTANCE.y.getValue() + 5, new Color(250, 250, 250, 250).getRGB());
         }, delay);
     }
 

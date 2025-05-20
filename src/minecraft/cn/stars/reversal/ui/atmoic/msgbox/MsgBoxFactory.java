@@ -39,16 +39,6 @@ public class MsgBoxFactory {
         return this;
     }
 
-    public MsgBoxFactory addLine(String msg, int index) {
-        if (this.parent != null) {
-            this.parent.getMessage().add(index, msg);
-        } else {
-            this.parent = new AtomicMsgBox(AtomicMsgBox.MsgBoxStyle.INFO, "");
-            this.parent.getMessage().add(index, msg);
-        }
-        return this;
-    }
-
     public MsgBoxFactory clearLine() {
         if (this.parent != null) {
             this.parent.getMessage().clear();
