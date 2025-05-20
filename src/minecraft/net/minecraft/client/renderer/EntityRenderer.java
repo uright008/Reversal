@@ -1224,7 +1224,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
                 this.mc.mcProfiler.endStartSection("gui");
 
-                if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null)
+                if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null || Reversal.atomicMsgBox != null)
                 {
                     GlStateManager.alphaFunc(516, 0.1F);
                     this.mc.ingameGUI.renderGameOverlay(partialTicks);
@@ -1267,11 +1267,24 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 }
                 catch (Throwable throwable)
                 {
-                    CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering screen");
-                    CrashReportCategory crashreportcategory = crashreport.makeCategory("Screen render details");
-                    crashreportcategory.addCrashSectionCallable("Screen name", () -> EntityRenderer.this.mc.currentScreen.getClass().getCanonicalName());
-                    crashreportcategory.addCrashSectionCallable("Mouse location", () -> String.format("Scaled: (%d, %d). Absolute: (%d, %d)", k1, l1, Mouse.getX(), Mouse.getY()));
-                    crashreportcategory.addCrashSectionCallable("Screen size", () -> String.format("Scaled: (%d, %d). Absolute: (%d, %d). Scale factor of %d", scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight(), EntityRenderer.this.mc.displayWidth, EntityRenderer.this.mc.displayHeight, scaledresolution.getScaleFactor()));
+                    CrashReport crashreport = CrashReport.makeCrashReport(throwable, "渲染界面");
+                    CrashReportCategory crashreportcategory = crashreport.makeCategory("界面渲染详细信息");
+                    crashreportcategory.addCrashSectionCallable("界面名称", () -> EntityRenderer.this.mc.currentScreen.getClass().getCanonicalName());
+                    crashreportcategory.addCrashSectionCallable("鼠标位置", () -> String.format("Scaled: (%d, %d). Absolute: (%d, %d)", k1, l1, Mouse.getX(), Mouse.getY()));
+                    crashreportcategory.addCrashSectionCallable("屏幕大小", () -> String.format("Scaled: (%d, %d). Absolute: (%d, %d). Scale factor of %d", scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight(), EntityRenderer.this.mc.displayWidth, EntityRenderer.this.mc.displayHeight, scaledresolution.getScaleFactor()));
+                    throw new ReportedException(crashreport);
+                }
+            }
+
+            if (Reversal.atomicMsgBox != null) {
+                try
+                {
+                    Reversal.atomicMsgBox.render(k1, l1, scaledresolution);
+                } catch (Throwable throwable) {
+                    CrashReport crashreport = CrashReport.makeCrashReport(throwable, "渲染原子信息框");
+                    CrashReportCategory crashreportcategory = crashreport.makeCategory("界面渲染详细信息");
+                    crashreportcategory.addCrashSectionCallable("鼠标位置", () -> String.format("Scaled: (%d, %d). Absolute: (%d, %d)", k1, l1, Mouse.getX(), Mouse.getY()));
+                    crashreportcategory.addCrashSectionCallable("屏幕大小", () -> String.format("Scaled: (%d, %d). Absolute: (%d, %d). Scale factor of %d", scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight(), EntityRenderer.this.mc.displayWidth, EntityRenderer.this.mc.displayHeight, scaledresolution.getScaleFactor()));
                     throw new ReportedException(crashreport);
                 }
             }

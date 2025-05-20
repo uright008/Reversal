@@ -10,15 +10,10 @@ import java.io.IOException;
 
 public class GuiIngameMenu extends GuiScreen
 {
-    private int field_146445_a;
-    private int field_146444_f;
-
     public void initGui()
     {
-        this.field_146445_a = 0;
         this.buttonList.clear();
         int i = -16;
-        int j = 98;
         this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + i, I18n.format("menu.returnToMenu")));
 
         if (!this.mc.isIntegratedServerRunning())
@@ -81,7 +76,6 @@ public class GuiIngameMenu extends GuiScreen
     public void updateScreen()
     {
         super.updateScreen();
-        ++this.field_146444_f;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

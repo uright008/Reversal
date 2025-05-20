@@ -28,8 +28,8 @@ import java.util.UUID;
 
 public class Item
 {
-    public static final RegistryNamespaced<ResourceLocation, Item> itemRegistry = new RegistryNamespaced();
-    private static final Map<Block, Item> BLOCK_TO_ITEM = Maps.<Block, Item>newHashMap();
+    public static final RegistryNamespaced<ResourceLocation, Item> itemRegistry = new RegistryNamespaced<>();
+    private static final Map<Block, Item> BLOCK_TO_ITEM = Maps.newHashMap();
     protected static final UUID itemModifierUUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
     private CreativeTabs tabToDisplayOn;
     protected static Random itemRand = new Random();
@@ -276,7 +276,7 @@ public class Item
 
     public String getItemStackDisplayName(ItemStack stack)
     {
-        return ("" + StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
+        return (StatCollector.translateToLocal(this.getUnlocalizedNameInefficiently(stack) + ".name")).trim();
     }
 
     public boolean hasEffect(ItemStack stack)

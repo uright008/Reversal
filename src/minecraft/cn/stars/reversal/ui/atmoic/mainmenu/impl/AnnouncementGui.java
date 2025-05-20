@@ -141,35 +141,41 @@ public class AnnouncementGui extends AtomicGui {
 
     private void loadAnnouncements() {
         Announcement announcement1 = new Announcement("Reversal Announcement", "2025/3/26", 0)
-                .addContent("你正在使用" + Reversal.NAME + " " + Reversal.VERSION + " (Minecraft " + Reversal.MINECRAFT_VERSION + ").")
-                .addContent("本客户端由" + Reversal.AUTHOR + "制作,由Aerolite Society强力驱动.")
+                .addContent("你正在使用" + Reversal.NAME + " " + Reversal.VERSION + " (Minecraft " + Reversal.MINECRAFT_VERSION + ")。")
+                .addContent("本客户端由" + Reversal.AUTHOR + "制作，由Aerolite Society强力驱动。")
                 .addContent("感谢您对Reversal的支持!")
                 .addContent("")
                 .addContent("[Github] https://www.github.com/RinoRika/Reversal")
                 .addContent("[QQ] https://qm.qq.com/q/M6dDLtw3oS")
                 .addContent("[BiliBili] https://space.bilibili.com/670866766")
                 .addContent("")
-                .addContent("© 2025 Aerolite Society. 保留部分权利.")
+                .addContent("© 2025 Aerolite Society. 保留部分权利。")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Reversal 3.0.0-Insider", "2025/5/9", 1)
-                .addContent("# Development Code: BUG").mark()
-                .addContent("[+] Debugger (开发用)")
-                .addContent("[/] 优化字体渲染器性能")
-                .addContent("[/] 大幅优化在大量玩家时的性能")
-                .addContent("[*] 修复部分情况下导致的严重渲染问题")
-                .addContent("[*] 修复物品展示框渲染问题")
-                .addContent("[*] 修复大箱子渲染问题")
-                .addContent("[*] 修复音乐播放器开启大量线程问题 改用线程池")
-                .addContent("[*] 修复EntityCulling未正常运行的问题")
-                .addContent("[*] 修复功能onLoad会被执行两次的问题")
-                .addContent("[*] 修复字体渲染器可能意外浪费资源")
-                .addContent("[*] 修复微软登录后无法进入服务器的问题 (我是傻逼把token填成uuid了)")
-                .addContent("[*] 修复计分板有时会产生报错的问题")
-                .addContent("[*] 修复部分重复绑定GL操作的情况")
+        Announcement announcement2 = new Announcement("Reversal 3.0.0-Insider", "2025/5/17", 1)
+                .addContent("# Development Code: BUG-Hotfix").mark()
+                .addContent("[+] AtomicMsgBox (未完成)")
+                .addContent("[+] PotionEffect新增关闭动画 (防止某些猎奇的情况)")
+                .addContent("[+] .test指令 (你猜有啥用)")
+                .addContent("[+] 随机标题")
+                .addContent("[*] 修复原版字体的大小在更换材质包后可能获取异常")
+                .addContent("[*] 修复Keystrokes的CPS显示在>10时位置偏移")
+                .addContent("[/] 优化Keystrokes的古代动画,换新的动画")
+                .addContent("[/] 主菜单随便改改")
+                .calcMaxWidth();
+        Announcement announcement3 = new Announcement("关于赞助", "2025/5/17", 2)
+                .addContent("为了回馈愿意给我们提供帮助的人，整点福利给大家。赞助为纯自愿原则!")
+                .addContent("(以下\"我\"代指Stars)")
+                .addContent("")
+                .addContent("单次赞助≥1r的，可以留下你的网名，其将会被添加至客户端的赞助者界面。")
+                .addContent("赞助总计≥100r的，可以写一段50字内的文本，让我用语音念给你，可以注语气，不是极为过分内容的我都不拒绝。")
+                .addContent("单次赞助≥100r的，可以写一段10字内的文本，我会拿着带这个文本的纸条女装（？）并发给你。（暑假开始）")
+                .addContent("")
+                .addContent("以上如果你需要的话，请务必找我说明，我不会来主动找你。感谢~!")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);
         announcements.add(announcement2);
+        announcements.add(announcement3);
 
         updateAnnouncementIndex(announcementIndex);
     }

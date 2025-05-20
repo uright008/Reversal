@@ -41,11 +41,24 @@ public class InventoryPlayer implements IInventory
         return 9;
     }
 
-    private int getInventorySlotContainItem(Item itemIn)
+    public int getInventorySlotContainItem(Item itemIn)
     {
         for (int i = 0; i < this.mainInventory.length; ++i)
         {
             if (this.mainInventory[i] != null && this.mainInventory[i].getItem() == itemIn)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public int getArmorSlotContainItem(Item itemIn)
+    {
+        for (int i = 0; i < this.armorInventory.length; ++i)
+        {
+            if (this.armorInventory[i] != null && this.armorInventory[i].getItem() == itemIn)
             {
                 return i;
             }
@@ -536,7 +549,7 @@ public class InventoryPlayer implements IInventory
 
             if (itemstack != null)
             {
-                if (j >= 0 && j < this.mainInventory.length)
+                if (j < this.mainInventory.length)
                 {
                     this.mainInventory[j] = itemstack;
                 }
@@ -556,6 +569,8 @@ public class InventoryPlayer implements IInventory
 
     public ItemStack getStackInSlot(int index)
     {
+        if (index < 0) return null;
+
         ItemStack[] aitemstack = this.mainInventory;
 
         if (index >= aitemstack.length)
@@ -565,6 +580,13 @@ public class InventoryPlayer implements IInventory
         }
 
         return aitemstack[index];
+    }
+
+    public Item getItemInSlot(int index)
+    {
+        ItemStack stack = getStackInSlot(index);
+        if (stack != null) return stack.getItem();
+        return null;
     }
 
     public String getName()

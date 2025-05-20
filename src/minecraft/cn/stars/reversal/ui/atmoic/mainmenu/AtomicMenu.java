@@ -9,6 +9,7 @@ import cn.stars.reversal.ui.atmoic.island.Atomic;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.*;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.MsLoginGui;
 import cn.stars.reversal.ui.atmoic.misc.GUIBubble;
+import cn.stars.reversal.ui.atmoic.msgbox.AtomicMsgBox;
 import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.util.animation.advanced.composed.CustomAnimation;
 import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
@@ -222,6 +223,10 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
         regular18.drawString("Microsoft Login", width - subPosAnimation.getValue() + 8, 90, new Color(c4, c4, c4, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
 
+        int c5 = RenderUtil.isHovered(width - subPosAnimation.getValue() + 8, 110, 100, 15, mouseX, mouseY) ? 255 : 150;
+
+        regular18.drawString("Atomic Message Box", width - subPosAnimation.getValue() + 8, 110, new Color(c5, c5, c5, (int) (subPosAnimation.getValue() * 1.25)).getRGB());
+
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 
@@ -250,6 +255,16 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 8, 90, 100, 15, mouseX, mouseY)) {
                 setMiscGui(new MsLoginGui());
                 switchGui(8);
+                uiClick();
+            }
+            if (RenderUtil.isHovered(width - subPosAnimation.getValue() + 8, 110, 100, 15, mouseX, mouseY)) {
+                if (Reversal.atomicMsgBox == null) {
+                    Reversal.atomicMsgBox = new AtomicMsgBox("Test");
+                    Reversal.atomicMsgBox.FACTORY.addLine("这是第一行");
+                    Reversal.atomicMsgBox.FACTORY.addLine("这是第二行 @w@");
+                    Reversal.atomicMsgBox.FACTORY.addLine(RainyAPI.getRandomTitle());
+                }
+                else Reversal.atomicMsgBox.close();
                 uiClick();
             }
             return;

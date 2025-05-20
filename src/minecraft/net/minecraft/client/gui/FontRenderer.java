@@ -86,6 +86,8 @@ public class FontRenderer implements IResourceManagerReloadListener
     public void onResourceManagerReload(IResourceManager resourceManager)
     {
         this.locationFontTexture = FontUtils.getHdFontLocation(this.locationFontTextureBase);
+        this.cachedWidth.clear();
+        this.cachedCharWidth.clear();
 
         Arrays.fill(unicodePageLocations, null);
 

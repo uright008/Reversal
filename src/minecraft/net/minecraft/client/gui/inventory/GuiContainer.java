@@ -23,8 +23,8 @@ import java.util.Set;
 public abstract class GuiContainer extends GuiScreen
 {
     protected static final ResourceLocation inventoryBackground = new ResourceLocation("textures/gui/container/inventory.png");
-    protected int xSize = 176;
-    protected int ySize = 166;
+    public int xSize = 176;
+    public int ySize = 166;
     public Container inventorySlots;
     protected int guiLeft;
     protected int guiTop;
@@ -84,7 +84,7 @@ public abstract class GuiContainer extends GuiScreen
         this.theSlot = null;
         int k = 240;
         int l = 240;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)k / 1.0F, (float)l / 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) k, (float) l);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
         for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); ++i1)
@@ -131,7 +131,7 @@ public abstract class GuiContainer extends GuiScreen
 
                 if (itemstack.stackSize == 0)
                 {
-                    s = "" + EnumChatFormatting.YELLOW + "0";
+                    s = EnumChatFormatting.YELLOW + "0";
                 }
             }
 
@@ -152,7 +152,7 @@ public abstract class GuiContainer extends GuiScreen
             int i3 = this.returningStackDestSlot.yDisplayPosition - this.touchUpY;
             int l1 = this.touchUpX + (int)((float)l2 * f);
             int i2 = this.touchUpY + (int)((float)i3 * f);
-            this.drawItemStack(this.returningStack, l1, i2, (String)null);
+            this.drawItemStack(this.returningStack, l1, i2, null);
         }
 
         GlStateManager.popMatrix();

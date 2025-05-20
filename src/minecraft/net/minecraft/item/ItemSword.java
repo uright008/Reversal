@@ -1,6 +1,7 @@
 package net.minecraft.item;
 
 import com.google.common.collect.Multimap;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,11 +16,12 @@ import net.minecraft.world.World;
 public class ItemSword extends Item
 {
     private float attackDamage;
-    private final Item.ToolMaterial material;
+    @Getter
+    private final Item.ToolMaterial toolMaterial;
 
     public ItemSword(Item.ToolMaterial material)
     {
-        this.material = material;
+        this.toolMaterial = material;
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(CreativeTabs.tabCombat);
@@ -28,7 +30,7 @@ public class ItemSword extends Item
 
     public float getDamageVsEntity()
     {
-        return this.material.getDamageVsEntity();
+        return this.toolMaterial.getDamageVsEntity();
     }
 
     public float getStrVsBlock(ItemStack stack, Block state)
@@ -88,17 +90,17 @@ public class ItemSword extends Item
 
     public int getItemEnchantability()
     {
-        return this.material.getEnchantability();
+        return this.toolMaterial.getEnchantability();
     }
 
     public String getToolMaterialName()
     {
-        return this.material.toString();
+        return this.toolMaterial.toString();
     }
 
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
     {
-        return this.material.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
+        return this.toolMaterial.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
     }
 
     public Multimap<String, AttributeModifier> getItemAttributeModifiers()

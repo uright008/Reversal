@@ -21,6 +21,7 @@ import cn.stars.reversal.module.impl.render.*;
 import cn.stars.reversal.module.impl.world.TimeTraveller;
 import cn.stars.reversal.music.MusicManager;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
+import cn.stars.reversal.ui.atmoic.msgbox.AtomicMsgBox;
 import cn.stars.reversal.ui.clickgui.modern.ModernClickGUI;
 import cn.stars.reversal.ui.notification.NotificationManager;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
@@ -70,6 +71,7 @@ public class Reversal {
 
     public static ModernClickGUI modernClickGUI;
     public static AtomicMenu atomicMenu;
+    public static AtomicMsgBox atomicMsgBox;
 
     public static CreativeTabs creativeTab;
     
@@ -241,7 +243,8 @@ public class Reversal {
             new Help(),
             new Online(),
             new Say(),
-            new Toggle()
+            new Toggle(),
+            new Test()
     };
 
     public static final Module[] modules = new Module[] {
@@ -288,6 +291,7 @@ public class Reversal {
             new Fullbright(),
             new Hitbox(),
             new HitEffect(),
+            new ItemIndicator(),
             new ItemPhysics(),
             new JumpCircle(),
             new LineGlyphs(),

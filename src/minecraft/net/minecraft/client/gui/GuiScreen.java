@@ -49,6 +49,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -82,6 +83,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     public static ShaderToy tokyo;
     public static  ShaderToy curiosity;
     public static boolean isShaderToyInitialized = false;
+    public ArrayList<Runnable> POST_DRAW_RUNNABLES = new ArrayList<>();
 
     public GuiScreen() {
     }
@@ -116,6 +118,9 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         for (GuiLabel guiLabel : this.labelList) {
             guiLabel.drawLabel(this.mc, mouseX, mouseY);
         }
+
+        POST_DRAW_RUNNABLES.forEach(Runnable::run);
+        POST_DRAW_RUNNABLES.clear();
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException

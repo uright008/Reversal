@@ -1,5 +1,6 @@
 package net.minecraft.item;
 
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.material.Material;
@@ -13,11 +14,12 @@ import net.minecraft.world.World;
 
 public class ItemHoe extends Item
 {
-    protected Item.ToolMaterial theToolMaterial;
+    @Getter
+    protected Item.ToolMaterial toolMaterial;
 
     public ItemHoe(Item.ToolMaterial material)
     {
-        this.theToolMaterial = material;
+        this.toolMaterial = material;
         this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(CreativeTabs.tabTools);
@@ -82,6 +84,6 @@ public class ItemHoe extends Item
 
     public String getMaterialName()
     {
-        return this.theToolMaterial.toString();
+        return this.toolMaterial.toString();
     }
 }

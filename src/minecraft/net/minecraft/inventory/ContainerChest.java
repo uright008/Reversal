@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerChest extends Container
 {
-    private IInventory lowerChestInventory;
+    public IInventory lowerChestInventory;
     private int numRows;
 
     public ContainerChest(IInventory playerInventory, IInventory chestInventory, EntityPlayer player)

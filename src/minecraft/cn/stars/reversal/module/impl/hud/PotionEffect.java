@@ -31,6 +31,7 @@ public class PotionEffect extends Module {
     public final BoolValue progress = new BoolValue("Progress", this, true);
     public final BoolValue reverse = new BoolValue("Reverse", this, true);
     public final BoolValue modernFont = new BoolValue("Modern Font", this, false);
+    public final BoolValue noAnimation = new BoolValue("No Animation", this, false);
 
     private final ResourceLocation inventoryBackground = new ResourceLocation("textures/gui/container/inventory.png");
     private final net.minecraft.potion.PotionEffect emptyPotionEffect = new net.minecraft.potion.PotionEffect(1, 1, 1);
@@ -105,6 +106,12 @@ public class PotionEffect extends Module {
 
                 potionEffect.getXAnimation().run(posX);
                 potionEffect.getYAnimation().run(posY);
+
+                if (noAnimation.enabled) {
+                    potionEffect.getXAnimation().finishNow();
+                    potionEffect.getYAnimation().finishNow();
+                }
+
                 double renderX = potionEffect.getXAnimation().getValue();
                 double renderY = potionEffect.getYAnimation().getValue();
                 

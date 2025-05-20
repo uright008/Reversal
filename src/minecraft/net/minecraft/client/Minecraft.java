@@ -751,8 +751,7 @@ public class Minecraft implements IThreadListener
 
     public void displayGuiScreen(GuiScreen guiScreenIn)
     {
-        final OpenGUIEvent openGUIEvent = new OpenGUIEvent(guiScreenIn, this.currentScreen);
-        openGUIEvent.call();
+        GuiScreen lastScreen = this.currentScreen;
         if (this.currentScreen != null)
         {
             final GUIClosedEvent closeGUIEvent = new GUIClosedEvent(this.currentScreen);
@@ -792,6 +791,9 @@ public class Minecraft implements IThreadListener
             this.mcSoundHandler.resumeSounds();
             this.setIngameFocus();
         }
+
+        final OpenGUIEvent openGUIEvent = new OpenGUIEvent(guiScreenIn, lastScreen);
+        openGUIEvent.call();
     }
 
     private void checkGLError(String message)
@@ -1494,7 +1496,8 @@ public class Minecraft implements IThreadListener
         {
             try
             {
-                this.currentScreen.handleInput();
+                if (Reversal.atomicMsgBox != null) Reversal.atomicMsgBox.handleInput();
+                else this.currentScreen.handleInput();
             }
             catch (ConcurrentModificationException e) {
                 ReversalLogger.warn("[ERROR] ConcurrentModificationException thrown!");
@@ -1583,7 +1586,10 @@ public class Minecraft implements IThreadListener
                         }
                     }
                     else {
-                        this.currentScreen.handleMouseInput();
+                        if (Reversal.atomicMsgBox != null) {
+                            Reversal.atomicMsgBox.handleMouseInput();
+                        }
+                         else currentScreen.handleMouseInput();
                     }
                 }
             }
@@ -1638,7 +1644,8 @@ public class Minecraft implements IThreadListener
 
                     if (this.currentScreen != null)
                     {
-                        this.currentScreen.handleKeyboardInput();
+                        if (Reversal.atomicMsgBox != null) Reversal.atomicMsgBox.handleKeyboardInput();
+                        else this.currentScreen.handleKeyboardInput();
                     }
                     else
                     {

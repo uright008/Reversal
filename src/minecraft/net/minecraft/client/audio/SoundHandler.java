@@ -67,6 +67,10 @@ public class SoundHandler implements IResourceManagerReloadListener, ITickable
         else playButtonPress();
     }
 
+    public void playUISound() {
+        playSound(PositionedSoundRecord.create(new ResourceLocation("reversal.ui.click")));
+    }
+
     public void onResourceManagerReload(IResourceManager resourceManager)
     {
         this.sndManager.reloadSoundSystem();

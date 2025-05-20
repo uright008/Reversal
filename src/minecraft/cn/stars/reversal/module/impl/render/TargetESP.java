@@ -12,6 +12,7 @@ import cn.stars.reversal.util.animation.advanced.impl.DecelerateAnimation;
 import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.stars.reversal.util.math.RandomUtil;
 import cn.stars.reversal.util.math.TimeUtil;
+import cn.stars.reversal.util.player.RayCastUtil;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.value.impl.ColorValue;
@@ -73,6 +74,7 @@ public class TargetESP extends Module {
     @Override
     public void onRender3D(Render3DEvent event) {
         if (attackedEntity == null) return;
+        if (!RayCastUtil.inView(attackedEntity)) return;
         switch (mode.getMode()) {
             case "Bubble": {
                 float aPC = this.getAlphaPC();
