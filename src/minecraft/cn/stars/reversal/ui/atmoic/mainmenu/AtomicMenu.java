@@ -113,7 +113,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         // Upper part
         upperScrollAnimation.run(RenderUtil.isHovered(0,0, width, 100, mouseX, mouseY) || !clickTimer.hasReached(3000L) ? 0 : -25);
 
-        RenderUtil.rect(0, 0 + upperScrollAnimation.getValue(), this.width, 25, ColorUtil.BLACK);
+        RenderUtil.rect(0, 0 + upperScrollAnimation.getValue(), this.width, 25, new Color(20,20,20,200));
 
         upperSelectionAnimation.run(50 + atomicGuis.indexOf(currentGui) * 25);
         RenderUtil.rect(upperSelectionAnimation.getValue(), 0 + upperScrollAnimation.getValue(), 25, 25, new Color(20,20,20,100));
