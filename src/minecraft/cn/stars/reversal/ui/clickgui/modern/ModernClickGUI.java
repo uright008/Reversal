@@ -20,6 +20,8 @@ import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
+import cn.stars.reversal.util.shader.RiseShaders;
+import cn.stars.reversal.util.shader.base.ShaderRenderType;
 import cn.stars.reversal.value.Value;
 import cn.stars.reversal.value.impl.*;
 import net.minecraft.client.gui.Gui;
@@ -68,12 +70,28 @@ public class ModernClickGUI extends GuiScreen {
     // Drag & Click
     private int addX, addY, deltaX, deltaY = 0;
     private boolean isDragging;
+    private int mouseX, mouseY;
+    private float partialTicks;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        Debugger.cguiProfiler.start();
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
+        this.partialTicks = partialTicks;
 
         scaleAnimation.run(1.0);
+        RiseShaders.ALPHA_SHADER.setAlpha((float) scaleAnimation.getValue());
+        RiseShaders.ALPHA_SHADER.run(ShaderRenderType.OVERLAY, partialTicks, null);
+
+        if (scaleAnimation.getValue() >= 0.999) draw(mouseX, mouseY, partialTicks);
+    }
+
+    public void onAlpha() {
+        if (scaleAnimation.getValue() <= 0.999) draw(mouseX, mouseY, partialTicks);
+    }
+
+    public void draw(int mouseX, int mouseY, float partialTicks) {
+        Debugger.cguiProfiler.start();
 
         int x = width / 2 - 260 + addX;
         int y = height / 2 - 180 + addY;

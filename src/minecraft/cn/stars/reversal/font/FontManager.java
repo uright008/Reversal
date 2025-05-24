@@ -19,6 +19,8 @@ public class FontManager {
     private static final HashMap<Integer, ModernFontRenderer> CHECK = new HashMap<>();
     private static final HashMap<Integer, ModernFontRenderer> CUR = new HashMap<>();
     private static final HashMap<Integer, ModernFontRenderer> ATOMIC = new HashMap<>();
+    private static final HashMap<Integer, ModernFontRenderer> HANDWRITE = new HashMap<>();
+    private static final HashMap<Integer, ModernFontRenderer> SF = new HashMap<>();
 
     public static MFont getRainbowParty(int size) {
         return get(RAINBOW_PARTY,  size, "RainbowParty", true, true, false, false);
@@ -65,20 +67,32 @@ public class FontManager {
         return get(PRODUCT_SANS_MEDIUM, size, "ProductSansMedium", true, true, false, false);
     }
 
+    public static MFont getHandwrite(final int size) {
+        return get(HANDWRITE, size, "handwrite", true, true, false, true, true);
+    }
+
+    public static MFont getSF(final int size) {
+        return get(SF, size, "sfui", true, true, false, false, false);
+    }
+
     public static net.minecraft.client.gui.FontRenderer getMinecraft() {
         return Minecraft.getMinecraft().fontRendererObj;
     }
 
     private static MFont get(HashMap<Integer, ModernFontRenderer> map, int size, String name, boolean fractionalMetrics, boolean AA) {
-        return get(map, size, name, fractionalMetrics, AA, false, false);
+        return get(map, size, name, fractionalMetrics, AA, false, false, false);
     }
 
     private static MFont get(HashMap<Integer, ModernFontRenderer> map, int size, String name, boolean fractionalMetrics, boolean AA, boolean otf, boolean international) {
+        return get(map, size, name, fractionalMetrics, AA, otf, international, false);
+    }
+
+    private static MFont get(HashMap<Integer, ModernFontRenderer> map, int size, String name, boolean fractionalMetrics, boolean AA, boolean otf, boolean international, boolean scaling) {
         if (!map.containsKey(size)) {
             final java.awt.Font font = FontUtil.getResource("reversal/font/" + name + (otf ? ".otf" : ".ttf"), size);
 
             if (font != null) {
-                map.put(size, new ModernFontRenderer(font, fractionalMetrics, AA, international));
+                map.put(size, new ModernFontRenderer(font, fractionalMetrics, AA, international, scaling));
             }
         }
         return map.get(size);

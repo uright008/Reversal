@@ -46,8 +46,6 @@ public class Image extends RenderableEntity {
 
     public static void draw(ResourceLocation img, double x, double y, double width, double height, Type type) {
 
-        img = getImg(img);
-
         if (type == Type.Normal) {
             GL11.glColor4f(1, 1, 1, 1);
         }

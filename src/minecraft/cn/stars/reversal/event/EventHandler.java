@@ -182,7 +182,7 @@ public final class EventHandler {
                     module.onBlockBreak(event);
                 }
             }
-        } else if (e instanceof AlphaEvent){
+        } else if (e instanceof AlphaEvent) {
             final AlphaEvent event = (AlphaEvent) e;
 
             for (final Module module : modules) {
@@ -190,6 +190,8 @@ public final class EventHandler {
                     module.onAlpha(event);
                 }
             }
+
+            if (mc.currentScreen == Reversal.modernClickGUI) Reversal.modernClickGUI.onAlpha();
         } else if (e instanceof AttackEvent) {
             final AttackEvent event = ((AttackEvent) e);
 

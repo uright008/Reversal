@@ -62,7 +62,7 @@ public class Reversal {
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
-    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(10);
+    public static final ExecutorService threadPoolExecutor = Executors.newFixedThreadPool(6);
 
     public static ModuleManager moduleManager;
     public static NotificationManager notificationManager;
@@ -87,8 +87,10 @@ public class Reversal {
             }
 
             // ViaMCP init
-            ViaMCP.create();
-            ViaMCP.INSTANCE.initAsyncSlider();
+            threadPoolExecutor.execute(() -> {
+                ViaMCP.create();
+                ViaMCP.INSTANCE.initAsyncSlider();
+            });
 
             initialize();
 
@@ -155,42 +157,35 @@ public class Reversal {
                 RainyAPI.hasJavaFX = false;
                 ReversalLogger.warn("No JavaFX found in the current java version! Music player is disabled.");
             }
-
             modernClickGUI = new ModernClickGUI();
-        //    mmtClickGUI = new MMTClickGUI();
+            //    mmtClickGUI = new MMTClickGUI();
             atomicMenu = new AtomicMenu();
 
             creativeTab = new ReversalTab();
 
             Minecraft.latch.countDown();
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             ReversalLogger.error("An error has occurred while loading Reversal: ", e);
         }
 
+
         try {
-            // 创建文件夹
             if (!FileUtil.coreDirectoryExists()) {
                 firstBoot = true;
                 FileUtil.createCoreDirectory();
             }
-
             if (!FileUtil.exists("Config" + File.separator)) {
                 FileUtil.createDirectory("Config" + File.separator);
             }
-
             if (!FileUtil.exists("Script" + File.separator)) {
                 FileUtil.createDirectory("Script" + File.separator);
             }
-
             if (!FileUtil.exists("Cache" + File.separator)) {
                 FileUtil.createDirectory("Cache" + File.separator);
             }
-
             if (!FileUtil.exists("Misc" + File.separator + "Dglab" + File.separator)) {
                 FileUtil.createDirectory("Misc" + File.separator + "Dglab" + File.separator);
             }
-
             if (!FileUtil.exists("Background" + File.separator)) {
                 FileUtil.createDirectory("Background" + File.separator);
             }
@@ -201,7 +196,7 @@ public class Reversal {
 
     public static void postInitialize() {
         try {
-            DefaultHandler.loadConfigs();
+            threadPoolExecutor.execute(DefaultHandler::loadConfigs);
 
             VideoUtil.stop();
             BackgroundManager.loadBackground();
@@ -272,6 +267,8 @@ public class Reversal {
             new TimeTraveller(),
             // Player
             new AutoGG(),
+            new AutoPlay(),
+            new AutoTip(),
             new Dinnerbone(),
             new HealthWarn(),
             new SmallPlayer(),

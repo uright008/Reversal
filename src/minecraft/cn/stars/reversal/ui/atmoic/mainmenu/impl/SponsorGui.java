@@ -32,7 +32,7 @@ public class SponsorGui extends AtomicGui {
     }
 
     @Override
-    public void drawIcon(int posX, int posY, int color) {
+    public void drawIcon(float posX, float posY, int color) {
         atomic24.drawString(icon, posX + 1, posY + 0.5, color);
     }
 

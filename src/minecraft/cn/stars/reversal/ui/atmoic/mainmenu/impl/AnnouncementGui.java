@@ -37,7 +37,7 @@ public class AnnouncementGui extends AtomicGui {
     }
 
     @Override
-    public void drawIcon(int posX, int posY, int color) {
+    public void drawIcon(float posX, float posY, int color) {
         atomic24.drawString(icon, posX + 0.5, posY + 0.5, color);
     }
 
@@ -152,16 +152,19 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("© 2025 Aerolite Society. 保留部分权利。")
                 .calcMaxWidth();
         Announcement announcement2 = new Announcement("Reversal 3.0.0-Insider", "2025/5/20", 1)
-                .addContent("# Development code: LIE.")
-                .addContent("[+] Item Indicator")
-                .addContent("[+] Some further implements to AtomicMsgBox.")
-                .addContent("[+] New Random Title.")
-                .addContent("[/] Changed the font of Atomic Island to MiSans.")
-                .addContent("[/] Maximum value of round strength changed to 8.0f.")
-                .addContent("[*] Some module names and descriptions displayed incorrectly.")
-                .addContent("[*] TargetESP was always drawn no matter whether the player is visible.")
-                .addContent("[*] Surfaces of chests rendered incorrectly.")
-                .addContent("[*] EntityItem.getEntityItem() spam logs in background.")
+                .addContent("# Development code: IMITATE")
+                .addContent("[+] 更换了启动动画 (更卡了...以后优化)")
+                .addContent("[+] 新增切换主菜单选项 (ClientSettings)")
+                .addContent("[+] 新增Bocchi Main Menu")
+                .addContent("[+] 新增Auto Play")
+                .addContent("[+] 新增Auto Tip")
+                .addContent("[+] ClickGUI新增淡入效果")
+                .addContent("[/] 主菜单上方页面栏默认不显示 鼠标靠近或点击屏幕时显现")
+                .addContent("[/] 输入框和主菜单顶部选中框颜色改为固定的粉色")
+                .addContent("[/] 优化字体渲染器")
+                .addContent("[*] 修复输入框的光标第一次出现是从左边飞过来的")
+                .addContent("[-] 删除无用的字体")
+                .addContent("[-] 删除我")
                 .calcMaxWidth();
         Announcement announcement3 = new Announcement("关于赞助", "2025/5/17", 2)
                 .addContent("为了回馈愿意给我们提供帮助的人，整点福利给大家。赞助为纯自愿原则!")

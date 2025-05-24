@@ -111,6 +111,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
+        mc.timeScreen.reset();
+
         for (GuiButton guiButton : this.buttonList) {
             guiButton.drawButton(this.mc, mouseX, mouseY);
         }

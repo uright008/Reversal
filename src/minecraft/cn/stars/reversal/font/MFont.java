@@ -15,6 +15,8 @@ public abstract class MFont {
 
     public abstract float drawCenteredString(final String text, final double x, final double y, final int color);
 
+    public abstract float drawCenteredStringWithShadow(final String text, final double x, final double y, final int color);
+
     public abstract float drawRightString(final String text, final double x, final double y, final int color);
 
     public abstract String trimStringToWidth(String text, float width, boolean reverse, boolean more);

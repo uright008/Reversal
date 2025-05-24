@@ -35,10 +35,9 @@ public class AlphaShader extends RiseShader {
                 this.inputFramebuffer.bindFramebuffer(true);
                 EventHandler.handle(new AlphaEvent());
 
-                mc.getFramebuffer().bindFramebuffer(true);
                 final int programId = this.alphaProgram.getProgramId();
                 this.alphaProgram.start();
-
+                mc.getFramebuffer().bindFramebuffer(true);
                 ShaderUniforms.uniform1i(programId, "u_diffuse_sampler", 0);
                 ShaderUniforms.uniform1f(programId, "u_alpha", alpha);
 
@@ -62,7 +61,7 @@ public class AlphaShader extends RiseShader {
         } else {
             inputFramebuffer.framebufferClear();
         }
-        inputFramebuffer.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.F);
+        inputFramebuffer.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
     }
 
     public void setAlpha(final float alpha) {

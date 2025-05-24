@@ -4,9 +4,12 @@ import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.engine.HopeEngine;
 import cn.stars.reversal.ui.notification.NotificationType;
+import cn.stars.reversal.ui.splash.impl.FadeInOutLoadingScreen;
+import cn.stars.reversal.ui.splash.impl.ImageLoadingScreen;
 import cn.stars.reversal.ui.splash.impl.VideoLoadingScreen;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
 import cn.stars.reversal.ui.splash.util.Interpolations;
+import cn.stars.reversal.ui.splash.util.Rect;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
@@ -30,13 +33,13 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class SplashScreen {
 
-    private static final Animation animation = new Animation(Easing.EASE_OUT_EXPO, 1500);
-    private static final Animation animation2 = new Animation(Easing.EASE_OUT_EXPO, 1500);
+    private static final Animation animation = new Animation(Easing.EASE_OUT_EXPO, 500);
+    public static final Animation animation2 = new Animation(Easing.EASE_OUT_EXPO, 500);
     public static final Object renderLock = new Object();
     public static final Object finishLock = new Object();
     private static Minecraft mc = Minecraft.getMinecraft();
     private static final int backgroundColor = ColorUtil.hexColor(0, 0, 0, 255);
-    private static final LoadingScreenRenderer loadingScreenRenderer = getLoadingScreen();
+    public static final LoadingScreenRenderer loadingScreenRenderer = getLoadingScreen();
     public static int progress = 0;
     public static String progressText = "";
     public static Thread splashThread;
@@ -52,18 +55,16 @@ public class SplashScreen {
 
     @SneakyThrows
     private static LoadingScreenRenderer getLoadingScreen() {
-        return new VideoLoadingScreen();
+        return new ImageLoadingScreen();
     }
 
     @SneakyThrows
     public static void init() {
         if (RainyAPI.isSplashScreenDisabled) return;
-        // INIT LOL
         subWindow = RainyAPI.createSubWindow();
         GLFW.glfwMakeContextCurrent(subWindow);
         GL.createCapabilities();
         mc.updateDisplay();
-        BackgroundManager.loadSplash();
 
         splashThread = new Thread(new Runnable() {
             @Override
@@ -76,7 +77,6 @@ public class SplashScreen {
                 initGL();
 
                 loadingScreenRenderer.init();
-
 
                 while (true) {
 
@@ -96,7 +96,7 @@ public class SplashScreen {
                         RenderUtil.deltaFrameTime = 0;
                     }
 
-                    animation.run(Display.getWidth() / 100.0 * progress);
+                    animation.run((Display.getWidth() - 40) / 100.0 * progress);
                     animation2.run(progress);
 
                     synchronized (renderLock) {
@@ -126,12 +126,8 @@ public class SplashScreen {
                         if (progress != 100)
                             alpha = (Interpolations.interpBezier(alpha * 255, 0, 0.1f) * 0.003921568627451F);
 
-                    //    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-                    //    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-
-                    //    Rect.draw(0, 0, width, height, ColorUtil.hexColor(0, 0, 0, (int) (alpha * 255)), Rect.RectType.EXPAND);
-
-                    //    Rect.draw(0, height - 2, animation.getValue(), 2, ColorUtil.hexColor(255,255,255, 150 + (int) animation2.getValue()), Rect.RectType.EXPAND);
+                        Rect.draw(0, 0, width, height, ColorUtil.hexColor(0, 0, 0, (int) (alpha * 255)), Rect.RectType.EXPAND);
+                        Rect.draw(20, height - 30, animation.getValue(), 2, ColorUtil.hexColor(255,255,255, 150 + (int) animation2.getValue()), Rect.RectType.EXPAND);
 
                         GlStateManager.enableAlpha();
                         GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
@@ -178,7 +174,7 @@ public class SplashScreen {
 
         }, "Loading Screen Thread");
 
-        splashThread.setPriority(Thread.MAX_PRIORITY);
+        splashThread.setPriority(10);
         splashThread.setUncaughtExceptionHandler((t, e) -> threadError = e);
         splashThread.start();
         checkThreadState();
@@ -223,8 +219,6 @@ public class SplashScreen {
     public static void notifyGameLoaded() {
         if (RainyAPI.isSplashScreenDisabled) return;
         loadingScreenRenderer.onGameLoadFinishedNotify();
-
-        while (!AsyncGLContentLoader.isAllTasksFinished()) {}
 
         waiting = true;
         synchronized (finishLock) {

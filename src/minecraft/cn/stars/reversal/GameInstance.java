@@ -39,6 +39,7 @@ public interface GameInstance {
     List<Runnable> NORMAL_OUTLINE_RUNNABLES = new ArrayList<>();
     List<Runnable> NORMAL_RENDER_RUNNABLES = new ArrayList<>();
     List<Runnable> NORMAL_POST_RENDER_RUNNABLES = new ArrayList<>();
+    List<Runnable> ALPHA_RUNNABLES = new ArrayList<>();
 
     List<Runnable> MODERN_BLUR_RUNNABLES = new ArrayList<>();
     List<Runnable> MODERN_BLOOM_RUNNABLES = new ArrayList<>();

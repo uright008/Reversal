@@ -5,6 +5,9 @@ import cn.stars.reversal.event.impl.ValueChangedEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
 import cn.stars.reversal.module.ModuleInfo;
+import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.MainGui;
+import cn.stars.reversal.ui.atmoic.mainmenu.impl.BocchiMainGui;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.render.ThemeUtil;
 import cn.stars.reversal.value.impl.*;
@@ -42,6 +45,7 @@ public final class ClientSettings extends Module {
     public final BoolValue hudTextWithBracket = new BoolValue("Hud Text With Bracket", "value.ClientSettings.hudTextWithBracket", this, false);
     public final BoolValue clientMsgCustomName = new BoolValue("Client Message Custom Name", "value.ClientSettings.clientMsgCustomName", this, false);
     public final BoolValue modernUISound = new BoolValue("Modern UI Sound", "value.ClientSettings.modernUISound", this, false);
+    public final ModeValue mainMenu = new ModeValue("Main Menu", "value.ClientSettings.mainMenu", this, "Osu!Lazer", "Osu!Lazer", "Bocchi");
 
     public final NoteValue note4 = new NoteValue("< Minecraft Settings >", "value.ClientSettings.note4", this);
     public final BoolValue loadingScreenBg = new BoolValue("Loading Screen Background", "value.ClientSettings.loadingScreenBg", this, false);
@@ -89,6 +93,13 @@ public final class ClientSettings extends Module {
         if (event.setting == customName) {
             ThemeUtil.setCustomClientName(customName.getText());
         }
+        if (event.setting == mainMenu) {
+            if (mainMenu.getMode().equals("Osu!Lazer")) {
+                AtomicMenu.setGui(0, new MainGui());
+            } else {
+                AtomicMenu.setGui(0, new BocchiMainGui());
+            }
+        }
     }
 
     @Override
@@ -102,5 +113,11 @@ public final class ClientSettings extends Module {
             ReversalLogger.info("Switched mc.mouseHelper to MouseHelper.");
         }
         customName.setText(ThemeUtil.getCustomClientName());
+        if (mainMenu.getMode().equals("Osu!Lazer")) {
+            AtomicMenu.setGui(0, new MainGui());
+        } else {
+            AtomicMenu.setGui(0, new BocchiMainGui());
+
+        }
     }
 }

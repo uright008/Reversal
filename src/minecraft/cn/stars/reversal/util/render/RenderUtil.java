@@ -1,6 +1,5 @@
 package cn.stars.reversal.util.render;
 
-import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.module.impl.render.Particles;
 import cn.stars.reversal.module.impl.render.TargetESP;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -50,8 +49,9 @@ import static net.minecraft.client.gui.Gui.drawScaledCustomSizeModalRect;
 import static org.lwjgl.opengl.GL11.*;
 
 @UtilityClass
-public final class RenderUtil implements GameInstance {
+public final class RenderUtil {
 
+    private static final Minecraft mc = Minecraft.getMinecraft();
     private static final Frustum frustrum = new Frustum();
 
     public long lastFrame = System.currentTimeMillis();
@@ -1010,6 +1010,29 @@ public final class RenderUtil implements GameInstance {
         GL11.glVertex2d(x + width, y);
         GL11.glVertex2d(x + width, y + height);
         GL11.glVertex2d(x, y + height);
+        GL11.glEnd();
+
+        stop();
+    }
+
+    public void triangle(final double x, final double y, final double width, final double height, final boolean down, final Color color) {
+        start();
+
+        if (color != null) {
+            glColor(color);
+        }
+
+        GL11.glBegin(GL_TRIANGLE_FAN);
+        if (down) {
+            GL11.glVertex2d(x, y);
+            GL11.glVertex2d(x + width, y);
+            GL11.glVertex2d(x + width / 2, y + height);
+        } else {
+            GL11.glVertex2d(x, y + height);
+            GL11.glVertex2d(x + width, y + height);
+            GL11.glVertex2d(x + width / 2, y);
+        }
+    //    GL11.glVertex2d(x, y + height);
         GL11.glEnd();
 
         stop();

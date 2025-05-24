@@ -2,13 +2,16 @@ package cn.stars.reversal.util.shader.base;
 
 import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.util.shader.ShaderUtil;
+import lombok.Getter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class RiseShaderProgram implements GameInstance {
+@Getter
+public class RiseShaderProgram {
 
     private final int programId;
 
@@ -71,7 +74,7 @@ public class RiseShaderProgram implements GameInstance {
     }
 
     public static void drawQuad() {
-        final ScaledResolution scaledResolution = new ScaledResolution(mc);
+        final ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
         drawQuad(0.0, 0.0, scaledResolution.getScaledWidth_double(), scaledResolution.getScaledHeight_double());
     }
 
@@ -83,7 +86,4 @@ public class RiseShaderProgram implements GameInstance {
         GL20.glUseProgram(0);
     }
 
-    public int getProgramId() {
-        return programId;
-    }
 }

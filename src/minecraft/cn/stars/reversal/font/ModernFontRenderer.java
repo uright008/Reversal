@@ -3,6 +3,7 @@ package cn.stars.reversal.font;
 import cn.stars.reversal.module.impl.client.Debugger;
 import cn.stars.reversal.util.Transformer;
 import cn.stars.reversal.util.render.ColorUtil;
+import cn.stars.reversal.util.render.GlUtils;
 import cn.stars.reversal.util.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -34,6 +35,7 @@ public class ModernFontRenderer extends MFont {
     private final java.awt.Font font;
     private final boolean fractionalMetrics;
     private final float fontHeight;
+    private final boolean scaling;
     private final FontCharacter[] defaultCharacters = new FontCharacter[LATIN_MAX_AMOUNT];
     private final FontCharacter[] internationalCharacters = new FontCharacter[INTERNATIONAL_MAX_AMOUNT];
     private final boolean antialiasing;
@@ -42,12 +44,13 @@ public class ModernFontRenderer extends MFont {
     private final Map<String, Boolean> cachedInternationalType = new HashMap<>();
     private final FontBatchRenderer fontBatchRenderer = new FontBatchRenderer();
 
-    public ModernFontRenderer(java.awt.Font font, boolean fractionalMetrics, boolean antialiasing, boolean international) {
+    public ModernFontRenderer(java.awt.Font font, boolean fractionalMetrics, boolean antialiasing, boolean international, boolean scaling) {
         this.antialiasing = antialiasing;
         this.font = font;
         this.fractionalMetrics = fractionalMetrics;
         this.fontHeight = (float) (font.getStringBounds(ALPHABET, new FontRenderContext(new AffineTransform(), antialiasing, fractionalMetrics)).getHeight() / 2f);
         this.international = international;
+        this.scaling = scaling;
         fillCharacters(defaultCharacters, java.awt.Font.PLAIN);
     }
 
@@ -160,8 +163,11 @@ public class ModernFontRenderer extends MFont {
         }
         byteBuffer.flip();
         GlStateManager.bindTexture(texture);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        if (scaling) {
+            GlUtils.startAntiAlias();
+        } else {
+            GlUtils.stopAntiAlias();
+        }
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, byteBuffer);
     }
 
@@ -264,6 +270,11 @@ public class ModernFontRenderer extends MFont {
     public int drawStringWithShadow(final String text, final double x, final double y, final int color) {
         drawString(text, x + 1, y + 1, new Color(50,50,50,50).getRGB(), false);
         return drawString(text, x, y, color, false);
+    }
+
+    public float drawCenteredStringWithShadow(final String text, final double x, final double y, final int color) {
+        drawCenteredString(text, x + 2, y + 2, new Color(50,50,50,50).getRGB());
+        return drawCenteredString(text, x, y, color);
     }
 
     public int drawString(String text, double x, double y, int color, final boolean shadow) {

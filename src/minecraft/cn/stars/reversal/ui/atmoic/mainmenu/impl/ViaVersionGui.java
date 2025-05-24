@@ -33,7 +33,7 @@ public class ViaVersionGui extends AtomicGui {
     }
 
     @Override
-    public void drawIcon(int posX, int posY, int color) {
+    public void drawIcon(float posX, float posY, int color) {
         atomic24.drawString(icon, posX + 2, posY + 1, color);
     }
 

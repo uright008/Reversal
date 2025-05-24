@@ -15,9 +15,11 @@ import cn.stars.reversal.util.animation.advanced.composed.CustomAnimation;
 import cn.stars.reversal.util.animation.advanced.impl.SmoothStepAnimation;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
+import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.player.SkinUtil;
 import cn.stars.reversal.util.render.*;
+import cn.stars.reversal.util.render.video.VideoUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -43,12 +45,15 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
     private ResourceLocation headImage;
 
     private final Animation upperSelectionAnimation = new Animation(Easing.EASE_OUT_EXPO, 500);
+    private final Animation upperScrollAnimation = new Animation(Easing.EASE_OUT_EXPO, 750);
     private final Animation alphaAnimation = new Animation(Easing.LINEAR, 200);
+    private final Animation bgAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation subHoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation subPosAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final Animation displayNameAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
     private final CustomAnimation cursorAnimation = new CustomAnimation(SmoothStepAnimation.class, 1000, -5, 5);
     private boolean subMenu = false;
+    private final TimeUtil clickTimer = new TimeUtil();
 
     public static int announcementIndex = 0;
     public static float anPosX = 60, anPosY = 80;
@@ -63,13 +68,20 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        drawDefaultBackground();
+        if (RainyAPI.backgroundId == 9) {
+            bgAnimation.run(currentGui instanceof BocchiMainGui && !BocchiMainGui.isPulledUp ? 0 : 30);
+            VideoUtil.render((float) -bgAnimation.getValue(), (float) -bgAnimation.getValue(), width + (float) bgAnimation.getValue(), height + (float) bgAnimation.getValue());
+        } else {
+            drawDefaultBackground();
+        }
+
+        if (!atomicGuis.contains(currentGui)) switchGui(0);
 
         ColorUtil.updateColorAnimation();
 
         // Background Blur
-        alphaAnimation.run(currentGui == atomicGuis.get(0) ? 0 : 255);
-        ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(0,0,0, (int) alphaAnimation.getValue())), 2, 2);
+        alphaAnimation.run(currentGui == atomicGuis.get(0) && !BocchiMainGui.isPulledUp ? 0 : 255);
+        ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.rect(0,0,width,height, new Color(255,255,255, (int) alphaAnimation.getValue())), 2, 2);
 
         if (RainyAPI.menuBubble) {
             try {
@@ -99,10 +111,12 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         }, 2, 2);
 
         // Upper part
-        RenderUtil.rect(0, 0, this.width, 25, new Color(20,20,20,200));
+        upperScrollAnimation.run(RenderUtil.isHovered(0,0, width, 100, mouseX, mouseY) || !clickTimer.hasReached(3000L) ? 0 : -25);
+
+        RenderUtil.rect(0, 0 + upperScrollAnimation.getValue(), this.width, 25, ColorUtil.BLACK);
 
         upperSelectionAnimation.run(50 + atomicGuis.indexOf(currentGui) * 25);
-        RenderUtil.rect(upperSelectionAnimation.getValue(), 0, 25, 25, new Color(20,20,20,100));
+        RenderUtil.rect(upperSelectionAnimation.getValue(), 0 + upperScrollAnimation.getValue(), 25, 25, new Color(20,20,20,100));
 
         if (!currentGui.displayName.isEmpty()) {
             displayNameAnimation.run(26 + FontManager.getRainbowParty(40).width(currentGui.displayName));
@@ -120,28 +134,28 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         for (AtomicGui atomicGui : atomicGuis) {
             if (RenderUtil.isHovered(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, mouseX, mouseY)) atomicGui.hoverAnimation.run(80);
             else atomicGui.hoverAnimation.run(0);
-            RenderUtil.rect(50 + atomicGuis.indexOf(atomicGui) * 25, 0, 25, 25, new Color(20,20,20, (int) atomicGui.hoverAnimation.getValue()));
-            RenderUtil.roundedRectangle(60 - regular16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 27, regular16.width(atomicGui.name) + 5, regular16.height() + 2, 2, new Color(20, 20, 20, (int) atomicGui.hoverAnimation.getValue() * 2));
-            regular16.drawString(atomicGui.name, 62.5 - regular16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 30, new Color(255,255,255, (int) atomicGui.hoverAnimation.getValue() * 3).getRGB());
-            atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8, Color.WHITE.getRGB());
+            RenderUtil.rect(50 + atomicGuis.indexOf(atomicGui) * 25, 0 + upperScrollAnimation.getValue(), 25, 25, new Color(20,20,20, (int) atomicGui.hoverAnimation.getValue()));
+            RenderUtil.roundedRectangle(60 - regular16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 27 + upperScrollAnimation.getValue(), regular16.width(atomicGui.name) + 5, regular16.height() + 2, 2, new Color(20, 20, 20, (int) atomicGui.hoverAnimation.getValue() * 2));
+            regular16.drawString(atomicGui.name, 62.5 - regular16.width(atomicGui.name) / 2f + atomicGuis.indexOf(atomicGui) * 25, 30 + upperScrollAnimation.getValue(), new Color(255,255,255, (int) atomicGui.hoverAnimation.getValue() * 3).getRGB());
+            atomicGui.drawIcon(50 + atomicGuis.indexOf(atomicGui) * 25 + 6, 8 + (float)upperScrollAnimation.getValue(), ColorUtil.WHITE.getRGB());
         }
 
         // Player & Time
         this.drawPlayerImage();
-        regular18.drawString(GameInstance.mc.session.getUsername(), width - 150 - regular18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10, Color.WHITE.getRGB());
-        RenderUtil.rect(width - 127, 5, 1, 15, Color.WHITE);
-        RenderUtil.rect(width - 30, 5, 1, 15, Color.WHITE);
+        regular18.drawString(GameInstance.mc.session.getUsername(), width - 150 - regular18.getStringWidth(GameInstance.mc.session.getUsername()) - 5, 10 + upperScrollAnimation.getValue(), Color.WHITE.getRGB());
+        RenderUtil.rect(width - 127, 5 + upperScrollAnimation.getValue(), 1, 15, Color.WHITE);
+        RenderUtil.rect(width - 30, 5 + upperScrollAnimation.getValue(), 1, 15, Color.WHITE);
 
         regular18.drawString(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + " " + (LocalDateTime.now().getHour() > 12 ? "PM" : "AM"),
-                width - 100, 6, Color.WHITE.getRGB());
+                width - 100, 6 + upperScrollAnimation.getValue(), Color.WHITE.getRGB());
         Duration duration = Duration.between(initTime, LocalDateTime.now());
-        regular16.drawString("running " + String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60), width - 100, 14, Color.WHITE.getRGB());
+        regular16.drawString("running " + String.format("%02d:%02d:%02d", duration.toHours(), duration.toMinutes() % 60, duration.getSeconds() % 60), width - 100, 14 + upperScrollAnimation.getValue(), Color.WHITE.getRGB());
 
-        RenderUtil.clock(width - 120, 5, 15, 2.4,2,1.2, Color.WHITE);
+        RenderUtil.clock(width - 120, 5 + upperScrollAnimation.getValue(), 15, 2.4,2,1.2, Color.WHITE);
 
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
-            RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
-            currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8, ColorUtil.whiteAnimation.getOutput().getRGB());
+            RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2 + upperScrollAnimation.getValue(), 25, 0.8, ColorUtil.PINK);
+            currentGui.drawIcon(50 + atomicGuis.indexOf(currentGui) * 25 + 6, 8 + (float)upperScrollAnimation.getValue(), ColorUtil.whiteAnimation.getOutput().getRGB());
             this.drawPlayerImage();
 
             if (!currentGui.displayName.isEmpty()) {
@@ -154,7 +168,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
             }
         }, 2, 2);
 
-        RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2, 25, 0.8, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+        RenderUtil.rect(upperSelectionAnimation.getValue(), 24.2 + upperScrollAnimation.getValue(), 25, 0.8, ColorUtil.PINK);
 
         if (cursorAnimation.getAnimation().finished(cursorAnimation.getAnimation().getDirection())) cursorAnimation.changeDirection();
 
@@ -198,7 +212,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
         subPosAnimation.run(subMenu ? 200 : 0);
         RenderUtil.rect(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height, new Color(20,20,20,240));
         RenderUtil.rect(width - 25, 0, 25, 25, new Color(20,20,20,(int) subHoverAnimation.getValue()));
-        atomic24.drawString("4", width - 18, 9, Color.WHITE.getRGB());
+        atomic24.drawString("4", width - 18, 9 + upperScrollAnimation.getValue(), Color.WHITE.getRGB());
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.scissor(width - subPosAnimation.getValue(), 0, subPosAnimation.getValue(), height);
 
@@ -232,6 +246,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        clickTimer.reset();
         if (RenderUtil.isHovered(width - 25, 0, 25, 25, mouseX, mouseY)) {
             subMenu = !subMenu;
             uiClick();
@@ -297,9 +312,9 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
     private void drawPlayerImage() {
         try {
-            RenderUtil.image(headImage, width - 150, 5, 15, 15);
+            RenderUtil.image(headImage, width - 150, 5 + (float)upperScrollAnimation.getValue(), 15, 15);
         } catch (Exception e) {
-            RenderUtil.rect(width - 150, 5, 15, 15, Color.WHITE);
+            RenderUtil.rect(width - 150, 5 + upperScrollAnimation.getValue(), 15, 15, Color.WHITE);
         }
     }
 
@@ -387,6 +402,10 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
 
     public static void setMiscGui(MiscGui miscGui) {
         atomicGuis.set(8, miscGui);
+    }
+
+    public static void setGui(int index, AtomicGui gui) {
+        atomicGuis.set(index, gui);
     }
 
     private static void init() {

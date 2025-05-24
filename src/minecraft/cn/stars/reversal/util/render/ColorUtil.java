@@ -2,6 +2,7 @@ package cn.stars.reversal.util.render;
 
 import cn.stars.reversal.module.impl.client.ClientSettings;
 import cn.stars.reversal.util.animation.advanced.composed.ColorAnimation;
+import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.simple.SimpleAnimation;
 import cn.stars.reversal.util.math.MathUtil;
 import cn.stars.reversal.util.misc.ModuleInstance;
@@ -16,6 +17,10 @@ public final class ColorUtil {
     public static final Color transparent = new Color(0, 0, 0, 0);
     public static ColorAnimation whiteAnimation = new ColorAnimation(Color.WHITE, new Color(255, 255, 255, 0), 1000);
     public static final int[] COLOR_CODES = new int[32];
+
+    public static final Color WHITE = new Color(240, 240, 240, 255);
+    public static final Color BLACK = new Color(60, 60, 60, 255);
+    public static final Color PINK = new Color(255, 160, 175, 255);
 
     static {
         for (int i = 0; i < 32; ++i) {
@@ -33,6 +38,23 @@ public final class ColorUtil {
             }
             COLOR_CODES[i] = (red & 255) << 16 | (green & 255) << 8 | blue & 255;
         }
+    }
+
+    public static Color colorToColor(Color color1, Color color2, Animation animation) {
+        return colorToColor(color1, color2, animation, 1.0);
+    }
+
+    public static Color colorToColor(Color color1, Color color2, Animation animation, double division) {
+        int redIn = color1.getRed();
+        int greenIn = color1.getGreen();
+        int blueIn = color1.getBlue();
+        int alphaIn = color1.getAlpha();
+        int redOut = color2.getRed();
+        int greenOut = color2.getGreen();
+        int blueOut = color2.getBlue();
+        int alphaOut = color2.getAlpha();
+        double value = animation.getValue() / division;
+        return new Color(redIn + (int)((redOut - redIn) * value), greenIn + (int)((greenOut - greenIn) * value), blueIn + (int)((blueOut - blueIn) * value), alphaIn + (int)((alphaOut - alphaIn) * value));
     }
 
     public static void updateColorAnimation() {

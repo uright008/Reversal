@@ -123,7 +123,7 @@ public class VideoUtil {
         }
     }
 
-    public static void render(int left, int top, int right, int bottom) {
+    public static void render(float left, float top, float right, float bottom) {
         if (RainyAPI.isSplashScreenDisabled) {
             return;
         }

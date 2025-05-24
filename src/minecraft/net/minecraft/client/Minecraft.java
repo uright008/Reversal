@@ -13,6 +13,7 @@ import cn.stars.reversal.module.impl.render.Hitbox;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.mainmenu.impl.misc.ConnectingGui;
 import cn.stars.reversal.ui.splash.SplashScreen;
+import cn.stars.reversal.ui.splash.impl.FadeInOutLoadingScreen;
 import cn.stars.reversal.ui.splash.util.AsyncGLContentLoader;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.math.RandomUtil;
@@ -476,7 +477,7 @@ public class Minecraft implements IThreadListener
             this.gameSettings.saveOptions();
         }
 
-        latch.await();
+        while (latch.getCount() > 0) latch.await();
 
         this.renderGlobal.makeEntityOutlineShader();
 

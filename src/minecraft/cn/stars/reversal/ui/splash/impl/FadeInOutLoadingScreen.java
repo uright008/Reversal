@@ -10,10 +10,12 @@ import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import static cn.stars.reversal.ui.splash.SplashScreen.animation2;
+
 public class FadeInOutLoadingScreen extends LoadingScreenRenderer {
 
 
-    FadeInOutImage gs1;
+    public FadeInOutImage gs1;
 
     TimerUtil startTimer = new TimerUtil();
     boolean firstFrame = false;
@@ -33,7 +35,7 @@ public class FadeInOutLoadingScreen extends LoadingScreenRenderer {
             startTimer.reset();
         }
 
-        if (!startTimer.hasTimeElapsed(1000))
+        if (!startTimer.hasTimeElapsed(100))
             return;
 
         if (!gs1.isFinished())
@@ -45,13 +47,13 @@ public class FadeInOutLoadingScreen extends LoadingScreenRenderer {
         return gs1.isFinished();
     }
 
-    private static class FadeInOutImage {
+    public static class FadeInOutImage {
 
         @Getter
         private final ResourceLocation img;
 
         float screenMaskAlpha = 0;
-        boolean increasing = true;
+        public boolean increasing;
 
         @Getter
         boolean finished = false;
@@ -61,6 +63,7 @@ public class FadeInOutLoadingScreen extends LoadingScreenRenderer {
         TimerUtil timer = new TimerUtil();
 
         public FadeInOutImage(ResourceLocation loc) {
+            increasing = true;
             img = loc;
         }
 
@@ -71,8 +74,8 @@ public class FadeInOutLoadingScreen extends LoadingScreenRenderer {
                 timer.reset();
             }
 
-            if (increasing || SplashScreen.waiting) {
-                screenMaskAlpha += increasing ? 1 * 0.003921568627451F : -1 * 0.003921568627451F;
+            if (increasing || animation2.getDestinationValue() == 100) {
+                screenMaskAlpha += increasing ? 1 * 0.02F : -1 * 0.02F;
             }
 
             if ((!increasing && screenMaskAlpha < 0.01))

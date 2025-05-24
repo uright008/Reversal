@@ -10,6 +10,7 @@ import cn.stars.reversal.ui.atmoic.misc.component.TextField;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
+import cn.stars.reversal.util.shader.RiseShaders;
 import lombok.SneakyThrows;
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
@@ -57,7 +58,7 @@ public class SinglePlayerGui extends AtomicGui {
     }
 
     @Override
-    public void drawIcon(int posX, int posY, int color) {
+    public void drawIcon(float posX, float posY, int color) {
         atomic24.drawString(icon, posX, posY + 0.5, color);
     }
 
@@ -210,6 +211,7 @@ public class SinglePlayerGui extends AtomicGui {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
+
         ModuleInstance.getPostProcessing().drawElementWithBloom(() -> {
             RoundedUtil.drawRound(50, 100, width - 100, height - 120, 3, Color.BLACK);
             RoundedUtil.drawRound(50, 65, width - 100, 25, 3, Color.BLACK);

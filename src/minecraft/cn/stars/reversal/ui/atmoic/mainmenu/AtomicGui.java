@@ -20,7 +20,7 @@ public class AtomicGui implements GameInstance {
     protected List<GuiButton> buttonList = Lists.newArrayList();
     public GuiButton selectedButton;
 
-    public final Animation hoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 1000);
+    public final Animation hoverAnimation = new Animation(Easing.EASE_OUT_EXPO, 750);
 
     public AtomicGui(String name, String icon) {
         this.name = name;
@@ -90,5 +90,5 @@ public class AtomicGui implements GameInstance {
     public void confirmClicked(boolean result, int id) {}
 
     // Built-in
-    public void drawIcon(int posX, int posY, int color) {}
+    public void drawIcon(float posX, float posY, int color) {}
 }

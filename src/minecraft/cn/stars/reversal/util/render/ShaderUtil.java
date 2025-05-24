@@ -1,6 +1,7 @@
 package cn.stars.reversal.util.render;
 
 import cn.stars.reversal.GameInstance;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 
@@ -9,7 +10,8 @@ import java.io.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
-public class ShaderUtil implements GameInstance {
+public class ShaderUtil {
+    private static final Minecraft mc = Minecraft.getMinecraft();
     private final int programID;
 
     public ShaderUtil(String fragmentShaderLoc, String vertexShaderLoc) {

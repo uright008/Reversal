@@ -2,10 +2,12 @@ package cn.stars.reversal.ui.splash.util;
 
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.ui.splash.SplashScreen;
+import cn.stars.reversal.ui.splash.impl.FadeInOutLoadingScreen;
 import cn.stars.reversal.util.ReversalLogger;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
@@ -131,12 +133,6 @@ public class AsyncGLContentLoader {
                                     // change the thread's state (WAITING -> RUNNING) to continue loading tasks
                                     thread.tasks.notifyAll();
                                 }
-                        }
-
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
                         }
                     }
                 },
