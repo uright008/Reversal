@@ -174,7 +174,7 @@ public class GuiChat extends GuiScreen
             if(m.isEnabled() && m.getModuleInfo().category().equals(Category.HUD) && m.isCanBeEdited()) {
 
                 boolean isInside = RenderUtils.isInside(mouseX, mouseY, m.getX() + m.getAdditionalWidth(), m.getY() + m.getAdditionalHeight(), m.getWidth(), m.getHeight()) &&
-                        Arrays.stream(Reversal.moduleManager.moduleList).filter(m2 -> m2.isEnabled() && m2.getModuleInfo().category().equals(Category.HUD) && mouseX >= m2.getX() + m.getAdditionalWidth() && mouseX <= m2.getX() + m.getAdditionalWidth() + m2.getWidth() && mouseY >= m2.getY() + m.getAdditionalHeight() && mouseY <= m2.getY() + m.getAdditionalHeight() + m2.getHeight()).findFirst().get().equals(m);
+                        Reversal.moduleManager.moduleList.stream().filter(m2 -> m2.isEnabled() && m2.getModuleInfo().category().equals(Category.HUD) && mouseX >= m2.getX() + m.getAdditionalWidth() && mouseX <= m2.getX() + m.getAdditionalWidth() + m2.getWidth() && mouseY >= m2.getY() + m.getAdditionalHeight() && mouseY <= m2.getY() + m.getAdditionalHeight() + m2.getHeight()).findFirst().get().equals(m);
 
                 if(isInside) {
                     m.setDragging(true);
@@ -250,7 +250,7 @@ public class GuiChat extends GuiScreen
 
     private void sendAutocompleteRequest(String p_146405_1_, String p_146405_2_)
     {
-        if (p_146405_1_.length() >= 1)
+        if (!p_146405_1_.isEmpty())
         {
             BlockPos blockpos = null;
 
@@ -304,7 +304,7 @@ public class GuiChat extends GuiScreen
             if(m.isEnabled() && m.getModuleInfo().category().equals(Category.HUD) && m.isCanBeEdited()) {
 
                 boolean isInside = RenderUtils.isInside(mouseX, mouseY, m.getX() + m.getAdditionalWidth(), m.getY() + m.getAdditionalHeight(), m.getWidth(), m.getHeight()) &&
-                        Arrays.stream(Reversal.moduleManager.moduleList).filter(m2 -> m2.isEnabled() && m2.getModuleInfo().category().equals(Category.HUD) && mouseX >= m2.getX() + m.getAdditionalWidth() && mouseX <= m2.getX() + m.getAdditionalWidth() + m2.getWidth() && mouseY >= m2.getY() + m.getAdditionalHeight() && mouseY <= m2.getY() + m.getAdditionalHeight() + m2.getHeight()).findFirst().get().equals(m);
+                        Reversal.moduleManager.moduleList.stream().filter(m2 -> m2.isEnabled() && m2.getModuleInfo().category().equals(Category.HUD) && mouseX >= m2.getX() + m.getAdditionalWidth() && mouseX <= m2.getX() + m.getAdditionalWidth() + m2.getWidth() && mouseY >= m2.getY() + m.getAdditionalHeight() && mouseY <= m2.getY() + m.getAdditionalHeight() + m2.getHeight()).findFirst().get().equals(m);
                 m.editOpacityAnimation.setAnimation(isInside ?  255 : 0, 10);
 
                 RoundedUtils.drawRoundOutline(m.getX() + m.getAdditionalWidth() - 4, m.getY() + m.getAdditionalHeight() - 4, (m.getWidth()) + 8, (m.getHeight()) + 8, 6, 1, new Color(255, 255, 255, 0), new Color(255, 255, 255, (int) m.editOpacityAnimation.getValue()));

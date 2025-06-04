@@ -51,14 +51,17 @@ import java.util.concurrent.Executors;
  * A Hack-visual PVP Client.
  */
 @Getter
+@SuppressWarnings("all")
 public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v3.0.0-Insider";
+    public static final String VERSION = "v3.0.0.2";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.DEVELOPMENT;
+    public static final String IDENTIFIER = "+alpha";
+    public static boolean EX_MODE = false;
 
     // Init
     public static final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
@@ -85,6 +88,8 @@ public class Reversal {
             } else {
                 ReversalLogger.info("Loading client asynchronously...");
             }
+
+            RainyAPI.readProperties();
 
             // ViaMCP init
             threadPoolExecutor.execute(() -> {
@@ -214,7 +219,14 @@ public class Reversal {
     }
 
     public static void setWindowTitle() {
-        Display.setTitle(NAME + " " + VERSION + " " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
+        StringBuilder title = new StringBuilder();
+
+        title.append(NAME + " " + VERSION);
+        if (BRANCH.equals(Branch.DEVELOPMENT)) title.append(IDENTIFIER);
+        if (EX_MODE) title.append(" | EXPERIMENT MODE |");
+        title.append(" " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
+
+        Display.setTitle(title.toString());
     }
 
     public static boolean onSendChatMessage(final String s) {
@@ -273,6 +285,7 @@ public class Reversal {
             new HealthWarn(),
             new SmallPlayer(),
             new SmoothSneak(),
+            new ThePitUtilities(),
             // Render
             new Animations(),
             new AppleSkin(),

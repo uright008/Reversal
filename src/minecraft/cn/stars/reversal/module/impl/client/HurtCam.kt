@@ -19,7 +19,7 @@ class HurtCam : Module() {
     private var sr = ScaledResolution(mc)
 
     override fun onUpdateAlways() {
-        if (this.enabled) this.enabled = false;
+        checkClientModuleState()
     }
 
     override fun onUpdateAlwaysInGui() {

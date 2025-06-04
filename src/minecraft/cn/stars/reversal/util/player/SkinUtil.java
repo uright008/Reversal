@@ -8,16 +8,10 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.util.ResourceLocation;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,17 +53,6 @@ public class SkinUtil implements GameInstance {
     private static String scrape(String url) {
         StringBuilder content = new StringBuilder();
         try {
-            TrustManager[] trustAllCerts = new TrustManager[]{
-                    new X509TrustManager() {
-                        public X509Certificate[] getAcceptedIssuers() { return null; }
-                        public void checkClientTrusted(X509Certificate[] certs, String authType) { }
-                        public void checkServerTrusted(X509Certificate[] certs, String authType) { }
-                    }
-            };
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, trustAllCerts, new java.security.SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-
             final HttpsURLConnection connection = (HttpsURLConnection) new URL(url).openConnection();
             connection.setRequestProperty("User-Agent", "Chrome Version 88.0.4324.150");
             connection.connect();
@@ -79,7 +62,7 @@ public class SkinUtil implements GameInstance {
                 content.append(line).append(System.lineSeparator());
             }
             bufferedReader.close();
-        } catch (IOException | ClassCastException | NoSuchAlgorithmException | KeyManagementException ignored) {
+        } catch (IOException | ClassCastException ignored) {
         }
         return content.toString();
     }

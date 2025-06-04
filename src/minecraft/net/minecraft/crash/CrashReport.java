@@ -327,7 +327,7 @@ public class CrashReport
 
     private static String getWittyComment()
     {
-        String[] astring = RainyAPI.wittyCrashReport;
+        String[] astring = RainyAPI.randomTitle;
 
         try
         {

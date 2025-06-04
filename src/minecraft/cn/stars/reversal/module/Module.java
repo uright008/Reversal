@@ -4,6 +4,8 @@ import cn.stars.reversal.GameInstance;
 import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.*;
 import cn.stars.reversal.module.impl.client.ClientSettings;
+import cn.stars.reversal.ui.atmoic.msgbox.AtomicMsgBox;
+import cn.stars.reversal.ui.atmoic.msgbox.MsgBoxFactory;
 import cn.stars.reversal.ui.notification.NotificationType;
 import cn.stars.reversal.util.animation.rise.Animation;
 import cn.stars.reversal.util.animation.rise.Easing;
@@ -13,6 +15,7 @@ import cn.stars.reversal.value.Value;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.I18n;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,13 +111,13 @@ public abstract class Module implements GameInstance {
             onEnable();
             mc.getSoundHandler().playButtonPress();
             if (canNoti) Reversal.notificationManager.registerNotification(
-                    "Enabled" + " " + getModuleInfo().name(), "Module", 2000, NotificationType.SUCCESS);
+                    I18n.format("info.notification.on", I18n.format(getModuleInfo().localizedName())), I18n.format("info.notification.title"), 2000, NotificationType.SUCCESS);
         }
         else {
             onDisable();
             mc.getSoundHandler().playButtonPress();
             if (canNoti) Reversal.notificationManager.registerNotification(
-                    "Disabled" + " " + getModuleInfo().name(), "Module", 2000, NotificationType.ERROR);
+                    I18n.format("info.notification.off", I18n.format(getModuleInfo().localizedName())), I18n.format("info.notification.title"), 2000, NotificationType.ERROR);
         }
 
         renderX = mc.displayWidth;
@@ -131,23 +134,19 @@ public abstract class Module implements GameInstance {
             onEnable();
             mc.getSoundHandler().playButtonPress();
             if (canNoti) Reversal.notificationManager.registerNotification(
-                    "Enabled" + " " + getModuleInfo().name(), "Module", 2000, NotificationType.SUCCESS);
+                    I18n.format("info.notification.on", I18n.format(getModuleInfo().localizedName())), I18n.format("info.notification.title"), 2000, NotificationType.SUCCESS);
         }
         else {
             onDisable();
             mc.getSoundHandler().playButtonPress();
             if (canNoti) Reversal.notificationManager.registerNotification(
-                    "Disabled" + " " + getModuleInfo().name(), "Module", 2000, NotificationType.ERROR);
+                    I18n.format("info.notification.off", I18n.format(getModuleInfo().localizedName())), I18n.format("info.notification.title"), 2000, NotificationType.ERROR);
         }
 
         renderX = mc.displayWidth;
         renderY = -mc.displayHeight;
 
         Reversal.moduleManager.setEdited(true);
-    }
-
-    public boolean hasSuffix() {
-        return suffix != null;
     }
 
     public void toggleNoEvent() {
@@ -174,6 +173,13 @@ public abstract class Module implements GameInstance {
         }
 
         return null;
+    }
+
+    public void checkClientModuleState() {
+        if (getModuleInfo().category().equals(Category.CLIENT) && enabled) {
+            Reversal.atomicMsgBox = new MsgBoxFactory().setTitle(I18n.format(getModuleInfo().localizedName())).addLine(I18n.format("info.clientModuleState1")).addLine(I18n.format("info.clientModuleState2")).build();
+            enabled = false;
+        }
     }
 
     protected double random() {

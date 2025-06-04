@@ -34,7 +34,6 @@ public class PostProcessing extends Module
 
     @Override
     public void onUpdateAlways() {
-        if (this.enabled) this.enabled = false;
         if (!blur.enabled) {
             MODERN_BLUR_RUNNABLES.clear();
         }
@@ -44,6 +43,7 @@ public class PostProcessing extends Module
         if (!postBloom.enabled) {
             MODERN_POST_BLOOM_RUNNABLES.clear();
         }
+        checkClientModuleState();
     }
 
     public void blurScreen() {

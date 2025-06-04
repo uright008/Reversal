@@ -60,7 +60,8 @@ public class IRCInstance extends Client {
 
     @Override
     protected void repairConnection() {
-        if (reconnectedTimes < 30 && reconnectedTimes >= 0) {
+        if (reconnectedTimes == -1) return;
+        if (reconnectedTimes < 30) {
         //    Minecraft.getMinecraft().addScheduledTask(() -> Reversal.showMsg("[IRC] Reconnecting! Times:" + reconnectedTimes));
             super.repairConnection();
             reconnectedTimes++;

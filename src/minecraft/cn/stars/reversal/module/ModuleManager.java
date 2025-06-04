@@ -1,17 +1,16 @@
 package cn.stars.reversal.module;
 
-import cn.stars.reversal.util.misc.ClassUtil;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.value.Value;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @Getter
 @Setter
 public final class ModuleManager {
-    public Module[] moduleList = new Module[0];
+    public ArrayList<Module> moduleList = new ArrayList<>();
     ArrayList<Module> modulesToAdd = new ArrayList<>();
     private Map<String, Module> moduleCache = new HashMap<>();
     private Map<Class<? extends Module>, Module> classModuleCache = new HashMap<>();
@@ -30,17 +29,19 @@ public final class ModuleManager {
     /**
      * 遍历impl下所有继承Module的class并注册
      */
-    public void registerModules() {
+  /*  public void registerModules() {
         for (Module module : ClassUtil.instantiateList(ClassUtil.resolvePackage(this.getClass().getPackage().getName() + ".impl", Module.class))) {
             moduleList = Arrays.stream(Stream.concat(Arrays.stream(moduleList), Stream.of(module))
                     .toArray(Module[]::new)).sorted(Comparator.comparing(m -> m.getModuleInfo().name())).toArray(Module[]::new);
         }
-    }
+    } */
 
     public void registerModules(Module[] modules) {
-        moduleList = modules;
-
-        for (Module module : moduleList) {
+        for (Module module : modules) {
+            if (module.getModuleInfo().experimentOnly() && !Reversal.EX_MODE) {
+                continue;
+            }
+            moduleList.add(module);
             classModuleCache.put(module.getClass(), module);
             moduleCache.put(module.getModuleInfo().name().toLowerCase(), module);
         }

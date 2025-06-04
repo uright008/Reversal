@@ -91,7 +91,7 @@ public class LoginGUI extends MusicPlayerGUI {
             MusicAPI.updateUserInfo();
             user.setLoggedIn(true);
             // 另起一个线程，获取用户歌单列表
-            Reversal.threadPoolExecutor.execute(new GetPlayListsThread());
+            Reversal.threadPoolExecutor.submit(new GetPlayListsThread());
         }
 
         return state == QRCodeState.SUCCEED;

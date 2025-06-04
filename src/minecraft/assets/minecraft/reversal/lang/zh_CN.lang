@@ -27,14 +27,19 @@ message.MoBends.conflict=飘扬皮肤和真实第一人称与更多动作冲突.
 message.MusicPlayer.error=未在运行游戏的Java版本上找到JavaFX.音乐播放器已禁用.
 message.IRC.tip=Tip: 使用 ".chat <信息>" 可以在IRC频道内聊天!
 
+info.SessionInfo.title=游戏信息
+info.SessionInfo.playtime=游玩时间
+info.SessionInfo.playtimeValue=%s时 %s分 %s秒
+
+info.notification.title=功能
+info.notification.on=开启 %s
+info.notification.off=关闭 %s
 info.killed=击杀
 info.hurtTime=受伤刻
 info.speed=速度
 info.hp=血量
-
-info.SessionInfo.title=游戏信息
-info.SessionInfo.playtime=游玩时间
-info.SessionInfo.playtimeValue=%s时 %s分 %s秒
+info.clientModuleState1=这个功能不能被开启!
+info.clientModuleState2=请右键展开并编辑它的设置!
 
 # Categories
 category.title=分类

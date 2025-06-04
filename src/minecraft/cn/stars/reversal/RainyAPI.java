@@ -15,6 +15,7 @@ import cn.stars.reversal.util.render.video.VideoUtil;
 import cn.stars.reversal.util.reversal.irc.IRCInstance;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.glfw.GLFW;
@@ -23,9 +24,11 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryUtil;
 
 import javax.imageio.ImageIO;
+import javax.net.ssl.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.security.cert.X509Certificate;
 
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
@@ -56,16 +59,9 @@ public class RainyAPI {
     public static boolean asyncLoading = true;
 
     /**
-     * 崩溃报告上面的字
-     */
-    public static final String[] wittyCrashReport = new String[]
-            {"玩原神玩的", "原神?启动!", "哇真的是你啊", "你怎么似了", "加瓦,救一下啊", "Bomb has been planted",
-                    "闭嘴!我的父亲在mojang工作,他可以使你的mInEcRaFt崩溃", "纪狗气死我了", "致敬传奇耐崩王MiNeCrAfT", "你的客户端坠机了",
-                    "It's been a long day without you my friend", "回来吧牢端", "为了你,我变成狼人模样"};
-    /**
      * 随机标题
      */
-    public static final String[] wittyTitle = new String[]
+    public static final String[] randomTitle = new String[]
             {"当一个人做出一个决定时,想必他已做好了觉悟", "一个没有错的人,有什么需要挽回的呢?", "我们见证时代的兴衰,我们感叹人生的轮回", "Tough. Complex. Incomprehensible.", "时间永远是最难跨过的分界线", "自己选择的路终究由你自己跨过",
             "渴望陪伴,又渴望孤独", "Heaven will not have mercy on the hateful.", "可惜我不是你,没能成为你这样的有成之人", "昨夜西风凋碧树,独上高楼,望尽天涯路", "明天和死亡哪个会先到来?",
             "虚伪才是绝对的真实", "为了一个人,你会付出自己的一切吗?", "你希望有一个人,为你付出他的一切吗?", "Metamorphosis.", "衣带渐宽终不悔,为伊消得人憔悴", "No everlasting love.", "我们就如平行宇宙,近在眼前却又永不相遇",
@@ -73,10 +69,10 @@ public class RainyAPI {
             "当友谊成为了冰冷的符号,这段关系或许已经失衡", "放下助人情结,尊重他人命运", "Be responsible for your own life.", "如何达成理解?", "利益是人类建立关系的基础", "有时,我们注定只能成为别人生活中的配角",
             "揭开伪装你的面具,露出你真实的另一面", "人都会变,莫谈永远", "Helpfully help the helpless.", "我知道你没去,所以我也没来", "没有理由的伤害,到底谁来决定对错?", "用自己创造的麻烦来博取怜惜,最终或许只会被唾弃",
             "没想过你把我放在第一位,可惜我根本就不在列", "其一切奇怪不可迩之状,皆贫病怨恨,不得已诈而遁焉者也", "Intergration. Assimilation. Trust. Understanding.", "纵使星霜能倒转,终遗碎影落人间",
-            "Your comedy, my tragedy.", "总有人在卖着惨,总有人想利用善", "看罢了浮华万千幕,看白了沉默是迷", "「不会离开」是你的谎言"};
+            "Your comedy, my tragedy.", "总有人在卖着惨,总有人想利用善", "看罢了浮华万千幕,看白了沉默是迷", "「不会离开」是你的谎言", "君子论迹不论心,论心世上无完人"};
 
     public static String getRandomTitle() {
-        return randomTitleId == -1 ? wittyTitle[RandomUtil.INSTANCE.nextInt(0, wittyTitle.length)] : wittyTitle[randomTitleId];
+        return randomTitleId == -1 ? randomTitle[RandomUtil.INSTANCE.nextInt(0, randomTitle.length)] : randomTitle[randomTitleId];
     }
 
     /**
@@ -144,20 +140,27 @@ public class RainyAPI {
     public static void readProperties() {
         if (System.getProperty("randomTitle.id") != null) {
             int id = Integer.parseInt(System.getProperty("randomTitle.id"));
-            randomTitleId = MathUtil.between(id, 0, wittyTitle.length - 1);
+            randomTitleId = MathUtil.between(id, 0, randomTitle.length - 1);
         } else {
             randomTitleId = -1;
+        }
+        if (System.getProperty("exMode") != null) {
+            Reversal.EX_MODE = true;
         }
     }
 
     /**
      * 加载客户端设置
      */
+    @SneakyThrows
     public static void loadAPI() {
         ReversalLogger.info("Loading RainyAPI...");
-        readProperties();
-        final String client = FileUtil.loadFile("client.txt");
+        ignoreSsl();
+        loadAPIFromFile();
+    }
 
+    public static void loadAPIFromFile() {
+        final String client = FileUtil.loadFile("client.txt");
         // re-save if not available on start.
         if (client == null || !client.contains("DisableShader") || !client.contains("DisableSplashScreen") || !client.contains("AsyncLoading")) {
             processAPI();
@@ -215,5 +218,32 @@ public class RainyAPI {
     public static long createSubWindow() {
         GLFW.glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         return GLFW.glfwCreateWindow(1, 1, "SubWindow", MemoryUtil.NULL, Display.getWindow());
+    }
+
+    static class CustomTrustManager implements TrustManager, X509TrustManager {
+        public X509Certificate[] getAcceptedIssuers() {
+            return null;
+        }
+        public boolean isServerTrusted(X509Certificate[] certs) {
+            return true;
+        }
+        public boolean isClientTrusted(X509Certificate[] certs) {
+            return true;
+        }
+        public void checkServerTrusted(X509Certificate[] certs, String authType) {
+            return;
+        }
+        public void checkClientTrusted(X509Certificate[] certs, String authType) {
+            return;
+        }
+    }
+
+    @SneakyThrows
+    public static void ignoreSsl() {
+        TrustManager[] trustAllCerts = new TrustManager[] {new CustomTrustManager()};
+        SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, null);
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
     }
 }

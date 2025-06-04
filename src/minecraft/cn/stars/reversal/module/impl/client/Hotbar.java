@@ -30,7 +30,7 @@ public class Hotbar extends Module {
 
     @Override
     public void onUpdateAlways() {
-        if (this.enabled) this.enabled = false;
+        checkClientModuleState();
     }
 
     public void renderHotbar(ScaledResolution sr, float partialTicks) {

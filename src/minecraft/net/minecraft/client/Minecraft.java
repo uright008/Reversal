@@ -340,11 +340,11 @@ public class Minecraft implements IThreadListener
     }
 
     private void startGame() throws LWJGLException, InterruptedException {
+        RainyAPI.loadAPI();
         this.hopeEngine = new HopeEngine();
         this.gameSettings = new GameSettings(this, this.mcDataDir);
         this.defaultResourcePacks.add(this.mcDefaultResourcePack);
         this.startTimerHackThread();
-        RainyAPI.loadAPI();
         BackgroundManager.loadFiles();
 
         if (RainyAPI.imageScreen) ImageScreen.load();

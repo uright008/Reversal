@@ -19,9 +19,6 @@ public final class Notification implements GameInstance {
     private final String title;
     private final NotificationType type;
     private final TimeUtil timer = new TimeUtil();
-    MFont icon = FontManager.getCheck(24);
-    MFont psb = FontManager.getRegularBold(24);
-    MFont psm = FontManager.getRegular(20);
     private long delay, start, end;
     private ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
     public float yVisual = sr.getScaledHeight() - 50;
@@ -72,7 +69,7 @@ public final class Notification implements GameInstance {
         final String name = StringUtils.capitalize(type.name().toLowerCase());
         Color sideColor = new Color(-1);
         final float screenWidth = sr.getScaledWidth();
-        float x = (screenWidth) - (Math.max(psm.getWidth(description), psb.getWidth(name))) - 6;
+        float x = (screenWidth) - (Math.max(regular20.getWidth(description), regular24Bold.getWidth(name))) - 6;
         String iconString = "b";
 
         final float curr = System.currentTimeMillis() - getStart();
@@ -127,9 +124,9 @@ public final class Notification implements GameInstance {
         RenderUtil.roundedRectangle(xVisual, yVisual - 3, sr.getScaledWidth() - xVisual, 25, 2, new Color(0, 0, 0, 100));
 
         RenderUtil.roundedRectangle(xVisual + (percentageLeft * (gs.getWidth(description)) + 8), yVisual + 21, screenWidth + 1, 1, 2, sideColor);
-        icon.drawString(finalIconString, xVisual + 4, yVisual + 1, finalSideColor.getRGB());
-        psb.drawString(title, xVisual + 6 + icon.getWidth(finalIconString), yVisual, new Color(255, 255, 255, 220).getRGB());
-        psm.drawString(description, xVisual + 4, yVisual + 12.5, new Color(255, 255, 255, 220).getRGB());
+        FontManager.getCheck(24).drawString(finalIconString, xVisual + 4, yVisual + 1, finalSideColor.getRGB());
+        regular24Bold.drawString(title, xVisual + 6 + FontManager.getCheck(24).getWidth(finalIconString), yVisual, new Color(255, 255, 255, 220).getRGB());
+        regular20.drawString(description, xVisual + 4, yVisual + 12.5, new Color(255, 255, 255, 220).getRGB());
 
         MODERN_BLOOM_RUNNABLES.add(() -> {
             //    RenderUtil.roundedRectCustom(xVisual, yVisual - 3, sr.getScaledWidth() - xVisual, 25, 2, new Color(0, 0, 0, 100), true, false, true, false);

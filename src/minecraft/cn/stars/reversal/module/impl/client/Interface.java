@@ -24,6 +24,6 @@ public class Interface extends Module {
 
     @Override
     public void onUpdateAlways() {
-        if (this.enabled) this.enabled = false;
+        checkClientModuleState();
     }
 }

@@ -9,7 +9,7 @@ import cn.stars.reversal.util.render.RenderUtil;
 
 import java.awt.*;
 
-@ModuleInfo(name = "Debugger", localizedName = "Debugger", description = "Client debugger, don't enable if you are not developer.", localizedDescription = "Client debugger, don't enable if you are not developer.", category = Category.HUD)
+@ModuleInfo(name = "Debugger", localizedName = "Debugger", description = "Client debugger, don't enable if you are not developer.", localizedDescription = "Client debugger, don't enable if you are not developer.", category = Category.HUD, experimentOnly = true)
 public class Debugger extends Module {
     public static Profiler render2dProfiler = new Profiler();
     public static Profiler postProcessingProfiler = new Profiler();

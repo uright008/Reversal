@@ -9,12 +9,13 @@ import cn.stars.reversal.value.impl.BoolValue;
 
 @ModuleInfo(name = "Optimization", localizedName = "module.Optimization.name", description = "Optimize client performance", localizedDescription = "module.Optimization.desc", category = Category.CLIENT)
 public class Optimization extends Module {
+    public final BoolValue entityCulling = new BoolValue("Entity Culling", this, true);
 
     public static EntityCullingMod entityCullingMod;
 
     @Override
     public void onUpdateAlways() {
-        if (this.enabled) this.enabled = false;
+        checkClientModuleState();
     }
 
     @Override

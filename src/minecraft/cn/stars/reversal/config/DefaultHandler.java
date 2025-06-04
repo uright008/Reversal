@@ -35,9 +35,6 @@ public class DefaultHandler {
 
                     if (!Reversal.VERSION.equalsIgnoreCase(configVersion)) {
                         Reversal.showMsg("This config was made in a different version of Reversal.");
-                        Reversal.notificationManager.registerNotification(
-                                "This config was made in a different version of Reversal.", NotificationType.WARNING
-                        );
                     }
                 }
             }
@@ -121,9 +118,6 @@ public class DefaultHandler {
         }
         if (!gotConfigVersion) {
             Reversal.showMsg("This config was made in a different version of Reversal.");
-            Reversal.notificationManager.registerNotification(
-                    "This config was made in a different version of Reversal.", NotificationType.WARNING
-            );
         }
 
         for (Module module : Reversal.moduleManager.moduleList) {

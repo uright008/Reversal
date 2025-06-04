@@ -23,4 +23,6 @@ public @interface ModuleInfo {
     int defaultKey() default Keyboard.KEY_NONE;
 
     boolean defaultEnabled() default false;
+
+    boolean experimentOnly() default false;
 }

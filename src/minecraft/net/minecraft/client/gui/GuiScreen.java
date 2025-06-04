@@ -765,17 +765,17 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         BackgroundShader.BACKGROUND_SHADER.stopShader();
         RiseShaders.MAIN_MENU_SHADER.setActive(false);
         GL20.glUseProgram(0);
-        if (RainyAPI.isShaderCompatibility) {
-            ReversalLogger.warn("Detected <DisableShader> option enabled! The option has forced reversal to disable shader backgrounds.");
-            RainyAPI.backgroundId = 9;
-            return;
-        }
         if (!previous) {
             if (RainyAPI.backgroundId < 10) RainyAPI.backgroundId++;
             else RainyAPI.backgroundId = 0;
         } else {
             if (RainyAPI.backgroundId > 0) RainyAPI.backgroundId--;
             else RainyAPI.backgroundId = 10;
+        }
+        if (RainyAPI.isShaderCompatibility && RainyAPI.backgroundId != 9 && RainyAPI.backgroundId != 10) {
+            ReversalLogger.warn("Detected <DisableShader> option enabled! The option has forced reversal to disable shader backgrounds.");
+            RainyAPI.backgroundId = 9;
+            return;
         }
         Reversal.notificationManager.registerNotification("Background id changed to: " + RainyAPI.backgroundId, "Main Menu", 2000, NotificationType.SUCCESS);
         ReversalLogger.info("(GuiMainMenuNew) Current background id: " + RainyAPI.backgroundId);

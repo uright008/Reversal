@@ -23,6 +23,7 @@ import java.util.ArrayList;
 @Setter
 public class AtomicMsgBox implements GameInstance {
     private MsgBoxStyle style;
+    private MsgBoxMark mark;
     private String title;
     @Getter
     private final ArrayList<String> message;
@@ -37,6 +38,9 @@ public class AtomicMsgBox implements GameInstance {
     private Animation button2Animation = new Animation(Easing.EASE_OUT_EXPO, 500);
 
     private boolean isDragging, isClosing, isLoaded;
+
+    @Getter
+    private ArrayList<Runnable> FINISH_ACTIONS = new ArrayList<>(), OK_BUTTON_ACTIONS = new ArrayList<>(), YES_BUTTON_ACTIONS = new ArrayList<>(), NO_BUTTON_ACTIONS = new ArrayList<>();
 
     public AtomicMsgBox(MsgBoxStyle style, String title) {
         this.style = style;
@@ -56,12 +60,12 @@ public class AtomicMsgBox implements GameInstance {
     private void init() {
         mc.getSoundHandler().playUISound();
 
-        width = Math.max(100, regular24Bold.width(title) + 20);
-        height = regular24Bold.height() + 30;
+        width = Math.max(150, regular24Bold.width(title) + 20);
+        height = regular24Bold.height() + 35;
 
         for (String s : message) {
-            width = Math.max(width, regular18.width(s) + 35);
-            height += regular18.height();
+            width = Math.max(width, regular18Thin.width(s) + 35);
+            height += regular18Thin.height();
         }
 
         this.x = sr.getScaledWidth() / 2f - width / 2;
@@ -84,49 +88,75 @@ public class AtomicMsgBox implements GameInstance {
             alphaAnimation.run(250);
         }
 
+        RenderUtil.rect(0, 0, sr.getScaledWidth(), sr.getScaledHeight(), new Color(0,0,0, (int) alphaAnimation.getValue() / 2));
+
         if (isDragging) {
             x = mouseX - deltaX;
             y = mouseY - deltaY;
         }
         this.sr = scaledResolution;
-        float finalWidth = width;
-        float finalHeight = height;
-        ModuleInstance.getPostProcessing().drawElementWithBlur(() -> RenderUtil.roundedRectangle(x, y, finalWidth, finalHeight, 4f, getColor(Color.BLACK)));
-        ModuleInstance.getPostProcessing().drawElementWithBloom(() -> RenderUtil.roundedRectangle(x, y, finalWidth, finalHeight, 4f, getColor(ColorUtil.empathyColor())));
 
-        RenderUtil.roundedRectangle(x, y, width, height, 4f, getColor(ColorUtil.empathyColor()));
+        RenderUtil.roundedRectangle(x, y, width, height, 4f, getColor(new Color(241, 243, 249)));
 
-        FontManager.getAtomic(20).drawCenteredString("2", x + 10, y + 6.5, getColor(Color.WHITE).getRGB());
-        regular20Bold.drawString(title, x + 18, y + 4.5, getColor(Color.WHITE).getRGB());
+    //    FontManager.getAtomic(20).drawCenteredString("2", x + 10, y + 6.5, getColor(Color.WHITE).getRGB());
+        regular18Thin.drawString(title, x + 5, y + 5, getColor(Color.BLACK).getRGB());
 
         float renderY = 23;
+        RenderUtil.rect(x, y + 16, width, regular18Thin.height() * message.size() + 8, getColor(Color.WHITE));
         for (String s : message) {
-            regular18.drawString(s, x + 25, y + renderY, getColor(Color.WHITE).getRGB());
-            renderY += regular18.height();
+            FontManager.getRegularThin(18).drawString(s, x + 25, y + renderY, getColor(Color.BLACK).getRGB());
+            renderY += regular18Thin.height();
         }
 
         switch (style) {
             case INFO:
-                if (!message.isEmpty()) {
-                    FontManager.getIcon(36).drawString("t", x + 4, y + renderY / 2 + 3.5, getColor(Color.WHITE).getRGB());
-                }
-                button1Animation.run(RenderUtil.isHovered(x + width - 30, y + height - regular18.height() - 5, 25, regular18.height(), mouseX, mouseY) ? 250 : 150);
-                RenderUtil.roundedRectangle(x + width - 30, y + height - regular18.height() - 5, 25, regular18.height(), 2f, getColor(new Color(30, 30, 30, 255), button1Animation));
-                RenderUtil.roundedOutlineRectangle(x + width - 30, y + height - regular18.height() - 5, 25, regular18.height(), 3f, 0.6f, getColor(Color.WHITE, button1Animation));
-                regular18.drawString("Yes", x + width - 25, y + height - regular18.height() - 2, getColor(Color.WHITE).getRGB());
+                if (this.mark == null) this.mark = MsgBoxMark.INFO;
+                button1Animation.run(RenderUtil.isHovered(x + width - 40, y + height - 20, 35, 13, mouseX, mouseY) ? 1 : 0);
+                RenderUtil.roundedRectangle(x + width - 40, y + height - 20, 35, 13, 2f, getColor(ColorUtil.colorToColor(new Color(253, 253, 253), new Color(224, 238, 249), button1Animation)));
+                RenderUtil.roundedOutlineRectangle(x + width - 40, y + height - 20, 35, 13, 2f, 0.2f, getColor(ColorUtil.colorToColor(new Color(150, 150, 150), new Color(0, 120, 212), button1Animation)));
+                psr16.drawString("OK", x + width - 40 + 17.5 - psr16.width("OK") / 2f, y + height - 16, getColor(Color.BLACK).getRGB());
+                break;
+            case CONFIRM:
+                if (this.mark == null) this.mark = MsgBoxMark.ASK;
+                button1Animation.run(RenderUtil.isHovered(x + width - 80, y + height - 20, 35, 13, mouseX, mouseY) ? 1 : 0);
+                RenderUtil.roundedRectangle(x + width - 80, y + height - 20, 35, 13, 2f, getColor(ColorUtil.colorToColor(new Color(253, 253, 253), new Color(224, 238, 249), button1Animation)));
+                RenderUtil.roundedOutlineRectangle(x + width - 80, y + height - 20, 35, 13, 2f, 0.2f, getColor(ColorUtil.colorToColor(new Color(150, 150, 150), new Color(0, 120, 212), button1Animation)));
+                psr16.drawString("Yes", x + width - 80 + 17.5 - psr16.width("Yes") / 2f, y + height - 16, getColor(ColorUtil.BLACK).getRGB());
+
+                button2Animation.run(RenderUtil.isHovered(x + width - 40, y + height - 20, 35, 13, mouseX, mouseY) ? 1 : 0);
+                RenderUtil.roundedRectangle(x + width - 40, y + height - 20, 35, 13, 2f, getColor(ColorUtil.colorToColor(new Color(253, 253, 253), new Color(224, 238, 249), button2Animation)));
+                RenderUtil.roundedOutlineRectangle(x + width - 40, y + height - 20, 35, 13, 2f, 0.2f, getColor(ColorUtil.colorToColor(new Color(150, 150, 150), new Color(0, 120, 212), button2Animation)));
+                psr16.drawString("No", x + width - 40 + 17.5 - psr16.width("No") / 2f, y + height - 16, getColor(ColorUtil.BLACK).getRGB());
+                break;
+        }
+
+        if (!message.isEmpty()) {
+            FontManager.getAtomic(32).drawString(getStringForMark(mark), x + 6, y + renderY / 2 + 4, getColor(ColorUtil.BLACK).getRGB());
         }
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton)
     {
-        if (RenderUtil.isHovered(x, y, width, 20, mouseX, mouseY)) {
+        if (RenderUtil.isHovered(x, y, width, 16, mouseX, mouseY)) {
             isDragging = true;
             deltaX = mouseX - x;
             deltaY = mouseY - y;
         }
 
-        if (RenderUtil.isHovered(x + width - 30, y + height - regular18.height() - 5, 25, regular18.height(), mouseX, mouseY)) {
-            close();
+        switch (style) {
+            case INFO:
+                if (RenderUtil.isHovered(x + width - 40, y + height - 20, 35, 13, mouseX, mouseY)) {
+                    onButtonClick(1);
+                }
+                break;
+            case CONFIRM:
+                if (RenderUtil.isHovered(x + width - 40, y + height - 20, 35, 13, mouseX, mouseY)) {
+                    onButtonClick(3);
+                }
+                if (RenderUtil.isHovered(x + width - 80, y + height - 20, 35, 13, mouseX, mouseY)) {
+                    onButtonClick(2);
+                }
+                break;
         }
     }
 
@@ -137,6 +167,23 @@ public class AtomicMsgBox implements GameInstance {
 
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
     {
+    }
+
+    private void onButtonClick(int id) {
+        switch (id) {
+            case 1:
+                OK_BUTTON_ACTIONS.forEach(Runnable::run);
+                OK_BUTTON_ACTIONS.clear();
+                break;
+            case 2:
+                YES_BUTTON_ACTIONS.forEach(Runnable::run);
+                YES_BUTTON_ACTIONS.clear();
+                break;
+            case 3:
+                NO_BUTTON_ACTIONS.forEach(Runnable::run);
+                NO_BUTTON_ACTIONS.clear();
+        }
+        close();
     }
 
     protected void keyTyped(char typedChar, int keyCode)
@@ -210,20 +257,40 @@ public class AtomicMsgBox implements GameInstance {
         if (mc.currentScreen == null) {
             mc.setIngameFocus();
         }
+        FINISH_ACTIONS.forEach(Runnable::run);
+        FINISH_ACTIONS.clear();
     }
 
     private Color getColor(Color color) {
         return ColorUtil.reAlpha(color, (int) alphaAnimation.getValue());
     }
 
-    private Color getColor(Color color, Animation animation) {
-        if (isClosing) return ColorUtil.reAlpha(color, Math.min((int) alphaAnimation.getValue(), (int) animation.getValue()));
-        return ColorUtil.reAlpha(color, (int) animation.getValue());
+    private String getStringForMark(MsgBoxMark mark) {
+        switch (mark) {
+            case INFO:
+                return "j";
+            case ERROR:
+                return "k";
+            case SUCCESS:
+                return "l";
+            case INPUT:
+                return "m";
+            case ASK:
+                return "n";
+        }
+        return "";
     }
 
     public enum MsgBoxStyle {
         INFO,
-        INPUT,
         CONFIRM
+    }
+
+    public enum MsgBoxMark {
+        INFO,
+        ERROR,
+        SUCCESS,
+        INPUT,
+        ASK
     }
 }

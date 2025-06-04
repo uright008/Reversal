@@ -14,6 +14,7 @@ import cn.stars.reversal.util.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public final class EventHandler {
 
@@ -22,7 +23,7 @@ public final class EventHandler {
 
     public static void handle(final Event e) {
         Debugger.eventProfiler.start();
-        final Module[] modules = Reversal.moduleManager.getModuleList();
+        final ArrayList<Module> modules = Reversal.moduleManager.getModuleList();
 
         if (e instanceof Render2DEvent) {
             final Render2DEvent event = ((Render2DEvent) e);

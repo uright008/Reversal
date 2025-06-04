@@ -12,44 +12,66 @@ public class MsgBoxFactory {
     }
 
     public MsgBoxFactory setTitle(String title) {
-        if (this.parent != null) {
-            this.parent.setTitle(title);
-        } else {
-            this.parent = new AtomicMsgBox(title);
-        }
+        checkParent();
+        this.parent.setTitle(title);
         return this;
     }
 
     public MsgBoxFactory setStyle(AtomicMsgBox.MsgBoxStyle style) {
-        if (this.parent != null) {
-            this.parent.setStyle(style);
-        } else {
-            this.parent = new AtomicMsgBox(style, "");
-        }
+        checkParent();
+        this.parent.setStyle(style);
         return this;
     }
 
     public MsgBoxFactory addLine(String msg) {
-        if (this.parent != null) {
-            this.parent.getMessage().add(msg);
-        } else {
-            this.parent = new AtomicMsgBox(AtomicMsgBox.MsgBoxStyle.INFO, "");
-            this.parent.getMessage().add(msg);
-        }
+        checkParent();
+        this.parent.getMessage().add(msg);
         return this;
     }
 
     public MsgBoxFactory clearLine() {
-        if (this.parent != null) {
-            this.parent.getMessage().clear();
-        } else {
-            this.parent = new AtomicMsgBox(AtomicMsgBox.MsgBoxStyle.INFO, "");
-            this.parent.getMessage().clear();
-        }
+        checkParent();
+        this.parent.getMessage().clear();
+        return this;
+    }
+
+    public MsgBoxFactory onOK(Runnable runnable) {
+        checkParent();
+        this.parent.getOK_BUTTON_ACTIONS().add(runnable);
+        return this;
+    }
+
+    public MsgBoxFactory onYes(Runnable runnable) {
+        checkParent();
+        this.parent.getYES_BUTTON_ACTIONS().add(runnable);
+        return this;
+    }
+
+    public MsgBoxFactory onNo(Runnable runnable) {
+        checkParent();
+        this.parent.getNO_BUTTON_ACTIONS().add(runnable);
+        return this;
+    }
+
+    public MsgBoxFactory onFinish(Runnable runnable) {
+        checkParent();
+        this.parent.getFINISH_ACTIONS().add(runnable);
+        return this;
+    }
+
+    public MsgBoxFactory setMark(AtomicMsgBox.MsgBoxMark mark) {
+        checkParent();
+        this.parent.setMark(mark);
         return this;
     }
 
     public AtomicMsgBox build() {
         return this.parent;
+    }
+
+    private void checkParent() {
+        if (this.parent == null) {
+            this.parent = new AtomicMsgBox(AtomicMsgBox.MsgBoxStyle.INFO, "");
+        }
     }
 }

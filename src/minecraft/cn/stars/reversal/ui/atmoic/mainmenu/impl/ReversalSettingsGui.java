@@ -5,13 +5,18 @@
 package cn.stars.reversal.ui.atmoic.mainmenu.impl;
 
 import cn.stars.reversal.RainyAPI;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicGui;
 import cn.stars.reversal.ui.atmoic.mainmenu.AtomicMenu;
 import cn.stars.reversal.ui.atmoic.misc.component.TextButton;
+import cn.stars.reversal.ui.atmoic.msgbox.AtomicMsgBox;
+import cn.stars.reversal.ui.atmoic.msgbox.MsgBoxFactory;
+import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import cn.stars.reversal.util.render.RenderUtil;
 import cn.stars.reversal.util.render.RoundedUtil;
 import cn.stars.reversal.util.render.UIUtil;
+import lombok.SneakyThrows;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.opengl.GL11;
 
@@ -44,8 +49,8 @@ public class ReversalSettingsGui extends AtomicGui {
         RenderUtil.scissor(50, 65, width - 100, height - 85);
 
         // Shader
-        regular20Bold.drawString("Background Shader", 60, 80, new Color(220, 220, 220, 240).getRGB());
-        regular16.drawString("开启这个选项后，你将可以在主菜单使用Shader背景。\n部分电脑不支持并会导致崩溃，如果崩溃请关闭。", 60, 95, new Color(220, 220, 220, 240).getRGB());
+        regular20Bold.drawString("Disable Shader", 60, 80, new Color(220, 220, 220, 240).getRGB());
+        regular16.drawString("开启这个选项后，你将不可以在主菜单使用Shader背景。\n部分电脑不支持并会导致崩溃，如果崩溃请开启。", 60, 95, new Color(220, 220, 220, 240).getRGB());
 
         // Gui Snow
         regular20Bold.drawString("Gui Snow", 60, 150, new Color(220, 220, 220, 240).getRGB());
@@ -68,7 +73,7 @@ public class ReversalSettingsGui extends AtomicGui {
         for (TextButton button : buttons) {
             button.draw(mouseX, mouseY, partialTicks);
         }
-        
+
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -80,51 +85,45 @@ public class ReversalSettingsGui extends AtomicGui {
         buttons = new TextButton[]{exitButton, shaderButton, guiSnowButton, backgroundBlurButton, imageScreenButton, asyncLoadingButton};
     }
 
-    private void switchOption(Runnable runnable) {
-        runnable.run();
-        createButton();
-        RainyAPI.processAPI();
-        buttons = new TextButton[]{exitButton, shaderButton, guiSnowButton, backgroundBlurButton, imageScreenButton, asyncLoadingButton};
+    private void switchOption(String name) {
+        Reversal.atomicMsgBox = new MsgBoxFactory()
+                .setStyle(AtomicMsgBox.MsgBoxStyle.CONFIRM)
+                .setTitle("开关功能")
+                .addLine("请选择需要设置的开关状态")
+                .addLine("(Yes=开启, No=关闭)")
+                .onYes(() -> {
+                    try {
+                        ReversalLogger.info("run");
+                        RainyAPI.class.getDeclaredField(name).set(null, true);
+                    } catch (IllegalAccessException | NoSuchFieldException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .onNo(() -> {
+                    try {
+                        RainyAPI.class.getDeclaredField(name).set(null, false);
+                    } catch (IllegalAccessException | NoSuchFieldException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .onFinish(this::createButton)
+                .build();
     }
 
     private void createButton() {
         this.exitButton = new TextButton(width / 2f - 60, height - 60, 120, 35, () -> AtomicMenu.switchGui(0),
                 "返回主菜单", "g", true, 12, 38, 11);
-        if (!RainyAPI.isShaderCompatibility) {
-            this.shaderButton = new TextButton(60, 115, 60, 25, () -> switchOption(() -> RainyAPI.isShaderCompatibility = !RainyAPI.isShaderCompatibility),
-                    "开", "9", true, 10, 34, 7);
-        } else {
-            this.shaderButton = new TextButton(60, 115, 60, 25, () -> switchOption(() -> RainyAPI.isShaderCompatibility = !RainyAPI.isShaderCompatibility),
-                    "关", "0", true, 10, 34, 7);
-        }
-        if (RainyAPI.guiSnow) {
-            this.guiSnowButton = new TextButton(60, 185, 60, 25, () -> switchOption(() -> RainyAPI.guiSnow = !RainyAPI.guiSnow),
-                    "开", "9", true, 10, 34, 7);
-        } else {
-            this.guiSnowButton = new TextButton(60, 185, 60, 25, () -> switchOption(() -> RainyAPI.guiSnow = !RainyAPI.guiSnow),
-                    "关", "0", true, 10, 34, 7);
-        }
-        if (RainyAPI.backgroundBlur) {
-            this.backgroundBlurButton = new TextButton(60, 255, 60, 25, () -> switchOption(() -> RainyAPI.backgroundBlur = !RainyAPI.backgroundBlur),
-                    "开", "9", true, 10, 34, 7);
-        } else {
-            this.backgroundBlurButton = new TextButton(60, 255, 60, 25, () -> switchOption(() -> RainyAPI.backgroundBlur = !RainyAPI.backgroundBlur),
-                    "关", "0", true, 10, 34, 7);
-        }
-        if (RainyAPI.imageScreen) {
-            this.imageScreenButton = new TextButton(60, 325, 60, 25, () -> switchOption(() -> RainyAPI.imageScreen = !RainyAPI.imageScreen),
-                    "开", "9", true, 10, 34, 7);
-        } else {
-            this.imageScreenButton = new TextButton(60, 325, 60, 25, () -> switchOption(() -> RainyAPI.imageScreen = !RainyAPI.imageScreen),
-                    "关", "0", true, 10, 34, 7);
-        }
-        if (RainyAPI.asyncLoading) {
-            this.asyncLoadingButton = new TextButton(60, 395, 60, 25, () -> switchOption(() -> RainyAPI.asyncLoading = !RainyAPI.asyncLoading),
-                    "开", "9", true, 10, 34, 7);
-        } else {
-            this.asyncLoadingButton = new TextButton(60, 395, 60, 25, () -> switchOption(() -> RainyAPI.asyncLoading = !RainyAPI.asyncLoading),
-                    "关", "0", true, 10, 34, 7);
-        }
+        this.shaderButton = new TextButton(60, 115, 60, 25, () -> switchOption("isShaderCompatibility"),
+                RainyAPI.isShaderCompatibility ? "开" : "关", RainyAPI.isShaderCompatibility ? "9" : "0", true, 10, 34, 7);
+        this.guiSnowButton = new TextButton(60, 185, 60, 25, () -> switchOption("guiSnow"),
+                RainyAPI.guiSnow ? "开" : "关", RainyAPI.guiSnow ? "9" : "0", true, 10, 34, 7);
+        this.backgroundBlurButton = new TextButton(60, 255, 60, 25, () -> switchOption("backgroundBlur"),
+                RainyAPI.backgroundBlur ? "开" : "关", RainyAPI.backgroundBlur ? "9" : "0", true, 10, 34, 7);
+        this.imageScreenButton = new TextButton(60, 325, 60, 25, () -> switchOption("imageScreen"),
+                RainyAPI.imageScreen ? "开" : "关", RainyAPI.imageScreen ? "9" : "0", true, 10, 34, 7);
+        this.asyncLoadingButton = new TextButton(60, 395, 60, 25, () -> switchOption("asyncLoading"),
+                RainyAPI.asyncLoading ? "开" : "关", RainyAPI.asyncLoading ? "9" : "0", true, 10, 34, 7);
+        buttons = new TextButton[]{exitButton, shaderButton, guiSnowButton, backgroundBlurButton, imageScreenButton, asyncLoadingButton};
     }
 
     @Override

@@ -3,6 +3,7 @@ package cn.stars.reversal.ui.splash.util;
 import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.ui.splash.SplashScreen;
 import cn.stars.reversal.ui.splash.impl.FadeInOutLoadingScreen;
+import cn.stars.reversal.ui.splash.impl.ImageLoadingScreen;
 import cn.stars.reversal.util.ReversalLogger;
 import lombok.SneakyThrows;
 import net.minecraft.client.Minecraft;

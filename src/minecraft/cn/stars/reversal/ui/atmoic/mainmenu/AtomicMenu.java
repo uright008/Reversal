@@ -278,6 +278,7 @@ public class AtomicMenu extends GuiScreen implements GameInstance {
                     Reversal.atomicMsgBox.FACTORY.addLine("这是第一行");
                     Reversal.atomicMsgBox.FACTORY.addLine("这是第二行 @w@");
                     Reversal.atomicMsgBox.FACTORY.addLine(RainyAPI.getRandomTitle());
+                    Reversal.atomicMsgBox.FACTORY.setStyle(AtomicMsgBox.MsgBoxStyle.CONFIRM);
                 }
                 else Reversal.atomicMsgBox.close();
                 uiClick();

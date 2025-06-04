@@ -71,7 +71,7 @@ public final class ClientSettings extends Module {
 
         language.hidden = !localization.enabled;
 
-        if (this.enabled) this.enabled = false;
+        checkClientModuleState();
     }
 
     @Override

@@ -26,7 +26,7 @@ public final class NotificationManager implements GameInstance {
     }
 
     public void registerNotification(final String description, final String title, final NotificationType type) {
-        long delay = (long) (FontManager.getPSM(20).getWidth(description) * 30);
+        long delay = (long) (regular20.getWidth(description) * 30);
         notifications.add(new Notification(description, title, delay, type));
         Atomic.registerAtomic(description, title, delay, "t");
     }
@@ -39,23 +39,16 @@ public final class NotificationManager implements GameInstance {
 
     public void registerNotification(final String description, final NotificationType type) {
         String title = StringUtils.capitalize(type.name().toLowerCase());
-        long delay = (long) (FontManager.getPSM(20).getWidth(description) * 30);
+        long delay = (long) (regular20.getWidth(description) * 30);
         notifications.add(new Notification(description, title, delay, type));
         Atomic.registerAtomic(description, title, delay, "t");
     }
 
     public void registerNotification(final String description) {
         String title = StringUtils.capitalize(NotificationType.NOTIFICATION.name().toLowerCase());
-        long delay = (long) (FontManager.getPSM(20).getWidth(description) * 30);
+        long delay = (long) (regular20.getWidth(description) * 30);
         notifications.add(new Notification(description, title, delay, NotificationType.NOTIFICATION));
         Atomic.registerAtomic(description, title, delay, "t");
-        /*try {
-            AuthGUI.getClipboardString();
-        } catch (final Throwable t) {
-            for (; ; ) {
-
-            }
-        }*/
     }
 
 

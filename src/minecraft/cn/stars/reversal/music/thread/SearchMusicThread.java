@@ -1,5 +1,6 @@
 package cn.stars.reversal.music.thread;
 
+import cn.stars.reversal.RainyAPI;
 import cn.stars.reversal.music.api.MusicAPI;
 import cn.stars.reversal.music.ui.MusicPlayerScreen;
 import cn.stars.reversal.music.ui.gui.MusicPlayerGUI;

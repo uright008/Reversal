@@ -27,14 +27,19 @@ message.MoBends.conflict=WaveyCapes and RealFirstPerson are not supported by MoB
 message.MusicPlayer.error=JavaFX is not found on your current java version. Music Player is disabled.
 message.IRC.tip=Tip: Use ".chat <message>" to chat in the irc channel!
 
+info.SessionInfo.title=Session Info
+info.SessionInfo.playtime=Play Time
+info.SessionInfo.playtimeValue=%sh %sm %ss
+
 info.killed=Killed
 info.hurtTime=Hurt Time
 info.speed=Speed
 info.hp=Health
-
-info.SessionInfo.title=Session Info
-info.SessionInfo.playtime=Play Time
-info.SessionInfo.playtimeValue=%sh %sm %ss
+info.notification.title=Module
+info.notification.on=Enabled %s
+info.notification.off=Disabled %s
+info.clientModuleState1=This module can not be enabled!
+info.clientModuleState2=Right click to expand and edit its settings!
 
 # Categories
 category.title=CATEGORIES
