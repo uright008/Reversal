@@ -72,6 +72,8 @@ public class ModernClickGUI extends GuiScreen {
     private boolean isDragging;
     private int mouseX, mouseY;
     private float partialTicks;
+    private ArrayList<Module> cachedSearchingModules = new ArrayList<>();
+    private String lastSearch = "";
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -173,18 +175,19 @@ public class ModernClickGUI extends GuiScreen {
                 } else {
                     RenderUtil.scissor(moduleX, y, 400, 360);
                 }
+                String ex = m.getModuleInfo().experimentOnly() ? " [Ex]" : "";
                 if (localization) {
                     if (ModuleInstance.getModule(ClientSettings.class).isNonAlphabeticLanguage()) {
-                        regular24Bold.drawString(I18n.format(m.getModuleInfo().localizedName()), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 5.5, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                        regular24Bold.drawString(I18n.format(m.getModuleInfo().localizedName()) + ex, m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 5.5, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                         regular16.drawString(I18n.format(m.getModuleInfo().localizedDescription()),
                                 m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 21, new Color(160, 160, 160, 160).getRGB());
                     } else {
-                        psm24.drawString(I18n.format(m.getModuleInfo().localizedName()), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                        psm24.drawString(I18n.format(m.getModuleInfo().localizedName()) + ex, m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                         psm16.drawString(I18n.format(m.getModuleInfo().localizedDescription()),
                                 m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 20, new Color(160, 160, 160, 160).getRGB());
                     }
                 } else {
-                    psm24.drawString(m.getModuleInfo().name(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
+                    psm24.drawString(m.getModuleInfo().name() + ex, m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                     psm16.drawString(m.getModuleInfo().description(),
                             m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 20, new Color(160, 160, 160, 160).getRGB());
                 }
@@ -759,9 +762,13 @@ public class ModernClickGUI extends GuiScreen {
     }
 
     private ArrayList<Module> getRelevantModules(final String search) {
+        if (search.equals(lastSearch)) {
+            return cachedSearchingModules;
+        }
+        if (search.isEmpty()) {
+            return new ArrayList<>();
+        }
         final ArrayList<Module> relevantModules = new ArrayList<>();
-
-        if (search.isEmpty()) return relevantModules;
 
         for (final Module module : Reversal.moduleManager.moduleList) {
             boolean found = false;
@@ -778,6 +785,8 @@ public class ModernClickGUI extends GuiScreen {
             }
         }
 
+        lastSearch = search;
+        cachedSearchingModules = relevantModules;
         return relevantModules;
     }
     

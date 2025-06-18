@@ -78,7 +78,6 @@ module.Dglab.desc=Connect to your dglab device. (3.x Required)
 module.ClientSettings.name=Client Settings
 module.ClientSettings.desc=Settings which controls the whole game.
 value.ClientSettings.note1=< Color Settings >
-value.ClientSettings.theme=Theme
 value.ClientSettings.colorType=Color Type
 value.ClientSettings.color1=Color 1
 value.ClientSettings.color2=Color 2
@@ -212,6 +211,8 @@ module.SmallPlayer.name=Small Player
 module.SmallPlayer.desc=Make player like a child.
 module.SmoothSneak.name=Smooth Sneak
 module.SmoothSneak.desc=High version Minecraft sneak animation.
+module.ThePitUtilities.name=The Pit Utilities
+module.ThePitUtilities.desc=Utilities for the pit.
 
 # Render
 module.Animations.name=Animations

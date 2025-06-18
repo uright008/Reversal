@@ -13,7 +13,7 @@ import cn.stars.reversal.value.impl.NoteValue;
 import cn.stars.reversal.value.impl.TextValue;
 
 @ModuleInfo(name = "TestElement", localizedName = "module.TestElement.name", description = "Only for test",
-        localizedDescription = "module.TestElement.desc", category = Category.HUD)
+        localizedDescription = "module.TestElement.desc", category = Category.HUD, experimentOnly = true)
 public class TestElement extends Module {
     private final NoteValue note = new NoteValue("测试功能,请勿开启!", this);
     private final TextValue textValue = new TextValue("TextValue", this, "123");

@@ -20,8 +20,6 @@ import java.awt.*;
         localizedDescription = "module.ClientSettings.desc", category = Category.CLIENT)
 public final class ClientSettings extends Module {
     public final NoteValue note1 = new NoteValue("< Color Settings >", "value.ClientSettings.note1", this);
-    public final ModeValue theme = new ModeValue("Theme", "value.ClientSettings.theme", this, "Simple",
-            "Minecraft", "Reversal", "Modern", "Simple", "Empathy", "ThunderHack", "Shader");
     public final ModeValue colorType = new ModeValue("Color Type", "value.ClientSettings.colorType", this, "Rainbow", "Rainbow", "Double", "Fade", "Static");
     public final ColorValue color1 = new ColorValue("Color 1", "value.ClientSettings.color1", this, new Color(20,250,255), true);
     public final ColorValue color2 = new ColorValue("Color 2", "value.ClientSettings.color2", this, new Color(20,250,255), true);
@@ -61,14 +59,6 @@ public final class ClientSettings extends Module {
     @Override
     public void onUpdateAlways() {
         alpha.hidden = !customAlpha.enabled;
-        colorType.hidden = theme.getMode().equals("ThunderHack");
-        color1.hidden = theme.getMode().equals("ThunderHack");
-        color2.hidden = theme.getMode().equals("ThunderHack");
-
-        empathyGlow.hidden = !theme.getMode().equals("Empathy");
-        roundStrength.hidden = !theme.getMode().equals("Shader") && !theme.getMode().equals("ThunderHack") && !theme.getMode().equals("Modern");
-        shaderGradient.hidden = !theme.getMode().equals("Shader");
-
         language.hidden = !localization.enabled;
 
         checkClientModuleState();

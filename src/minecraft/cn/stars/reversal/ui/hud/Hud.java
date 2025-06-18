@@ -69,16 +69,15 @@ public class Hud implements GameInstance {
         @Override
         public int compare(final Object o1, final Object o2) {
 
-            boolean canLocalize = (ModuleInstance.getModule(ClientSettings.class).theme.getMode().equals("Simple") || ModuleInstance.getModule(ClientSettings.class).theme.getMode().equals("Minecraft") || ModuleInstance.getModule(ClientSettings.class).theme.getMode().equals("Empathy") || ModuleInstance.getModule(ClientSettings.class).theme.getMode().equals("Shader")) && ModuleInstance.getModule(ClientSettings.class).localization.isEnabled();
+            boolean canLocalize = (ModuleInstance.getModule(Arraylist.class).mode.getMode().equals("Simple") || ModuleInstance.getModule(Arraylist.class).mode.getMode().equals("Minecraft") || ModuleInstance.getModule(Arraylist.class).mode.getMode().equals("Empathy") || ModuleInstance.getModule(Arraylist.class).mode.getMode().equals("Shader")) && ModuleInstance.getModule(ClientSettings.class).localization.isEnabled();
             final String name = canLocalize ? I18n.format(((Module) o1).getModuleInfo().localizedName()) : ((Module) o1).getModuleInfo().name();
             final String name2 = canLocalize ? I18n.format(((Module) o2).getModuleInfo().localizedName()) : ((Module) o2).getModuleInfo().name();
 
-            switch (ModuleInstance.getModule(ClientSettings.class).theme.getMode()) {
+            switch (ModuleInstance.getModule(Arraylist.class).mode.getMode()) {
                 case "Minecraft": {
                     return Float.compare(Minecraft.getMinecraft().fontRendererObj.getStringWidth(name2), Minecraft.getMinecraft().fontRendererObj.getStringWidth(name));
                 }
 
-                case "Reversal":
                 case "Shader":
                 case "Simple":
                 case "Modern":
@@ -93,7 +92,7 @@ public class Hud implements GameInstance {
     private static void renderArrayList() {
         Arraylist arraylist = ModuleInstance.getModule(Arraylist.class);
         if (!arraylist.isEnabled()) return;
-        final String mode = ModuleInstance.getModule(ClientSettings.class).theme.getMode();
+        final String mode = ModuleInstance.getModule(Arraylist.class).mode.getMode();
 
         final float arraylistX = arraylist.getX() + arraylist.getWidth();
 
@@ -208,19 +207,6 @@ public class Hud implements GameInstance {
                     break;
                 }
 
-                case "Reversal": {
-                    final double stringWidth = regular16.getWidth(name);
-                    final float rectY = renderY - 1.5f;
-
-                    RenderUtil.rect(renderX - 1, rectY, (float) (stringWidth + 1.5), regular16.getHeight(), new Color(0, 0, 0, 60));
-                    RenderUtil.roundedRect((float) (renderX + stringWidth + 1), rectY, 2, regular16.getHeight(), 2.5f, ColorUtil.liveColorBrighter(new Color(0, 255, 255), 1f));
-
-                    regular16.drawString(name, renderX, renderY + 2, arraylist.colorValue.getColor(moduleCount).getRGB());
-
-                    finalX = arraylistX - (float) stringWidth;
-                    break;
-                }
-
                 case "Modern": {
                     final double stringWidth = regular16.getWidth(name);
                     final float baseX = renderX - 2;
@@ -304,7 +290,7 @@ public class Hud implements GameInstance {
     private static void renderClientName() {
         TextGui textGui = ModuleInstance.getModule(TextGui.class);
         if (!textGui.isEnabled()) return;
-        final String mode = ModuleInstance.getModule(ClientSettings.class).theme.getMode();
+        final String mode = ModuleInstance.getModule(TextGui.class).mode.getMode();
         final boolean useDefaultName = !ModuleInstance.getModule(TextGui.class).custom.isEnabled();
         final float roundStrength = ModuleInstance.getModule(ClientSettings.class).roundStrength.getFloat();
 
@@ -335,20 +321,6 @@ public class Hud implements GameInstance {
 
                         off += mc.fontRendererObj.getStringWidth(character);
                     }
-                }
-                break;
-            }
-
-            case "Reversal": {
-                if (useDefaultName) {
-                    textGui.setWidth(100);
-                    regular18Bold.drawStringWithShadow("R", textGui.getX() + 7, textGui.getY() + 5, textGui.colorValue.getColor().getRGB());
-                    regular18Bold.drawStringWithShadow("eversal [" + Reversal.VERSION + "]", textGui.getX() + 7 + regular18Bold.getWidth("R"), textGui.getY() + 5f, new Color(230, 230, 230, 200).getRGB());
-                } else {
-                    textGui.setWidth((int) (20 + regular18Bold.getWidth(customName)));
-                    regular18Bold.drawStringWithShadow(String.valueOf(customName.charAt(0)), textGui.getX() + 7, textGui.getY() + 5, textGui.colorValue.getColor().getRGB());
-                    // 从字符串第二个字开始获取
-                    regular18Bold.drawStringWithShadow(customName.substring(1), textGui.getX() + 7.5 + regular18Bold.getWidth(String.valueOf(customName.charAt(0))), textGui.getY() + 5f, new Color(230, 230, 230, 200).getRGB());
                 }
                 break;
             }

@@ -4,11 +4,9 @@ import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.util.render.ColorUtil;
 import cn.stars.reversal.util.render.RenderUtil;
-import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
 import java.awt.*;
 
-@NativeObfuscation
 public class TextButton extends MenuButton {
 
     private MFont FONT_RENDERER = FontManager.getRegular(24);

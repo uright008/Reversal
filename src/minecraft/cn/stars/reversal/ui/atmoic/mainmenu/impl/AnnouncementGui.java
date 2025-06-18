@@ -151,35 +151,12 @@ public class AnnouncementGui extends AtomicGui {
                 .addContent("")
                 .addContent("© 2025 Aerolite Society. 保留部分权利。")
                 .calcMaxWidth();
-        Announcement announcement2 = new Announcement("Reversal 3.0.0-Insider", "2025/5/20", 1)
-                .addContent("# Development code: IMITATE")
-                .addContent("[+] 更换了启动动画 (更卡了...以后优化)")
-                .addContent("[+] 新增切换主菜单选项 (ClientSettings)")
-                .addContent("[+] 新增Bocchi Main Menu")
-                .addContent("[+] 新增Auto Play")
-                .addContent("[+] 新增Auto Tip")
-                .addContent("[+] ClickGUI新增淡入效果")
-                .addContent("[/] 主菜单上方页面栏默认不显示 鼠标靠近或点击屏幕时显现")
-                .addContent("[/] 输入框和主菜单顶部选中框颜色改为固定的粉色")
-                .addContent("[/] 优化字体渲染器")
-                .addContent("[*] 修复输入框的光标第一次出现是从左边飞过来的")
-                .addContent("[-] 删除无用的字体")
-                .addContent("[-] 删除我")
-                .calcMaxWidth();
-        Announcement announcement3 = new Announcement("关于赞助", "2025/5/17", 2)
-                .addContent("为了回馈愿意给我们提供帮助的人，整点福利给大家。赞助为纯自愿原则!")
-                .addContent("(以下'我'代指Stars)")
-                .addContent("")
-                .addContent("单次赞助≥1r的，可以留下你的网名，其将会被添加至客户端的赞助者界面。")
-                .addContent("赞助总计≥100r的，可以写一段50字内的文本，让我用语音念给你，可以注语气，不是极为过分内容的我都不拒绝。")
-                .addContent("单次赞助≥100r的，可以写一段10字内的文本，我会拿着带这个文本的纸条女装（？）并发给你。（暑假开始）")
-                .addContent("")
-                .addContent("以上如果你需要的话，请务必找我说明，我不会来主动找你。感谢~!")
+        Announcement announcement2 = new Announcement("Reversal 3.0.0.2", "2025/6/11", 1)
+                .addContent("Powered by Aerolite Society.")
                 .calcMaxWidth();
         announcements.clear();
         announcements.add(announcement1);
         announcements.add(announcement2);
-        announcements.add(announcement3);
 
         updateAnnouncementIndex(announcementIndex);
     }

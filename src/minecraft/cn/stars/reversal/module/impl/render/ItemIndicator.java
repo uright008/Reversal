@@ -17,7 +17,7 @@ import net.minecraft.item.*;
 import java.util.Arrays;
 import java.util.List;
 
-@ModuleInfo(name = "ItemIndicator", localizedName = "module.ItemIndicator.name", description = "Indicate useful items in the world", localizedDescription = "module.ItemIndicator.desc", category = Category.RENDER)
+@ModuleInfo(name = "ItemIndicator", localizedName = "module.ItemIndicator.name", description = "Indicate useful items in the world", localizedDescription = "module.ItemIndicator.desc", category = Category.RENDER, experimentOnly = true)
 public class ItemIndicator extends Module {
     public final ColorValue colorValue = new ColorValue("Color", this);
     public final BoolValue throwable = new BoolValue("Throwable", this, false);

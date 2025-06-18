@@ -27,7 +27,6 @@ public interface GameInstance {
     MFont regular18Bold = FontManager.getRegularBold(18);
     MFont regular20Bold = FontManager.getRegularBold(20);
     MFont regular24Bold = FontManager.getRegularBold(24);
-    MFont regular18Thin = FontManager.getRegularThin(18);
     MFont regular32 = FontManager.getRegular(32);
     MFont atomic24 = FontManager.getAtomic(24);
 

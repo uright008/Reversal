@@ -24,7 +24,7 @@ import java.awt.*;
 @ModuleInfo(name = "FPSCounter", localizedName = "module.FPSCounter.name", description = "Show your fps on screen",
         localizedDescription = "module.FPSCounter.desc", category = Category.HUD)
 public class FPSCounter extends Module {
-    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft", "Shader");
+    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Minecraft", "Modern", "Simple", "Empathy", "ThunderHack", "Shader");
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final BoolValue background = new BoolValue("Background", this, true);
     public FPSCounter() {

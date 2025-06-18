@@ -7,7 +7,6 @@ import java.util.HashMap;
 public class FontManager {
     private static final HashMap<Integer, ModernFontRenderer> REGULAR = new HashMap<>();
     private static final HashMap<Integer, ModernFontRenderer> REGULARBOLD = new HashMap<>();
-    private static final HashMap<Integer, ModernFontRenderer> REGULARTHIN = new HashMap<>();
     private static final HashMap<Integer, ModernFontRenderer> RAINBOW_PARTY = new HashMap<>();
 
     private static final HashMap<Integer, ModernFontRenderer> MOREICONS = new HashMap<>();
@@ -33,10 +32,6 @@ public class FontManager {
 
     public static MFont getRegularBold(int size) {
         return get(REGULARBOLD,  size, "regularBold", true, true, false, true);
-    }
-
-    public static MFont getRegularThin(int size) {
-        return get(REGULARTHIN,  size, "regularThin", true, true, false, true);
     }
 
     public static MFont getCur(int size) {

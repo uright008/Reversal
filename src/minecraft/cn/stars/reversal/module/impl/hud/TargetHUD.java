@@ -194,12 +194,6 @@ public final class TargetHUD extends Module {
                     timer.reset();
                 }
 
-                // Get the current theme of the client.
-                final ModeValue setting = ModuleInstance.getModule(ClientSettings.class).theme;
-
-                // If the setting was null return to prevent crashes bc shit setting system.
-                if (setting == null) return;
-
                 float offset = 6;
                 final float drawBarPosX = posX + nameWidth;
 
@@ -439,22 +433,13 @@ public final class TargetHUD extends Module {
 
                 if (displayHealth > 0.1)
                     for (int i = 0; i < displayHealth * 4; i++) {
-                        final float o = (float) (Math.abs(Math.sin((ticks * 0.006 + i * 0.005) * (((EntityPlayer) target).hurtTime / 8.0F + 2))) / 2) + 1;
-
-                        // Get the current theme of the client.
-                        final ModeValue setting = ModuleInstance.getModule(ClientSettings.class).theme;
-
-                        // If the setting was null return to prevent crashes bc shit setting system.
-                        if (setting == null) return;
-
                         int color = ThemeUtil.getThemeColorInt((float) i / 5, ThemeType.ARRAYLIST);
 
                         Gui.drawRect(drawBarPosX + offset, posY, drawBarPosX + 1 + offset, posY + 10, color);
 
                         if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled) {
                             float finalOffset = offset;
-                            int finalColor = color;
-                            MODERN_BLOOM_RUNNABLES.add(() -> Gui.drawRect(drawBarPosX + finalOffset, posY, drawBarPosX + 1 + finalOffset, posY + 10, finalColor));
+                            MODERN_BLOOM_RUNNABLES.add(() -> Gui.drawRect(drawBarPosX + finalOffset, posY, drawBarPosX + 1 + finalOffset, posY + 10, color));
                         }
 
                         offset += 1;

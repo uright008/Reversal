@@ -24,7 +24,7 @@ import java.util.ArrayList;
 @ModuleInfo(name = "SessionInfo", localizedName = "module.SessionInfo.name", description = "Show your game stats",
         localizedDescription = "module.SessionInfo.desc", category = Category.HUD)
 public class SessionInfo extends Module {
-    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Shader");
+    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Modern", "Simple", "Empathy", "ThunderHack", "Shader");
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final TimeUtil timer = new TimeUtil();
     int second = 0;

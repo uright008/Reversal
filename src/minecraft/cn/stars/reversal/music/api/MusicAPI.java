@@ -1,5 +1,7 @@
 package cn.stars.reversal.music.api;
 
+import cn.stars.reversal.RainyAPI;
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.music.MusicUtil;
 import cn.stars.reversal.music.api.base.*;
 import cn.stars.reversal.music.api.user.QRCode;
@@ -9,14 +11,18 @@ import cn.stars.reversal.music.api.user.User;
 import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.misc.FileUtil;
 import com.google.gson.*;
+import lombok.SneakyThrows;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import okhttp3.*;
 
 import javax.imageio.ImageIO;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,11 +34,18 @@ import java.util.stream.Collectors;
  **/
 
 public class MusicAPI {
-    public static final String host = "https://zm.armoe.cn";
+    public static final String host = "https://163api.qijieya.cn";
     public static User user = new User();
 
+    @SneakyThrows
     public static String fetch(String api, String cookie) {
-        OkHttpClient client = new OkHttpClient.Builder().build();
+        TrustManager[] trustAllCerts = new TrustManager[] {new RainyAPI.CustomTrustManager() };
+        SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, new SecureRandom());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .sslSocketFactory(sc.getSocketFactory(), new RainyAPI.CustomTrustManager())
+                .hostnameVerifier((s, sslSession) -> true)
+                .build();
         RequestBody body = new FormBody.Builder()
                 .add("cookie", cookie)
                 .build();
@@ -85,6 +98,7 @@ public class MusicAPI {
     public static ScanResult getScanResult(String key) {
         ReversalLogger.info("[MusicPlayer] Checking scan result...");
         String response = fetch("/login/qr/check?key=" + key + "&timestamp=" + System.currentTimeMillis());
+        Reversal.showMsg(response);
         JsonObject object = MusicUtil.gson.fromJson(response, JsonObject.class);
         int code = object.get("code").getAsInt();
 

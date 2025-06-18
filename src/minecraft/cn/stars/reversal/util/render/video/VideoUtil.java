@@ -5,15 +5,14 @@ import cn.stars.reversal.util.ReversalLogger;
 import cn.stars.reversal.util.math.TimeUtil;
 import cn.stars.reversal.util.render.RenderUtil;
 import lombok.SneakyThrows;
+import net.minecraft.client.Minecraft;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
 import org.lwjgl.opengl.GL11;
-import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 
 import java.io.File;
 import java.nio.ByteBuffer;
 
-@NativeObfuscation
 public class VideoUtil {
     private static FFmpegFrameGrabber frameGrabber;
     private static double frameRate;
@@ -79,6 +78,7 @@ public class VideoUtil {
                 try {
                     while (!stopped) {
                         if (flag && (!((double)(System.currentTimeMillis() - time) > 700.0 / frameRate) || suspended)) continue;
+                        if (Minecraft.getMinecraft().currentScreen == null) continue;
                         doGetBuffer();
                     }
                 }

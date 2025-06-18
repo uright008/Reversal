@@ -40,7 +40,7 @@ public class ThePitUtilities extends Module {
             if (packet.getChatComponent() != null) {
                 String message = packet.getChatComponent().getUnformattedText();
                 if (quickMaths.enabled) {
-                    if (message.contains("QUICK MATHS!") && !quickMathListening) {
+                    if ((message.contains("QUICK MATHS!")) && !quickMathListening) {
                         log("Event begin: Quick Maths. Start listening for question!");
                         quickMathListening = true;
                         return;
@@ -63,17 +63,17 @@ public class ThePitUtilities extends Module {
                     }
                 }
                 if (eventNotifier.enabled) {
-                    if (message.contains("MINOR EVENT!") || message.contains("小型乱斗事件！")) {
+                    if (message.contains("MINOR EVENT!") || message.contains("小型乱斗事件！") || message.contains("小型事件！")) {
                         log("A minor event is beginning!");
                     }
-                    if (message.contains("MAJOR EVENT!") || message.contains("大型乱斗事件！")) {
+                    if (message.contains("MAJOR EVENT!") || message.contains("大型乱斗事件！") || message.contains("大型事件！")) {
                         log("A major event is beginning!");
                     }
                 }
                 if (killNotifier.enabled) {
                     if (message.contains("助攻！")) {
                         log("Assist: %s", findSubstringAfter(message, "协助击杀"));
-                    } else if (message.contains("击杀！") || message.contains("二杀！") || message.contains("三杀！") || message.contains("四杀！") || message.contains("五杀！")) {
+                    } else if (message.contains("击杀！") || message.contains("二杀！") || message.contains("三杀！") || message.contains("四杀！") || message.contains("五杀！") || message.contains("多杀！") || message.contains("大杀特杀！")) {
                         if (findSubstringAfter(message, "-").isEmpty()) return;
                         log("Kill: %s", findSubstringAfter(message, "-"));
                     } else if (message.contains("死亡！")) {

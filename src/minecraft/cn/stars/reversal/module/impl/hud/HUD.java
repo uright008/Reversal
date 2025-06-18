@@ -1,5 +1,6 @@
 package cn.stars.reversal.module.impl.hud;
 
+import cn.stars.reversal.Reversal;
 import cn.stars.reversal.event.impl.Render2DEvent;
 import cn.stars.reversal.module.Category;
 import cn.stars.reversal.module.Module;
@@ -15,6 +16,15 @@ public class HUD extends Module {
         setWidth(0);
         setHeight(0);
         setCanBeEdited(false);
+    }
+    private boolean firstBootHandled = false;
+
+    @Override
+    public void onUpdateAlways() {
+        if (Reversal.firstBoot && !isEnabled() && !firstBootHandled) {
+            this.setEnabled(true);
+            firstBootHandled = true;
+        }
     }
 
     @Override

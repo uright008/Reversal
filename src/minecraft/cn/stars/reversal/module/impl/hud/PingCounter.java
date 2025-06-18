@@ -23,7 +23,7 @@ import java.awt.*;
 @ModuleInfo(name = "PingCounter", localizedName = "module.PingCounter.name", description = "Show your ping on screen",
         localizedDescription = "module.PingCounter.desc", category = Category.HUD)
 public class PingCounter extends Module {
-    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft", "Shader");
+    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Minecraft", "Modern", "Simple", "Empathy", "ThunderHack", "Shader");
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final BoolValue background = new BoolValue("Background", this, true);
     public PingCounter() {

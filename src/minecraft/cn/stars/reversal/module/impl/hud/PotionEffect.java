@@ -24,7 +24,7 @@ import java.util.Comparator;
 
 @ModuleInfo(name = "PotionEffect", localizedName = "module.PotionEffect.name", description = "Draw potion effect stats", localizedDescription = "module.PotionEffect.desc",category = Category.HUD)
 public class PotionEffect extends Module {
-    public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Simple", "Modern", "Empathy", "Minecraft", "Minecraft 2", "Shader", "Blue Archive");
+    public final ModeValue mode = new ModeValue("Mode", this, "Minecraft", "Minecraft", "Minecraft 2", "Modern", "Simple", "Empathy", "Shader", "Blue Archive");
     public final ColorValue colorValue = new ColorValue("Color", this);
     public final NumberValue spacing = new NumberValue("Spacing", this, 10, 10, 100, 1);
     public final BoolValue background = new BoolValue("Background", this, true);

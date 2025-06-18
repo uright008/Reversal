@@ -28,6 +28,7 @@ import javax.net.ssl.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
@@ -220,30 +221,24 @@ public class RainyAPI {
         return GLFW.glfwCreateWindow(1, 1, "SubWindow", MemoryUtil.NULL, Display.getWindow());
     }
 
-    static class CustomTrustManager implements TrustManager, X509TrustManager {
+    public static class CustomTrustManager implements TrustManager, X509TrustManager {
+        @Override
         public X509Certificate[] getAcceptedIssuers() {
-            return null;
+            return new X509Certificate[0];
         }
-        public boolean isServerTrusted(X509Certificate[] certs) {
-            return true;
-        }
-        public boolean isClientTrusted(X509Certificate[] certs) {
-            return true;
-        }
+        @Override
         public void checkServerTrusted(X509Certificate[] certs, String authType) {
-            return;
         }
+        @Override
         public void checkClientTrusted(X509Certificate[] certs, String authType) {
-            return;
         }
     }
 
     @SneakyThrows
     public static void ignoreSsl() {
-        TrustManager[] trustAllCerts = new TrustManager[] {new CustomTrustManager()};
+        TrustManager[] trustAllCerts = new TrustManager[] {new CustomTrustManager() };
         SSLContext sc = SSLContext.getInstance("SSL");
-        sc.init(null, trustAllCerts, null);
+        sc.init(null, trustAllCerts, new SecureRandom());
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
     }
 }

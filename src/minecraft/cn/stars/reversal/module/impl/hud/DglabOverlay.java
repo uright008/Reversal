@@ -19,7 +19,7 @@ import java.awt.*;
 
 @ModuleInfo(name = "DglabOverlay", localizedName = "module.DglabOverlay.name", description = "Display dglab device information", localizedDescription = "module.DglabOverlay.desc", category = Category.HUD)
 public class DglabOverlay extends Module {
-    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft");
+    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Minecraft", "Modern", "Simple", "Empathy", "ThunderHack", "Shader");
     public final ColorValue colorValue = new ColorValue("Color", this);
     MFont psb = FontManager.getPSB(20);
 

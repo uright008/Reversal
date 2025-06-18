@@ -64,8 +64,8 @@ public class AtomicMsgBox implements GameInstance {
         height = regular24Bold.height() + 35;
 
         for (String s : message) {
-            width = Math.max(width, regular18Thin.width(s) + 35);
-            height += regular18Thin.height();
+            width = Math.max(width, regular18.width(s) + 35);
+            height += regular18.height();
         }
 
         this.x = sr.getScaledWidth() / 2f - width / 2;
@@ -99,13 +99,13 @@ public class AtomicMsgBox implements GameInstance {
         RenderUtil.roundedRectangle(x, y, width, height, 4f, getColor(new Color(241, 243, 249)));
 
     //    FontManager.getAtomic(20).drawCenteredString("2", x + 10, y + 6.5, getColor(Color.WHITE).getRGB());
-        regular18Thin.drawString(title, x + 5, y + 5, getColor(Color.BLACK).getRGB());
+        regular18.drawString(title, x + 5, y + 5, getColor(Color.BLACK).getRGB());
 
         float renderY = 23;
-        RenderUtil.rect(x, y + 16, width, regular18Thin.height() * message.size() + 8, getColor(Color.WHITE));
+        RenderUtil.rect(x, y + 16, width, regular18.height() * message.size() + 8, getColor(Color.WHITE));
         for (String s : message) {
-            FontManager.getRegularThin(18).drawString(s, x + 25, y + renderY, getColor(Color.BLACK).getRGB());
-            renderY += regular18Thin.height();
+            FontManager.getRegular(18).drawString(s, x + 25, y + renderY, getColor(Color.BLACK).getRGB());
+            renderY += regular18.height();
         }
 
         switch (style) {

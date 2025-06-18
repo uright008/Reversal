@@ -61,7 +61,6 @@ module.WaveyCapes.desc=ケープに物理演算を適用
 module.ClientSettings.name=クライアント設定
 module.ClientSettings.desc=全般設定を管理
 value.ClientSettings.note1=< カラー設定 >
-value.ClientSettings.theme=テーマ
 value.ClientSettings.colorType=カラータイプ
 value.ClientSettings.color1=カラー1
 value.ClientSettings.color2=カラー2

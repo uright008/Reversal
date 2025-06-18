@@ -61,7 +61,6 @@ module.WaveyCapes.desc=讓披風在風中搖擺~
 module.ClientSettings.name=客戶端設定
 module.ClientSettings.desc=控制遊戲的整體設定。
 value.ClientSettings.note1=< 顏色設定 >
-value.ClientSettings.theme=主題
 value.ClientSettings.colorType=顏色類型
 value.ClientSettings.color1=顏色1
 value.ClientSettings.color2=顏色2

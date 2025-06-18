@@ -78,7 +78,6 @@ module.Dglab.desc=连接至你的郊狼主机 (需要3.x)
 module.ClientSettings.name=客户端设置
 module.ClientSettings.desc=控制游戏的整体设置.
 value.ClientSettings.note1=< 颜色设置 >
-value.ClientSettings.theme=主题
 value.ClientSettings.colorType=颜色类型
 value.ClientSettings.color1=颜色1
 value.ClientSettings.color2=颜色2
@@ -212,6 +211,8 @@ module.SmallPlayer.name=缩小玩家
 module.SmallPlayer.desc=使玩家变成小孩.
 module.SmoothSneak.name=流畅下蹲
 module.SmoothSneak.desc=高版本我的世界下蹲动画.
+module.ThePitUtilities.name=天坑功能
+module.ThePitUtilities.desc=为天坑乱斗设计的功能.
 
 # Render
 module.Animations.name=动画

@@ -20,7 +20,7 @@ import java.awt.*;
 
 @ModuleInfo(name = "PlayerList", localizedName = "module.PlayerList.name", description = "Show the info of players around you", localizedDescription = "module.PlayerList.desc", category = Category.HUD)
 public class PlayerList extends Module {
-    public final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Shader");
+    public final ModeValue mode = new ModeValue("Mode", this, "Simple", "Modern", "Simple", "Empathy", "ThunderHack", "Shader");
     public final ColorValue colorValue = new ColorValue("Color", this);
     MFont psb = FontManager.getPSB(20);
 

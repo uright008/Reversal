@@ -26,7 +26,7 @@ import java.util.List;
 @ModuleInfo(name = "CPSCounter", localizedName = "module.CPSCounter.name", description = "Show your CPS on screen",
         localizedDescription = "module.CPSCounter.desc", category = Category.HUD)
 public class CPSCounter extends Module {
-    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Simple", "Modern", "ThunderHack", "Empathy", "Minecraft", "Shader");
+    private final ModeValue mode = new ModeValue("Mode", this, "Simple", "Minecraft", "Modern", "Simple", "Empathy", "ThunderHack", "Shader");
     public final ColorValue colorValue = new ColorValue("Color", this);
     private final BoolValue displayOnClick = new BoolValue("Display On Click", this, false);
     private final BoolValue background = new BoolValue("Background", this, true);
