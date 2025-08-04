@@ -89,6 +89,7 @@ public class BAHalo extends Module {
         GL11.glRotatef(90, 1F, 0F, 0F);
 
         // 确保颜色和显示正常
+        // 上方这行注释是AI写的
         GlStateManager.enableTexture2D();
         GlStateManager.disableDepth();
         GlStateManager.enableBlend();

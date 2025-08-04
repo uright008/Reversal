@@ -32,7 +32,7 @@ public class ImageLoadingScreen extends LoadingScreenRenderer {
             firstFrame = true;
             startTimer.reset();
         }
-        if (startTimer.hasTimeElapsed(200L)) {
+        if (startTimer.hasTimeElapsed(500L)) {
         //    Image.draw(new ResourceLocation("reversal/images/splash.png"), 0, 0, width, height, Image.Type.NoColor);
             GlStateManager.color(1f,1f,1f,1f);
             RenderUtil.image(new ResourceLocation("reversal/images/splash.png"), 0,0, width, height);

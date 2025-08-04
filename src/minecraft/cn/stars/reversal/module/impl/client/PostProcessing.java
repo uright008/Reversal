@@ -81,7 +81,7 @@ public class PostProcessing extends Module
 
     public void blurScreenPost() {
         if (!ModuleInstance.canDrawHUD()) return;
-        if (postBloom.isEnabled()) {
+        if (postBloom.isEnabled() && !MODERN_POST_BLOOM_RUNNABLES.isEmpty()) {
             stencilFramebuffer = RenderUtil.createFrameBuffer(stencilFramebuffer);
             stencilFramebuffer.framebufferClear();
             stencilFramebuffer.bindFramebuffer(false);

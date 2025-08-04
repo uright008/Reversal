@@ -89,7 +89,7 @@ public abstract class GuiContainer extends GuiScreen
 
         for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); ++i1)
         {
-            Slot slot = (Slot)this.inventorySlots.inventorySlots.get(i1);
+            Slot slot = this.inventorySlots.inventorySlots.get(i1);
             this.drawSlot(slot);
 
             if (this.isMouseOverSlot(slot, mouseX, mouseY) && slot.canBeHovered())
@@ -303,7 +303,7 @@ public abstract class GuiContainer extends GuiScreen
     {
         for (int i = 0; i < this.inventorySlots.inventorySlots.size(); ++i)
         {
-            Slot slot = (Slot)this.inventorySlots.inventorySlots.get(i);
+            Slot slot = this.inventorySlots.inventorySlots.get(i);
 
             if (this.isMouseOverSlot(slot, x, y))
             {
@@ -376,7 +376,7 @@ public abstract class GuiContainer extends GuiScreen
 
                             if (flag2)
                             {
-                                this.shiftClickedSlot = slot != null && slot.getHasStack() ? slot.getStack() : null;
+                                this.shiftClickedSlot = slot.getHasStack() ? slot.getStack() : null;
                                 i1 = 1;
                             }
                             else if (l == -999)
@@ -481,11 +481,11 @@ public abstract class GuiContainer extends GuiScreen
             k = -999;
         }
 
-        if (this.doubleClick && slot != null && state == 0 && this.inventorySlots.canMergeSlot((ItemStack)null, slot))
+        if (this.doubleClick && slot != null && state == 0 && this.inventorySlots.canMergeSlot(null, slot))
         {
             if (isShiftKeyDown())
             {
-                if (slot != null && slot.inventory != null && this.shiftClickedSlot != null)
+                if (slot.inventory != null && this.shiftClickedSlot != null)
                 {
                     for (Slot slot2 : this.inventorySlots.inventorySlots)
                     {

@@ -235,7 +235,7 @@ public class NBTTagCompound extends NBTBase
     {
         try
         {
-            return !this.hasKey(key, 8) ? "" : ((NBTBase)this.tagMap.get(key)).getString();
+            return !this.hasKey(key, 8) ? "" : this.tagMap.get(key).getString();
         }
         catch (ClassCastException var3)
         {

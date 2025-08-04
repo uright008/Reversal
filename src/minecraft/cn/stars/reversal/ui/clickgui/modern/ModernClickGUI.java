@@ -107,7 +107,7 @@ public class ModernClickGUI extends GuiScreen {
             sideAnimation.finishNow();
         }
 
-    //    GlUtils.startScale(x, y, (float) scaleAnimation.getValue());
+        //    GlUtils.startScale(x, y, (float) scaleAnimation.getValue());
         RenderUtil.scaleStart(x + 260, y + 180, (float) scaleAnimation.getValue());
 
         // Background
@@ -120,7 +120,7 @@ public class ModernClickGUI extends GuiScreen {
 
         // Line
         RenderUtil.rectangle(x + 115, y, 0.8, 360, new Color(100,100,100,100));
-    //    RenderUtil.rectangle(x + 5, y + 62, 105, 0.7, new Color(100,100,100,100));
+        //    RenderUtil.rectangle(x + 5, y + 62, 105, 0.7, new Color(100,100,100,100));
 
         // Shadow
         if (ModuleInstance.getModule(PostProcessing.class).bloom.enabled && scaleAnimation.isFinished()) {
@@ -178,15 +178,18 @@ public class ModernClickGUI extends GuiScreen {
                 String ex = m.getModuleInfo().experimentOnly() ? " [Ex]" : "";
                 if (localization) {
                     if (ModuleInstance.getModule(ClientSettings.class).isNonAlphabeticLanguage()) {
+                        regular24Bold.drawString(I18n.format(m.getModuleInfo().localizedName()), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 5.5, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                         regular24Bold.drawString(I18n.format(m.getModuleInfo().localizedName()) + ex, m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 5.5, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                         regular16.drawString(I18n.format(m.getModuleInfo().localizedDescription()),
                                 m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 21, new Color(160, 160, 160, 160).getRGB());
                     } else {
+                        psm24.drawString(I18n.format(m.getModuleInfo().localizedName()), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                         psm24.drawString(I18n.format(m.getModuleInfo().localizedName()) + ex, m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                         psm16.drawString(I18n.format(m.getModuleInfo().localizedDescription()),
                                 m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 20, new Color(160, 160, 160, 160).getRGB());
                     }
                 } else {
+                    psm24.drawString(m.getModuleInfo().name(), m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                     psm24.drawString(m.getModuleInfo().name() + ex, m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 6, m.isEnabled() ? new Color(240, 240, 240, 240).getRGB() : new Color(160, 160, 160, 200).getRGB());
                     psm16.drawString(m.getModuleInfo().description(),
                             m.guiX + 20 + m.posAnimation.getValue(), m.yAnimation.getValue() + 20, new Color(160, 160, 160, 160).getRGB());
@@ -196,8 +199,8 @@ public class ModernClickGUI extends GuiScreen {
                     settingY += m.sizeInGui;
                     if (m != firstModule) settingY += 15; // IDK why
                     else settingY -= 5;
-                    
-                    
+
+
                     for (final Value setting : m.getSettings()) {
                         if (!setting.isHidden()) {
                             String settingName = localization ? I18n.format(setting.localizedName) : setting.name;
@@ -423,7 +426,7 @@ public class ModernClickGUI extends GuiScreen {
                     icon20.drawString(m.expanded ? "h" : "i", m.guiX + 375, m.yAnimation.getValue() + 14, new Color(160, 160, 160, 160).getRGB());
                 }
 
-            //    RenderUtil.roundedRectangle(m.guiX - 0.5, m.yAnimation.getValue() + 10, 1, 10, 1, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
+                //    RenderUtil.roundedRectangle(m.guiX - 0.5, m.yAnimation.getValue() + 10, 1, 10, 1, ThemeUtil.getThemeColor(ThemeType.ARRAYLIST));
                 RenderUtil.roundedRectangle(m.guiX, m.yAnimation.getValue(), 390, m.sizeAnimation.getValue() - 5, 3, new Color(80,80,80, (int) (40 + m.alphaAnimation.getValue())));
                 RenderUtil.roundedRectangle(m.guiX + 8, m.yAnimation.getValue() + 12, 6, 6, 3, m.isEnabled() ? valueColor : new Color(160, 160, 160, 200));
 
@@ -515,7 +518,7 @@ public class ModernClickGUI extends GuiScreen {
 
         GlStateManager.popMatrix();
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
-    //    GlUtils.stopScale();
+        //    GlUtils.stopScale();
 
         RenderUtil.scaleEnd();
 
@@ -770,6 +773,8 @@ public class ModernClickGUI extends GuiScreen {
         }
         final ArrayList<Module> relevantModules = new ArrayList<>();
 
+        if (search.isEmpty()) return relevantModules;
+
         for (final Module module : Reversal.moduleManager.moduleList) {
             boolean found = false;
             if (ModuleInstance.getModule(ClientSettings.class).localization.enabled) {
@@ -789,7 +794,7 @@ public class ModernClickGUI extends GuiScreen {
         cachedSearchingModules = relevantModules;
         return relevantModules;
     }
-    
+
     private final MFont psm30 = FontManager.getPSM(30);
     private final MFont psr18 = FontManager.getPSR(18);
     private final MFont cur26 = FontManager.getCur(26);
@@ -797,3 +802,4 @@ public class ModernClickGUI extends GuiScreen {
     private final MFont icon16 = FontManager.getIcon(16);
     private final MFont icon20 = FontManager.getIcon(20);
 }
+

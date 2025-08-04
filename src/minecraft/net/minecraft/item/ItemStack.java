@@ -350,22 +350,22 @@ public final class ItemStack
 
     public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB)
     {
-        return stackA == null && stackB == null ? true : (stackA != null && stackB != null ? (stackA.stackTagCompound == null && stackB.stackTagCompound != null ? false : stackA.stackTagCompound == null || stackA.stackTagCompound.equals(stackB.stackTagCompound)) : false);
+        return stackA == null && stackB == null || (stackA != null && stackB != null && ((stackA.stackTagCompound != null || stackB.stackTagCompound == null) && (stackA.stackTagCompound == null || stackA.stackTagCompound.equals(stackB.stackTagCompound))));
     }
 
     public static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB)
     {
-        return stackA == null && stackB == null ? true : (stackA != null && stackB != null ? stackA.isItemStackEqual(stackB) : false);
+        return stackA == null && stackB == null || (stackA != null && stackB != null && stackA.isItemStackEqual(stackB));
     }
 
     private boolean isItemStackEqual(ItemStack other)
     {
-        return this.stackSize != other.stackSize ? false : (this.item != other.item ? false : (this.itemDamage != other.itemDamage ? false : (this.stackTagCompound == null && other.stackTagCompound != null ? false : this.stackTagCompound == null || this.stackTagCompound.equals(other.stackTagCompound))));
+        return this.stackSize == other.stackSize && (this.item == other.item && (this.itemDamage == other.itemDamage && ((this.stackTagCompound != null || other.stackTagCompound == null) && (this.stackTagCompound == null || this.stackTagCompound.equals(other.stackTagCompound)))));
     }
 
     public static boolean areItemsEqual(ItemStack stackA, ItemStack stackB)
     {
-        return stackA == null && stackB == null ? true : (stackA != null && stackB != null ? stackA.isItemEqual(stackB) : false);
+        return stackA == null && stackB == null || (stackA != null && stackA.isItemEqual(stackB));
     }
 
     public boolean isItemEqual(ItemStack other)
@@ -478,6 +478,7 @@ public final class ItemStack
                 s = nbttagcompound.getString("Name");
             }
         }
+        s = EnumChatFormatting.RESET + s;
         cachedDisplayName = s;
         return s;
     }
@@ -514,7 +515,7 @@ public final class ItemStack
 
                     if (this.stackTagCompound.hasNoTags())
                     {
-                        this.setTagCompound((NBTTagCompound)null);
+                        this.setTagCompound(null);
                     }
                 }
             }
@@ -523,7 +524,7 @@ public final class ItemStack
 
     public boolean hasDisplayName()
     {
-        return this.stackTagCompound == null ? false : (!this.stackTagCompound.hasKey("display", 10) ? false : this.stackTagCompound.getCompoundTag("display").hasKey("Name", 8));
+        return this.stackTagCompound != null && (this.stackTagCompound.hasKey("display", 10) && this.stackTagCompound.getCompoundTag("display").hasKey("Name", 8));
     }
 
     public List<String> getTooltip(EntityPlayer playerIn, boolean advanced)
@@ -542,7 +543,7 @@ public final class ItemStack
         {
             String s1 = "";
 
-            if (s.length() > 0)
+            if (!s.isEmpty())
             {
                 s = s + " (";
                 s1 = ")";
@@ -552,11 +553,11 @@ public final class ItemStack
 
             if (this.getHasSubtypes())
             {
-                s = s + String.format("#%04d/%d%s", new Object[] {Integer.valueOf(i), Integer.valueOf(this.itemDamage), s1});
+                s = s + String.format("#%04d/%d%s", i, this.itemDamage, s1);
             }
             else
             {
-                s = s + String.format("#%04d%s", new Object[] {Integer.valueOf(i), s1});
+                s = s + String.format("#%04d%s", i, s1);
             }
         }
         else if (!this.hasDisplayName() && this.item == Items.filled_map)
@@ -622,7 +623,11 @@ public final class ItemStack
                     {
                         for (int j1 = 0; j1 < nbttaglist1.tagCount(); ++j1)
                         {
-                            list.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + nbttaglist1.getStringTagAt(j1));
+                            if (nbttaglist1.getStringTagAt(j1).startsWith("§")) {
+                                list.add(nbttaglist1.getStringTagAt(j1)); // Avoid unnecessary italic flag.
+                            } else {
+                                list.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + nbttaglist1.getStringTagAt(j1));
+                            }
                         }
                     }
                 }
@@ -637,12 +642,12 @@ public final class ItemStack
 
             for (Entry<String, AttributeModifier> entry : multimap.entries())
             {
-                AttributeModifier attributemodifier = (AttributeModifier)entry.getValue();
+                AttributeModifier attributemodifier = entry.getValue();
                 double d0 = attributemodifier.getAmount();
 
                 if (attributemodifier.getID() == Item.itemModifierUUID)
                 {
-                    d0 += (double)EnchantmentHelper.getModifierForCreature(this, EnumCreatureAttribute.UNDEFINED);
+                    d0 += EnchantmentHelper.getModifierForCreature(this, EnumCreatureAttribute.UNDEFINED);
                 }
 
                 double d1;

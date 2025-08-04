@@ -62,7 +62,7 @@ public enum EnumChatFormatting
         this.formattingCode = formattingCodeIn;
         this.fancyStyling = fancyStylingIn;
         this.colorIndex = colorIndex;
-        this.controlString = "\u00a7" + formattingCodeIn;
+        this.controlString = "§" + formattingCodeIn;
     }
 
     public int getColorIndex()

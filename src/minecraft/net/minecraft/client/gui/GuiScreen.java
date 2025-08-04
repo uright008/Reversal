@@ -157,11 +157,11 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         {
             if (i == 0)
             {
-                list.set(i, stack.getRarity().rarityColor + (String)list.get(i));
+                list.set(i, stack.getRarity().rarityColor + list.get(i));
             }
             else
             {
-                list.set(i, EnumChatFormatting.GRAY + (String)list.get(i));
+                list.set(i, EnumChatFormatting.GRAY + list.get(i));
             }
         }
 
@@ -229,7 +229,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
             for (int k1 = 0; k1 < textLines.size(); ++k1)
             {
-                String s1 = (String)textLines.get(k1);
+                String s1 = textLines.get(k1);
                 this.fontRendererObj.drawStringWithShadow(s1, (float)l1, (float)i2, -1);
 
                 if (k1 == 0)
@@ -268,9 +268,8 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                         itemstack = ItemStack.loadItemStackFromNBT(nbtbase);
                     }
                 }
-                catch (NBTException var11)
+                catch (NBTException ignored)
                 {
-                    ;
                 }
 
                 if (itemstack != null)
@@ -293,16 +292,15 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                         if (nbtbase1 != null)
                         {
                             List<String> list1 = Lists.<String>newArrayList();
-                            NBTTagCompound nbttagcompound = nbtbase1;
-                            list1.add(nbttagcompound.getString("name"));
+                            list1.add(nbtbase1.getString("name"));
 
-                            if (nbttagcompound.hasKey("type", 8))
+                            if (nbtbase1.hasKey("type", 8))
                             {
-                                String s = nbttagcompound.getString("type");
+                                String s = nbtbase1.getString("type");
                                 list1.add("Type: " + s + " (" + EntityList.getIDFromString(s) + ")");
                             }
 
-                            list1.add(nbttagcompound.getString("id"));
+                            list1.add(nbtbase1.getString("id"));
                             this.drawHoveringText(list1, x, y);
                         }
                         else
@@ -327,7 +325,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 if (statbase != null)
                 {
                     IChatComponent ichatcomponent = statbase.getStatName();
-                    IChatComponent ichatcomponent1 = new ChatComponentTranslation("stats.tooltip.type." + (statbase.isAchievement() ? "achievement" : "statistic"), new Object[0]);
+                    IChatComponent ichatcomponent1 = new ChatComponentTranslation("stats.tooltip.type." + (statbase.isAchievement() ? "achievement" : "statistic"));
                     ichatcomponent1.getChatStyle().setItalic(true);
                     String s1 = statbase instanceof Achievement ? ((Achievement)statbase).getDescription() : null;
                     List<String> list = Lists.newArrayList(ichatcomponent.getFormattedText(), ichatcomponent1.getFormattedText());
