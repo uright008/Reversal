@@ -349,8 +349,6 @@ public class Minecraft implements IThreadListener
         this.startTimerHackThread();
         BackgroundManager.loadFiles();
 
-        if (RainyAPI.imageScreen) ImageScreen.load();
-
         if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0) {
             this.displayWidth = this.gameSettings.overrideWidth;
             this.displayHeight = this.gameSettings.overrideHeight;
@@ -359,6 +357,9 @@ public class Minecraft implements IThreadListener
         hopeEngine.initializeDisplay();
 
         OpenGlHelper.initializeTextures();
+
+        if (RainyAPI.imageScreen) ImageScreen.load();
+
         AsyncGLContentLoader.initLoader();
         SplashScreen.init();
         this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);

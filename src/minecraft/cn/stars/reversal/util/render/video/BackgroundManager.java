@@ -13,7 +13,7 @@ public class BackgroundManager {
     private static final File dictionary = new File(Minecraft.getMinecraft().mcDataDir, "Reversal/Background");
     private static final File backgroundImageFile = new File(dictionary, "background.png");
     private static final File backgroundVideoFile = new File(dictionary, "background.mp4");
-    private static final File splashFile = new File(dictionary, "splash.mp4");
+    private static final File splashFile = new File(dictionary, "background.mp4");
 
     public static DynamicTexture backgroundImage = null;
 
@@ -32,7 +32,7 @@ public class BackgroundManager {
         }
 
         if (!splashFile.exists()) {
-            FileUtil.unpackFile(splashFile, "assets/minecraft/reversal/splash.mp4");
+            FileUtil.unpackFile(splashFile, "assets/minecraft/reversal/background.mp4");
         }
     }
 

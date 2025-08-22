@@ -57,7 +57,7 @@ public class Reversal {
     // Client Info
     public static final String NAME = "Reversal";
 
-    public static final String VERSION = "v3.1.0";
+    public static final String VERSION = "v3.1.1";
     public static final String MINECRAFT_VERSION = "1.8.9";
     public static final String AUTHOR = "Stars, Ry4nnnnn";
     public static final Branch BRANCH = Branch.PRODUCTION;
@@ -226,7 +226,6 @@ public class Reversal {
 
         title.append(NAME + " " + VERSION);
         if (BRANCH.equals(Branch.DEVELOPMENT)) title.append(IDENTIFIER);
-        if (EX_MODE) title.append(" | EXPERIMENT MODE |");
         title.append(" " + Branch.getBranchName(BRANCH) + " | " + RainyAPI.getRandomTitle());
 
         Display.setTitle(title.toString());

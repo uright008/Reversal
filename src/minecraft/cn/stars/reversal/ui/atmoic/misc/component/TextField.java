@@ -1,6 +1,7 @@
 package cn.stars.reversal.ui.atmoic.misc.component;
 
 import cn.stars.reversal.GameInstance;
+import cn.stars.reversal.font.FontManager;
 import cn.stars.reversal.font.MFont;
 import cn.stars.reversal.music.ui.ThemeColor;
 import cn.stars.reversal.util.ReversalLogger;
@@ -29,13 +30,15 @@ public class TextField {
     public boolean focused, cursorRestored = false;
     public float radius;
     public String text;
+    public String unfocusedText;
     private int cursorPosition;
     private int selectionStart = -1;
     private int selectionEnd = -1;
+    private boolean isPassword = false;
 
     public boolean canLoseFocus = true;
 
-    public boolean selectedLine = false;
+    public boolean selectedLine, searchIcon = false;
 
     private MFont font;
     public Color backgroundColor, outlineColor;
@@ -46,6 +49,7 @@ public class TextField {
 
     public TextField(float width, float height, MFont font, Color backgroundColor, Color outlineColor) {
         this.text = "";
+        this.unfocusedText = "";
         this.width = width;
         this.textMaxWidth = width - 2f;
         this.height = height;
@@ -57,6 +61,11 @@ public class TextField {
         this.radius = 3f;
         this.posAnimation.setValue(0);
         this.cursorPosition = 0;
+    }
+
+    // 【新增】添加一个方法来设置密码模式
+    public void setPassword(boolean password) {
+        this.isPassword = password;
     }
 
     // Call on GuiScreen.drawScreen()
@@ -101,14 +110,23 @@ public class TextField {
         selectedLineAnimation.run(selectedLine ? (focused ? 250 : RenderUtil.isHovered(posX, posY, width, height, mouseX, mouseY) ? 125 : 0) : 0);
         RoundedUtil.drawRound(posX + 3, posY + height - 1, width - 6, 0.8f, 1, ColorUtil.reAlpha(ColorUtil.PINK, (int)selectedLineAnimation.getValue()));
 
-        String visibleText = font.getStringWidth(text) > textMaxWidth - 3f - offsetX ? font.trimStringToWidth(text, textMaxWidth - 3f - offsetX, true, false) : text;
-        float textX = posX + 2f;
+        // 【修改】如果处于密码模式，将显示的文本替换为星号
+        String textToDisplay = this.isPassword ? this.text.replaceAll(".", "*") : this.text;
+
+        String visibleText = font.getStringWidth(textToDisplay) > textMaxWidth - 3f - offsetX ? font.trimStringToWidth(textToDisplay, textMaxWidth - 3f - offsetX, true, false) : textToDisplay;
+        float textX = posX + 2f + (searchIcon ? 15f : 0f);
         float textY = posY + height / 2f - 1.5f;
         float h = height * 0.6f;
         float cursorOffset = Math.min(cursorPosition, visibleText.length());
         posAnimation.run(textX + offsetX + font.getStringWidth(visibleText.substring(0, (int) cursorOffset)) + 1.2f);
 
         // Text
+        if (visibleText.isEmpty() && !focused && !unfocusedText.isEmpty()) {
+            font.drawString(unfocusedText, textX + 1.5f, textY - 1f, Color.GRAY.getRGB());
+        }
+
+        if (searchIcon) FontManager.getAtomic(24).drawString("3", textX - 13.5f, textY - 1.5f, new Color(250,250,250,200).getRGB());
+
         font.drawString(visibleText, textX + 1.5f, textY - 1f, textColorAnim.getOutput().getRGB());
 
         // Cursor
@@ -148,14 +166,16 @@ public class TextField {
     }
 
     private int calculateCursorPosition(int mouseX) {
-        float currentX = posX + 2f;
-        for (int i = 0; i < text.length(); i++) {
-            currentX += font.getStringWidth(text.substring(i, i + 1));
+        float currentX = posX + 2f + (searchIcon ? 15f : 0f);
+        // 【修改】使用实际文本进行光标位置计算，而不是显示文本
+        String calculationText = this.text;
+        for (int i = 0; i < calculationText.length(); i++) {
+            currentX += font.getStringWidth(calculationText.substring(i, i + 1));
             if (mouseX < currentX) {
                 return i;
             }
         }
-        return text.length();
+        return calculationText.length();
     }
 
     // Call on GuiScreen.keyTyped()
@@ -178,7 +198,10 @@ public class TextField {
                         int end = Math.max(selectionStart, selectionEnd);
                         if (start < 0) start = 0;
                         if (end > text.length()) end = text.length();
-                        GuiScreen.setClipboardString(text.substring(start, end));
+                        // 【修改】即使是密码模式，也复制真实内容
+                        if (!isPassword) {
+                            GuiScreen.setClipboardString(text.substring(start, end));
+                        }
                     }
                 } else if (keyCode == Keyboard.KEY_V) {
                     String clipboardText = GuiScreen.getClipboardString();
@@ -244,6 +267,8 @@ public class TextField {
                     text = text.substring(0, cursorPosition) + c + text.substring(cursorPosition);
                     cursorPosition++;
                 }
+            } else if (keyCode == Keyboard.KEY_RETURN) {
+                focused = false;
             }
         } catch (Exception e) {
             ReversalLogger.error("An error occurred while processing text field.", e);
@@ -261,7 +286,8 @@ public class TextField {
                 keyCode != Keyboard.KEY_F5 && keyCode != Keyboard.KEY_F6 &&
                 keyCode != Keyboard.KEY_F7 && keyCode != Keyboard.KEY_F8 &&
                 keyCode != Keyboard.KEY_F9 && keyCode != Keyboard.KEY_F10 &&
-                keyCode != Keyboard.KEY_F11 && keyCode != Keyboard.KEY_F12;
+                keyCode != Keyboard.KEY_F11 && keyCode != Keyboard.KEY_F12 &&
+                keyCode != Keyboard.KEY_F13 && keyCode != Keyboard.KEY_RETURN;
     }
 
     public void setText(String text) {
@@ -269,4 +295,3 @@ public class TextField {
         this.cursorPosition = text.length();
     }
 }
-

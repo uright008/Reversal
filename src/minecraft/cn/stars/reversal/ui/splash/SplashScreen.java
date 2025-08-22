@@ -55,12 +55,13 @@ public class SplashScreen {
 
     @SneakyThrows
     private static LoadingScreenRenderer getLoadingScreen() {
-        return new ImageLoadingScreen();
+        return new VideoLoadingScreen();
     }
 
     @SneakyThrows
     public static void init() {
         if (RainyAPI.isSplashScreenDisabled) return;
+        BackgroundManager.loadSplash();
         subWindow = RainyAPI.createSubWindow();
         GLFW.glfwMakeContextCurrent(subWindow);
         GL.createCapabilities();
@@ -217,7 +218,7 @@ public class SplashScreen {
 
     @SneakyThrows
     public static void notifyGameLoaded() {
-        if (RainyAPI.isSplashScreenDisabled) return;
+    //    if (RainyAPI.isSplashScreenDisabled) return;
         loadingScreenRenderer.onGameLoadFinishedNotify();
 
         waiting = true;
@@ -253,7 +254,7 @@ public class SplashScreen {
 
     @SneakyThrows
     public static void setProgress(int progress, String detail) {
-        if (RainyAPI.isSplashScreenDisabled) return;
+    //    if (RainyAPI.isSplashScreenDisabled) return;
         SplashScreen.progress = progress;
         SplashScreen.progressText = detail;
         mc.updateDisplay();

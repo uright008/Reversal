@@ -45,15 +45,6 @@ public class Hotbar extends Module {
         }
     }
 
-    @Override
-    public void onShader3D(Shader3DEvent event) {
-        if (mode.getMode().equals("Modern") && mc.getRenderViewEntity() instanceof EntityPlayer) {
-            int x = sr.getScaledWidth() / 2;
-            RenderUtil.roundedRectangle(x - 91, sr.getScaledHeight() - 22, 182, 25, 2, Color.BLACK);
-            RenderUtil.roundedRectangle(x - 91 + animation.getValue(), sr.getScaledHeight() - 22, 22, 22, 3, Color.BLACK);
-        }
-    }
-
     public void renderMinecraftTooltip(ScaledResolution sr, float partialTicks) {
         if (entityplayer == null) return;
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -87,6 +78,7 @@ public class Hotbar extends Module {
         int x = sr.getScaledWidth() / 2;
         RenderUtil.roundedRectangle(x - 91, sr.getScaledHeight() - 22, 182, 22, 2, new Color(0,0,0,60));
         RenderUtil.roundedRectangle(x - 91 + animation.getValue(), sr.getScaledHeight() - 22, 22, 22, 3, new Color(0,0,0,80));
+        MODERN_BLOOM_RUNNABLES.add(() -> RenderUtil.roundedRectangle(x - 91, sr.getScaledHeight() - 22, 182, 25, 2, Color.BLACK));
         Gui.zLevel = f;
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableBlend();

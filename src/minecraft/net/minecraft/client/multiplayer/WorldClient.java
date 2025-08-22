@@ -298,26 +298,33 @@ public class WorldClient extends World
     {
         this.loadedEntityList.removeAll(this.unloadedEntityList);
 
-        for (Entity value : this.unloadedEntityList) {
-            Entity entity = (Entity) value;
+        for (int i = 0; i < this.unloadedEntityList.size(); ++i)
+        {
+            Entity entity = this.unloadedEntityList.get(i);
             int j = entity.chunkCoordX;
             int k = entity.chunkCoordZ;
 
-            if (entity.addedToChunk && this.isChunkLoaded(j, k, true)) {
+            if (entity.addedToChunk && this.isChunkLoaded(j, k, true))
+            {
                 this.getChunkFromChunkCoords(j, k).removeEntity(entity);
             }
         }
 
-        for (Entity entity : this.unloadedEntityList) {
-            this.onEntityRemoved(entity);
+        for (int l = 0; l < this.unloadedEntityList.size(); ++l)
+        {
+            this.onEntityRemoved(this.unloadedEntityList.get(l));
         }
 
         this.unloadedEntityList.clear();
 
-        for (Entity entity1 : this.loadedEntityList) {
+        for (int i1 = 0; i1 < this.loadedEntityList.size(); ++i1)
+        {
+            Entity entity1 = this.loadedEntityList.get(i1);
 
-            if (entity1.ridingEntity != null) {
-                if (!entity1.ridingEntity.isDead && entity1.ridingEntity.riddenByEntity == entity1) {
+            if (entity1.ridingEntity != null)
+            {
+                if (!entity1.ridingEntity.isDead && entity1.ridingEntity.riddenByEntity == entity1)
+                {
                     continue;
                 }
 
@@ -325,15 +332,17 @@ public class WorldClient extends World
                 entity1.ridingEntity = null;
             }
 
-            if (entity1.isDead) {
-                final int j1 = entity1.chunkCoordX;
-                final int k1 = entity1.chunkCoordZ;
+            if (entity1.isDead)
+            {
+                int j1 = entity1.chunkCoordX;
+                int k1 = entity1.chunkCoordZ;
 
-                if (entity1.addedToChunk && this.isChunkLoaded(j1, k1, true)) {
+                if (entity1.addedToChunk && this.isChunkLoaded(j1, k1, true))
+                {
                     this.getChunkFromChunkCoords(j1, k1).removeEntity(entity1);
                 }
 
-                this.loadedEntityList.remove(entity1);
+                this.loadedEntityList.remove(i1--);
                 this.onEntityRemoved(entity1);
             }
         }
