@@ -38,6 +38,15 @@ import de.florianmichael.viamcp.fixes.AttackOrder;
 import dev.yalan.live.LiveClient;
 import dev.yalan.live.netty.LiveProto;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBanner;
+import net.minecraft.block.BlockButton;
+import net.minecraft.block.BlockFlowerPot;
+import net.minecraft.block.BlockLever;
+import net.minecraft.block.BlockPressurePlate;
+import net.minecraft.block.BlockRedstoneTorch;
+import net.minecraft.block.BlockSign;
+import net.minecraft.block.BlockTorch;
+import net.minecraft.block.BlockTripWireHook;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.SoundHandler;
@@ -1330,6 +1339,28 @@ public class Minecraft implements IThreadListener
                         if (this.theWorld.getBlockState(blockpos).getBlock().getMaterial() != Material.air)
                         {
                             int i = itemstack != null ? itemstack.stackSize : 0;
+
+                            // 在这里添加碰撞检测，防止在玩家位置放置方块时挥手
+                            if (itemstack != null && itemstack.getItem() instanceof ItemBlock) {
+                                ItemBlock itemblock = (ItemBlock)itemstack.getItem();
+                                // 计算方块放置位置
+                                BlockPos placePos = blockpos.offset(this.objectMouseOver.sideHit);
+                                // 获取要放置的方块
+                                Block block = itemblock.getBlock();
+                                // 获取方块碰撞箱
+                                AxisAlignedBB blockBB = block.getCollisionBoundingBox(this.theWorld, placePos, block.getDefaultState());
+                                
+                                // 检查方块碰撞箱是否与玩家碰撞箱相交
+                                if (blockBB != null && blockBB.intersectsWith(this.thePlayer.getEntityBoundingBox())) {
+                                    // 特殊方块检查（如火把、红石等）
+                                    if (!(block instanceof BlockTorch || block instanceof BlockRedstoneTorch || block instanceof BlockSign || 
+                                          block instanceof BlockButton || block instanceof BlockLever || block instanceof BlockFlowerPot ||
+                                          block instanceof BlockBanner || block instanceof BlockPressurePlate || block instanceof BlockTripWireHook)) {
+                                        flag = true; // 阻止放置和挥手
+                                        break;
+                                    }
+                                }
+                            }
 
                             if (this.playerController.onPlayerRightClick(this.thePlayer, this.theWorld, itemstack, blockpos, this.objectMouseOver.sideHit, this.objectMouseOver.hitVec))
                             {
