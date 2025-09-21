@@ -179,6 +179,8 @@ module.TextGui.name=客户端标题
 module.TextGui.desc=显示客户端水印.
 module.DglabOverlay.name=郊狼信息
 module.DglabOverlay.desc=显示郊狼设备信息
+module.NoFireOverlay.name=移除火焰覆盖层
+module.NoFireOverlay.desc=移除原版的火焰覆盖层.
 
 # Misc
 module.ClientSpoofer.name=客户端欺骗
@@ -195,6 +197,8 @@ module.Protocol.desc=修复一些跨版本时的版本差异.
 # Movement
 module.Sprint.name=强制疾跑
 module.Sprint.desc=在移动时自动疾跑.
+module.NoJumpDelay.name=移除跳跃延迟
+module.NoJumpDelay.desc=移除原版的跳跃延迟.
 
 # Player
 module.AutoGG.name=自动GG

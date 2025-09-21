@@ -147,6 +147,7 @@ module.TestElement.name=測試模組
 module.TestElement.desc=僅供測試。
 module.TextGui.name=客戶端標題
 module.TextGui.desc=顯示客戶端水印。
+module.NoFireOverlay.name=
 
 # Misc
 module.ClientSpoofer.name=客戶端欺騙
@@ -159,10 +160,14 @@ module.NoAchievements.name=移除成就
 module.NoAchievements.desc=移除成就的提示。
 module.Protocol.name=跨版本協議
 module.Protocol.desc=修復一些跨版本時的版本差異。
+module.NoFireOverlay.name=移除火焰覆蓋層
+module.NoFireOverlay.desc=移除原版的火焰覆蓋層。
 
 # Movement
 module.Sprint.name=強制疾跑
 module.Sprint.desc=在移動時自動疾跑。
+module.NoJumpDelay.name=移除跳躍延遲
+module.NoJumpDelay.desc=移除原版的跳躍延遲.
 
 # Player
 module.AutoGG.name=自動GG

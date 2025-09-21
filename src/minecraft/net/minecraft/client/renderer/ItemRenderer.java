@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import cn.stars.reversal.module.impl.hud.NoFireOverlay;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import net.minecraft.block.Block;
@@ -509,7 +510,7 @@ public class ItemRenderer
                 this.renderWaterOverlayTexture(partialTicks);
             }
 
-            if (this.mc.thePlayer.isBurning())
+            if (!ModuleInstance.getModule(NoFireOverlay.class).isEnabled() && this.mc.thePlayer.isBurning())
             {
                 this.renderFireInFirstPerson();
             }

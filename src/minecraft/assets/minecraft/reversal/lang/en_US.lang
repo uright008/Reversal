@@ -179,6 +179,8 @@ module.TextGui.name=Text Gui
 module.TextGui.desc=Display client watermark.
 module.DglabOverlay.name=DG-LAB Overlay
 module.DglabOverlay.desc=Display dglab device information.
+module.NoFireOverlay.name=No Fire Overlay
+module.NoFireOverlay.desc=Remove fire overlay.
 
 # Misc
 module.ClientSpoofer.name=Client Spoofer
@@ -195,6 +197,8 @@ module.Protocol.desc=Via version fixes.
 # Movement
 module.Sprint.name=Sprint
 module.Sprint.desc=Automatically sprint.
+module.NoJumpDelay.name=No Jump Delay
+module.NoJumpDelay.desc=Remove the vanilla jump delay.
 
 # Player
 module.AutoGG.name=Auto GG

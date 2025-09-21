@@ -2,6 +2,7 @@ package net.minecraft.entity;
 
 import cn.stars.reversal.event.impl.PotionEffectEvent;
 import cn.stars.reversal.module.impl.misc.Protocol;
+import cn.stars.reversal.module.impl.movement.NoJumpDelay;
 import cn.stars.reversal.module.impl.render.Animations;
 import cn.stars.reversal.util.misc.ModuleInstance;
 import com.google.common.base.Predicate;
@@ -1761,7 +1762,7 @@ public abstract class EntityLivingBase extends Entity
             else if (this.onGround && this.jumpTicks == 0)
             {
                 this.jump();
-                this.jumpTicks = 10;
+                if(!ModuleInstance.getModule(NoJumpDelay.class).isEnabled()) this.jumpTicks = 10;
             }
         }
         else

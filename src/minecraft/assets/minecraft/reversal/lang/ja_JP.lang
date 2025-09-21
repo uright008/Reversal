@@ -147,6 +147,8 @@ module.TestElement.name=テストモジュール
 module.TestElement.desc=テスト用
 module.TextGui.name=クライアント表示
 module.TextGui.desc=クライアント透かし表示
+module.NoFireOverlay.name=ファイアオーバーレイ非表示
+module.NoFireOverlay.desc=ファイアオーバーレイを非表示
 
 # Misc
 module.ClientSpoofer.name=クライアント偽装
@@ -163,6 +165,8 @@ module.Protocol.desc=マルチバージョン対応
 # Movement
 module.Sprint.name=自動ダッシュ
 module.Sprint.desc=移動時に自動でダッシュ
+module.NoJumpDelay.name=ジャンプ遅延解除
+module.NoJumpDelay.desc=ジャンプ遅延を削除
 
 # Player
 module.AutoGG.name=自動GG

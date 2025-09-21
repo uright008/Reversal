@@ -15,6 +15,7 @@ import cn.stars.reversal.module.impl.combat.ClickSound;
 import cn.stars.reversal.module.impl.combat.NoClickDelay;
 import cn.stars.reversal.module.impl.hud.*;
 import cn.stars.reversal.module.impl.misc.*;
+import cn.stars.reversal.module.impl.movement.NoJumpDelay;
 import cn.stars.reversal.module.impl.movement.Sprint;
 import cn.stars.reversal.module.impl.player.*;
 import cn.stars.reversal.module.impl.render.*;
@@ -270,6 +271,7 @@ public class Reversal {
             new NoClickDelay(),
             // Movement
             new Sprint(),
+            new NoJumpDelay(),
             // Misc
             new ClientSpoofer(),
             new CustomName(),
@@ -338,6 +340,7 @@ public class Reversal {
             new TargetHUD(),
             new TextGui(),
             new TestElement(),
+            new NoFireOverlay(),
             // Client
             new ClientSettings(),
             new PostProcessing(),
