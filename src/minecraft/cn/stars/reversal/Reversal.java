@@ -289,6 +289,7 @@ public class Reversal {
             new SmallPlayer(),
             new SmoothSneak(),
             new ThePitUtilities(),
+            new FastPlace(),
             // Render
             new Animations(),
             new AppleSkin(),

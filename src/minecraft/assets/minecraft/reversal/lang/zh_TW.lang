@@ -180,6 +180,8 @@ module.SmallPlayer.name=縮小玩家
 module.SmallPlayer.desc=使玩家變成小孩。
 module.SmoothSneak.name=流暢下蹲
 module.SmoothSneak.desc=高版本我的世界下蹲動畫。
+module.FastPlace.name=快速放置
+module.FastPlace.desc=忽略方塊放置冷卻時間
 
 # Render
 module.Animations.name=動畫

@@ -217,6 +217,8 @@ module.SmoothSneak.name=流畅下蹲
 module.SmoothSneak.desc=高版本我的世界下蹲动画.
 module.ThePitUtilities.name=天坑功能
 module.ThePitUtilities.desc=为天坑乱斗设计的功能.
+module.FastPlace.name=快速放置
+module.FastPlace.desc=忽略方块放置冷却时间
 
 # Render
 module.Animations.name=动画

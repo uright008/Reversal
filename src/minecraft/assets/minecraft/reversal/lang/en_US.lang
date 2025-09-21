@@ -217,6 +217,8 @@ module.SmoothSneak.name=Smooth Sneak
 module.SmoothSneak.desc=High version Minecraft sneak animation.
 module.ThePitUtilities.name=The Pit Utilities
 module.ThePitUtilities.desc=Utilities for the pit.
+module.FastPlace.name=Fast Place
+module.FastPlace.desc=Ignore block placement cooldown
 
 # Render
 module.Animations.name=Animations

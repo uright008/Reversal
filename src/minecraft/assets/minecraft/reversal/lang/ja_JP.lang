@@ -179,6 +179,8 @@ module.SmallPlayer.name=小型化
 module.SmallPlayer.desc=プレイヤーサイズを縮小
 module.SmoothSneak.name=スムーススニーク
 module.SmoothSneak.desc=最新版のスニーク動作
+module.FastPlace.name=ファストプレース
+module.FastPlace.desc=ブロック設置のクールダウンを無視
 
 # Render
 module.Animations.name=アニメーション

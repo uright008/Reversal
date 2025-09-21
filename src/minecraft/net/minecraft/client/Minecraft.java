@@ -1895,7 +1895,11 @@ public class Minecraft implements IThreadListener
                 }
             }
 
-            if (this.gameSettings.keyBindUseItem.isKeyDown() && this.rightClickDelayTimer == 0 && !this.thePlayer.isUsingItem())
+            if (this.gameSettings.keyBindUseItem.isKeyDown() && (this.rightClickDelayTimer == 0 || 
+                (ModuleInstance.getModule(cn.stars.reversal.module.impl.player.FastPlace.class).isEnabled() && 
+                 this.thePlayer.inventory.getCurrentItem() != null && 
+                 this.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBlock)) && 
+                !this.thePlayer.isUsingItem())
             {
                 this.rightClickMouse();
             }
