@@ -28,8 +28,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -46,7 +49,7 @@ public final class TargetHUD extends Module {
 
     public static Entity target;
     private final TimeUtil timer = new TimeUtil();
-    private final ModeValue mode = new ModeValue("Mode", this, "Normal", "Normal", "Simple", "Classic", "Other", "Exhibition", "Remix", "Minecraft");
+    private final ModeValue mode = new ModeValue("Mode", this, "Normal", "Normal", "Simple", "Classic", "Other", "Exhibition", "Remix", "Minecraft", "Distance");
     private final BoolValue backGround = new BoolValue("Background", this, true);
     private final BoolValue shadow = new BoolValue("Shadow", this, true);
     private final List<THParticleUtils> particles = new ArrayList<>();
@@ -58,6 +61,7 @@ public final class TargetHUD extends Module {
     private int ticks;
     private boolean sentParticles;
     private double scale = 1;
+
 
     public TargetHUD() {
         setCanBeEdited(true);
@@ -75,6 +79,50 @@ public final class TargetHUD extends Module {
     @Override
     public void onAttack(final AttackEvent event) {
         if (event.getTarget() instanceof EntityPlayer) target = event.getTarget();
+    }
+
+    /**
+     * 计算从玩家视线到目标实体包围盒的最近距离
+     * @param entity 目标实体
+     * @return 到包围盒的最近距离
+     */
+    private double getDistanceToEntityBoundingBox(Entity entity) {
+        // 获取玩家眼睛位置
+        Vec3 eyePosition = mc.thePlayer.getPositionEyes(1.0F);
+
+        // 获取玩家视线方向
+        Vec3 lookVector = mc.thePlayer.getLook(1.0F);
+
+        // 定义最大检测距离
+        double maxDistance = 64.0D;
+
+        // 计算视线终点
+        Vec3 endPosition = eyePosition.addVector(
+                lookVector.xCoord * maxDistance,
+                lookVector.yCoord * maxDistance,
+                lookVector.zCoord * maxDistance
+        );
+
+        // 获取实体包围盒
+        AxisAlignedBB boundingBox = entity.getEntityBoundingBox();
+
+        // 计算视线与包围盒的交点
+        MovingObjectPosition hitResult = boundingBox.calculateIntercept(eyePosition, endPosition);
+
+        if (hitResult != null) {
+            // 如果视线与包围盒相交，计算交点距离
+            return eyePosition.distanceTo(hitResult.hitVec);
+        } else {
+            // 如果视线不与包围盒相交，计算到包围盒最近顶点的距离
+            // 获取包围盒的最近顶点
+            double closestX = MathHelper.clamp_double(eyePosition.xCoord, boundingBox.minX, boundingBox.maxX);
+            double closestY = MathHelper.clamp_double(eyePosition.yCoord, boundingBox.minY, boundingBox.maxY);
+            double closestZ = MathHelper.clamp_double(eyePosition.zCoord, boundingBox.minZ, boundingBox.maxZ);
+
+            // 计算到最近顶点的距离
+            Vec3 closestPoint = new Vec3(closestX, closestY, closestZ);
+            return eyePosition.distanceTo(closestPoint);
+        }
     }
 
 
@@ -98,6 +146,18 @@ public final class TargetHUD extends Module {
         }
 
         switch (mode.getMode()) {
+            case "Distance": {
+                final double dist = getDistanceToEntityBoundingBox(target);
+                final String distanceText = String.format("%.2f", dist);
+
+                // 根据距离确定颜色：大于3为红色，小于等于3为绿色
+                int color = dist > 3 ? new Color(255, 0, 0).getRGB() : new Color(0, 255, 0).getRGB();
+
+                // 使用Minecraft默认字体渲染，背景透明
+                mc.fontRendererObj.drawString(distanceText, posX, posY, color, false);
+                break;
+            }
+
             case "Normal": {
                 if (target == null) {
                     particles.clear();
